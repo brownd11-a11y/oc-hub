@@ -185,38 +185,46 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── GANTT ── */
 .gantt-wrap{padding:20px 32px 24px;overflow-x:auto}
+.gantt-wrap{position:relative;overflow:hidden}
 .gantt-chart{min-width:600px;position:relative}
-.gantt-header{display:flex;margin-bottom:4px;margin-left:190px}
-.gantt-month-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);flex:1;text-align:center;border-left:1px solid var(--separator);padding:2px 0}
+/* Week band grid — rendered behind all rows */
+.gantt-grid{position:absolute;top:0;left:190px;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden}
+.gantt-week-band{position:absolute;top:0;bottom:0}
+.gantt-week-band.even{background:rgba(220,224,232,.35)}
+.gantt-week-band.odd{background:rgba(236,238,244,.18)}
+/* Week header */
+.gantt-header{display:flex;margin-bottom:2px;margin-left:190px;position:relative;z-index:2}
+.gantt-week-lbl{position:absolute;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;font-weight:500;letter-spacing:.02em;color:#8E8E93;white-space:nowrap;transform:translateX(-50%);top:2px}
+.gantt-header-spacer{height:18px;flex:1;position:relative}
 /* Phase bar row */
-.gantt-row{display:flex;align-items:center;margin-bottom:0;min-height:40px;margin-top:10px}
-.gantt-label{width:190px;flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;letter-spacing:.02em;color:var(--label-primary);padding-right:12px;text-align:right;line-height:1.3}
-.gantt-track{flex:1;position:relative;height:36px;background:#e8e4da;border:1px solid var(--separator)}
-.gantt-track.undated{background:repeating-linear-gradient(45deg,#eee,#eee 4px,#e4e0d6 4px,#e4e0d6 8px)}
-.gantt-bar{position:absolute;top:4px;height:28px;min-width:4px}
-.gantt-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
-.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:7px;right:7px;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.9);letter-spacing:.02em}
-.gantt-pct{position:absolute;right:-34px;top:50%;transform:translateY(-50%);font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);width:30px;text-align:left}
-.gantt-done-stamp{position:absolute;top:50%;transform:translateY(-50%);font-family:'Source Code Pro',monospace;font-size:9px;color:var(--done-fg);white-space:nowrap;right:-68px}
-/* Gate diamond — overlaid on bar track */
-.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #b06000;background:#fff8f0;cursor:pointer;transition:all .18s;z-index:4}
-.gantt-diamond.met{background:#b06000;border-color:#7a4a00}
+.gantt-row{display:flex;align-items:center;margin-bottom:0;min-height:40px;margin-top:8px;position:relative;z-index:2}
+.gantt-label{width:190px;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14px;font-weight:600;color:#1C1C1E;padding-right:14px;text-align:right;line-height:1.3}
+.gantt-track{flex:1;position:relative;height:36px;background:#E5E8EF;border:none;border-radius:4px;overflow:visible}
+.gantt-track.undated{background:#ECEEF3}
+.gantt-bar{position:absolute;top:4px;height:28px;min-width:4px;border-radius:3px;overflow:hidden}
+.gantt-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s;border-radius:3px 0 0 3px}
+.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.gantt-pct{position:absolute;right:-36px;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#8E8E93;width:32px;text-align:left}
+.gantt-done-stamp{position:absolute;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:var(--done-fg);white-space:nowrap;right:-72px}
+/* Gate diamond */
+.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #4F6DF5;background:#fff;cursor:pointer;transition:all .18s;z-index:4;box-shadow:0 1px 3px rgba(79,109,245,.25)}
+.gantt-diamond.met{background:#4F6DF5;border-color:#3451D1}
 .gantt-diamond:hover{transform:translateY(-50%) translateX(-7px) rotate(45deg) scale(1.25)}
 /* Today line */
-.gantt-today-line{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--accent);opacity:.6;z-index:3;pointer-events:none}
-.gantt-today-lbl{position:absolute;top:-15px;font-family:'Source Code Pro',monospace;font-size:8px;color:var(--accent);transform:translateX(-50%);white-space:nowrap}
-/* Annotation strip (level 2 only) */
-.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:0;min-height:26px;background:var(--page-bg)}
+.gantt-today-line{position:absolute;top:-4px;bottom:-4px;width:2px;background:#C70025;opacity:.7;z-index:5;pointer-events:none;border-radius:1px}
+.gantt-today-lbl{position:absolute;top:-16px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;font-weight:600;color:#C70025;transform:translateX(-50%);white-space:nowrap}
+/* Annotation strip */
+.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:0;min-height:26px;position:relative;z-index:2}
 .gantt-annot-spacer{width:190px;flex-shrink:0}
 .gantt-annot-track{flex:1;position:relative;height:28px}
-.gantt-annot-pin{position:absolute;top:4px;font-family:'Source Code Pro',monospace;font-size:9px;line-height:1.35;pointer-events:none;max-width:200px}
-.gantt-annot-pin .ap-date{font-weight:700;color:#7a4a00}
+.gantt-annot-pin{position:absolute;top:3px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;line-height:1.4;pointer-events:none;max-width:200px}
+.gantt-annot-pin .ap-date{font-weight:700;color:#3451D1}
 .gantt-annot-pin .ap-date.met{color:var(--done-fg)}
-.gantt-annot-pin .ap-label{font-style:italic;color:#b06000}
+.gantt-annot-pin .ap-label{font-style:italic;color:#4F6DF5;opacity:.85}
 /* Legend */
 .gantt-legend{display:flex;gap:14px;padding:8px 32px 4px;flex-wrap:wrap}
-.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary)}
-.gantt-leg-swatch{width:14px;height:10px;border:1px solid rgba(0,0,0,.1)}
+.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#8E8E93}
+.gantt-leg-swatch{width:14px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.08)}
 
 /* ── ADD BAR ── */
 .road-add-bar{display:flex;gap:8px;align-items:center;padding:10px 32px;background:var(--page-bg);border-bottom:1px solid var(--separator);flex-wrap:wrap}
@@ -237,7 +245,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .road-phase-block{margin-bottom:2px}
 .road-phase-hd{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#e8e8ed;border-bottom:1px solid var(--separator);cursor:pointer;user-select:none}
 .road-phase-hd:hover{background:#dddde6}
-.road-phase-name{font-family:'Source Code Pro',monospace;font-size:15px;font-weight:600;color:var(--label-primary);letter-spacing:.04em;flex:1;display:flex;align-items:center}
+.road-phase-name{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:600;color:var(--label-primary);flex:1;display:flex;align-items:center}
 .road-phase-prog{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
 .road-phase-chev{font-size:11px;color:#bbb;transition:transform .2s}
 .road-phase-block.open .road-phase-chev{transform:rotate(90deg)}
@@ -249,7 +257,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .road-step-cb{width:14px;height:14px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;margin-top:2px;transition:all .15s}
 .road-step.done-step .road-step-cb{background:var(--done-fg);border-color:var(--done-fg);color:white}
 .road-step-body{flex:1;min-width:0}
-.road-step-label{font-size:15px;color:var(--label-primary);line-height:1.4}
+.road-step-label{font-size:15px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--label-primary);line-height:1.4}
 .road-step.done-step .road-step-label{text-decoration:line-through;color:var(--done-fg);opacity:.7}
 .road-step-note{font-size:11px;color:var(--label-secondary);margin-top:2px;line-height:1.4}
 .road-step-cmd{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--accent);background:rgba(199,0,37,.06);border:1px solid rgba(199,0,37,.15);padding:1px 5px;margin-top:3px;display:inline-block}
@@ -264,7 +272,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .road-gate-row{display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fdf8ed;border-bottom:1px solid rgba(176,96,0,.2);border-left:3px solid #b06000}
 .road-gate-diamond-sm{width:12px;height:12px;flex-shrink:0;border:2px solid #b06000;background:var(--page-bg);transform:rotate(45deg);cursor:pointer;transition:all .15s}
 .road-gate-diamond-sm.met{background:#b06000}
-.road-gate-text{flex:1;font-family:'Source Code Pro',monospace;font-size:13px;color:var(--hold-fg);letter-spacing:.03em}
+.road-gate-text{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;color:var(--hold-fg)}
 .road-gate-date-val{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
 .road-gate-del{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:0 2px}
 .road-gate-del:hover{color:var(--accent)}
@@ -558,7 +566,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <div class="gantt-leg-item"><div style="width:11px;height:11px;background:#b06000;transform:rotate(45deg)"></div>&nbsp;Gate Met</div>
         <div class="gantt-leg-item"><div style="width:2px;height:12px;background:var(--accent);opacity:.7;display:inline-block"></div>&nbsp;Today</div>
       </div>
-      <div class="gantt-wrap"><div class="gantt-chart" id="gantt-chart"></div></div>
+      <div class="gantt-wrap"><div class="gantt-wrap"><div class="gantt-chart" id="gantt-chart"></div></div>
     </div>
     <div class="road-section-hd" onclick="toggleSection('tasklist')">
       <span class="road-section-title" id="tasklist-title">&#9660; Task List</span>
@@ -1204,60 +1212,84 @@ function renderGantt(){
     if(r.kind==='step'&&r.targetStart)allDates.push(r.targetStart);
     if(r.kind==='gate'&&r.date)allDates.push(r.date);
   });
-  // Include inherited gate dates in scale
-  phases.forEach(ph=>{
-    const inh=gateInheritDate(ph.id);
-    if(inh)allDates.push(inh);
-  });
+  phases.forEach(ph=>{const inh=gateInheritDate(ph.id);if(inh)allDates.push(inh);});
   allDates.sort();
   let minD=new Date(allDates[0]+'T12:00:00');
   let maxD=new Date(allDates[allDates.length-1]+'T12:00:00');
   if((maxD-minD)<90*864e5){maxD=new Date(minD);maxD.setDate(maxD.getDate()+90);}
-  const padMin=new Date(minD);padMin.setDate(padMin.getDate()-14);
+  const padMin=new Date(minD);padMin.setDate(padMin.getDate()-7);
   const padMax=new Date(maxD);padMax.setDate(padMax.getDate()+14);
   const span=padMax-padMin;
   function xp(ds){if(!ds)return null;const d=new Date(ds+'T12:00:00');return Math.max(0,Math.min(100,(d-padMin)/span*100));}
 
-  // Month header
-  const months=[];const mc=new Date(padMin);mc.setDate(1);
-  while(mc<=padMax){
-    const nx=new Date(mc);nx.setMonth(nx.getMonth()+1);
-    const s=Math.max(0,(mc-padMin)/span*100);
-    const e=Math.min(100,(nx-padMin)/span*100);
-    months.push({label:mc.toLocaleDateString('en-US',{month:'short',year:'2-digit'}),w:e-s});
-    mc.setMonth(mc.getMonth()+1);
+  // ── Week boundaries (Mondays) ──────────────────────────────────
+  const weeks=[];
+  const wc=new Date(padMin);
+  // Advance to nearest Monday
+  const dow=wc.getDay(); // 0=Sun
+  wc.setDate(wc.getDate()+(dow===0?1:(8-dow)%7||7));
+  let wi=0;
+  while(wc<=padMax){
+    const pct=(wc-padMin)/span*100;
+    if(pct>=0&&pct<=100){
+      weeks.push({
+        pct,
+        label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+        even:wi%2===0
+      });
+    }
+    wc.setDate(wc.getDate()+7);
+    wi++;
   }
+
+  // ── Week band grid (absolute, behind rows) ─────────────────────
+  let gridHtml='';
+  for(let i=0;i<weeks.length;i++){
+    const left=weeks[i].pct;
+    const right=i+1<weeks.length?weeks[i+1].pct:100;
+    const w=right-left;
+    gridHtml+=`<div class="gantt-week-band ${weeks[i].even?'even':'odd'}" style="left:${left}%;width:${w}%"></div>`;
+  }
+
+  // ── Week header ────────────────────────────────────────────────
+  let headerHtml=`<div class="gantt-header"><div class="gantt-header-spacer">`;
+  weeks.forEach(w=>{
+    headerHtml+=`<div class="gantt-week-lbl" style="left:${w.pct}%">${w.label}</div>`;
+  });
+  headerHtml+=`</div></div>`;
+
   const todayPct=xp(today);
-  let html=`<div class="gantt-header">${months.map(m=>`<div class="gantt-month-lbl" style="flex:${m.w} 0 0%">${m.label}</div>`).join('')}</div>`;
+  let html='';
 
   phases.forEach((ph,phIdx)=>{
     const range=phaseRange(ph.id);
     const prog=phaseProgress(ph.id);
     const gates=roadGates(ph.id);
-    const color=ph.color||'#5a5040';
+    const color=ph.color||'#3a6b9e';
     const isDated=range.start&&range.end;
     const isAllDone=prog.total>0&&prog.done===prog.total;
     const numBadge=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
 
-    // ── Phase bar row ──────────────────────────────────────────────
+    // ── Phase bar row ────────────────────────────────────────────
     html+=`<div class="gantt-row"${phIdx===0?' style="margin-top:0"':''}>`;
     html+=`<div class="gantt-label" title="${esc(ph.label)}">${numBadge}${esc(ph.label)}</div>`;
-    html+=`<div class="gantt-track${isDated?'':' undated'}" style="position:relative">`;
+    html+=`<div class="gantt-track${isDated?'':' undated'}">`;
     if(todayPct!==null)html+=`<div class="gantt-today-line" style="left:${todayPct}%"><span class="gantt-today-lbl">Today</span></div>`;
     if(isDated){
-      const lp=xp(range.start),rp=xp(range.end),bw=Math.max(2,rp-lp),fw=prog.pct;
-      const fillGrad=isAllDone?'background:var(--done-fg)':`background:linear-gradient(90deg,${color}dd,${color}66)`;
-      html+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${color}22;border:1px solid ${color}77">`;
-      html+=`<div class="gantt-bar-fill" style="${fillGrad};width:${fw}%"></div>`;
+      const lp=xp(range.start),rp=xp(range.end),bw=Math.max(1.5,rp-lp),fw=prog.pct;
+      // Bar fill: use phase color, lighter bg
+      const barBg=color+'28';
+      const fillColor=isAllDone?'#2d6b2d':color;
+      html+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${barBg};border:1.5px solid ${color}55">`;
+      html+=`<div class="gantt-bar-fill" style="background:${fillColor};width:${fw}%"></div>`;
       html+=`<div class="gantt-bar-label">${esc(ph.label)}</div>`;
       html+=`</div>`;
-      if(isAllDone)html+=`<div class="gantt-done-stamp">&#10003; Done</div>`;
-      else html+=`<div class="gantt-pct" style="left:${Math.min(rp+1,96)}%">${fw}%</div>`;
+      if(isAllDone)html+=`<div class="gantt-done-stamp">\u2713 Done</div>`;
+      else if(fw>0)html+=`<div class="gantt-pct" style="left:${Math.min(rp+0.5,95)}%">${fw}%</div>`;
     } else {
-      html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:8px;right:8px;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
+      html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;font-weight:600;color:#AEAEB2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
     }
-    // Gate diamonds overlaid on bar track (level 1 and 2)
-    // Diamond at gate date; inline date label right (<65%) or left (>65%) of diamond
+    // Gate diamonds on track (level 1+)
     if(roadLevel>=1){
       gates.forEach(g=>{
         const inheritedDate=gateInheritDate(g.phase);
@@ -1265,37 +1297,32 @@ function renderGantt(){
         const plotDate=g.met&&g.metDate?g.metDate:displayDate;
         const gp=xp(plotDate);
         if(gp===null)return;
-        const tip=esc(g.label)+(g.met&&g.metDate?' · Met: '+fmtDate(g.metDate):displayDate?' · Target: '+fmtDate(displayDate):'');
+        const tip=esc(g.label)+(g.met&&g.metDate?' \u00b7 Met: '+fmtDate(g.metDate):displayDate?' \u00b7 Target: '+fmtDate(displayDate):'');
         const dateLabel=g.met&&g.metDate?fmtDate(g.metDate):(displayDate?fmtDate(displayDate):'');
-        const dateColor=g.met?'var(--done-fg)':'#7a4a00';
+        const dateColor=g.met?'#2d6b2d':'#3451D1';
         html+=`<div class="gantt-diamond${g.met?' met':''}" style="left:${gp}%" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
         if(dateLabel){
           if(gp<=65){
-            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(${gp}% + 13px);font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
+            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(${gp}% + 13px);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
           } else {
-            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);right:calc(${100-gp}% + 13px);font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5;text-align:right">${esc(dateLabel)}</div>`;
+            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);right:calc(${100-gp}% + 13px);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5;text-align:right">${esc(dateLabel)}</div>`;
           }
         }
       });
     }
     html+=`</div></div>`; // close track + row
 
-    // ── Annotation strip (level 2 only) ───────────────────────────
+    // ── Annotation strip (level 2) ──────────────────────────────
     if(roadLevel>=2&&gates.length>0){
-      // Only render strip if at least one gate has a plottable date
-      const plottableGates=gates.filter(g=>{
+      const plottable=gates.filter(g=>{
         const inh=gateInheritDate(g.phase);
         const disp=g.date||inh;
         const plot=g.met&&g.metDate?g.metDate:disp;
         return xp(plot)!==null;
       });
-      if(plottableGates.length>0){
-        html+=`<div class="gantt-annot-row">`;
-        html+=`<div class="gantt-annot-spacer"></div>`;
-        html+=`<div class="gantt-annot-track" style="position:relative">`;
-        // Render each gate annotation pinned at its x position
-        // Collect all pins first, then render sorted so right-anchored ones don't overlap
-        plottableGates.forEach(g=>{
+      if(plottable.length>0){
+        html+=`<div class="gantt-annot-row"><div class="gantt-annot-spacer"></div><div class="gantt-annot-track">`;
+        plottable.forEach(g=>{
           const inh=gateInheritDate(g.phase);
           const disp=g.date||inh;
           const plot=g.met&&g.metDate?g.metDate:disp;
@@ -1303,20 +1330,19 @@ function renderGantt(){
           const dateStr=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?fmtDate(disp):'';
           const labelStr=g.label.length>38?g.label.substring(0,38)+'\u2026':g.label;
           const dateCls=g.met?'ap-date met':'ap-date';
-          const anchorStyle=gp>68
-            ?`right:${100-gp}%;text-align:right`
-            :`left:${gp}%`;
+          const anchorStyle=gp>68?`right:${100-gp}%;text-align:right`:`left:${gp}%`;
           html+=`<div class="gantt-annot-pin" style="${anchorStyle}">`;
           if(dateStr)html+=`<div class="${dateCls}">${esc(dateStr)}</div>`;
-          html+=`<div class="ap-label">${esc(labelStr)}</div>`;
-          html+=`</div>`;
+          html+=`<div class="ap-label">${esc(labelStr)}</div></div>`;
         });
-        html+=`</div></div>`; // close annot-track + annot-row
+        html+=`</div></div>`;
       }
     }
   });
 
-  document.getElementById('gantt-chart').innerHTML=html;
+  // Assemble: wrap grid + header + rows
+  const chartEl=document.getElementById('gantt-chart');
+  chartEl.innerHTML=`<div class="gantt-grid">${gridHtml}</div>${headerHtml}${html}`;
   const ts=S.road.filter(r=>r.kind==='step').length,ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
   document.getElementById('gantt-summary').textContent=ds+' / '+ts+' steps complete';
 }
