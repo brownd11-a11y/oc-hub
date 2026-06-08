@@ -1780,23 +1780,10 @@ function buildExportJSON(){
 function copyToClaude(){
   const json=buildExportJSON();
   const btn=document.getElementById('copy-btn');if(btn)btn.disabled=true;
-  try{
-    const blob=new Blob([json],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download='oc_hub_export.json';
-    document.body.appendChild(a);a.click();
-    document.body.removeChild(a);URL.revokeObjectURL(url);
-    // Copy to clipboard simultaneously
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).catch(()=>{});}
-    clipOk();
-    // Show save-location reminder
-    setTimeout(()=>{
-      const el=document.getElementById('export-location-note');
-      if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',8000);}
-    },300);
-  }catch(e){
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));}else clipFb(json);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));
+  } else {
+    clipFb(json);
   }
 }
 function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
