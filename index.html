@@ -178,7 +178,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
-.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:visible;position:relative;border-bottom:1px solid #D1D5DB}
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB}
 .gantt-scroll-inner{min-width:900px;position:relative}
 
 /* Sticky label column */
@@ -202,15 +202,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-today-line-v{position:absolute;top:0;bottom:0;width:2px;background:#C70025;opacity:.55;z-index:5;pointer-events:none}
 
 /* ── Phase row ── */
-.gantt-phase-row{display:flex;align-items:stretch;min-height:54px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
+.gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
 .gantt-phase-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
 /* phase label cell colored border */
 .gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
-.gantt-drag-handle{font-size:14px;color:#ccc;cursor:grab;flex-shrink:0;user-select:none;line-height:1}
+.gantt-drag-handle{font-size:18px;color:#bbb;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;transition:color .15s}.gantt-drag-handle:hover{color:#555}.gantt-drag-handle:active{cursor:grabbing;color:#333}
 .gantt-expand-btn{width:20px;height:20px;border:1.5px solid var(--ph-color,#3a6b9e);border-radius:3px;background:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;color:var(--ph-color,#3a6b9e);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
 .gantt-expand-btn:hover{background:var(--ph-color,#3a6b9e);color:#fff}
-.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
-.gantt-phase-pct{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--ph-color,#3a6b9e);flex-shrink:0}
+.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.gantt-phase-pct{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--ph-color,#3a6b9e);flex-shrink:0}
 .gantt-phase-track{flex:1;position:relative;background:transparent}
 
 /* Phase bar */
@@ -225,12 +225,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
-.gantt-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
+.gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
 .gantt-task-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
-.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:11px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-task-name.done{text-decoration:line-through;color:var(--done-fg);opacity:.7}
 .gantt-task-pct{font-family:'Source Code Pro',monospace;font-size:9px;color:#9CA3AF;flex-shrink:0}
 .gantt-task-track{flex:1;position:relative;background:transparent}
@@ -241,9 +241,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-task-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
 
 /* Gate-task row — shows diamond only in track */
-.gantt-gate-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
+.gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
 .gantt-gate-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
-.gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:11px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-gate-task-track{flex:1;position:relative;background:transparent}
 
 /* Add task row */
@@ -1173,14 +1173,14 @@ function renderGantt(){
     const range=phaseRange(ph.id);
     const gates=roadGates(ph.id);
     const isAllDone=prog.total>0&&prog.done===prog.total;
-    const isOpen=(ph.open!==false)&&showTasks;
-    const numStr=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
+    const isOpen=ph.open===true;  // respect per-phase flag at all roadLevels
+    const numStr=''; // numbers removed per design
 
     // Phase row
     html+=`<div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'}">`;
     // Label cell
     html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}">`;
-    html+=`<span class="gantt-drag-handle" title="Drag to reorder (coming soon)">&#8942;</span>`;
+    html+=`<span class="gantt-drag-handle" title="Drag to reorder" data-drag-phase="${ph.id}" onmousedown="ganttDragStart(event,'${ph.id}')">&#8942;</span>`;
     html+=`<button class="gantt-expand-btn" onclick="toggleGanttPhase('${ph.id}')" style="--ph-color:${color}">${isOpen?'&#8722;':'+'}</button>`;
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
     if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
@@ -1547,6 +1547,104 @@ function moveStep(id,dir){
   const ai=S.road.findIndex(r=>r.id===id);
   const bi=S.road.findIndex(r=>r.id===steps[targetSi].id);
   [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
+  save();renderGantt();
+}
+
+
+/* ── DRAG REORDER ── */
+let _dragPh=null,_dragGhost=null,_dragRows=null,_dragStartY=0,_dragIdx=0;
+
+function ganttDragStart(e,pid){
+  e.preventDefault();
+  _dragPh=pid;
+  _dragStartY=e.clientY;
+  const phases=roadPhases();
+  _dragIdx=phases.findIndex(p=>p.id===pid);
+
+  // Build ghost: just a clone of the phase label cell
+  const phRow=e.target.closest('.gantt-phase-row');
+  if(!phRow)return;
+  _dragGhost=phRow.cloneNode(true);
+  _dragGhost.style.cssText=`position:fixed;left:0;right:0;top:${phRow.getBoundingClientRect().top}px;z-index:200;opacity:.85;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);background:#fff;`;
+  document.body.appendChild(_dragGhost);
+
+  // Get all phase row elements for hit-testing
+  _dragRows=Array.from(document.querySelectorAll('.gantt-phase-row'));
+
+  document.addEventListener('mousemove',ganttDragMove);
+  document.addEventListener('mouseup',ganttDragEnd);
+}
+
+function ganttDragMove(e){
+  if(!_dragGhost)return;
+  const dy=e.clientY-_dragStartY;
+  _dragGhost.style.transform=`translateY(${dy}px)`;
+
+  // Highlight target row
+  _dragRows.forEach(r=>r.style.outline='');
+  const target=_dragRows.find(r=>{
+    const rect=r.getBoundingClientRect();
+    return e.clientY>=rect.top&&e.clientY<=rect.bottom;
+  });
+  if(target){
+    const pid=target.querySelector('[data-drag-phase]')?.dataset?.dragPhase;
+    if(pid&&pid!==_dragPh)target.style.outline='2px solid #C70025';
+  }
+}
+
+function ganttDragEnd(e){
+  document.removeEventListener('mousemove',ganttDragMove);
+  document.removeEventListener('mouseup',ganttDragEnd);
+  if(_dragGhost){_dragGhost.remove();_dragGhost=null;}
+  if(_dragRows)_dragRows.forEach(r=>r.style.outline='');
+
+  if(!_dragPh)return;
+
+  // Find drop target
+  const target=(_dragRows||[]).find(r=>{
+    const rect=r.getBoundingClientRect();
+    return e.clientY>=rect.top&&e.clientY<=rect.bottom;
+  });
+  if(target){
+    const toId=target.querySelector('[data-drag-phase]')?.dataset?.dragPhase;
+    if(toId&&toId!==_dragPh){
+      // Move _dragPh block to position of toId
+      ganttMovePhaseToTarget(_dragPh,toId,e.clientY);
+    }
+  }
+  _dragPh=null;_dragRows=null;
+}
+
+function ganttMovePhaseToTarget(fromId,toId,dropY){
+  // Collect phase blocks
+  function getBlock(phId){
+    const idx=S.road.findIndex(r=>r.id===phId);
+    const items=[S.road[idx]];
+    for(let i=idx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;items.push(S.road[i]);}
+    return{idx,items};
+  }
+  const from=getBlock(fromId);
+  // Remove from block
+  S.road.splice(from.idx,from.items.length);
+  // Find new position of toId (may have shifted)
+  const toIdx=S.road.findIndex(r=>r.id===toId);
+  if(toIdx<0){S.road.push(...from.items);}
+  else{
+    // Determine if dropping before or after toId based on mouse Y vs row midpoint
+    const toRow=document.querySelector(`[data-drag-phase="${toId}"]`)?.closest('.gantt-phase-row');
+    let insertAt=toIdx;
+    if(toRow){
+      const rect=toRow.getBoundingClientRect();
+      if(dropY>rect.top+rect.height/2){
+        // Drop after toId block
+        let end=toIdx+1;
+        while(end<S.road.length&&S.road[end].kind!=='phase')end++;
+        insertAt=end;
+      }
+    }
+    S.road.splice(insertAt,0,...from.items);
+  }
+  renumberPhases();
   save();renderGantt();
 }
 
