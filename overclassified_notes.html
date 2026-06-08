@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Over-classified — Project Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── COVER PALETTE (dashboard only) ── */
+:root{
+  --cover-black:#17191E;--cover-red:#C70025;--cover-steel:#6B7078;
+  --cover-warm:#4D313A;--cover-cream:#D3CCD1;
+  /* Apple light (all other tabs) */
+  --page-bg:#F2F2F7;--card-bg:#FFFFFF;--label-primary:#000000;
+  --label-secondary:#8E8E93;--separator:#C6C6C8;--accent:#C70025;
+  /* Shared functional */
+  --done-bg:#eef5ec;--done-fg:#2d6b2d;--hold-bg:#fdf7eb;--hold-fg:#7a5a10;
+  --tag-editing:#1a4a6b;--tag-publishing:#4b1a6b;--tag-todo:#1a6b4a;--tag-research:#6b4a1a;
+  --badge-assigned-bg:#dff0d8;--badge-assigned-fg:#2a5a1a;
+  --badge-reserved-bg:#fdf6dc;--badge-reserved-fg:#7a5f10;
+  --badge-un-bg:#eeebe4;--badge-un-fg:#6b6358;
+  /* Universal control height */
+  --ctrl-h:34px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);color:var(--label-primary);min-height:100vh}
+
+/* ── HEADER (cover palette) ── */
+.hd{background:var(--cover-black);padding:18px 32px 0;position:relative}
+.hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel))}
+.hd-eyebrow{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cover-steel);margin-bottom:4px}
+.hd h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cover-cream)}
+.hd h1 em{font-style:italic;color:#c8bfa8}
+.hd-meta{display:flex;gap:18px;margin-top:6px;font-family:'Source Code Pro',monospace;font-size:12px;color:var(--cover-steel);flex-wrap:wrap}
+.hd-meta strong{color:#b0a080}
+
+/* ── STATS (cover palette) ── */
+.stats{background:#141210;border-bottom:1px solid #2a2820;padding:8px 32px;overflow-x:auto}
+.stats-inner{display:flex;gap:0;min-width:max-content}
+.stat{display:flex;flex-direction:column;align-items:center;padding:6px 16px;border-right:1px solid #2a2820;cursor:default}
+.stat:first-child{padding-left:0}.stat:last-child{border-right:none}
+.stat-val{font-family:'Source Code Pro',monospace;font-size:22px;font-weight:500;color:#d4c9a8;line-height:1;letter-spacing:-.02em}
+.stat-val.highlight{color:#c9a050}
+.stat-lbl{font-family:'Source Code Pro',monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#706858;margin-top:3px;white-space:nowrap}
+
+/* ── DARK BAND / DASHBOARD (cover palette) ── */
+.dark-band{background:var(--cover-black)}
+.status-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 32px 6px}
+.dash-btn{display:flex;flex-direction:column;align-items:flex-start;padding:6px 14px;border:1px solid #333028;background:#252218;cursor:pointer;transition:all .15s;min-width:72px;font-family:'Source Code Pro',monospace}
+.dash-btn:hover{border-color:#666050;background:#2e2a20}
+.dash-btn.act-red{border-color:var(--cover-red);background:rgba(199,0,37,0.18)}
+.dash-btn.act-gold{border-color:var(--cover-steel);background:rgba(107,112,120,0.18)}
+.dash-count{font-size:18px;font-weight:500;color:var(--cover-cream);line-height:1}
+.dash-btn.act-red .dash-count{color:#e06070}
+.dash-btn.act-gold .dash-count{color:var(--cover-cream)}
+.dash-lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#706858;margin-top:2px}
+.dash-btn.act-red .dash-lbl{color:#e06070}
+.dash-btn.act-gold .dash-lbl{color:var(--cover-cream)}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:4px 32px 8px}
+.dash-sel{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border:1px solid #333028;background:#252218;color:var(--cover-cream);padding:0 9px;cursor:pointer;outline:none;height:var(--ctrl-h);line-height:var(--ctrl-h);vertical-align:middle}
+.dash-sel:focus{border-color:var(--cover-steel)}
+.dash-sel option{background:var(--cover-black);color:var(--cover-cream)}
+.dash-showall{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#666050;background:none;border:1px solid #2a2820;padding:0 12px;cursor:pointer;transition:all .15s;height:var(--ctrl-h);line-height:var(--ctrl-h);vertical-align:middle}
+.dash-showall:hover{color:var(--cover-cream);border-color:var(--cover-steel)}
+.tabs{display:flex;background:#0e0d0b;padding:0 24px;gap:3px;flex-wrap:wrap;border-top:1px solid #2a2820;align-items:flex-end}
+.tab{font-family:'Source Code Pro',monospace;font-size:16px;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px 7px;border:1px solid transparent;border-bottom:none;background:#1c1a14;color:#5a5442;cursor:pointer;border-radius:5px 5px 0 0;transition:all .15s;white-space:nowrap;position:relative;top:1px}
+.tab:hover{color:#b0a888;background:#242018;border-color:#3a3628}
+.tab.active{color:var(--cover-cream);background:#2e2a1e;border-color:#3a3628;font-weight:600}
+
+/* ── PANELS (Apple light) ── */
+.panel{display:none;background:var(--page-bg)}
+.panel.active{display:block}
+
+/* ── NOTES INPUT (Apple light) ── */
+.inp-wrap{background:var(--page-bg);border-bottom:1px solid var(--separator);padding:14px 32px 16px}
+.inp-card{background:var(--card-bg);border:1.5px solid var(--separator);border-radius:10px;padding:12px 14px}
+.inp-top{display:flex;gap:10px;align-items:flex-start}
+.inp-ta{flex:1;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.5;color:var(--label-primary);background:var(--page-bg);border:1px solid var(--separator);border-radius:6px;padding:9px 13px;resize:vertical;min-height:64px;outline:none;transition:border-color .15s}
+.inp-ta:focus{border-color:var(--accent)}
+.inp-ta::placeholder{color:var(--label-secondary);font-style:italic}
+.inp-right{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.inp-add{background:var(--label-primary);color:var(--card-bg);border:none;cursor:pointer;font-size:22px;padding:0 18px;align-self:stretch;transition:background .15s;font-family:'Source Code Pro',monospace;border-radius:6px;flex-shrink:0;min-width:48px}
+.inp-add:hover{background:var(--accent)}
+.inp-ctrls{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;align-items:center;padding-top:9px;border-top:1px solid var(--separator)}
+
+/* Universal control height applied to selects, inputs, toggles */
+.inp-sel,input[type=text].inp-sel,input[type=date].inp-sel,
+select.inp-sel,.inp-sel{
+  font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);
+  padding:0 8px;cursor:pointer;outline:none;border-radius:4px;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle
+}
+.inp-sel:focus{border-color:var(--accent)}
+input[type=date].inp-sel{font-size:11px;width:130px}
+
+.ptoggle{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary);cursor:pointer;border:1px solid var(--separator);padding:0 14px;background:var(--card-bg);border-radius:20px;transition:all .15s;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.ptoggle:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.ptoggle.on{border-color:#b06000;background:#b06000;color:#fff7e0;font-weight:600}
+.ptoggle.mem-toggle{border-radius:20px}
+.ptoggle.mem-on{border-color:#6b1010;background:#6b1010;color:#f5e6c8;font-weight:600}
+
+.list-wrap{padding:0 32px 40px}
+.list-bar{display:flex;align-items:center;padding:8px 12px;margin:0 -32px;background:#e8e8ed;border-bottom:1px solid var(--separator);gap:10px}
+.list-ct{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-right:auto}
+.list-bar-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);background:none;border:1px solid var(--separator);padding:4px 12px;cursor:pointer;transition:all .15s}
+.list-bar-btn:hover{color:var(--label-primary);border-color:var(--label-primary)}
+
+/* ── ITEMS (Apple light) ── */
+.item{border-left:3px solid transparent;margin:2px 0;background:var(--card-bg);transition:border-color .15s;border-bottom:1px solid var(--separator)}
+.item.done{background:var(--done-bg);border-left-color:var(--done-fg)}
+.item.hold{background:var(--hold-bg);border-left-color:#b06000}
+.item.pri:not(.done){border-left-color:var(--accent)}
+.ihead{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;cursor:pointer;user-select:none}
+.ihead:hover{background:rgba(0,0,0,.025)}
+.icb{width:15px;height:15px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;margin-top:2px;transition:all .15s}
+.done .icb{background:var(--done-fg);border-color:var(--done-fg);color:white}
+.hold .icb{background:var(--hold-fg);border-color:var(--hold-fg);color:white;font-size:7px}
+.itext{flex:1;font-size:13px;color:var(--label-primary);line-height:1.4}
+.itext-collapsed{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.done .itext{text-decoration:line-through;color:var(--done-fg);opacity:.7}
+.imeta{display:flex;align-items:center;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.istar{font-size:11px;color:var(--separator)}.istar.on{color:var(--accent)}
+.imem{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--separator);cursor:pointer;transition:color .15s}.imem.on{color:#b06000}
+.tag-pill{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
+.tag-editing{background:rgba(26,74,107,.1);color:var(--tag-editing)}
+.tag-publishing{background:rgba(75,26,107,.1);color:var(--tag-publishing)}
+.tag-todo{background:rgba(26,107,74,.1);color:var(--tag-todo)}
+.tag-research{background:rgba(107,74,26,.1);color:var(--tag-research)}
+.type-pill{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;background:#eee;color:var(--label-secondary)}
+.sp-open{background:rgba(26,74,107,.07);color:var(--tag-editing);font-family:'Source Code Pro',monospace;font-size:9px;padding:2px 6px}
+.sp-deferred{background:rgba(154,114,40,.1);color:var(--hold-fg);font-family:'Source Code Pro',monospace;font-size:9px;padding:2px 6px}
+.chev{font-size:11px;color:#bbb;transition:transform .2s;flex-shrink:0;margin-top:2px}
+.item.expanded .chev{transform:rotate(90deg)}
+.ibody{display:none;padding:0 12px 10px 37px;font-size:13px;line-height:1.65;color:var(--label-secondary);border-top:1px solid var(--separator)}
+.item.expanded .ibody{display:block}
+.ianswer{color:var(--label-primary);margin:8px 0;white-space:pre-wrap;font-size:13px}
+.iactions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.iabtn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:3px 9px;cursor:pointer;color:var(--label-secondary);transition:all .15s}
+.iabtn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.iabtn.danger:hover{border-color:var(--accent);color:var(--accent)}
+.idate-cols{display:flex;flex-direction:column;gap:3px;align-items:flex-end;flex-shrink:0;min-width:100px}
+.idate-pair{display:flex;flex-direction:column;align-items:flex-end}
+.idate-lbl{font-family:'Source Code Pro',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary)}
+.idate-val{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-primary)}
+.idate-val.overdue{color:var(--accent);font-weight:600}
+
+/* ── EDIT MODE (Apple light) ── */
+.edit-wrap{margin-top:8px}
+.edit-wrap-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:5px}
+.edit-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.5;color:var(--label-primary);background:var(--page-bg);border:1px solid var(--accent);padding:8px 12px;resize:vertical;min-height:60px;outline:none}
+.edit-meta-row{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.edit-sel{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:0 7px;cursor:pointer;outline:none;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.edit-pritoggle{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:0 9px;cursor:pointer;transition:all .15s;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.edit-pritoggle.on{border-color:var(--accent);color:var(--accent);background:rgba(199,0,37,0.08)}
+.edit-actions{display:flex;gap:6px;margin-top:6px}
+.edit-save{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:5px 12px;cursor:pointer}
+.edit-save:hover{background:var(--accent)}
+.edit-cancel{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:none;color:var(--label-secondary);border:1px solid var(--separator);padding:5px 12px;cursor:pointer}
+
+/* ── FOOTER ── */
+.ftr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:10px 32px 16px;border-top:1px solid var(--separator);font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:var(--card-bg)}
+.copy-btn{background:var(--label-primary);color:var(--card-bg);border:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;transition:background .15s;margin-left:auto}
+.copy-btn:hover{background:var(--accent)}
+.copy-ok{color:var(--done-fg);font-size:10px;display:none}
+
+/* ── ROADMAP TAB ── */
+.road-panel{padding:0 0 40px}
+.road-section-hd{display:flex;align-items:center;gap:12px;padding:11px 32px;cursor:pointer;user-select:none;background:#1e1c18;border-bottom:1px solid #2a2820;transition:background .15s}
+.road-section-hd:hover{background:#252218}
+.road-section-title{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#b0a080;flex:1}
+.road-section-sub{font-family:'Source Code Pro',monospace;font-size:11px;color:#706858}
+.road-section-tog{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#555045;border:1px solid #333028;background:none;padding:3px 9px;cursor:pointer}
+.road-section-body{background:var(--page-bg)}
+
+/* ── ROADMAP COLLAPSE TOGGLE STRIP ── */
+.road-collapse-strip{display:flex;align-items:center;gap:0;padding:10px 32px;background:#f0ece0;border-bottom:1px solid #d8d3c5}
+.road-collapse-strip span{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-right:10px}
+.rcl-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 14px;cursor:pointer;transition:all .15s;border-right:none}
+.rcl-btn:last-child{border-right:1px solid var(--separator)}
+.rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
+
+/* ── GANTT ── */
+.gantt-wrap{padding:20px 32px 24px;overflow-x:auto}
+.gantt-chart{min-width:600px;position:relative}
+.gantt-header{display:flex;margin-bottom:4px;margin-left:190px}
+.gantt-month-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);flex:1;text-align:center;border-left:1px solid var(--separator);padding:2px 0}
+/* Phase bar row */
+.gantt-row{display:flex;align-items:center;margin-bottom:0;min-height:40px;margin-top:10px}
+.gantt-label{width:190px;flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;letter-spacing:.02em;color:var(--label-primary);padding-right:12px;text-align:right;line-height:1.3}
+.gantt-track{flex:1;position:relative;height:36px;background:#e8e4da;border:1px solid var(--separator)}
+.gantt-track.undated{background:repeating-linear-gradient(45deg,#eee,#eee 4px,#e4e0d6 4px,#e4e0d6 8px)}
+.gantt-bar{position:absolute;top:4px;height:28px;min-width:4px}
+.gantt-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
+.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:7px;right:7px;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.9);letter-spacing:.02em}
+.gantt-pct{position:absolute;right:-34px;top:50%;transform:translateY(-50%);font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);width:30px;text-align:left}
+.gantt-done-stamp{position:absolute;top:50%;transform:translateY(-50%);font-family:'Source Code Pro',monospace;font-size:9px;color:var(--done-fg);white-space:nowrap;right:-68px}
+/* Gate diamond — overlaid on bar track */
+.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #b06000;background:#fff8f0;cursor:pointer;transition:all .18s;z-index:4}
+.gantt-diamond.met{background:#b06000;border-color:#7a4a00}
+.gantt-diamond:hover{transform:translateY(-50%) translateX(-7px) rotate(45deg) scale(1.25)}
+/* Today line */
+.gantt-today-line{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--accent);opacity:.6;z-index:3;pointer-events:none}
+.gantt-today-lbl{position:absolute;top:-15px;font-family:'Source Code Pro',monospace;font-size:8px;color:var(--accent);transform:translateX(-50%);white-space:nowrap}
+/* Annotation strip (level 2 only) */
+.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:0;min-height:26px;background:var(--page-bg)}
+.gantt-annot-spacer{width:190px;flex-shrink:0}
+.gantt-annot-track{flex:1;position:relative;height:28px}
+.gantt-annot-pin{position:absolute;top:4px;font-family:'Source Code Pro',monospace;font-size:9px;line-height:1.35;pointer-events:none;max-width:200px}
+.gantt-annot-pin .ap-date{font-weight:700;color:#7a4a00}
+.gantt-annot-pin .ap-date.met{color:var(--done-fg)}
+.gantt-annot-pin .ap-label{font-style:italic;color:#b06000}
+/* Legend */
+.gantt-legend{display:flex;gap:14px;padding:8px 32px 4px;flex-wrap:wrap}
+.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary)}
+.gantt-leg-swatch{width:14px;height:10px;border:1px solid rgba(0,0,0,.1)}
+
+/* ── ADD BAR ── */
+.road-add-bar{display:flex;gap:8px;align-items:center;padding:10px 32px;background:var(--page-bg);border-bottom:1px solid var(--separator);flex-wrap:wrap}
+.road-add-sel{font-family:'Source Code Pro',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:0 8px;outline:none;cursor:pointer;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.road-add-sel:focus{border-color:var(--accent)}
+.road-add-inp{font-family:'Libre Baskerville',Georgia,serif;font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:5px 10px;outline:none;flex:1;min-width:160px}
+.road-add-inp:focus{border-color:var(--accent)}
+.road-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:6px 14px;cursor:pointer;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.road-add-btn:hover{background:var(--accent)}
+
+/* Phase number + label display */
+.phase-num-badge{display:inline-flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:10px;font-weight:600;background:var(--label-primary);color:var(--card-bg);padding:1px 7px;margin-right:6px;border-radius:2px;min-width:28px}
+
+/* ── TASK LIST ── */
+.road-task-wrap{padding:0 32px 24px}
+.road-phase-block{margin-bottom:2px}
+.road-phase-hd{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#e8e8ed;border-bottom:1px solid var(--separator);cursor:pointer;user-select:none}
+.road-phase-hd:hover{background:#dddde6}
+.road-phase-name{font-family:'Source Code Pro',monospace;font-size:15px;font-weight:600;color:var(--label-primary);letter-spacing:.04em;flex:1;display:flex;align-items:center}
+.road-phase-prog{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
+.road-phase-chev{font-size:11px;color:#bbb;transition:transform .2s}
+.road-phase-block.open .road-phase-chev{transform:rotate(90deg)}
+.road-phase-items{display:none}
+.road-phase-block.open .road-phase-items{display:block}
+.road-step{display:flex;align-items:flex-start;gap:8px;padding:8px 12px 8px 24px;background:var(--card-bg);border-bottom:1px solid var(--separator)}
+.road-step:hover{background:#faf9ff}
+.road-step.done-step{background:var(--done-bg)}
+.road-step-cb{width:14px;height:14px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;margin-top:2px;transition:all .15s}
+.road-step.done-step .road-step-cb{background:var(--done-fg);border-color:var(--done-fg);color:white}
+.road-step-body{flex:1;min-width:0}
+.road-step-label{font-size:15px;color:var(--label-primary);line-height:1.4}
+.road-step.done-step .road-step-label{text-decoration:line-through;color:var(--done-fg);opacity:.7}
+.road-step-note{font-size:11px;color:var(--label-secondary);margin-top:2px;line-height:1.4}
+.road-step-cmd{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--accent);background:rgba(199,0,37,.06);border:1px solid rgba(199,0,37,.15);padding:1px 5px;margin-top:3px;display:inline-block}
+.road-step-dates{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;min-width:118px}
+.road-step-date-pair{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.road-step-date-lbl{font-family:'Source Code Pro',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary)}
+.road-step-date-inp{font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:1px 4px;width:96px;outline:none}
+.road-step-date-inp:focus{border-color:var(--accent)}
+.road-step-date-val{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--done-fg)}
+.road-step-del{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:0 2px;flex-shrink:0;margin-top:2px}
+.road-step-del:hover{color:var(--accent)}
+.road-gate-row{display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fdf8ed;border-bottom:1px solid rgba(176,96,0,.2);border-left:3px solid #b06000}
+.road-gate-diamond-sm{width:12px;height:12px;flex-shrink:0;border:2px solid #b06000;background:var(--page-bg);transform:rotate(45deg);cursor:pointer;transition:all .15s}
+.road-gate-diamond-sm.met{background:#b06000}
+.road-gate-text{flex:1;font-family:'Source Code Pro',monospace;font-size:13px;color:var(--hold-fg);letter-spacing:.03em}
+.road-gate-date-val{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
+.road-gate-del{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:0 2px}
+.road-gate-del:hover{color:var(--accent)}
+.road-add-step-row{padding:5px 12px 5px 24px;background:var(--page-bg);border-bottom:1px solid var(--separator)}
+.road-add-step-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);background:none;border:1px dashed var(--separator);padding:3px 10px;cursor:pointer;width:100%;text-align:left}
+.road-add-step-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Move, edit, clone controls */
+.road-move-btns{display:flex;flex-direction:column;gap:1px;flex-shrink:0;margin-right:2px}
+.road-move-btn{font-size:9px;line-height:1;background:none;border:1px solid var(--separator);color:#bbb;cursor:pointer;padding:1px 4px;transition:all .12s;font-family:'Source Code Pro',monospace;
+  box-sizing:border-box}
+.road-move-btn:hover{border-color:var(--accent);color:var(--accent)}
+.road-move-btn:disabled{opacity:.2;cursor:default}
+.road-edit-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);cursor:pointer;padding:2px 6px;flex-shrink:0;margin-top:1px;transition:all .12s}
+.road-edit-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.road-clone-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);cursor:pointer;padding:2px 6px;flex-shrink:0;margin-top:1px;transition:all .12s}
+.road-clone-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Inline edit panel */
+.road-inline-edit{background:#faf9ff;border-top:1px solid var(--separator);padding:10px 12px 10px 24px}
+.road-inline-edit input,.road-inline-edit textarea,.road-inline-edit select{font-family:'Libre Baskerville',Georgia,serif;font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:5px 9px;outline:none;width:100%;margin-bottom:5px}
+.road-inline-edit input:focus,.road-inline-edit textarea:focus,.road-inline-edit select:focus{border-color:var(--accent)}
+.road-inline-edit textarea{resize:vertical;min-height:44px}
+.road-inline-edit-row{display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap}
+.road-inline-edit-row input,.road-inline-edit-row select{flex:1;min-width:120px;margin-bottom:0}
+.road-inline-save{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:4px 12px;cursor:pointer;margin-right:4px}
+.road-inline-save:hover{background:var(--done-fg)}
+.road-inline-cancel{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:none;color:var(--label-secondary);border:1px solid var(--separator);padding:4px 10px;cursor:pointer}
+.road-phase-edit-inp{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;border:1px solid var(--accent);background:var(--card-bg);color:var(--label-primary);padding:3px 8px;outline:none;flex:1;min-width:180px}
+.road-phase-num-inp{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;border:1px solid var(--accent);background:var(--card-bg);color:var(--label-primary);padding:3px 6px;outline:none;width:52px;text-align:center}
+
+/* ── REFERENCE / STYLE / DIST / PASSES / OUTREACH ── */
+.ref-section{padding:20px 32px}
+.ref-section h2{font-size:13px;font-weight:600;color:var(--label-primary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);font-family:'Source Code Pro',monospace}
+.isbn-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+.isbn-table th{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 8px 10px;border-bottom:1px solid var(--separator)}
+.isbn-table td{padding:10px;border-bottom:1px solid var(--separator);vertical-align:top}
+.isbn-table tbody tr:hover{background:var(--page-bg)}
+.isbn-code{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-primary);white-space:nowrap;font-weight:500}
+.fmt-name{font-weight:600;color:var(--label-primary);font-size:13px}
+.fmt-note{font-size:12px;color:var(--label-secondary);margin-top:2px}
+.badge{display:inline-block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;white-space:nowrap}
+.b-asgn{background:var(--badge-assigned-bg);color:var(--badge-assigned-fg)}
+.b-res{background:var(--badge-reserved-bg);color:var(--badge-reserved-fg)}
+.b-un{background:var(--badge-un-bg);color:var(--badge-un-fg)}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}
+.price-card{background:var(--card-bg);border:1px solid var(--separator);padding:14px}
+.price-format{font-weight:600;font-size:13px;color:var(--label-primary);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--separator);font-family:'Source Code Pro',monospace;letter-spacing:.05em;text-transform:uppercase}
+.price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--label-secondary)}
+.price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
+.price-row.net .val{color:var(--done-fg);font-weight:600}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--page-bg)}
+.style-col{padding:20px 32px}
+.style-col+.style-col{border-left:1px solid var(--separator)}
+.s-block{margin-bottom:20px}
+.s-block h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(199,0,37,.2)}
+.s-rule{font-size:12px;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator);line-height:1.5}
+.s-rule span{font-family:'Source Code Pro',monospace;font-size:11px;background:var(--page-bg);padding:1px 5px;color:var(--accent)}
+.s-rule em{font-style:italic;color:var(--label-secondary)}
+.aiterm{display:inline-block;font-family:'Source Code Pro',monospace;font-size:10px;background:rgba(199,0,37,.08);color:var(--accent);border:1px solid rgba(199,0,37,.2);padding:1px 6px;margin:2px 2px;line-height:1.6}
+.ch-table{width:100%;border-collapse:collapse;font-size:12px}
+.ch-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 8px 6px 8px;border-bottom:1px solid var(--separator)}
+.ch-table td{padding:5px 8px;border-bottom:1px solid var(--separator);vertical-align:top}
+.ch-table tbody tr:hover{background:var(--card-bg)}
+.ch-num{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);font-weight:500}
+.ch-part{font-size:9px;font-family:'Source Code Pro',monospace;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;white-space:nowrap}
+.pt-phenomena{background:#e8f4f8;color:#1a5a6b}
+.pt-secrecy{background:#f5e8f5;color:#5a1a6b}
+.pt-evidence{background:#e8f5e8;color:#1a5a2a}
+.pt-disclosure{background:#f5f0e0;color:#6b5010}
+.dist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 32px}
+.dist-card{background:var(--card-bg);border:1px solid var(--separator);padding:14px}
+.dist-card h3{font-size:13px;font-weight:600;color:var(--label-primary);margin-bottom:4px;font-family:'Libre Baskerville',Georgia,serif}
+.dist-badge{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;margin-bottom:10px;display:inline-block}
+.dist-primary{background:#e0eefd;color:#1a4a7b}
+.dist-secondary{background:#eee;color:var(--label-secondary)}
+.dist-row{font-size:12px;padding:4px 0;border-bottom:1px solid var(--separator);display:flex;gap:6px}
+.dist-row:last-child{border-bottom:none}
+.dist-lbl{color:var(--label-secondary);flex-shrink:0;min-width:90px}
+.dist-val{color:var(--label-primary);font-weight:500}
+.dist-warn{font-size:11px;color:var(--hold-fg);background:var(--hold-bg);border:1px solid rgba(122,90,16,.3);padding:5px 8px;margin-top:8px}
+.dist-note{padding:0 32px 20px;font-size:12px;color:var(--label-secondary);line-height:1.6}
+.dist-note strong{color:var(--label-primary)}
+.ot-wrap{padding:16px 32px}
+.ot-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px}
+.ot-add h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
+.ot-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ot-form input,.ot-form select{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%;font-family:'Libre Baskerville',Georgia,serif}
+.ot-form input:focus,.ot-form select:focus{border-color:var(--accent)}
+.ot-form .full{grid-column:1/-1}
+.ot-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:6px 16px;cursor:pointer;margin-top:6px}
+.ot-add-btn:hover{background:var(--accent)}
+.ot-table-wrap{overflow-x:auto}
+.ot-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.ot-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 8px 7px 8px;border-bottom:1.5px solid var(--label-primary);white-space:nowrap}
+.ot-table td{padding:8px;border-bottom:1px solid var(--separator);vertical-align:top}
+.ot-name{font-weight:600;color:var(--label-primary);font-size:13px}
+.ot-role{font-size:11px;color:var(--label-secondary);margin-top:1px}
+.ot-due{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary)}
+.ot-due.overdue{color:var(--accent);font-weight:600}
+.ot-link{color:var(--tag-editing);font-size:11px;text-decoration:none;word-break:break-all}
+.ot-link:hover{text-decoration:underline}
+.ot-expand-btn,.ot-del-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:2px 7px;cursor:pointer;color:var(--label-secondary)}
+.ot-expand-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.ot-del-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ot-notes-row{display:none}
+.ot-notes-row.open{display:table-row}
+.ot-notes-cell{padding:8px 10px;border-bottom:1px solid var(--separator);background:var(--page-bg)}
+.ot-notes-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.5;color:var(--label-primary);background:var(--card-bg);border:1px solid var(--separator);padding:6px 10px;resize:vertical;min-height:52px;outline:none}
+.ot-notes-ta:focus{border-color:var(--accent)}
+.ot-save-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:3px 10px;cursor:pointer;margin-top:4px}
+.ot-save-btn:hover{background:var(--done-fg)}
+.rf-wrap{padding:16px 32px}
+.rf-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px}
+.rf-add h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
+.rf-kw-wrap{display:flex;gap:6px;align-items:center}
+.rf-kw-select,.rf-kw-new{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;font-family:'Libre Baskerville',Georgia,serif}
+.rf-kw-select{flex:1}.rf-kw-new{width:130px}
+.rf-kw-new:focus,.rf-kw-select:focus{border-color:var(--accent)}
+.rf-add-kw-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:var(--page-bg);color:var(--label-secondary);border:1px solid var(--separator);padding:0 10px;cursor:pointer;white-space:nowrap;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.rf-add-kw-btn:hover{background:var(--label-primary);color:var(--card-bg)}
+.rf-save-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:0 16px;cursor:pointer;white-space:nowrap;align-self:end;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.rf-save-btn:hover{background:var(--accent)}
+.rf-filter{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.rf-filter-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary)}
+.rf-filter-sel{font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:4px 8px;outline:none;cursor:pointer;
+  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
+.rf-filter-sel:focus{border-color:var(--accent)}
+.rf-table{width:100%;border-collapse:collapse;font-size:13px}
+.rf-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 7px 10px;border-bottom:1.5px solid var(--label-primary)}
+.rf-table td{padding:8px 10px;border-bottom:1px solid var(--separator);vertical-align:middle}
+.rf-table tbody tr:hover{background:var(--card-bg)}
+.rf-kw-pill{display:inline-block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:rgba(199,0,37,.08);color:var(--accent);border:1px solid rgba(199,0,37,.2);padding:2px 7px;white-space:nowrap}
+.rf-url-link{color:var(--tag-editing);font-size:12px;text-decoration:none;word-break:break-all}
+.rf-url-link:hover{text-decoration:underline}
+.rf-desc{font-size:13px;color:var(--label-primary)}
+.rf-edit-row{display:none}
+.rf-edit-row.open{display:table-row}
+.rf-edit-cell{padding:10px;border-bottom:1px solid var(--separator);background:var(--page-bg)}
+.rf-edit-grid{display:grid;grid-template-columns:180px 1fr 2fr;gap:8px;margin-bottom:8px}
+.rf-edit-grid input,.rf-edit-grid select{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%;font-family:'Libre Baskerville',Georgia,serif}
+.rf-edit-acts{display:flex;gap:6px}
+.rf-edit-save{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:4px 10px;cursor:pointer}
+.rf-edit-save:hover{background:var(--done-fg)}
+.rf-edit-cancel{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;color:var(--label-secondary);border:1px solid var(--separator);padding:4px 10px;cursor:pointer}
+.rf-act-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:2px 7px;cursor:pointer;color:var(--label-secondary)}
+.rf-act-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.rf-act-btn.danger:hover{border-color:var(--accent);color:var(--accent)}
+.rf-empty,.empty-state{text-align:center;padding:28px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);letter-spacing:.1em}
+.passes-wrap{padding:16px 32px}
+.passes-intro{font-size:13px;color:var(--label-secondary);margin-bottom:18px;line-height:1.65}
+.pass-tier{margin-bottom:24px}
+.pass-tier-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);flex-wrap:wrap}
+.pass-tier-head h2{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-primary)}
+.pass-tier-tag{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);border:1px solid var(--separator);padding:1px 5px}
+.pass-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
+.pass-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 7px 10px;border-bottom:1px solid var(--separator)}
+.pass-table td{padding:8px 10px;border-bottom:1px solid var(--separator);vertical-align:top;line-height:1.5}
+.pass-table tbody tr:hover{background:var(--card-bg)}
+.pass-cmd{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--accent);background:rgba(199,0,37,.06);border:1px solid rgba(199,0,37,.15);padding:2px 7px;white-space:nowrap;display:inline-block}
+.pass-label{font-weight:600;color:var(--label-primary);font-size:12px;font-family:'Source Code Pro',monospace}
+.pass-desc{color:var(--label-primary);font-size:12px}
+.pass-desc em{color:var(--label-secondary);font-style:italic}
+.pass-status{font-family:'Source Code Pro',monospace;font-size:10px;white-space:nowrap}
+.ps-done{color:var(--done-fg);background:var(--done-bg);padding:2px 7px;display:inline-block}
+.ps-next{color:var(--accent);background:rgba(199,0,37,.08);padding:2px 7px;display:inline-block}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<div class="hd">
+  <div class="hd-eyebrow">Vigilia Press &middot; Project Control</div>
+  <h1><em>Over-classified</em> &mdash; Project Hub</h1>
+  <div class="hd-meta">
+    <span>DIST <strong>Draft2Digital &middot; KDP &middot; IngramSpark</strong></span>
+    <span>LCCN <strong>2026914489</strong></span>
+  </div>
+</div>
+<!-- STATS -->
+<div class="stats"><div class="stats-inner">
+  <div class="stat"><span class="stat-val highlight">462</span><span class="stat-lbl">Pages</span></div>
+  <div class="stat"><span class="stat-val highlight">152,492</span><span class="stat-lbl">Words (total)</span></div>
+  <div class="stat"><span class="stat-val">110,235</span><span class="stat-lbl">Words (prose)</span></div>
+  <div class="stat"><span class="stat-val">18</span><span class="stat-lbl">Chapters</span></div>
+  <div class="stat"><span class="stat-val">15</span><span class="stat-lbl">Appendices</span></div>
+  <div class="stat"><span class="stat-val">622</span><span class="stat-lbl">Chapter Notes</span></div>
+  <div class="stat"><span class="stat-val highlight">315</span><span class="stat-lbl">Sources Cited</span></div>
+  <div class="stat"><span class="stat-val highlight">38</span><span class="stat-lbl">Figures</span></div>
+  <div class="stat"><span class="stat-val">42</span><span class="stat-lbl">Sightings (A2)</span></div>
+  <div class="stat"><span class="stat-val">40</span><span class="stat-lbl">Profiles (A13)</span></div>
+  <div class="stat"><span class="stat-val">439</span><span class="stat-lbl">Glossary</span></div>
+  <div class="stat"><span class="stat-val">527</span><span class="stat-lbl">Index Entries</span></div>
+</div></div>
+<!-- DARK BAND -->
+<div class="dark-band">
+  <div class="status-row" id="dash-status"></div>
+  <div class="filter-row">
+    <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
+      <option value="">All Tags</option>
+      <option value="editing">Editing</option>
+      <option value="publishing">Publishing</option>
+      <option value="todo">To-Do</option>
+      <option value="research">Research</option>
+    </select>
+    <select class="dash-sel" id="type-filter" onchange="setType(this.value)">
+      <option value="">All Types</option>
+      <option value="question">Questions</option>
+      <option value="reminder">Reminders</option>
+      <option value="note">Project Notes</option>
+    </select>
+    <button class="dash-showall" onclick="showAll()">Show All</button>
+    <span class="copy-ok" id="copy-ok" style="color:#8aba80;font-family:'Source Code Pro',monospace;font-size:10px;display:none">&#10003; Copied</span>
+    <button class="copy-btn" id="copy-btn" onclick="copyToClaude()">Copy to Claude</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('notes',this)">Notes &amp; Checklist</button>
+    <button class="tab" onclick="showTab('roadmap',this)">Roadmap</button>
+    <button class="tab" onclick="showTab('isbns',this)">ISBNs &amp; Pricing</button>
+    <button class="tab" onclick="showTab('help',this)">Help</button>
+    <button class="tab" onclick="showTab('style',this)">Style + Chapter Map</button>
+    <button class="tab" onclick="showTab('dist',this)">Distribution</button>
+    <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
+    <button class="tab" onclick="showTab('passes',this)">Passes</button>
+    <button class="tab" onclick="showTab('refs',this)">References</button>
+  </div>
+</div>
+<!-- NOTES PANEL -->
+<div class="panel active" id="panel-notes">
+  <div class="inp-wrap"><div class="inp-card">
+    <div class="inp-top">
+      <textarea class="inp-ta" id="input-ta" placeholder="Capture a reminder, question, or note&hellip; (Cmd/Ctrl+Enter to save)" rows="2"></textarea>
+      <button class="inp-add" onclick="addItem()" title="Add">+</button>
+    </div>
+    <div class="inp-ctrls">
+      <select class="inp-sel" id="input-type">
+        <option value="reminder" selected>Reminder</option>
+        <option value="question">Question</option>
+        <option value="note">Project Note</option>
+      </select>
+      <select class="inp-sel" id="input-tag">
+        <option value="">&mdash; Tag &mdash;</option>
+        <option value="editing">Editing</option>
+        <option value="publishing">Publishing</option>
+        <option value="todo">To-Do</option>
+        <option value="research">Research</option>
+      </select>
+      <select class="inp-sel" id="input-status">
+        <option value="open">Open</option>
+        <option value="deferred">Deferred</option>
+      </select>
+      <input type="date" class="inp-sel" id="input-due" title="Due date (optional)" />
+      <button class="ptoggle" id="ptoggle" onclick="togglePri()"><span id="plbl">Priority</span></button>
+      <button class="ptoggle mem-toggle" id="memtoggle" onclick="toggleMem()"><span id="memlbl">Flag Memory</span></button>
+    </div>
+  </div></div>
+  <div class="list-wrap">
+    <div class="list-bar">
+      <span class="list-ct" id="list-count"></span>
+      <button class="list-bar-btn" onclick="collapseAll()">Collapse All</button>
+      <button class="list-bar-btn" onclick="expandAll()">Expand All</button>
+    </div>
+    <div id="list"></div>
+  </div>
+  <div class="ftr">
+    <span>2026-06-07 &middot; ISBNs: 979-8-9964101-0-1 ebook &middot; -1-8 hc &middot; -2-5 pb</span>
+  </div>
+</div>
+<!-- ROADMAP PANEL -->
+<div class="panel" id="panel-roadmap">
+  <div class="road-panel">
+    <!-- Global collapse strip -->
+    <div class="road-collapse-strip">
+      <span>View:</span>
+      <button class="rcl-btn" id="rcl-0" onclick="setRoadLevel(0)">Hidden</button>
+      <button class="rcl-btn" id="rcl-1" onclick="setRoadLevel(1)">Bars + Gates</button>
+      <button class="rcl-btn active" id="rcl-2" onclick="setRoadLevel(2)">Bars + Gates + Notes</button>
+    </div>
+    <div class="road-section-hd" onclick="toggleSection('gantt')">
+      <span class="road-section-title" id="gantt-title">&#9660; Gantt Chart</span>
+      <span class="road-section-sub" id="gantt-summary"></span>
+      <button class="road-section-tog" onclick="event.stopPropagation();toggleSection('gantt')" id="gantt-tog">Collapse</button>
+    </div>
+    <div class="road-section-body" id="gantt-body">
+      <div class="gantt-legend">
+        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,#3a6b9ecc,#3a6b9e55)"></div>In progress</div>
+        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
+        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:repeating-linear-gradient(45deg,#ccc,#ccc 3px,#ddd 3px,#ddd 6px)"></div>Undated</div>
+        <div class="gantt-leg-item"><div style="width:11px;height:11px;border:2px solid #b06000;transform:rotate(45deg)"></div>&nbsp;Stage Gate</div>
+        <div class="gantt-leg-item"><div style="width:11px;height:11px;background:#b06000;transform:rotate(45deg)"></div>&nbsp;Gate Met</div>
+        <div class="gantt-leg-item"><div style="width:2px;height:12px;background:var(--accent);opacity:.7;display:inline-block"></div>&nbsp;Today</div>
+      </div>
+      <div class="gantt-wrap"><div class="gantt-chart" id="gantt-chart"></div></div>
+    </div>
+    <div class="road-section-hd" onclick="toggleSection('tasklist')">
+      <span class="road-section-title" id="tasklist-title">&#9660; Task List</span>
+      <span class="road-section-sub" id="tasklist-summary"></span>
+      <button class="road-section-tog" onclick="event.stopPropagation();toggleSection('tasklist')" id="tasklist-tog">Collapse</button>
+    </div>
+    <div class="road-section-body" id="tasklist-body">
+      <!-- Add bar: Phase row 1 + row 2 note; Step/gate adapted -->
+      <div class="road-add-bar" style="flex-direction:column;align-items:stretch;gap:6px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select class="road-add-sel" id="ra-kind" onchange="raKindChange()">
+            <option value="phase">+ Phase</option>
+            <option value="step">+ Step</option>
+            <option value="gate">+ Stage Gate</option>
+          </select>
+          <!-- Phase number (shown for phase kind) -->
+          <input class="road-add-inp" type="number" id="ra-phase-num" placeholder="#" min="1" max="99" style="max-width:60px;display:none;font-family:'Source Code Pro',monospace;font-size:11px" />
+          <select class="road-add-sel" id="ra-phase-sel" style="display:none;flex:1" onchange="raSyncInsertAfter()"><option value="">-- Select Phase --</option></select>
+          <span id="ra-phase-mode-wrap" style="display:none;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">
+            <label style="cursor:pointer;margin-right:8px"><input type="radio" name="ra-phase-mode" value="existing" checked onchange="raPhaseMode()" /> Add to existing</label>
+            <label style="cursor:pointer"><input type="radio" name="ra-phase-mode" value="new" onchange="raPhaseMode()" /> New phase</label>
+          </span>
+          <input class="road-add-inp" type="text" id="ra-label" placeholder="Label&hellip;" style="flex:2;min-width:160px" />
+        </div>
+        <!-- Row 2: note + date + insert-after + add button -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input class="road-add-inp" type="text" id="ra-note" placeholder="Note (optional)&hellip;" style="flex:2;min-width:140px" />
+          <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)" id="ra-date-lbl">Start</span>
+          <input class="road-add-inp" type="date" id="ra-start" style="max-width:130px;font-family:'Source Code Pro',monospace;font-size:11px" />
+          <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">End</span>
+          <input class="road-add-inp" type="date" id="ra-end" style="max-width:130px;font-family:'Source Code Pro',monospace;font-size:11px" />
+          <select class="road-add-sel" id="ra-insert-after" style="display:none;flex:1"><option value="">Insert at end</option></select>
+          <button class="road-add-btn" onclick="roadAddItem()">Add</button>
+        </div>
+      </div>
+      <div class="road-task-wrap" id="road-task-list"></div>
+    </div>
+  </div>
+</div>
+<!-- ISBNs -->
+<div class="panel" id="panel-isbns"><div class="ref-section">
+  <h2>Assigned ISBNs &mdash; Over-classified</h2>
+  <table class="isbn-table"><thead><tr><th style="width:220px">ISBN</th><th>Format</th><th style="width:110px">Status</th></tr></thead><tbody>
+    <tr><td class="isbn-code">979-8-9964101-0-1</td><td><div class="fmt-name">eBook (ePub)</div><div class="fmt-note">KDP &middot; D2D &middot; Apple Books &middot; Kobo &middot; B&amp;N</div></td><td><span class="badge b-asgn">Assigned</span></td></tr>
+    <tr><td class="isbn-code">979-8-9964101-1-8</td><td><div class="fmt-name">Hardcover (Print)</div><div class="fmt-note">KDP Print or IngramSpark hardcover edition</div></td><td><span class="badge b-asgn">Assigned</span></td></tr>
+    <tr><td class="isbn-code">979-8-9964101-2-5</td><td><div class="fmt-name">Paperback (Print)</div><div class="fmt-note">Primary print edition &mdash; back cover ISBN barcode</div></td><td><span class="badge b-asgn">Assigned</span></td></tr>
+    <tr><td class="isbn-code">979-8-9964101-3-2</td><td><div class="fmt-name">Audiobook</div><div class="fmt-note">Reserved &mdash; not yet in production</div></td><td><span class="badge b-res">Reserved</span></td></tr>
+    <tr><td class="isbn-code">979-8-9964101-4-9 through -9-4</td><td><div class="fmt-name">Reserve Pool (6 remaining)</div><div class="fmt-note">Unassigned &mdash; available for future editions</div></td><td><span class="badge b-un">Unassigned</span></td></tr>
+  </tbody></table>
+  <h2>Estimated List Prices &amp; Margins</h2>
+  <div class="price-grid">
+    <div class="price-card"><div class="price-format">eBook</div><div class="price-row"><span>List price</span><span class="val">$12.99</span></div><div class="price-row"><span>KDP royalty</span><span class="val">70% = $9.09</span></div><div class="price-row"><span>D2D royalty</span><span class="val">~60% = $7.79</span></div><div class="price-row net"><span>Recommended</span><span class="val">KDP + D2D wide</span></div></div>
+    <div class="price-card"><div class="price-format">Paperback</div><div class="price-row"><span>List price</span><span class="val">$24.99&ndash;$27.99</span></div><div class="price-row"><span>KDP print cost</span><span class="val">~$6.50&ndash;$8.00</span></div><div class="price-row"><span>KDP royalty (60%)</span><span class="val">~$7&ndash;$9</span></div><div class="price-row net"><span>Net est.</span><span class="val">$6&ndash;$8</span></div></div>
+    <div class="price-card"><div class="price-format">Hardcover</div><div class="price-row"><span>List price</span><span class="val">$34.99&ndash;$39.99</span></div><div class="price-row"><span>KDP print cost</span><span class="val">~$10&ndash;$13</span></div><div class="price-row"><span>KDP royalty (60%)</span><span class="val">~$8&ndash;$11</span></div><div class="price-row net"><span>Net est.</span><span class="val">$8&ndash;$12</span></div></div>
+    <div class="price-card"><div class="price-format">Audiobook</div><div class="price-row"><span>List price</span><span class="val">$24.99&ndash;$29.99</span></div><div class="price-row"><span>Findaway/D2D</span><span class="val">~80% net</span></div><div class="price-row net"><span>Recommended</span><span class="val">Findaway (non-excl.)</span></div></div>
+  </div>
+  <p style="font-size:11px;color:var(--label-secondary);padding-top:4px;line-height:1.6">Margins are estimates. Verify at kdp.amazon.com and myaccount.ingramspark.com before setting final prices.</p>
+</div></div>
+<!-- STYLE + CHAPTER MAP -->
+<div class="panel" id="panel-style"><div class="style-grid">
+  <div class="style-col">
+    <div class="s-block"><h3>Prohibited patterns</h3><div class="s-rule">No throat-clearing &mdash; <em>"this is important because"</em></div><div class="s-rule">No negative preamble &mdash; state what something <em>is</em></div><div class="s-rule">No <span>Not X, but Y</span> &mdash; fold to the affirmative</div><div class="s-rule">No em-dashes in body text &mdash; restructure the sentence</div><div class="s-rule">No lists &mdash; integrate into prose</div><div class="s-rule">No passive voice unless actor is genuinely unknown</div><div class="s-rule">No academic register &mdash; write for informed general reader</div></div>
+    <div class="s-block"><h3>AI-speak watch-list</h3><span class="aiterm">institutional</span><span class="aiterm">architecture</span><span class="aiterm">framework</span><span class="aiterm">consistency of</span><span class="aiterm">durable</span><span class="aiterm">the record</span><span class="aiterm">it is worth noting</span><span class="aiterm">underscores</span><span class="aiterm">highlights</span><span class="aiterm">demonstrates</span><span class="aiterm">showcases</span><span class="aiterm">delves</span><span class="aiterm">nuanced</span><span class="aiterm">multifaceted</span><span class="aiterm">robust</span><span class="aiterm">paradigm</span><span class="aiterm">tapestry</span><span class="aiterm">at its core</span><span class="aiterm">in the realm of</span><span class="aiterm">resists [noun]</span><span class="aiterm">lens (metaphor)</span><span class="aiterm">genuinely</span><span class="aiterm">straightforward</span></div>
+    <div class="s-block"><h3>Capitalization &amp; grammar</h3><div class="s-rule"><span>U.S. Government</span> &mdash; periods, capital G</div><div class="s-rule">Named institutions singular &mdash; <em>Congress has; AARO is</em></div><div class="s-rule">Pronouns for institutions: <span>it/its</span></div><div class="s-rule"><span>phenomena</span> is plural &middot; <span>data</span> is plural</div><div class="s-rule"><span>materiel</span> = military &middot; <span>material</span> = everything else</div><div class="s-rule"><span>Over-classified</span> hyphenated in all body text</div><div class="s-rule">Chapter references: spell out &ldquo;Chapter&rdquo; never &ldquo;Ch.&rdquo;</div></div>
+    <div class="s-block"><h3>Image rules</h3><div class="s-rule">All captions: <span>Fig. N.N</span></div><div class="s-rule">Post-caption paragraph: always <span>TextOpen</span></div><div class="s-rule">Print: 300 DPI min, 1,275px wide min</div><div class="s-rule">Ebook: 1,600px wide @ 80% JPEG quality</div></div>
+    <div class="s-block"><h3>Appendix sequence</h3><div class="s-rule">A1 &middot; A2 &middot; A3 &middot; A4 &middot; A5 &middot; A6 &middot; A7 &middot; A8 &middot; A9 &middot; A10 &middot; A11 &middot; A12 &middot; <span>A13 On the Record</span> &middot; A14 &middot; A15 Quotations + Bibliography</div></div>
+  </div>
+  <div class="style-col">
+    <div class="s-block"><h3>Chapter map</h3>
+      <table class="ch-table"><thead><tr><th style="width:28px">Ch</th><th>Title</th><th style="width:95px">Part</th></tr></thead><tbody>
+        <tr><td class="ch-num">1</td><td>Impossible Things Before Breakfast</td><td><span class="ch-part pt-phenomena">Phenomena</span></td></tr>
+        <tr><td class="ch-num">2</td><td>On Radar, On Camera, On Record</td><td><span class="ch-part pt-phenomena">Phenomena</span></td></tr>
+        <tr><td class="ch-num">3</td><td>Noise</td><td><span class="ch-part pt-phenomena">Phenomena</span></td></tr>
+        <tr><td class="ch-num">4</td><td>What Counts</td><td><span class="ch-part pt-phenomena">Phenomena</span></td></tr>
+        <tr><td class="ch-num">5</td><td>How Secrets Are Made</td><td><span class="ch-part pt-secrecy">Secrecy</span></td></tr>
+        <tr><td class="ch-num">6</td><td>Special Access</td><td><span class="ch-part pt-secrecy">Secrecy</span></td></tr>
+        <tr><td class="ch-num">7</td><td>What NASA Saw</td><td><span class="ch-part pt-secrecy">Secrecy</span></td></tr>
+        <tr><td class="ch-num">8</td><td>Standing Orders</td><td><span class="ch-part pt-secrecy">Secrecy</span></td></tr>
+        <tr><td class="ch-num">9</td><td>Manufacturing Doubt</td><td><span class="ch-part pt-secrecy">Secrecy</span></td></tr>
+        <tr><td class="ch-num">10</td><td>Sworn</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">11</td><td>On the Evidence</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">12</td><td>Theories of Intent</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">13</td><td>The Distance Problem</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">14</td><td>Science Rushes In</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">15</td><td>Controlled Disclosure or Ontological Shock?</td><td><span class="ch-part pt-evidence">Evidence</span></td></tr>
+        <tr><td class="ch-num">16</td><td>Congressional Lockout</td><td><span class="ch-part pt-disclosure">Disclosure</span></td></tr>
+        <tr><td class="ch-num">17</td><td>The President Doesn&rsquo;t Have Clearance</td><td><span class="ch-part pt-disclosure">Disclosure</span></td></tr>
+        <tr><td class="ch-num">18</td><td>The Public Decides</td><td><span class="ch-part pt-disclosure">Disclosure</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div></div>
+<!-- DISTRIBUTION -->
+<div class="panel" id="panel-dist">
+  <div class="dist-grid">
+    <div class="dist-card"><h3>KDP (Amazon)</h3><span class="dist-badge dist-primary">Kindle + POD</span><div class="dist-row"><span class="dist-lbl">Handles</span><span class="dist-val">Kindle ebook + print on demand</span></div><div class="dist-row"><span class="dist-lbl">Exclusivity</span><span class="dist-val">None (KDP Select NOT enrolled)</span></div><div class="dist-row"><span class="dist-lbl">Ebook royalty</span><span class="dist-val">70% at $2.99–$9.99; 35% outside</span></div><div class="dist-row"><span class="dist-lbl">Print royalty</span><span class="dist-val">60% of list minus print cost</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Setup pending</span></div></div>
+    <div class="dist-card"><h3>Draft2Digital</h3><span class="dist-badge dist-primary">Primary ebook wide</span><div class="dist-row"><span class="dist-lbl">Reaches</span><span class="dist-val">Apple Books &middot; Kobo &middot; B&amp;N &middot; OverDrive/Libby</span></div><div class="dist-row"><span class="dist-lbl">Royalty</span><span class="dist-val">~60% of list to author</span></div><div class="dist-row"><span class="dist-lbl">Timeline</span><span class="dist-val">3–5 days to all retailers</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Account active &mdash; setup pending</span></div></div>
+    <div class="dist-card"><h3>IngramSpark</h3><span class="dist-badge dist-secondary">Print to bookstores/libraries</span><div class="dist-row"><span class="dist-lbl">Trade discount</span><span class="dist-val">Set 55% for return eligibility</span></div><div class="dist-row"><span class="dist-lbl">Setup fee</span><span class="dist-val">$49 title setup (print)</span></div><div class="dist-row"><span class="dist-lbl">Timeline</span><span class="dist-val">5–10 days to catalog</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Setup pending</span></div><div class="dist-warn">&#9888; Use a different ISBN than KDP for same print format if distributing both.</div></div>
+  </div>
+  <div class="dist-note"><strong>Strategy:</strong> KDP handles Amazon Kindle + POD. D2D handles all other ebook retail + libraries. IngramSpark handles bookstore/library print. Do not enroll KDP Select.</div>
+</div>
+<!-- OUTREACH -->
+<div class="panel" id="panel-outreach"><div class="ot-wrap">
+  <div class="ot-add"><h3>Add contact</h3>
+    <div class="ot-form">
+      <input type="text" id="ot-name" placeholder="Name" /><input type="text" id="ot-role" placeholder="Role / affiliation" />
+      <input type="date" id="ot-date" />
+      <select id="ot-status"><option value="new">&mdash; Status &mdash;</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="passed">Passed</option></select>
+      <select id="ot-method"><option value="">&mdash; Contact method &mdash;</option><option value="Email">Email</option><option value="Twitter">Twitter</option><option value="LinkedIn">LinkedIn</option><option value="Substack">Substack</option><option value="Publisher">Publisher</option><option value="Web Form">Web Form</option></select>
+      <input type="text" id="ot-link" placeholder="Contact link / handle" />
+      <input type="text" id="ot-sent" placeholder="File title or link sent" class="full" />
+    </div>
+    <button class="ot-add-btn" onclick="addContact()">Add Contact</button>
+  </div>
+  <div class="ot-table-wrap">
+    <table class="ot-table"><thead><tr><th style="width:150px">Name</th><th style="width:82px">Contacted</th><th style="width:90px">Status</th><th style="width:82px">Due</th><th style="width:80px">Method</th><th>Link / Sent</th><th style="width:60px">Notes</th><th style="width:38px"></th></tr></thead><tbody id="ot-tbody"></tbody></table>
+    <div id="ot-empty" class="empty-state">No contacts yet &mdash; add one above</div>
+  </div>
+</div></div>
+<!-- PASSES -->
+<div class="panel" id="panel-passes"><div class="passes-wrap">
+  <p class="passes-intro">Quick reference for all editorial passes. Trigger each by typing the command phrase to Claude with the master uploaded.</p>
+  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier 1 &mdash; Chapter Pass</h2><span class="pass-tier-tag">Per chapter</span></div>
+    <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:160px">Pass</th><th>What it checks</th></tr></thead><tbody>
+      <tr><td><span class="pass-cmd">"Chapter pass Ch N"</span></td><td><span class="pass-label">Full Tier 1</span></td><td class="pass-desc">All Tier 1 checks: word-by-word, paragraph logic, spelling, AI-speak, footnote integrity, appendix gate.</td></tr>
+      <tr><td><span class="pass-cmd">"Word-by-word Ch N"</span></td><td><span class="pass-label">Mechanical copy</span></td><td class="pass-desc">Duplicate words, comma splices, doubled punctuation, missing words.</td></tr>
+      <tr><td><span class="pass-cmd">"Paragraph check Ch N"</span></td><td><span class="pass-label">Paragraph logic</span></td><td class="pass-desc">Does each paragraph open, develop, and close clearly?</td></tr>
+      <tr><td><span class="pass-cmd">"Spelling check Ch N"</span></td><td><span class="pass-label">Spelling &amp; grammar</span></td><td class="pass-desc">Spelling, grammar, smart quotes, doubled punctuation, sentence-ending punctuation before superscripts.</td></tr>
+      <tr><td><span class="pass-cmd">"AI-speak Ch N"</span></td><td><span class="pass-label">AI-speak scan</span></td><td class="pass-desc">Watch-list terms with choice form: Keep / Use proposed / Write my own.</td></tr>
+      <tr><td><span class="pass-cmd">"Footnote check Ch N"</span></td><td><span class="pass-label">Footnote integrity</span></td><td class="pass-desc">Four-count gate: ref bookmarks = note bookmarks = forward links = return links.</td></tr>
+      <tr><td><span class="pass-cmd">"Appendix gate Ch N"</span></td><td><span class="pass-label">Appendix gate</span></td><td class="pass-desc">Proposes additions to A2, A12, A15, Glossary, Index before output.</td></tr>
+    </tbody></table>
+  </div>
+  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier 2 &mdash; Part Pass</h2><span class="pass-tier-tag">Per part</span></div>
+    <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:160px">Pass</th><th>What it checks</th></tr></thead><tbody>
+      <tr><td><span class="pass-cmd">"Part pass Part N"</span></td><td><span class="pass-label">Full Tier 2</span></td><td class="pass-desc">Cross-references, missing citations, pull quote audit, section breaks, chapter structure.</td></tr>
+      <tr><td><span class="pass-cmd">"Cross-reference Part N"</span></td><td><span class="pass-label">Cross-references</span></td><td class="pass-desc">Every "see Chapter N" or "Appendix AX" reference verified.</td></tr>
+      <tr><td><span class="pass-cmd">"Missing citations Part N"</span></td><td><span class="pass-label">Citation coverage</span></td><td class="pass-desc">Flags factual statements without a chapter note marker.</td></tr>
+      <tr><td><span class="pass-cmd">"Structure audit Part N"</span></td><td><span class="pass-label">Structure audit</span></td><td class="pass-desc">Pull quote/Attribution pairs, TextOpen after subheadings, section breaks.</td></tr>
+    </tbody></table>
+  </div>
+  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier 3 &mdash; Book-Wide Passes</h2><span class="pass-tier-tag">W3.1&ndash;W3.9b</span></div>
+    <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:160px">Pass</th><th>What it checks</th><th style="width:110px">Status</th></tr></thead><tbody>
+      <tr><td><span class="pass-cmd">"Mechanical pass"</span></td><td><span class="pass-label">W3.1</span></td><td class="pass-desc">Book-wide auto-fix.</td><td><span class="pass-status ps-done">Done v228</span></td></tr>
+      <tr><td><span class="pass-cmd">"AI-speak pass"</span></td><td><span class="pass-label">W3.2</span></td><td class="pass-desc">Book-wide AI-speak scan.</td><td><span class="pass-status ps-done">Done</span></td></tr>
+      <tr><td><span class="pass-cmd">"Citation pass"</span></td><td><span class="pass-label">W3.3</span></td><td class="pass-desc">Book-wide missing citation scan.</td><td><span class="pass-status ps-done">Done</span></td></tr>
+      <tr><td><span class="pass-cmd">"Appendix pass"</span></td><td><span class="pass-label">W3.4</span></td><td class="pass-desc">Full appendix cross-reference.</td><td><span class="pass-status ps-done">Done</span></td></tr>
+      <tr><td><span class="pass-cmd">"Cross-ref pass"</span></td><td><span class="pass-label">W3.5</span></td><td class="pass-desc">Book-wide cross-reference integrity.</td><td><span class="pass-status ps-done">Done v228</span></td></tr>
+      <tr><td><span class="pass-cmd">"URL pass"</span></td><td><span class="pass-label">W3.6</span></td><td class="pass-desc">Every hyperlink verified.</td><td><span class="pass-status ps-done">Done v229</span></td></tr>
+      <tr><td><span class="pass-cmd">"Footnote retrofit"</span></td><td><span class="pass-label">W3.7</span></td><td class="pass-desc">Bidirectional bookmark/hyperlink system.</td><td><span class="pass-status ps-done">Done v222/229</span></td></tr>
+      <tr><td><span class="pass-cmd">"Word-by-word pass"</span></td><td><span class="pass-label">W3.8</span></td><td class="pass-desc">Book-wide mechanical read.</td><td><span class="pass-status ps-done">Done v229</span></td></tr>
+      <tr><td><span class="pass-cmd">"Production pass ebook"</span></td><td><span class="pass-label">W3.9a</span></td><td class="pass-desc">Kindle/EPUB pre-export checks.</td><td><span class="pass-status ps-done">Done v230</span></td></tr>
+      <tr><td><span class="pass-cmd">"Production pass print"</span></td><td><span class="pass-label">W3.9b</span></td><td class="pass-desc">Print checks: running heads, widow/orphan, image resolution, page breaks, TOC.</td><td><span class="pass-status ps-next">Next priority</span></td></tr>
+      <tr><td><span class="pass-cmd">"Sterling review"</span></td><td><span class="pass-label">Commercial</span></td><td class="pass-desc">Positioning, tone, market appeal, chapter titles.</td><td><span class="pass-status ps-done">Done v248</span></td></tr>
+    </tbody></table>
+  </div>
+</div></div>
+<!-- REFERENCES -->
+<div class="panel" id="panel-refs"><div class="rf-wrap">
+  <div class="rf-add"><h3>Add reference</h3>
+    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-end;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:200px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Keyword</label><div class="rf-kw-wrap"><select class="rf-kw-select" id="rf-kw-sel"></select></div></div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">New keyword</label><div style="display:flex;gap:6px"><input type="text" class="rf-kw-new" id="rf-kw-new" placeholder="Type new keyword&hellip;" /><button class="rf-add-kw-btn" onclick="rfAddKeyword()">+ Add</button></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 2fr auto;gap:8px;align-items:end">
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">URL</label><input type="text" id="rf-url" placeholder="https://&hellip;" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%" /></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Description</label><input type="text" id="rf-desc-in" placeholder="Brief description&hellip;" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%" /></div>
+      <button class="rf-save-btn" onclick="rfAdd()">Save</button>
+    </div>
+  </div>
+  <div class="rf-filter"><span class="rf-filter-lbl">Filter:</span><select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All keywords</option></select><span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-left:auto"></span></div>
+  <table class="rf-table"><thead><tr><th style="width:160px">Keyword</th><th style="width:220px">URL</th><th>Description</th><th style="width:80px"></th></tr></thead><tbody id="rf-tbody"></tbody></table>
+  <div id="rf-empty" class="rf-empty">No references yet &mdash; add one above</div>
+</div></div>
+<!-- HELP -->
+<div class="panel" id="panel-help"><div class="ref-section">
+  <h2>How to Use This Hub</h2>
+
+  <h3 style="margin-top:28px">The Basics</h3>
+  <p>This file is your project hub for <em>Over-classified</em>. It lives in iCloud Drive and opens in Safari on any Apple device. All your notes, roadmap phases, steps, and stage gates are stored here.</p>
+  <p>There are two places your data lives:</p>
+  <ul>
+    <li><strong>Baked into the file</strong> — the seed data I give Claude at the end of each session. This is the authoritative record.</li>
+    <li><strong>Browser localStorage</strong> — changes you make during a working session are saved here automatically as you work. This is temporary working storage.</li>
+  </ul>
+  <p>When you open the file, it compares the two. If the file is newer (you downloaded a fresh version from Claude), it uses the file's data. If localStorage is newer (you've been working in this session), it keeps your session work.</p>
+
+  <h3 style="margin-top:28px">&#9654; End of a Working Session</h3>
+  <p>When you've finished making changes and want them preserved across devices and sessions:</p>
+  <ol>
+    <li>Click the <strong>Export</strong> button at the top of the Notes tab. This downloads a file called <code>oc_hub_export.json</code> and also copies the data to your clipboard.</li>
+    <li>Open Claude (claude.ai) in this project.</li>
+    <li>Paste the JSON and tell Claude to update the project hub.</li>
+    <li>Claude produces a new HTML file with everything baked in.</li>
+    <li>Save that new HTML file to iCloud Drive, replacing the old one.</li>
+    <li>Done — every device that opens the file from iCloud Drive is now current.</li>
+  </ol>
+
+  <h3 style="margin-top:28px">&#9654; Starting a Session on Any Device</h3>
+  <ol>
+    <li>Open the Files app and navigate to iCloud Drive.</li>
+    <li>Tap the HTML file — it opens in Safari.</li>
+    <li>Your data loads automatically. No import needed.</li>
+  </ol>
+  <p>If you see old or missing data, it means you're opening a stale version of the file. Make sure you're opening the one in iCloud Drive, not a locally downloaded copy.</p>
+
+  <h3 style="margin-top:28px">&#9654; Using the Shortcut (Mac)</h3>
+  <p>An Automator Quick Action is available to streamline the end-of-session export on Mac:</p>
+  <ol>
+    <li>Run the <strong>Export to Claude</strong> Quick Action from the Services menu.</li>
+    <li>It opens the most recent <code>oc_hub_export.json</code> from your Downloads folder and copies its contents to your clipboard.</li>
+    <li>Paste directly into Claude.</li>
+  </ol>
+
+  <h3 style="margin-top:28px">&#9654; Using the Shortcut (iPhone / iPad)</h3>
+  <ol>
+    <li>Open the <strong>Shortcuts</strong> app and run <strong>OC Hub Export</strong>.</li>
+    <li>It reads <code>oc_hub_export.json</code> from iCloud Drive and copies the contents to your clipboard.</li>
+    <li>Switch to Claude, paste, and ask Claude to update the hub.</li>
+  </ol>
+
+  <h3 style="margin-top:28px">&#9654; The Roadmap Tab</h3>
+  <p>The Gantt chart has three display levels — use the <strong>Hidden / Bars + Gates / Bars + Gates + Notes</strong> buttons to control what shows:</p>
+  <ul>
+    <li><strong>Hidden</strong> — chart not visible</li>
+    <li><strong>Bars + Gates</strong> — phase bars with stage gate diamonds overlaid at their target dates</li>
+    <li><strong>Bars + Gates + Notes</strong> — everything above plus a date and label annotation beneath each bar</li>
+  </ul>
+  <p>Each phase bar spans from the earliest step start date to the latest step end date. The stage gate diamond sits at the latest end date (same as the bar's right edge). Click a diamond to mark the gate met — it records today's date automatically.</p>
+  <p>Step dates: each step has a <strong>Start</strong> and <strong>End</strong> date. Start defaults to blank (bar left edge falls back to earliest end date if no starts are set). Enter dates directly in the task list below the chart.</p>
+
+  <h3 style="margin-top:28px">&#9654; Data Safety</h3>
+  <ul>
+    <li>Old localStorage keys (v3, v4) are automatically deleted the first time you open a new version of the file. No accumulation over time.</li>
+    <li>If you forget to export at the end of a session, your work is still in localStorage on that device. Open the file on the same device, export, then give it to Claude.</li>
+    <li>The file is the source of truth. localStorage is a working buffer.</li>
+  </ul>
+
+  <h3 style="margin-top:28px">&#9654; Asking Claude for Changes</h3>
+  <p>At the start of any session, Claude reads the Project Instructions and has your memory context. You can ask for:</p>
+  <ul>
+    <li>Edits to the roadmap data (add phases, steps, gates)</li>
+    <li>Interface improvements to this hub</li>
+    <li>Document work on the manuscript</li>
+    <li>Research, sourcing, or editorial passes</li>
+  </ul>
+  <p>Always paste the JSON export at the start of a session if you've made roadmap changes since the last HTML was generated — that keeps Claude's copy current.</p>
+
+</div></div>
+
+
+<script>
+const SK='oc_hub_v5',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
+const SEED_VERSION='2026-06-07T23:00:00.000Z'; // bump this each time seed data is updated
+
+/* ── SEED DATA (v4, 2026-06-07 — updated post-import) ── */
+const SEED_ITEMS=[
+  {id:'i_1780867624952',type:'reminder',text:'Hub roadmap: insert target date to right of stage gate emblem; when met, show met date; move gate explanation to follow right of date (not left of Gantt chart).',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:27:04.952Z',dueDate:'',completedDate:''},
+  {id:'i_1780867396928',type:'reminder',text:'Hub tabs: increase bottom-row tab label size ≥50%; create graphical tab representation; active tab lighter, inactive slightly darker (gray or maroon).',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:23:16.928Z',dueDate:'',completedDate:''},
+  {id:'i_1780867301726',type:'reminder',text:'Hub task list and phase display: much larger font, closer to height of box; raise stage gate font size.',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:21:41.726Z',dueDate:'2026-06-07',completedDate:''},
+  {id:'i_1780840643824',type:'reminder',text:'Clone roadmap entries at any level — clone phase (full contents) or clone step (within phase).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Confirmed built in prior session — clonePhase() and cloneStep() both verified present.',created:'2026-06-07T13:10:43.824Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780840467186',type:'reminder',text:'Two date behavior fixes: (1) completion date allowed before due date; (2) stage gate fields inherit latest target completion date among steps in phase.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Implemented this session — gateInheritDate() confirmed correct; gate edit form now pre-populates with inherited date and allows manual override.',created:'2026-06-07T13:07:47.186Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836765101',type:'note',text:'On the Project Notes Form tab — move Copy To Cloud button to same line as Show All; move Show All next to All Types; move Copy To Cloud to right.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:52:45.101Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836580659',type:'note',text:'If entering a step in an existing project phase, ask whether steps below it shift.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:49:40.659Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836549158',type:'note',text:'Change roadmap input form to include start and end dates; allow choosing existing phase or adding new one.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:49:09.158Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836229160',type:'note',text:'On Project Hub input form — change type default to Reminders; move type block down next to tags.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:43:49.160Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836128119',type:'reminder',text:'Update Project Notes interface to include due date on input form and in editing mode.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:42:08.119Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836045602',type:'note',text:'Update ERA3 disclosure pressure — latest Capitol steps events and current activities.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,created:'2026-06-07T12:40:45.602Z',dueDate:'2026-06-10',completedDate:''},
+  {id:'i_1780835992892',type:'reminder',text:'Remove Brown, David and Mead, Margaret quotes from A15 — they are orphaned.',done:false,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-07T12:39:52.892Z',dueDate:'',completedDate:''},
+  {id:'i_1780792541603',type:'reminder',text:'Recheck the timeline, era diagrams, and any others — text got lighter and white space at bottom needs trimming.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-07T00:35:41.603Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780787026296',type:'question',text:'Build a marketing/publishing Gantt-style to-do template for the project hub once further along.',done:true,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-06T23:03:46.296Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780785855822',type:'question',text:'Should we add Admiral Hillenkoetter to A13 On the Record?',done:true,priority:false,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-06T22:44:15.822Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780737182150',type:'question',text:'Christina Gomez podcast "The UFO Story Just Got Much Bigger." Elizondo: China admitted UAP program using AI. Senior officials concluded human DNA was altered. Eric Burlison: White House considering UAP whistleblower amnesty, 60-day window floated. Needs primary source verification before inclusion.',done:false,priority:true,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-06T09:13:02.150Z',dueDate:'',completedDate:''},
+  {id:'i_1780737293364',type:'question',text:'What is the best way to capture a screenshot of a video in high resolution?',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:'For low-res FLIR source video: screenshot + Pixelmator Pro ML Super Resolution. For print: TIFF or PNG master, 300 DPI, 1,275px wide min. For Kindle: JPEG at 80% quality, 1,600px wide.',created:'2026-06-06T09:14:53.364Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1780706210001',type:'question',text:'Once all images upscaled: export a folder of all images using their figure number.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'Done — v254. Full image ZIP output.',created:'2026-06-06T00:36:50.001Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1780705349833',type:'reminder',text:"Move Villarroel's picture into the proper place over the caption in Chapter 11.",done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:"Done — v254. Converted from floating wp:anchor to wp:inline.",created:'2026-06-06T00:22:29.833Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_session0606a',type:'note',text:'Session 2026-06-06: Full image pass v253→v254. 15 replacements, 5 upscales, whitespace trimmed on 4 images. USS Omaha sphere removed; footnote added. Fig 11.1 anchor→inline.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-06T00:00:00.000Z',dueDate:'',completedDate:'2026-06-06'},
+];
+const ROAD_SEED=[
+  // ── Phase 1: Mechanical rescan ──────────────────────────────────────────
+  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#3a6b9e',open:true,num:1},
+  {id:'rph1_s1',kind:'step',phase:'rph1',label:'W3.1 — Mechanical pass rescan',note:'Re-run against chapters edited since v229. Trigger: \"Mechanical pass\"',cmd:'\"Mechanical pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  {id:'rph1_s2',kind:'step',phase:'rph1',label:'W3.8 — Word-by-word rescan',note:'Focus on recently touched sections. Trigger: \"Word-by-word pass\"',cmd:'\"Word-by-word pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  {id:'r_1780838559575',kind:'step',phase:'rph1',label:'Orphan authors out',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
+  {id:'r_1780840827808',kind:'step',phase:'rph1',label:'Image trim whitespace review table',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
+  {id:'rph1_g1',kind:'gate',phase:'rph1',label:'Ready for manual editing — no dropped letters, doubled words, punctuation errors',date:'2026-06-07',met:false},
+
+  // ── Phase 2: Manual editing Pass 5 ──────────────────────────────────────
+  {id:'r_1780839259957',kind:'phase',label:'Manual editing Pass 5',color:'#3a7a5a',open:true,num:2},
+  {id:'r_1780839399135',kind:'step',phase:'r_1780839259957',label:'Front matter to Part 2',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-08',completedDate:'',done:false},
+  {id:'r_1780839415621',kind:'step',phase:'r_1780839259957',label:'Part 2 to Part 3',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-09',completedDate:'',done:false},
+  {id:'r_1780839447883',kind:'step',phase:'r_1780839259957',label:'Part 3 to Part 4',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'',done:false},
+  {id:'r_1780839470538',kind:'step',phase:'r_1780839259957',label:'Part 4 to Appendices',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-11',completedDate:'',done:false},
+  {id:'r_1780839486375',kind:'step',phase:'r_1780839259957',label:'Appendices to End',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
+  {id:'r_1780840560799',kind:'gate',phase:'r_1780839259957',label:'Manual editing complete',date:'2026-06-13',met:false},
+
+  // ── Phase 3: June 9 Capitol Event Contingencies ──────────────────────────
+  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#9e3a3a',open:true,num:3},
+  {id:'rph4_s1',kind:'step',phase:'rph4',label:'Watch June 9 Capitol event — update Ch. 18 and Conclusion',note:'Grusch · Burlison · Moskowitz · Luna · Burchett — hosted by Kean and Fox.',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'2026-06-10',done:false},
+  {id:'r_1780869619317',kind:'step',phase:'rph4',label:'Update Fig 5.3 Disclosure Pressure',note:'Note the nature of the advocacy event',cmd:null,targetStart:'',targetEnd:'2026-06-11',completedDate:'',done:false},
+  {id:'r_1780839029403',kind:'step',phase:'rph4',label:'Update intro to include pace of change, even Degrasse Tyson',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
+  {id:'r_1780838979272',kind:'step',phase:'rph4',label:'Review intro and conclusion for changes',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
+  {id:'rph4_g1',kind:'gate',phase:'rph4',label:'Ch. 18 and Conclusion final',date:'2026-06-10',met:false},
+
+  // ── Phase 4: Repetition check ────────────────────────────────────────────
+  {id:'rph2',kind:'phase',label:'Repetition check',color:'#6b3a9e',open:true,num:4},
+  {id:'r_1780839159182',kind:'step',phase:'rph2',label:'Word for Word on entire book',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
+  {id:'rph2_s1',kind:'step',phase:'rph2',label:'Thematic echo scan',note:'Flag arguments or phrases appearing in substantially similar form across chapters.',cmd:'\"Thematic echo scan\"',targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
+  {id:'rph2_g1',kind:'gate',phase:'rph2',label:'No material repetition — Dave reviews and approves any cuts',date:'2026-06-16',met:false},
+
+  // ── Phase 5: Fresh eyes read ─────────────────────────────────────────────
+  {id:'rph3',kind:'phase',label:'Fresh eyes read',color:'#3a7a5a',open:true,num:5},
+  {id:'rph3_s2',kind:'step',phase:'rph3',label:'Flow — continuity and rhythm read',note:'Flag repetition, weak transitions, register drift.',cmd:'\"Flow read\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
+  {id:'rph3_s3',kind:'step',phase:'rph3',label:'Reese — sourcing integrity pass',note:'Any unsourced factual claims surfaced by fresh read?',cmd:'\"Reese pass\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
+  {id:'rph3_s1',kind:'step',phase:'rph3',label:'Sterling — commercial coherence read',note:'Argument arc, chapter transitions, author positioning.',cmd:'\"Sterling review\"',targetStart:'',targetEnd:'2026-06-18',completedDate:'',done:false},
+  {id:'rph3_g1',kind:'gate',phase:'rph3',label:'Prose locked — no further content changes after this point',date:'',met:false},
+
+  // ── Phase 6: Final Mechanical Pass ──────────────────────────────────────
+  {id:'r_1780838705405',kind:'phase',label:'Final Mechanical Pass',color:'#3a6b9e',open:true,num:6},
+  {id:'r_1780838482971',kind:'step',phase:'r_1780838705405',label:'Footnote retrofit',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780838539117',kind:'step',phase:'r_1780838705405',label:'Index Entry Sweep',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780839999740',kind:'step',phase:'r_1780838705405',label:'Word for Word, Punctuation, Grammar, Spelling, Dups,',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+
+  // ── Phase 7: Print production ────────────────────────────────────────────
+  {id:'rph5',kind:'phase',label:'Print production',color:'#7a6a2a',open:true,num:7},
+  {id:'rph5_s1',kind:'step',phase:'rph5',label:'W3.9b — Production pass print',note:'Running heads · widow/orphan · image resolution · page breaks · TOC numbers.',cmd:'\"Production pass print\"',targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
+  {id:'rph5_g1',kind:'gate',phase:'rph5',label:'Print-ready master confirmed',date:'2026-06-20',met:false},
+
+  // ── Phase 8: Final Marketing Review - Sterling ───────────────────────────
+  {id:'r_1780838742141',kind:'phase',label:'Final Marketing Review - Sterling',color:'#6b3a9e',open:true,num:8},
+  {id:'r_1780841363965',kind:'step',phase:'r_1780838742141',label:'Read for interest, alignment with marketing approach',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
+
+  // ── Phase 9: Export ──────────────────────────────────────────────────────
+  {id:'rph6',kind:'phase',label:'Export',color:'#2a6a7a',open:true,num:9},
+  {id:'rph6_s1',kind:'step',phase:'rph6',label:'Export ebook via Vellum',note:'Generate EPUB. Verify footnote navigation, image rendering, TOC.',cmd:null,targetStart:'',targetEnd:'2026-06-22',completedDate:'',done:false},
+  {id:'rph6_s2',kind:'step',phase:'rph6',label:'Export print PDF via Vellum',note:'Verify trim, bleed, margins, running heads, image resolution.',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false},
+  {id:'rph6_s3',kind:'step',phase:'rph6',label:'Order and review proof copy',note:'Order proof from KDP or IngramSpark before approving for distribution.',cmd:null,targetStart:'',targetEnd:'2026-07-15',completedDate:'',done:false},
+  {id:'rph6_g1',kind:'gate',phase:'rph6',label:'All formats exported and verified',date:'2026-06-30',met:false},
+
+  // ── Phase 10: Marketing Plan ─────────────────────────────────────────────
+  {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#9e3a3a',open:true,num:10},
+  {id:'r_1780868347381',kind:'step',phase:'r_1780841436950',label:'Establish overall plan outline',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false},
+  {id:'r_1780868403899',kind:'step',phase:'r_1780841436950',label:'Develop channel plan',note:'Social media, messaging, methods',cmd:null,targetStart:'',targetEnd:'',completedDate:'',done:false},
+  {id:'r_1780868436853',kind:'step',phase:'r_1780841436950',label:'Develop blurb candidates list',note:'Contact information, tailored approaches',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'rph7_s1',kind:'step',phase:'r_1780841436950',label:'Build blurb pitch sheet',note:'Title · subtitle · 150-word synopsis · 100-word bio · pub target window.',cmd:null,targetStart:'',targetEnd:'2026-07-03',completedDate:'',done:false},
+  {id:'rph8_s1',kind:'step',phase:'r_1780841436950',label:'Congressional — Burlison · Burchett · Luna',note:'First wave — allow ~10 weeks.',cmd:null,targetStart:'',targetEnd:'2026-07-31',completedDate:'2026-07-08',done:false},
+  {id:'rph8_s2',kind:'step',phase:'r_1780841436950',label:'Elizondo · Mellon outreach',note:'Second wave — ~6–8 weeks.',cmd:null,targetStart:'',targetEnd:'2026-08-29',completedDate:'',done:false},
+  {id:'rph8_s3',kind:'step',phase:'r_1780841436950',label:'Coulthart · Knuth · Loeb outreach',note:'Third wave — validation tier.',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
+  {id:'r_1780868683433',kind:'gate',phase:'r_1780841436950',label:'Ready to publicize',date:'',met:false},
+
+  // ── Phase 11: Publishing Distribution setup ──────────────────────────────
+  {id:'rph9',kind:'phase',label:'Publishing Distribution setup',color:'#2a4a6b',open:true,num:11},
+  {id:'r_1780841107590',kind:'step',phase:'rph9',label:'Establish accounts',note:'Set up relationships and learn process',cmd:null,targetStart:'',targetEnd:'2026-07-15',completedDate:'',done:false},
+  {id:'r_1780841189745',kind:'step',phase:'rph9',label:'Trial run for loading demo',note:'',cmd:null,targetStart:'',targetEnd:'2026-07-17',completedDate:'',done:false},
+  {id:'rph9_s1',kind:'step',phase:'rph9',label:'KDP setup — Kindle and POD',note:'Upload EPUB and print PDF. Do not enroll KDP Select.',cmd:null,targetStart:'',targetEnd:'2026-08-03',completedDate:'',done:false},
+  {id:'rph9_s2',kind:'step',phase:'rph9',label:'Draft2Digital — wide ebook distribution',note:'Enable all retail channels including OverDrive/Libby.',cmd:null,targetStart:'',targetEnd:'2026-08-03',completedDate:'',done:false},
+  {id:'rph9_s3',kind:'step',phase:'rph9',label:'IngramSpark — print to bookstores',note:'Upload print PDF and cover PDF. Set 55% trade discount.',cmd:null,targetStart:'',targetEnd:'2026-08-03',completedDate:'',done:false},
+  {id:'rph9_s4',kind:'step',phase:'rph9',label:'Bowker metadata · website updates · press kit',note:'Update subtitle, LCCN, categories. Favicons, hero images, press kit.',cmd:null,targetStart:'',targetEnd:'2026-07-31',completedDate:'',done:false},
+  {id:'rph9_g1',kind:'gate',phase:'rph9',label:'All platforms live — launch ready',date:'',met:false},
+
+  // ── Phase 12: Business establishment ────────────────────────────────────
+  {id:'r_1780841462043',kind:'phase',label:'Business establishment',color:'#7a6a2a',open:true,num:12},
+  {id:'r_1780868143685',kind:'step',phase:'r_1780841462043',label:'Learn real requirements from Hilton Head Island',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-13',completedDate:'',done:false},
+  {id:'r_1780868167879',kind:'step',phase:'r_1780841462043',label:'Follow up with SC DOR',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
+  {id:'r_1780868197640',kind:'step',phase:'r_1780841462043',label:'Register business SC DOR',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780868226753',kind:'step',phase:'r_1780841462043',label:'Update EIN number Record with new Vigilia Name',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780868272578',kind:'step',phase:'r_1780841462043',label:'Finalize business licensing filings in time for book sales',note:'',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
+  {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'',met:false},
+];
+
+let S={items:[],road:[]};
+let fSt=null,fTag=null,fType=null,inputPriFlag=false,inputMemFlag=false,editingId=null;
+let sectionOpen={gantt:true,tasklist:true};
+let roadLevel=2; // 0=closed,1=phases,2=full
+
+function load(){
+  const OLD_KEYS=['oc_hub_v4','oc_hub_v3','oc_hub_v2','oc_hub_v1'];
+  try{
+    let raw=localStorage.getItem(SK);
+    if(!raw){
+      for(const ok of OLD_KEYS){raw=localStorage.getItem(ok);if(raw)break;}
+    }
+    if(raw){
+      const stored=JSON.parse(raw);
+      const storedVersion=stored._seedVersion||'1970-01-01T00:00:00.000Z';
+      const seedIsNewer=new Date(SEED_VERSION)>new Date(storedVersion);
+      if(seedIsNewer){
+        // Seed baked into this file is newer than what's in localStorage —
+        // use seed as authoritative base (iCloud file was updated)
+        S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};
+      } else {
+        // localStorage is current session work — keep it
+        S=stored;
+        if(!S.items||!S.items.length)S.items=SEED_ITEMS.map(i=>({...i}));
+        if(!S.road||!S.road.length)S.road=ROAD_SEED.map(r=>({...r}));
+        const existingIds=new Set(S.items.map(i=>i.id));
+        SEED_ITEMS.forEach(si=>{if(!existingIds.has(si.id))S.items.unshift({...si});});
+        SEED_ITEMS.forEach(si=>{
+          if(si.done){const st=S.items.find(i=>i.id===si.id);if(st&&!st.done){st.done=true;st.completedDate=si.completedDate||'';st.answer=si.answer||st.answer;}}
+        });
+      }
+      // Migrations — always run
+      S.items.forEach(it=>{if(it.dueDate===undefined)it.dueDate='';if(it.completedDate===undefined)it.completedDate='';});
+      S.road.forEach(r=>{if(r.kind==='step'){if(r.targetDate!==undefined&&r.targetEnd===undefined){r.targetEnd=r.targetDate||'';delete r.targetDate;}if(r.targetStart===undefined)r.targetStart='';}});
+      let n=1;S.road.forEach(r=>{if(r.kind==='phase'&&!r.num){r.num=n;n++;}else if(r.kind==='phase')n++;});
+    } else {
+      S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};
+    }
+    // Promote to current key and purge old keys
+    save();
+    OLD_KEYS.forEach(ok=>{try{localStorage.removeItem(ok);}catch(e){}});
+  }catch(e){S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};}
+}
+function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION});localStorage.setItem(SK,JSON.stringify(payload));}catch(e){}}
+
+function showTab(t,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+  if(t==='roadmap'){renderGantt();renderTaskList();}
+}
+
+function toggleSection(id){
+  sectionOpen[id]=!sectionOpen[id];
+  const open=sectionOpen[id];
+  document.getElementById(id+'-body').style.display=open?'block':'none';
+  document.getElementById(id+'-tog').textContent=open?'Collapse':'Expand';
+  const titleEl=document.getElementById(id+'-title');
+  if(titleEl)titleEl.textContent=(open?'\u25bc ':'\u25ba ')+titleEl.textContent.replace(/^[▼▶]\s*/,'');
+}
+
+/* ── ROADMAP COLLAPSE LEVELS ── */
+function setRoadLevel(level){
+  roadLevel=level;
+  // Update button states
+  [0,1,2].forEach(l=>{
+    const btn=document.getElementById('rcl-'+l);
+    if(btn)btn.className='rcl-btn'+(l===level?' active':'');
+  });
+  applyRoadLevel();
+  renderGantt();
+  renderTaskList();
+}
+function applyRoadLevel(){
+  const taskWrap=document.getElementById('road-task-list');
+  if(!taskWrap)return;
+  if(roadLevel===0){
+    taskWrap.style.display='none';
+    // Also hide gantt
+    document.getElementById('gantt-body').style.display='none';
+    document.getElementById('gantt-tog').textContent='Expand';
+    const titleEl=document.getElementById('gantt-title');
+    if(titleEl)titleEl.textContent='▶ Gantt Chart';
+    sectionOpen.gantt=false;
+  } else if(roadLevel===1){
+    taskWrap.style.display='block';
+    // Show gantt
+    if(!sectionOpen.gantt){
+      document.getElementById('gantt-body').style.display='block';
+      document.getElementById('gantt-tog').textContent='Collapse';
+      const titleEl=document.getElementById('gantt-title');
+      if(titleEl)titleEl.textContent='▼ Gantt Chart';
+      sectionOpen.gantt=true;
+    }
+    // Close all phase blocks
+    document.querySelectorAll('.road-phase-block').forEach(el=>el.classList.remove('open'));
+    // Update S.road phase open flags
+    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
+  } else {
+    taskWrap.style.display='block';
+    if(!sectionOpen.gantt){
+      document.getElementById('gantt-body').style.display='block';
+      document.getElementById('gantt-tog').textContent='Collapse';
+      const titleEl=document.getElementById('gantt-title');
+      if(titleEl)titleEl.textContent='▼ Gantt Chart';
+      sectionOpen.gantt=true;
+    }
+    // Open all phase blocks
+    document.querySelectorAll('.road-phase-block').forEach(el=>el.classList.add('open'));
+    S.road.forEach(r=>{if(r.kind==='phase')r.open=true;});
+  }
+}
+
+function counts(){
+  let open=0,pri=0,hold=0,done=0;
+  (S.items||[]).forEach(it=>{if(it.done){done++;return;}if(it.deferred){hold++;return;}open++;if(it.priority)pri++;});
+  return{open,pri,hold,done};
+}
+function rdash(){
+  const{open,pri,hold,done}=counts();
+  document.getElementById('dash-status').innerHTML=[
+    {k:'open',l:'Open',c:open},{k:'priority',l:'Priority',c:pri},
+    {k:'hold',l:'On Hold',c:hold},{k:'done',l:'Done',c:done}
+  ].map(s=>`<button class="dash-btn${fSt===s.k?' act-red':''}" onclick="tSt('${s.k}')"><span class="dash-count">${s.c}</span><span class="dash-lbl">${s.l}</span></button>`).join('');
+  const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
+  const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
+}
+function tSt(k){fSt=fSt===k?null:k;render();}
+function setTag(v){fTag=v||null;render();}
+function setType(v){fType=v||null;render();}
+function showAll(){fSt=null;fTag=null;fType=null;render();}
+function iVis(it){
+  if(fSt){if(fSt==='done'&&!it.done)return false;if(fSt==='open'&&(it.done||it.deferred))return false;if(fSt==='priority'&&(!it.priority||it.done))return false;if(fSt==='hold'&&(!it.deferred||it.done))return false;}
+  if(fTag&&it.tag!==fTag)return false;
+  if(fType&&it.type!==fType)return false;
+  return true;
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtDate(s){if(!s)return'\u2014';const d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function isOverdue(due){if(!due)return false;return new Date(due+'T23:59:59')<new Date();}
+
+function render(){rdash();rlist();}
+
+function rlist(){
+  const list=document.getElementById('list');
+  const visible=(S.items||[]).filter(iVis);
+  document.getElementById('list-count').textContent=visible.length+' item'+(visible.length===1?'':'s');
+  if(!visible.length){list.innerHTML='<div class="empty-state">No items match the current filter</div>';return;}
+  list.innerHTML=visible.map(it=>{
+    const exp=it._exp||false;
+    const isEditing=editingId===it.id;
+    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',exp?'expanded':''].filter(Boolean).join(' ');
+    const preview=(it.text||'').length>120?(it.text||'').substring(0,120)+'\u2026':(it.text||'');
+    const dueCls=isOverdue(it.dueDate)?' overdue':'';
+    let bodyHtml='';
+    if(isEditing){
+      bodyHtml=`<div class="ibody" style="display:block"><div class="edit-wrap">
+        <label class="edit-wrap-label">Text</label>
+        <textarea class="edit-ta" id="etx_${it.id}" rows="3">${esc(it.text)}</textarea>
+        <div class="edit-meta-row">
+          <select class="edit-sel" id="ety_${it.id}"><option value="question"${it.type==='question'?' selected':''}>Question</option><option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option><option value="note"${it.type==='note'?' selected':''}>Project Note</option></select>
+          <select class="edit-sel" id="etg_${it.id}"><option value=""${!it.tag?' selected':''}>&#8212; Tag &#8212;</option><option value="editing"${it.tag==='editing'?' selected':''}>Editing</option><option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option><option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option><option value="research"${it.tag==='research'?' selected':''}>Research</option></select>
+          <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'&#9733; Priority':'&#9734; Priority'}</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+          <div><label class="edit-wrap-label">Due date</label><input type="date" class="edit-sel" id="edu_${it.id}" value="${esc(it.dueDate||'')}" style="width:130px" /></div>
+          <div style="flex:1"><label class="edit-wrap-label">Answer / note</label><textarea class="edit-ta" id="ean_${it.id}" rows="2" style="min-height:40px">${esc(it.answer||'')}</textarea></div>
+        </div>
+        <div class="edit-actions"><button class="edit-save" onclick="saveEdit('${it.id}')">Save</button><button class="edit-cancel" onclick="cancelEdit()">Cancel</button></div>
+      </div></div>`;
+    } else {
+      bodyHtml=`<div class="ibody">${it.answer?`<div class="ianswer">${esc(it.answer)}</div>`:''}<div class="iactions">
+        <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
+        <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
+        <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
+        <button class="iabtn danger" onclick="delItem('${it.id}')">Delete</button>
+      </div></div>`;
+    }
+    return`<div class="${cls}" id="it_${it.id}">
+      <div class="ihead" onclick="xItem('${it.id}')">
+        <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'&#10003;':it.deferred?'&#9208;':''}</div>
+        <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
+        <div class="imeta">
+          <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')">&#9733;</span>
+          <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag">&#9872;</span>
+          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
+          <span class="type-pill">${esc(it.type||'note')}</span>
+        </div>
+        <div class="idate-cols">
+          <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
+          <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
+        </div>
+        <span class="chev">&#8250;</span>
+      </div>${bodyHtml}</div>`;
+  }).join('');
+}
+
+function xItem(id){const it=S.items.find(i=>i.id===id);if(!it)return;it._exp=!it._exp;rlist();}
+function togDone(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.done=!it.done;if(it.done)it.completedDate=todayStr();else it.completedDate='';save();render();}
+function togDefer(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.deferred=!it.deferred;save();render();}
+function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
+function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
+function delItem(id){if(!confirm('Delete?'))return;S.items=S.items.filter(i=>i.id!==id);save();render();}
+function startEdit(id){editingId=id;rlist();}
+function cancelEdit(){editingId=null;rlist();}
+function togEditPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;const btn=document.getElementById('epr_'+id);if(btn){btn.textContent=it.priority?'★ Priority':'☆ Priority';btn.className='edit-pritoggle'+(it.priority?' on':'');}}
+function saveEdit(id){
+  const it=S.items.find(i=>i.id===id);if(!it)return;
+  ['etx_','ety_','etg_','edu_','ean_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
+    if(p==='etx_')it.text=el.value.trim();
+    else if(p==='ety_')it.type=el.value;
+    else if(p==='etg_')it.tag=el.value||null;
+    else if(p==='edu_')it.dueDate=el.value||'';
+    else if(p==='ean_')it.answer=el.value.trim()||null;
+  });
+  editingId=null;save();render();
+}
+function collapseAll(){(S.items||[]).forEach(it=>it._exp=false);rlist();}
+function expandAll(){(S.items||[]).forEach(it=>it._exp=true);rlist();}
+function togglePri(){inputPriFlag=!inputPriFlag;const b=document.getElementById('ptoggle');b.className='ptoggle'+(inputPriFlag?' on':'');document.getElementById('plbl').textContent=inputPriFlag?'★ Priority':'Priority';}
+function toggleMem(){inputMemFlag=!inputMemFlag;const b=document.getElementById('memtoggle');b.className='ptoggle mem-toggle'+(inputMemFlag?' mem-on':'');document.getElementById('memlbl').textContent=inputMemFlag?'⚑ Memory':'Flag Memory';}
+function addItem(){
+  const ta=document.getElementById('input-ta');const txt=(ta.value||'').trim();if(!txt)return;
+  const type=document.getElementById('input-type').value||'reminder';
+  const tag=document.getElementById('input-tag').value||null;
+  const status=document.getElementById('input-status').value;
+  const dueDate=document.getElementById('input-due').value||'';
+  S.items.unshift({id:'i_'+Date.now(),type,text:txt,done:false,priority:inputPriFlag,memFlag:inputMemFlag,tag,deferred:status==='deferred',answer:null,created:new Date().toISOString(),dueDate,completedDate:''});
+  ta.value='';
+  document.getElementById('input-type').value='reminder';
+  document.getElementById('input-tag').value='';
+  document.getElementById('input-status').value='open';
+  document.getElementById('input-due').value='';
+  inputPriFlag=false;inputMemFlag=false;
+  document.getElementById('ptoggle').className='ptoggle';document.getElementById('plbl').textContent='Priority';
+  document.getElementById('memtoggle').className='ptoggle mem-toggle';document.getElementById('memlbl').textContent='Flag Memory';
+  save();render();
+}
+document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
+
+/* ── ROADMAP ── */
+function roadPhases(){return S.road.filter(r=>r.kind==='phase');}
+function roadSteps(pid){return S.road.filter(r=>r.kind==='step'&&r.phase===pid);}
+function roadGates(pid){return S.road.filter(r=>r.kind==='gate'&&r.phase===pid);}
+function phaseProgress(pid){const s=roadSteps(pid);if(!s.length)return{done:0,total:0,pct:0};const d=s.filter(x=>x.done).length;return{done:d,total:s.length,pct:Math.round(d/s.length*100)};}
+function phaseRange(pid){
+  const steps=roadSteps(pid);
+  const ends=steps.map(s=>s.targetEnd).filter(Boolean).sort();
+  if(!ends.length)return{start:null,end:null};
+  // Left edge: earliest targetStart; fall back to earliest targetEnd
+  const starts=steps.map(s=>s.targetStart).filter(Boolean).sort();
+  const left=starts.length?starts[0]:ends[0];
+  return{start:left,end:ends[ends.length-1]};
+}
+
+/* Gate target date auto-inherit: latest targetDate among steps in phase */
+function gateInheritDate(pid){
+  const dates=roadSteps(pid).map(s=>s.targetEnd).filter(Boolean).sort();
+  return dates.length?dates[dates.length-1]:'';
+}
+
+function renderGantt(){
+  const phases=roadPhases();
+  const today=todayStr();
+  let allDates=[today];
+  S.road.forEach(r=>{
+    if(r.kind==='step'&&r.targetEnd)allDates.push(r.targetEnd);
+    if(r.kind==='step'&&r.targetStart)allDates.push(r.targetStart);
+    if(r.kind==='gate'&&r.date)allDates.push(r.date);
+  });
+  // Include inherited gate dates in scale
+  phases.forEach(ph=>{
+    const inh=gateInheritDate(ph.id);
+    if(inh)allDates.push(inh);
+  });
+  allDates.sort();
+  let minD=new Date(allDates[0]+'T12:00:00');
+  let maxD=new Date(allDates[allDates.length-1]+'T12:00:00');
+  if((maxD-minD)<90*864e5){maxD=new Date(minD);maxD.setDate(maxD.getDate()+90);}
+  const padMin=new Date(minD);padMin.setDate(padMin.getDate()-14);
+  const padMax=new Date(maxD);padMax.setDate(padMax.getDate()+14);
+  const span=padMax-padMin;
+  function xp(ds){if(!ds)return null;const d=new Date(ds+'T12:00:00');return Math.max(0,Math.min(100,(d-padMin)/span*100));}
+
+  // Month header
+  const months=[];const mc=new Date(padMin);mc.setDate(1);
+  while(mc<=padMax){
+    const nx=new Date(mc);nx.setMonth(nx.getMonth()+1);
+    const s=Math.max(0,(mc-padMin)/span*100);
+    const e=Math.min(100,(nx-padMin)/span*100);
+    months.push({label:mc.toLocaleDateString('en-US',{month:'short',year:'2-digit'}),w:e-s});
+    mc.setMonth(mc.getMonth()+1);
+  }
+  const todayPct=xp(today);
+  let html=`<div class="gantt-header">${months.map(m=>`<div class="gantt-month-lbl" style="flex:${m.w} 0 0%">${m.label}</div>`).join('')}</div>`;
+
+  phases.forEach((ph,phIdx)=>{
+    const range=phaseRange(ph.id);
+    const prog=phaseProgress(ph.id);
+    const gates=roadGates(ph.id);
+    const color=ph.color||'#5a5040';
+    const isDated=range.start&&range.end;
+    const isAllDone=prog.total>0&&prog.done===prog.total;
+    const numBadge=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
+
+    // ── Phase bar row ──────────────────────────────────────────────
+    html+=`<div class="gantt-row"${phIdx===0?' style="margin-top:0"':''}>`;
+    html+=`<div class="gantt-label" title="${esc(ph.label)}">${numBadge}${esc(ph.label)}</div>`;
+    html+=`<div class="gantt-track${isDated?'':' undated'}" style="position:relative">`;
+    if(todayPct!==null)html+=`<div class="gantt-today-line" style="left:${todayPct}%"><span class="gantt-today-lbl">Today</span></div>`;
+    if(isDated){
+      const lp=xp(range.start),rp=xp(range.end),bw=Math.max(2,rp-lp),fw=prog.pct;
+      const fillGrad=isAllDone?'background:var(--done-fg)':`background:linear-gradient(90deg,${color}dd,${color}66)`;
+      html+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${color}22;border:1px solid ${color}77">`;
+      html+=`<div class="gantt-bar-fill" style="${fillGrad};width:${fw}%"></div>`;
+      html+=`<div class="gantt-bar-label">${esc(ph.label)}</div>`;
+      html+=`</div>`;
+      if(isAllDone)html+=`<div class="gantt-done-stamp">&#10003; Done</div>`;
+      else html+=`<div class="gantt-pct" style="left:${Math.min(rp+1,96)}%">${fw}%</div>`;
+    } else {
+      html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:8px;right:8px;font-family:'Source Code Pro',monospace;font-size:15px;font-weight:700;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
+    }
+    // Gate diamonds overlaid on bar track (level 1 and 2)
+    // Diamond at gate date; inline date label right (<65%) or left (>65%) of diamond
+    if(roadLevel>=1){
+      gates.forEach(g=>{
+        const inheritedDate=gateInheritDate(g.phase);
+        const displayDate=g.date||inheritedDate;
+        const plotDate=g.met&&g.metDate?g.metDate:displayDate;
+        const gp=xp(plotDate);
+        if(gp===null)return;
+        const tip=esc(g.label)+(g.met&&g.metDate?' · Met: '+fmtDate(g.metDate):displayDate?' · Target: '+fmtDate(displayDate):'');
+        const dateLabel=g.met&&g.metDate?fmtDate(g.metDate):(displayDate?fmtDate(displayDate):'');
+        const dateColor=g.met?'var(--done-fg)':'#7a4a00';
+        html+=`<div class="gantt-diamond${g.met?' met':''}" style="left:${gp}%" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
+        if(dateLabel){
+          if(gp<=65){
+            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(${gp}% + 13px);font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
+          } else {
+            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);right:calc(${100-gp}% + 13px);font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5;text-align:right">${esc(dateLabel)}</div>`;
+          }
+        }
+      });
+    }
+    html+=`</div></div>`; // close track + row
+
+    // ── Annotation strip (level 2 only) ───────────────────────────
+    if(roadLevel>=2&&gates.length>0){
+      // Only render strip if at least one gate has a plottable date
+      const plottableGates=gates.filter(g=>{
+        const inh=gateInheritDate(g.phase);
+        const disp=g.date||inh;
+        const plot=g.met&&g.metDate?g.metDate:disp;
+        return xp(plot)!==null;
+      });
+      if(plottableGates.length>0){
+        html+=`<div class="gantt-annot-row">`;
+        html+=`<div class="gantt-annot-spacer"></div>`;
+        html+=`<div class="gantt-annot-track" style="position:relative">`;
+        // Render each gate annotation pinned at its x position
+        // Collect all pins first, then render sorted so right-anchored ones don't overlap
+        plottableGates.forEach(g=>{
+          const inh=gateInheritDate(g.phase);
+          const disp=g.date||inh;
+          const plot=g.met&&g.metDate?g.metDate:disp;
+          const gp=xp(plot);
+          const dateStr=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?fmtDate(disp):'';
+          const labelStr=g.label.length>38?g.label.substring(0,38)+'\u2026':g.label;
+          const dateCls=g.met?'ap-date met':'ap-date';
+          const anchorStyle=gp>68
+            ?`right:${100-gp}%;text-align:right`
+            :`left:${gp}%`;
+          html+=`<div class="gantt-annot-pin" style="${anchorStyle}">`;
+          if(dateStr)html+=`<div class="${dateCls}">${esc(dateStr)}</div>`;
+          html+=`<div class="ap-label">${esc(labelStr)}</div>`;
+          html+=`</div>`;
+        });
+        html+=`</div></div>`; // close annot-track + annot-row
+      }
+    }
+  });
+
+  document.getElementById('gantt-chart').innerHTML=html;
+  const ts=S.road.filter(r=>r.kind==='step').length,ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
+  document.getElementById('gantt-summary').textContent=ds+' / '+ts+' steps complete';
+}
+
+function toggleGate(id){const g=S.road.find(r=>r.id===id);if(!g)return;g.met=!g.met;if(g.met){g.metDate=todayStr();}else{g.metDate='';}save();renderGantt();renderTaskList();}
+
+let roadEditingId=null;
+
+function renderTaskList(){
+  const phases=roadPhases();
+  const ts=S.road.filter(r=>r.kind==='step').length,ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
+  document.getElementById('tasklist-summary').textContent=ds+' / '+ts+' steps complete';
+  let html='';
+
+  phases.forEach((ph,pi)=>{
+    const steps=roadSteps(ph.id),gates=roadGates(ph.id),prog=phaseProgress(ph.id),isOpen=ph.open!==false;
+    const isEditingPhase=roadEditingId===ph.id;
+    const firstPh=pi===0,lastPh=pi===phases.length-1;
+    const numBadge=ph.num?`<span class="phase-num-badge">${String(ph.num).padStart(2,'0')}</span>`:'';
+
+    html+=`<div class="road-phase-block${isOpen?' open':''}" id="rpb_${ph.id}">`;
+
+    if(isEditingPhase){
+      html+=`<div class="road-phase-hd" style="gap:6px;flex-wrap:wrap">
+        <input class="road-phase-num-inp" type="number" id="rpe_num_${ph.id}" value="${ph.num||''}" min="1" max="99" onclick="event.stopPropagation()" />
+        <input class="road-phase-edit-inp" id="rpe_label_${ph.id}" value="${esc(ph.label)}" onclick="event.stopPropagation()" />
+        <button class="road-inline-save" onclick="event.stopPropagation();savePhaseEdit('${ph.id}')">Save</button>
+        <button class="road-inline-cancel" onclick="event.stopPropagation();roadEditingId=null;renderTaskList()">Cancel</button>
+        <button class="road-step-del" onclick="event.stopPropagation();deleteRoadItem('${ph.id}')" title="Delete phase" style="margin-left:auto">&#10005;</button>
+      </div>`;
+    } else {
+      html+=`<div class="road-phase-hd" onclick="togglePhaseBlock('${ph.id}')">
+        <div class="road-move-btns" onclick="event.stopPropagation()">
+          <button class="road-move-btn" onclick="movePhase('${ph.id}',-1)" title="Move up" ${firstPh?'disabled':''}>&#9650;</button>
+          <button class="road-move-btn" onclick="movePhase('${ph.id}',1)" title="Move down" ${lastPh?'disabled':''}>&#9660;</button>
+        </div>
+        <span class="road-phase-name">${numBadge}${esc(ph.label)}</span>
+        <span class="road-phase-prog">${prog.done}/${prog.total}</span>
+        <button class="road-clone-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase">Clone</button>
+        <button class="road-edit-btn" onclick="event.stopPropagation();roadEditingId='${ph.id}';renderTaskList()" title="Edit phase">Edit</button>
+        <span class="road-phase-chev">&#8250;</span>
+      </div>`;
+    }
+
+    html+=`<div class="road-phase-items">`;
+
+    steps.forEach((s,si)=>{
+      const isEditingStep=roadEditingId===s.id;
+      const firstS=si===0,lastS=si===steps.length-1;
+      const phaseOpts=phases.map(p=>`<option value="${p.id}"${p.id===ph.id?' selected':''}>${esc(p.label)}</option>`).join('');
+
+      if(isEditingStep){
+        html+=`<div class="road-step" style="flex-direction:column;padding:0">
+          <div class="road-inline-edit">
+            <div class="road-inline-edit-row">
+              <input type="text" id="rpe_sl_${s.id}" value="${esc(s.label)}" placeholder="Label" />
+            </div>
+            <textarea id="rpe_sn_${s.id}" placeholder="Note (optional)">${esc(s.note||'')}</textarea>
+            <div class="road-inline-edit-row">
+              <select id="rpe_sp_${s.id}">${phaseOpts}</select>
+              <input type="date" id="rpe_ss_${s.id}" value="${esc(s.targetStart||'')}" title="Start date" placeholder="Start" style="width:120px" />
+              <input type="date" id="rpe_sd_${s.id}" value="${esc(s.targetEnd||'')}" title="End date" placeholder="End" style="width:120px" />
+            </div>
+            <div>
+              <button class="road-inline-save" onclick="saveStepEdit('${s.id}')">Save</button>
+              <button class="road-inline-cancel" onclick="roadEditingId=null;renderTaskList()">Cancel</button>
+              <button class="road-step-del" onclick="deleteRoadItem('${s.id}')" style="margin-left:8px" title="Delete">&#10005; Delete</button>
+            </div>
+          </div>
+        </div>`;
+      } else {
+        html+=`<div class="road-step${s.done?' done-step':''}">
+          <div class="road-move-btns">
+            <button class="road-move-btn" onclick="moveStep('${s.id}',-1)" title="Move up" ${firstS?'disabled':''}>&#9650;</button>
+            <button class="road-move-btn" onclick="moveStep('${s.id}',1)" title="Move down" ${lastS?'disabled':''}>&#9660;</button>
+          </div>
+          <div class="road-step-cb" onclick="toggleStep('${s.id}')">${s.done?'&#10003;':''}</div>
+          <div class="road-step-body">
+            <div class="road-step-label">${esc(s.label)}</div>
+            ${s.note?`<div class="road-step-note">${esc(s.note)}</div>`:''}
+            ${s.cmd?`<span class="road-step-cmd">${esc(s.cmd)}</span>`:''}
+          </div>
+          <div class="road-step-dates">
+            <div class="road-step-date-pair"><span class="road-step-date-lbl">Start</span><input type="date" class="road-step-date-inp" value="${esc(s.targetStart||'')}" onchange="setStepDate('${s.id}','start',this.value)" /></div>
+            <div class="road-step-date-pair"><span class="road-step-date-lbl">End</span><input type="date" class="road-step-date-inp" value="${esc(s.targetEnd||'')}" onchange="setStepDate('${s.id}','end',this.value)" /></div>
+            <div class="road-step-date-pair"><span class="road-step-date-lbl">Completed</span><span class="road-step-date-val">${s.completedDate?fmtDate(s.completedDate):(s.done?'&#10003;':'\u2014')}</span></div>
+          </div>
+          <button class="road-clone-btn" onclick="cloneStep('${s.id}')" title="Clone step">Clone</button>
+          <button class="road-edit-btn" onclick="roadEditingId='${s.id}';renderTaskList()" title="Edit">Edit</button>
+          <button class="road-step-del" onclick="deleteRoadItem('${s.id}')" title="Delete">&#10005;</button>
+        </div>`;
+      }
+    });
+
+    // Gates
+    gates.forEach((g,gi)=>{
+      const isEditingGate=roadEditingId===g.id;
+      const firstG=gi===0,lastG=gi===gates.length-1;
+      const inheritedDate=gateInheritDate(g.phase);
+      const displayDate=g.date||inheritedDate;
+      if(isEditingGate){
+        html+=`<div class="road-gate-row" style="flex-wrap:wrap;gap:6px">
+          <input type="text" id="rpe_gl_${g.id}" value="${esc(g.label)}" placeholder="Gate label" style="flex:1;min-width:200px;font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid #b06000;background:var(--card-bg);color:var(--label-primary);padding:3px 8px;outline:none" />
+          <input type="date" id="rpe_gd_${g.id}" value="${esc(g.date||inheritedDate)}" title="Override date (leave blank to inherit from latest step)" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid #b06000;background:var(--card-bg);color:var(--label-primary);padding:3px 6px;outline:none;width:130px" />
+          <button class="road-inline-save" onclick="saveGateEdit('${g.id}')">Save</button>
+          <button class="road-inline-cancel" onclick="roadEditingId=null;renderTaskList()">Cancel</button>
+          <button class="road-gate-del" onclick="deleteRoadItem('${g.id}')" title="Delete">&#10005;</button>
+        </div>`;
+      } else {
+        const gateDateDisplay=g.met&&g.metDate?`<span style="color:var(--done-fg);font-weight:600">Met: ${fmtDate(g.metDate)}</span>`:(displayDate?`<span>Target: ${fmtDate(displayDate)}</span>`:'<span style="color:#bbb">No date set</span>');
+        html+=`<div class="road-gate-row" style="flex-wrap:wrap;align-items:flex-start">
+          <div class="road-move-btns" style="flex-direction:row;gap:2px;margin-top:2px">
+            <button class="road-move-btn" onclick="moveGate('${g.id}',-1)" title="Move up" ${firstG?'disabled':''}>&#9650;</button>
+            <button class="road-move-btn" onclick="moveGate('${g.id}',1)" title="Move down" ${lastG?'disabled':''}>&#9660;</button>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="road-gate-diamond-sm${g.met?' met':''}" onclick="toggleGate('${g.id}')" title="${g.met?'Mark unmet':'Mark met'}"></div>
+              <span class="road-gate-text">${esc(g.label)}</span>
+            </div>
+            <div style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);padding-left:24px;font-style:italic">${gateDateDisplay} &nbsp;·&nbsp; <span style="color:#aaa">${g.met?'Stage gate met':'Stage gate — click ◆ to mark complete'}</span></div>
+          </div>
+          <button class="road-edit-btn" onclick="roadEditingId='${g.id}';renderTaskList()" title="Edit">Edit</button>
+          <button class="road-gate-del" onclick="deleteRoadItem('${g.id}')" title="Delete">&#10005;</button>
+        </div>`;
+      }
+    });
+
+    html+=`<div class="road-add-step-row"><button class="road-add-step-btn" onclick="quickAddStep('${ph.id}')">+ Add step to this phase&hellip;</button></div>`;
+    html+=`</div></div>`;
+  });
+
+  document.getElementById('road-task-list').innerHTML=html;
+  // sync phase selector in add bar
+  const sel=document.getElementById('ra-phase-sel');
+  if(sel){const prev=sel.value;sel.innerHTML='<option value="">-- Phase --</option>'+phases.map(ph=>`<option value="${ph.id}"${ph.id===prev?' selected':''}>${esc(ph.num?`[${String(ph.num).padStart(2,'0')}] `:'')}${esc(ph.label)}</option>`).join('');}
+
+  // Apply current roadLevel
+  applyRoadLevel();
+}
+
+/* ── RENUMBER PHASES ── */
+function renumberPhases(){
+  let n=1;S.road.forEach(r=>{if(r.kind==='phase'){r.num=n;n++;}});
+}
+
+/* ── INLINE SAVE ── */
+function savePhaseEdit(id){
+  const ph=S.road.find(r=>r.id===id);if(!ph)return;
+  const lbl=document.getElementById('rpe_label_'+id);
+  if(lbl&&lbl.value.trim())ph.label=lbl.value.trim();
+  const numInp=document.getElementById('rpe_num_'+id);
+  if(numInp&&numInp.value){
+    const newNum=parseInt(numInp.value,10);
+    if(newNum!==ph.num){
+      // Renumber cascade: shift phases at newNum and above up by 1 (if not out of range)
+      const phases=roadPhases();
+      const conflict=phases.find(p=>p.id!==id&&p.num===newNum);
+      if(conflict){
+        // Shift all phases >= newNum up by 1, then assign
+        S.road.forEach(r=>{if(r.kind==='phase'&&r.num>=newNum&&r.id!==id)r.num++;});
+      }
+      ph.num=newNum;
+    }
+  }
+  roadEditingId=null;save();renderGantt();renderTaskList();
+}
+function saveStepEdit(id){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  const lbl=document.getElementById('rpe_sl_'+id);if(lbl&&lbl.value.trim())s.label=lbl.value.trim();
+  const nt=document.getElementById('rpe_sn_'+id);if(nt)s.note=nt.value.trim();
+  const ds=document.getElementById('rpe_ss_'+id);if(ds)s.targetStart=ds.value||'';
+  const dt=document.getElementById('rpe_sd_'+id);if(dt)s.targetEnd=dt.value||'';
+  const ph=document.getElementById('rpe_sp_'+id);
+  if(ph&&ph.value&&ph.value!==s.phase){
+    s.phase=ph.value;
+    const idx=S.road.findIndex(r=>r.id===id);
+    if(idx>=0){
+      const [item]=S.road.splice(idx,1);
+      let insertAt=S.road.length;
+      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===ph.value||S.road[i].id===ph.value){insertAt=i+1;break;}}
+      S.road.splice(insertAt,0,item);
+    }
+  }
+  roadEditingId=null;save();renderGantt();renderTaskList();
+}
+function saveGateEdit(id){
+  const g=S.road.find(r=>r.id===id);if(!g)return;
+  const lbl=document.getElementById('rpe_gl_'+id);if(lbl&&lbl.value.trim())g.label=lbl.value.trim();
+  const dt=document.getElementById('rpe_gd_'+id);
+  if(dt){
+    const enteredDate=dt.value||'';
+    const inheritedDate=gateInheritDate(g.phase);
+    // Only store if it differs from pure inheritance (acts as manual override); clear if matches inherited or empty
+    g.date=(enteredDate&&enteredDate!==inheritedDate)?enteredDate:'';
+  }
+  roadEditingId=null;save();renderGantt();renderTaskList();
+}
+
+/* ── MOVE UP/DOWN ── */
+function movePhase(id,dir){
+  const phases=roadPhases();
+  const pi=phases.findIndex(p=>p.id===id);
+  const targetPi=pi+dir;
+  if(targetPi<0||targetPi>=phases.length)return;
+  function phaseBlock(phId){
+    const phIdx=S.road.findIndex(r=>r.id===phId);
+    const items=[S.road[phIdx]];
+    for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;items.push(S.road[i]);}
+    return{start:phIdx,items};
+  }
+  const curBlock=phaseBlock(id);
+  const tgtBlock=phaseBlock(phases[targetPi].id);
+  S.road.splice(curBlock.start,curBlock.items.length);
+  const newTgt=S.road.findIndex(r=>r.id===phases[targetPi].id);
+  const insertAt=dir<0?newTgt:newTgt+phaseBlock2Count(phases[targetPi].id);
+  S.road.splice(insertAt,0,...curBlock.items);
+  renumberPhases();
+  save();renderGantt();renderTaskList();
+}
+function phaseBlock2Count(phId){
+  let count=0,found=false;
+  for(const r of S.road){
+    if(r.id===phId){found=true;count++;continue;}
+    if(found){if(r.kind==='phase')break;count++;}
+  }
+  return count;
+}
+function moveStep(id,dir){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  const steps=roadSteps(s.phase);
+  const si=steps.findIndex(x=>x.id===id);
+  const targetSi=si+dir;
+  if(targetSi<0||targetSi>=steps.length)return;
+  const ai=S.road.findIndex(r=>r.id===id);
+  const bi=S.road.findIndex(r=>r.id===steps[targetSi].id);
+  [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
+  save();renderGantt();renderTaskList();
+}
+function moveGate(id,dir){
+  const g=S.road.find(r=>r.id===id);if(!g)return;
+  const gates=roadGates(g.phase);
+  const gi=gates.findIndex(x=>x.id===id);
+  const targetGi=gi+dir;
+  if(targetGi<0||targetGi>=gates.length)return;
+  const ai=S.road.findIndex(r=>r.id===id);
+  const bi=S.road.findIndex(r=>r.id===gates[targetGi].id);
+  [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
+  save();renderGantt();renderTaskList();
+}
+
+/* ── CLONE ── */
+function clonePhase(pid){
+  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
+  const phIdx=S.road.findIndex(r=>r.id===pid);
+  // Collect all items in the phase block
+  const block=[];
+  block.push(ph);
+  for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
+  // Build clones with new IDs
+  const idMap={};
+  const clones=block.map(r=>{
+    const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+    idMap[r.id]=newId;
+    const clone={...r,id:newId};
+    if(clone.kind==='phase'){clone.num=(ph.num||0)+1;}
+    if(clone.phase)clone.phase=idMap[clone.phase]||clone.phase;
+    return clone;
+  });
+  // Insert immediately after original block
+  const insertAt=phIdx+block.length;
+  S.road.splice(insertAt,0,...clones);
+  renumberPhases();
+  save();renderGantt();renderTaskList();
+}
+function cloneStep(sid){
+  const s=S.road.find(r=>r.id===sid);if(!s)return;
+  const si=S.road.findIndex(r=>r.id===sid);
+  const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  const clone={...s,id:newId,done:false,completedDate:''};
+  S.road.splice(si+1,0,clone);
+  save();renderGantt();renderTaskList();
+}
+
+function togglePhaseBlock(pid){
+  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
+  ph.open=!ph.open;
+  save();renderTaskList();
+}
+function toggleStep(id){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  s.done=!s.done;
+  if(s.done)s.completedDate=todayStr();else s.completedDate='';
+  save();renderGantt();renderTaskList();
+}
+function setStepDate(id,which,val){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  if(which==='start')s.targetStart=val;
+  if(which==='end')s.targetEnd=val;
+  save();renderGantt();renderTaskList();
+}
+function setGateDate(id,val){const g=S.road.find(r=>r.id===id);if(!g)return;g.date=val;save();renderGantt();renderTaskList();}
+function deleteRoadItem(id){if(!confirm('Delete?'))return;S.road=S.road.filter(r=>r.id!==id);renumberPhases();save();renderGantt();renderTaskList();}
+
+function raPhaseMode(){
+  const mode=document.querySelector('input[name="ra-phase-mode"]:checked').value;
+  const phaseSel=document.getElementById('ra-phase-sel');
+  const insertAfterSel=document.getElementById('ra-insert-after');
+  const kind=document.getElementById('ra-kind').value;
+  if(mode==='new'){
+    phaseSel.disabled=true;phaseSel.style.opacity='.4';
+    if(insertAfterSel)insertAfterSel.style.display='none';
+  } else {
+    phaseSel.disabled=false;phaseSel.style.opacity='1';
+    if(insertAfterSel&&kind==='step')insertAfterSel.style.display='inline-block';
+  }
+}
+function raKindChange(){
+  const v=document.getElementById('ra-kind').value;
+  const needPhase=v==='step'||v==='gate';
+  document.getElementById('ra-phase-sel').style.display=needPhase?'inline-flex':'none';
+  document.getElementById('ra-phase-mode-wrap').style.display=needPhase?'inline-flex':'none';
+  document.getElementById('ra-note').style.display=v==='gate'?'none':'inline-block';
+  document.getElementById('ra-phase-num').style.display=v==='phase'?'inline-block':'none';
+  const insertAfterSel=document.getElementById('ra-insert-after');
+  if(insertAfterSel){
+    insertAfterSel.style.display=(v==='step'&&document.querySelector('input[name="ra-phase-mode"]:checked')?.value==='existing')?'inline-block':'none';
+  }
+}
+function raSyncInsertAfter(){
+  const phaseId=document.getElementById('ra-phase-sel').value;
+  const sel=document.getElementById('ra-insert-after');
+  if(!sel||!phaseId)return;
+  const steps=roadSteps(phaseId);
+  // Position 0 = insert at beginning
+  sel.innerHTML='<option value="__begin">Position 0 — beginning</option>'+steps.map((s,i)=>`<option value="${s.id}">After step ${i+1}: ${esc(s.label.length>38?s.label.substring(0,38)+'\u2026':s.label)}</option>`).join('')+'<option value="">Insert at end</option>';
+}
+function roadAddItem(){
+  const kind=document.getElementById('ra-kind').value;
+  const label=(document.getElementById('ra-label').value||'').trim();
+  const note=(document.getElementById('ra-note').value||'').trim();
+  const targetStart=document.getElementById('ra-start').value||'';
+  const targetEnd=document.getElementById('ra-end')?document.getElementById('ra-end').value||'':'';
+  if(!label){alert('Label required');return;}
+  const id='r_'+Date.now();
+  const colors=['#3a6b9e','#6b3a9e','#3a7a5a','#9e3a3a','#7a6a2a','#2a6a7a','#4a6b2a','#6b4a2a','#2a4a6b'];
+
+  if(kind==='phase'){
+    const numInp=document.getElementById('ra-phase-num');
+    const reqNum=numInp&&numInp.value?parseInt(numInp.value,10):null;
+    const phases=roadPhases();
+    let insertPos=phases.length; // default: append
+    if(reqNum){
+      const conflict=phases.find(p=>p.num===reqNum);
+      if(conflict){
+        // Shift all phases >= reqNum up
+        S.road.forEach(r=>{if(r.kind==='phase'&&r.num>=reqNum)r.num++;});
+        // Insert before the conflict phase
+        const conflictIdx=S.road.findIndex(r=>r.id===conflict.id);
+        S.road.splice(conflictIdx,0,{id,kind:'phase',num:reqNum,label,color:colors[phases.length%colors.length],open:true});
+      } else {
+        // Beyond count: append at end with next sequential number
+        const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
+        S.road.push({id,kind:'phase',num:maxNum+1,label,color:colors[phases.length%colors.length],open:true});
+      }
+    } else {
+      const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
+      S.road.push({id,kind:'phase',num:maxNum+1,label,color:colors[phases.length%colors.length],open:true});
+    }
+  } else {
+    const modeEl=document.querySelector('input[name="ra-phase-mode"]:checked');
+    const mode=modeEl?modeEl.value:'existing';
+    let phaseId=document.getElementById('ra-phase-sel').value;
+
+    if(mode==='new'){
+      const phId='r_'+Date.now()+'_ph';
+      const maxNum=roadPhases().reduce((m,p)=>Math.max(m,p.num||0),0);
+      S.road.push({id:phId,kind:'phase',num:maxNum+1,label:'New Phase',color:colors[roadPhases().length%colors.length],open:true});
+      phaseId=phId;
+    }
+
+    if(!phaseId){alert('Select a phase');return;}
+
+    const insertAfterSel=document.getElementById('ra-insert-after');
+    const insertAfterId=insertAfterSel?insertAfterSel.value:'';
+    let idx;
+    if(insertAfterId==='__begin'){
+      // Insert at beginning of phase (before first step)
+      const phIdx=S.road.findIndex(r=>r.id===phaseId);
+      idx=phIdx+1; // immediately after phase header
+    } else if(insertAfterId){
+      idx=S.road.findIndex(r=>r.id===insertAfterId);
+      if(idx>=0)idx=idx+1;else idx=S.road.length;
+    } else {
+      idx=S.road.length;
+      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===phaseId){idx=i+1;break;}}
+    }
+
+    if(kind==='step'){
+      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,cmd:null,targetStart,targetEnd,completedDate:'',done:false});
+    } else {
+      S.road.splice(idx,0,{id,kind:'gate',phase:phaseId,label,date:'',met:false});
+    }
+  }
+
+  document.getElementById('ra-label').value='';
+  document.getElementById('ra-note').value='';
+  document.getElementById('ra-start').value='';
+  if(document.getElementById('ra-phase-num'))document.getElementById('ra-phase-num').value='';
+  save();renderGantt();renderTaskList();
+}
+function quickAddStep(pid){
+  const label=prompt('Step label:');if(!label||!label.trim())return;
+  const note=prompt('Note (optional):','')||'';
+  const id='r_'+Date.now();
+  const steps=roadSteps(pid);
+  let insertIdx=S.road.length;
+  if(steps.length>0){
+    const choices='0. Beginning\n'+steps.map((s,i)=>`${i+1}. ${s.label.substring(0,50)}`).join('\n');
+    const ans=prompt(`Insert after which step? (0 = beginning, or end number)\n${choices}`,'0');
+    const n=parseInt(ans,10);
+    if(n===0){
+      // Insert at beginning — immediately after phase header
+      const phIdx=S.road.findIndex(r=>r.id===pid);
+      insertIdx=phIdx+1;
+    } else if(n>0&&n<=steps.length){
+      const afterId=steps[n-1].id;
+      const aidx=S.road.findIndex(r=>r.id===afterId);
+      if(aidx>=0)insertIdx=aidx+1;
+    } else {
+      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===pid){insertIdx=i+1;break;}}
+    }
+  } else {
+    for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===pid){insertIdx=i+1;break;}}
+  }
+  S.road.splice(insertIdx,0,{id,kind:'step',phase:pid,label:label.trim(),note,cmd:null,targetStart:'',targetEnd:'',completedDate:'',done:false});
+  save();renderGantt();renderTaskList();
+}
+
+/* ── EXPORT ── */
+function buildExportJSON(){
+  return JSON.stringify({
+    version:5,
+    exported:new Date().toISOString(),
+    seedVersion:SEED_VERSION,
+    masterVersion:'v262',
+    filters:{status:fSt,tag:fTag,type:fType},
+    items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||''})),
+    road:(S.road||[])
+  },null,2);
+}
+function copyToClaude(){
+  const json=buildExportJSON();
+  const btn=document.getElementById('copy-btn');if(btn)btn.disabled=true;
+  // Try to save as file (iCloud Drive / Files) first, clipboard as fallback
+  try{
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='oc_hub_export.json';
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);URL.revokeObjectURL(url);
+    // Also copy to clipboard
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).catch(()=>{});}
+    clipOk();
+  }catch(e){
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));}else clipFb(json);
+  }
+}
+function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
+function clipFb2(txt){window.prompt('Auto-copy failed:',txt);clipOk();}
+function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;const el=document.getElementById('copy-ok');el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
+
+/* ── OUTREACH ── */
+let OT=[];
+function otLoad(){try{const r=localStorage.getItem(OT_SK);OT=r?JSON.parse(r):[];}catch(e){OT=[];}}
+function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}}
+function addContact(){
+  const name=document.getElementById('ot-name').value.trim();if(!name){alert('Name required');return;}
+  const role=document.getElementById('ot-role').value.trim(),contacted=document.getElementById('ot-date').value,status=document.getElementById('ot-status').value||'new',method=document.getElementById('ot-method').value,link=document.getElementById('ot-link').value.trim(),sent=document.getElementById('ot-sent').value.trim();
+  let due=null;if(contacted&&status!=='confirmed'&&status!=='passed'){const d=new Date(contacted);d.setDate(d.getDate()+15);due=d.toISOString().split('T')[0];}
+  OT.unshift({id:'ot_'+Date.now(),name,role,contacted,status,method,link,sent,due,notes:'',_open:false});
+  otSave();['ot-name','ot-role','ot-link','ot-sent'].forEach(id=>document.getElementById(id).value='');document.getElementById('ot-date').value='';document.getElementById('ot-status').value='new';document.getElementById('ot-method').value='';renderOT();
+}
+function toggleOTNotes(id){const c=OT.find(o=>o.id===id);if(c){c._open=!c._open;renderOT();}}
+function saveOTNotes(id){const ta=document.getElementById('otn_'+id);const c=OT.find(o=>o.id===id);if(c&&ta){c.notes=ta.value;otSave();}}
+function delContact(id){if(!confirm('Delete?'))return;OT=OT.filter(o=>o.id!==id);otSave();renderOT();}
+function updateStatus(id,val){const c=OT.find(o=>o.id===id);if(c){c.status=val;if(val==='confirmed'||val==='passed')c.due=null;otSave();renderOT();}}
+function renderOT(){
+  const tbody=document.getElementById('ot-tbody'),empty=document.getElementById('ot-empty');
+  if(!OT.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const isOD=(due,st)=>due&&st!=='confirmed'&&st!=='passed'&&new Date(due+'T23:59:59')<new Date();
+  tbody.innerHTML=OT.map(c=>`<tr><td><div class="ot-name">${esc(c.name)}</div><div class="ot-role">${esc(c.role)}</div></td><td>${fmtDate(c.contacted)}</td><td><select style="font-size:11px;border:1px solid var(--separator);padding:2px 4px;background:var(--card-bg);font-family:'Source Code Pro',monospace" onchange="updateStatus('${c.id}',this.value)"><option value="new"${c.status==='new'?' selected':''}>New</option><option value="pending"${c.status==='pending'?' selected':''}>Pending</option><option value="confirmed"${c.status==='confirmed'?' selected':''}>Confirmed</option><option value="passed"${c.status==='passed'?' selected':''}>Passed</option></select></td><td><span class="ot-due${isOD(c.due,c.status)?' overdue':''}">${c.due?fmtDate(c.due):'\u2014'}</span></td><td><span style="font-size:11px;color:var(--label-secondary)">${esc(c.method||'\u2014')}</span></td><td style="max-width:140px;overflow:hidden">${c.link?`<a class="ot-link" href="${esc(c.link)}" target="_blank">${esc(c.link.length>28?c.link.substring(0,28)+'\u2026':c.link)}</a>`:'\u2014'}</td><td><button class="ot-expand-btn" onclick="toggleOTNotes('${c.id}')">${c._open?'\u25b2 Hide':'\u25bc Notes'}</button></td><td><button class="ot-del-btn" onclick="delContact('${c.id}')">&#10005;</button></td></tr><tr class="ot-notes-row${c._open?' open':''}"><td class="ot-notes-cell" colspan="8"><textarea class="ot-notes-ta" id="otn_${c.id}" placeholder="Notes\u2026">${esc(c.notes||'')}</textarea><button class="ot-save-btn" onclick="saveOTNotes('${c.id}')">Save</button></td></tr>`).join('');
+}
+
+/* ── REFERENCES ── */
+let RF=[],RF_KW=[],rfEditId=null;
+function rfLoad(){try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}}
+function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
+function rfBuildKwSelects(){const sorted=[...RF_KW].sort((a,b)=>a.localeCompare(b));['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
+function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;inp.value='';}
+function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a keyword first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),kw,url,desc});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
+function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();return ka!==kb?ka.localeCompare(kb):(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
+function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
+function rfCancelEdit(){rfEditId=null;rfRender();}
+function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);if(item){item.kw=kw;item.url=url;item.desc=desc;if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
+function rfDelete(id){if(!confirm('Delete?'))return;RF=RF.filter(r=>r.id!==id);rfSave();rfRender();}
+function rfRender(){
+  const tbody=document.getElementById('rf-tbody'),empty=document.getElementById('rf-empty'),ct=document.getElementById('rf-count');
+  const fk=(document.getElementById('rf-filter-kw')||{}).value||'';rfBuildKwSelects();
+  let list=rfSorted(RF);if(fk)list=list.filter(r=>r.kw===fk);
+  if(ct)ct.textContent=list.length+' reference'+(list.length===1?'':'s');
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const kwS=[...RF_KW].sort((a,b)=>a.localeCompare(b));
+  tbody.innerHTML=list.map(r=>{
+    const isE=rfEditId===r.id;
+    const eRow=isE?`<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4"><div class="rf-edit-grid"><select id="rfe-kw-${r.id}" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">${kwS.map(k=>`<option value="${esc(k)}"${k===r.kw?' selected':''}>${esc(k)}</option>`).join('')}</select><input type="text" id="rfe-url-${r.id}" value="${esc(r.url)}" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-desc-${r.id}" value="${esc(r.desc)}" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /></div><div class="rf-edit-acts"><button class="rf-edit-save" onclick="rfSaveEdit('${r.id}')">Save</button><button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button></div></td></tr>`:'';
+    const trunc=u=>u&&u.length>38?u.substring(0,38)+'\u2026':u||'';
+    return`<tr><td><span class="rf-kw-pill">${esc(r.kw)}</span></td><td>${r.url?`<a class="rf-url-link" href="${esc(r.url)}" target="_blank">${esc(trunc(r.url))}</a>`:'\u2014'}</td><td class="rf-desc">${esc(r.desc)}</td><td style="white-space:nowrap"><button class="rf-act-btn" onclick="rfToggleEdit('${r.id}')">${isE?'Cancel':'Edit'}</button> <button class="rf-act-btn danger" onclick="rfDelete('${r.id}')">&#10005;</button></td></tr>${eRow}`;
+  }).join('');
+}
+
+/* ── INIT ── */
+load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
+// Roadmap renders when tab is clicked; set default level
+setRoadLevel(2);
+</script>
+</body>
+</html>
