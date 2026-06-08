@@ -179,7 +179,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
 .gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB}
-.gantt-scroll-inner{min-width:900px;position:relative}
+.gantt-scroll-inner{position:relative}
 
 /* Sticky label column */
 .gantt-label-col{position:sticky;left:0;z-index:20;background:var(--page-bg);flex-shrink:0;width:224px;min-width:224px}
@@ -549,7 +549,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="gantt-today-btn" onclick="ganttScrollToday()">&#9654; Today</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
-      <button class="gantt-open-panel-btn" onclick="openGanttPanel('gate')">+ Gate</button>
     </div>
     <div class="gantt-legend-bar">
       <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,rgba(56,100,160,.5),rgba(56,100,160,.15))"></div>Phase bar</div>
@@ -1100,8 +1099,17 @@ function gateInheritDate(pid){
 }
 
 /* ── GANTT RENDER ── */
-let ganttTimelineLeft=0,ganttTimelineSpan=1,ganttTimelinePadMin=null;
+let ganttTimelineLeft=0,ganttTimelineSpan=1,ganttTimelinePadMin=null,ganttTotalPx=0;
+const GANTT_PX_PER_DAY=28; // pixels per day — controls timeline zoom
+const GANTT_LABEL_W=224;   // must match CSS width:224px on label cells
 
+function xpx(ds){
+  if(!ds||!ganttTimelinePadMin||!ganttTimelineSpan)return null;
+  const d=new Date(ds+'T12:00:00');
+  const frac=(d-ganttTimelinePadMin)/ganttTimelineSpan;
+  return Math.max(0,Math.min(ganttTotalPx, frac*ganttTotalPx));
+}
+// keep xpct as alias for ganttScrollToday which still uses it
 function xpct(ds){
   if(!ds||!ganttTimelinePadMin||!ganttTimelineSpan)return null;
   const d=new Date(ds+'T12:00:00');
@@ -1129,6 +1137,8 @@ function renderGantt(){
   const span=padMax-padMin;
   ganttTimelinePadMin=padMin;
   ganttTimelineSpan=span;
+  const totalDays=(padMax-padMin)/864e5;
+  ganttTotalPx=Math.round(totalDays*GANTT_PX_PER_DAY);
 
   // Week boundaries (Mondays)
   const weeks=[];
@@ -1137,14 +1147,15 @@ function renderGantt(){
   wc.setDate(wc.getDate()+(dow===0?1:(8-dow)%7||7));
   let wi=0;
   while(wc<=padMax){
-    const pct=(wc-padMin)/span*100;
-    if(pct>=0&&pct<=100){
+    const frac=(wc-padMin)/span;
+    const px=Math.round(frac*ganttTotalPx);
+    if(frac>=-0.01&&frac<=1.01){
       const ds=wc.toISOString().slice(0,10);
-      weeks.push({pct,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),isToday:ds===today});
+      weeks.push({px,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),isToday:ds===today});
     }
     wc.setDate(wc.getDate()+7);wi++;
   }
-  const todayPct=xpct(today);
+  const todayPx=xpx(today);
 
   let html='';
 
@@ -1157,10 +1168,10 @@ function renderGantt(){
   html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
   // week labels
   weeks.forEach(w=>{
-    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.pct}%">${w.label}</div>`;
+    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.px}px">${w.label}</div>`;
   });
   // today line in header
-  if(todayPct!==null)html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPct}%;width:2px;background:#C70025;opacity:.5;pointer-events:none;z-index:3"></div>`;
+  if(todayPx!==null)html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPx}px;width:2px;background:#C70025;opacity:.5;pointer-events:none;z-index:3"></div>`;
   html+=`</div></div>`; // end header-row
 
   // ── Phase + task rows ──
@@ -1189,17 +1200,17 @@ function renderGantt(){
     html+=`<div class="gantt-phase-track" style="position:relative">`;
     // Week dotted lines
     weeks.forEach(w=>{
-      html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`;
+      html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`;
     });
-    if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
     // Phase bar
     if(range.start&&range.end){
-      const lp=xpct(range.start),rp=xpct(range.end);
+      const lp=xpx(range.start),rp=xpx(range.end);
       if(lp!==null&&rp!==null){
-        const bw=Math.max(1.5,rp-lp);
+        const bw=Math.max(4,rp-lp);
         const fillPct=prog.pct;
         const fillColor=isAllDone?'#1D6B2A':color;
-        html+=`<div class="gantt-ph-bar" style="left:${lp}%;width:${bw}%;border-color:${color}55">`;
+        html+=`<div class="gantt-ph-bar" style="left:${lp}px;width:${bw}px;border-color:${color}55">`;
         html+=`<div class="gantt-ph-bar-bg" style="background:${color};opacity:.18"></div>`;
         html+=`<div class="gantt-ph-bar-fill" style="background:${fillColor};opacity:.85;width:${fillPct}%"></div>`;
         html+=`</div>`;
@@ -1211,10 +1222,10 @@ function renderGantt(){
         const inh=gateInheritDate(g.phase);
         const disp=g.date||inh;
         const plot=g.met&&g.metDate?g.metDate:disp;
-        const gp=xpct(plot);
+        const gp=xpx(plot);
         if(gp===null)return;
         const tip=esc(g.label)+(g.met&&g.metDate?' · Met: '+fmtDate(g.metDate):disp?' · Target: '+fmtDate(disp):'');
-        html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp}%;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
+        html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
       });
     }
     html+=`</div>`; // end track
@@ -1233,10 +1244,10 @@ function renderGantt(){
           html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
           html+=`</div>`;
           html+=`<div class="gantt-gate-task-track" style="position:relative">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
-          if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
-          const gp=xpct(s.targetEnd||s.targetStart||'');
-          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp}%;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+          const gp=xpx(s.targetEnd||s.targetStart||'');
+          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
           html+=`</div></div>`;
         } else {
           // Regular task row
@@ -1250,21 +1261,21 @@ function renderGantt(){
           if(s.done)html+=`<span class="gantt-task-pct" style="color:var(--done-fg)">✓</span>`;
           html+=`</div>`;
           html+=`<div class="gantt-task-track" style="position:relative">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
-          if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
           if(s.targetStart&&s.targetEnd){
-            const lp=xpct(s.targetStart),rp=xpct(s.targetEnd);
+            const lp=xpx(s.targetStart),rp=xpx(s.targetEnd);
             if(lp!==null&&rp!==null){
-              const bw=Math.max(0.5,rp-lp);
-              html+=`<div class="gantt-task-bar" style="left:${lp}%;width:${bw}%">`;
+              const bw=Math.max(2,rp-lp);
+              html+=`<div class="gantt-task-bar" style="left:${lp}px;width:${bw}px">`;
               html+=`<div class="gantt-task-bar-bg" style="background:${color}"></div>`;
               html+=`<div class="gantt-task-bar-fill" style="background:${color};width:${s.done?'100':'50'}%"></div>`;
               html+=`</div>`;
             }
           } else if(s.targetEnd){
-            const ep=xpct(s.targetEnd);
+            const ep=xpx(s.targetEnd);
             if(ep!==null){
-              html+=`<div style="position:absolute;top:50%;left:${ep}%;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
+              html+=`<div style="position:absolute;top:50%;left:${ep}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
             }
           }
           html+=`</div></div>`;
@@ -1282,13 +1293,13 @@ function renderGantt(){
         html+=`</div>`;
         html+=`<div class="gantt-gate-task-track" style="position:relative">`;
         weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
-        if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
-        const gp=xpct(g.met&&g.metDate?g.metDate:disp);
+        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+        const gp=xpx(g.met&&g.metDate?g.metDate:disp);
         if(gp!==null){
-          html+=`<div style="position:absolute;top:50%;left:${gp}%;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
+          html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
           const lbl=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
           if(lbl){
-            const anchor=gp>65?`right:${100-gp}%;text-align:right`:`left:calc(${gp}% + 10px)`;
+            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+10}px`;
             html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:${g.met?'var(--done-fg)':color};white-space:nowrap;pointer-events:none;z-index:5">${esc(lbl)}</div>`;
           }
         }
@@ -1306,6 +1317,7 @@ function renderGantt(){
   // Write to DOM
   const inner=document.getElementById('gantt-scroll-inner');
   if(!inner)return;
+  inner.style.minWidth=(GANTT_LABEL_W+ganttTotalPx+40)+'px';
   inner.innerHTML=html;
 
   // Update summary
