@@ -738,74 +738,85 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <h2>How to Use This Hub</h2>
 
   <h3 style="margin-top:28px">The Basics</h3>
-  <p>This file is your project hub for <em>Over-classified</em>. It lives in iCloud Drive and opens in Safari on any Apple device. All your notes, roadmap phases, steps, and stage gates are stored here.</p>
+  <p>This is your project hub for <em>Over-classified</em>. It runs at <strong>https://brownd11-a11y.github.io/oc-hub/</strong> and opens in Safari on any Apple device. Bookmark it on Mac and add it to your iPhone/iPad home screen for one-tap access.</p>
   <p>There are two places your data lives:</p>
   <ul>
-    <li><strong>Baked into the file</strong> — the seed data I give Claude at the end of each session. This is the authoritative record.</li>
-    <li><strong>Browser localStorage</strong> — changes you make during a working session are saved here automatically as you work. This is temporary working storage.</li>
+    <li><strong>Baked into the file</strong> — the seed data Claude provides at the end of each session. This is the authoritative record, hosted on GitHub.</li>
+    <li><strong>Browser localStorage</strong> — changes you make during a working session save here automatically as you work. This is temporary working storage for the current session.</li>
   </ul>
-  <p>When you open the file, it compares the two. If the file is newer (you downloaded a fresh version from Claude), it uses the file's data. If localStorage is newer (you've been working in this session), it keeps your session work.</p>
+  <p>When you open the hub, it compares the two. If the hosted file is newer (Claude produced a fresh version), it uses that. If localStorage is newer (you've been working this session), it keeps your session work.</p>
 
-  <h3 style="margin-top:28px">&#9654; End of a Working Session</h3>
-  <p>When you've finished making changes and want them preserved across devices and sessions:</p>
+  <h3 style="margin-top:28px">&#9654; End of a Working Session — Step by Step</h3>
   <ol>
-    <li>Click the <strong>Export</strong> button at the top of the Notes tab. This downloads a file called <code>oc_hub_export.json</code> and also copies the data to your clipboard.</li>
-    <li>Open Claude (claude.ai) in this project.</li>
-    <li>Paste the JSON and tell Claude to update the project hub.</li>
-    <li>Claude produces a new HTML file with everything baked in.</li>
-    <li>Save that new HTML file to iCloud Drive, replacing the old one.</li>
-    <li>Done — every device that opens the file from iCloud Drive is now current.</li>
+    <li>Click the <strong>Export</strong> button at the top of the Notes tab. This downloads <code>oc_hub_export.json</code> to <code>iCloud Drive/Downloads</code> and copies the data to your clipboard.</li>
+    <li>Open Claude (claude.ai) in the Over-classified project.</li>
+    <li>Paste the JSON and say: <em>"Update the project hub."</em></li>
+    <li>Claude produces a new file called <code>index.html</code> — download it to <code>iCloud Drive/Downloads</code>.</li>
+    <li>Run the <strong>OC Hub Upload</strong> Automator Quick Action on your Mac. It uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> directly to GitHub and triggers a rebuild.</li>
+    <li>Wait about 60 seconds. The hub at your GitHub URL is now updated on every device.</li>
   </ol>
 
   <h3 style="margin-top:28px">&#9654; Starting a Session on Any Device</h3>
   <ol>
-    <li>Open the Files app and navigate to iCloud Drive.</li>
-    <li>Tap the HTML file — it opens in Safari.</li>
+    <li>On Mac: click the OC Hub bookmark in Safari.</li>
+    <li>On iPhone/iPad: tap the OC Hub icon on your home screen.</li>
     <li>Your data loads automatically. No import needed.</li>
   </ol>
-  <p>If you see old or missing data, it means you're opening a stale version of the file. Make sure you're opening the one in iCloud Drive, not a locally downloaded copy.</p>
 
-  <h3 style="margin-top:28px">&#9654; Using the Shortcut (Mac)</h3>
-  <p>An Automator Quick Action is available to streamline the end-of-session export on Mac:</p>
-  <ol>
-    <li>Run the <strong>Export to Claude</strong> Quick Action from the Services menu.</li>
-    <li>It opens the most recent <code>oc_hub_export.json</code> from your Downloads folder and copies its contents to your clipboard.</li>
-    <li>Paste directly into Claude.</li>
-  </ol>
+  <h3 style="margin-top:28px">&#9654; Automator Quick Actions (Mac)</h3>
+  <p>Two Quick Actions are available from the Services menu (or keyboard shortcuts if assigned):</p>
+  <ul>
+    <li><strong>OC Hub Export</strong> — reads <code>oc_hub_export.json</code> from <code>iCloud Drive/Downloads</code> and copies it to clipboard. Run this before switching to Claude.</li>
+    <li><strong>OC Hub Upload</strong> — uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> to GitHub. Run this after downloading Claude's new file. Live in ~60 seconds.</li>
+  </ul>
 
-  <h3 style="margin-top:28px">&#9654; Using the Shortcut (iPhone / iPad)</h3>
+  <h3 style="margin-top:28px">&#9654; iOS Shortcut (iPhone / iPad)</h3>
   <ol>
     <li>Open the <strong>Shortcuts</strong> app and run <strong>OC Hub Export</strong>.</li>
-    <li>It reads <code>oc_hub_export.json</code> from iCloud Drive and copies the contents to your clipboard.</li>
-    <li>Switch to Claude, paste, and ask Claude to update the hub.</li>
+    <li>It reads <code>oc_hub_export.json</code> from <code>iCloud Drive/Downloads</code> and copies it to your clipboard.</li>
+    <li>Switch to Claude, paste, and say: <em>"Update the project hub."</em></li>
+    <li>Upload the new <code>index.html</code> from your Mac using the Automator Quick Action.</li>
   </ol>
+  <p><strong>Note:</strong> GitHub uploads require the Mac Automator script — the iOS Shortcut handles export only.</p>
+
+  <h3 style="margin-top:28px">&#9654; File Locations</h3>
+  <ul>
+    <li><strong>Export JSON:</strong> <code>iCloud Drive/Downloads/oc_hub_export.json</code> — overwritten each session</li>
+    <li><strong>New hub file from Claude:</strong> <code>iCloud Drive/Downloads/index.html</code> — overwritten each session</li>
+    <li><strong>Live hub:</strong> <code>https://brownd11-a11y.github.io/oc-hub/</code> — updated by Automator upload</li>
+  </ul>
+  <p>Set Safari's default download location to <code>iCloud Drive/Downloads</code> on both Mac and iPhone so files always land in the right place automatically.</p>
+  <ul>
+    <li><strong>Mac:</strong> Safari → Settings → General → File download location → iCloud Drive/Downloads</li>
+    <li><strong>iPhone/iPad:</strong> Settings → Safari → Downloads → iCloud Drive</li>
+  </ul>
 
   <h3 style="margin-top:28px">&#9654; The Roadmap Tab</h3>
-  <p>The Gantt chart has three display levels — use the <strong>Hidden / Bars + Gates / Bars + Gates + Notes</strong> buttons to control what shows:</p>
+  <p>The Gantt chart has three display levels — use the buttons to control what shows:</p>
   <ul>
     <li><strong>Hidden</strong> — chart not visible</li>
-    <li><strong>Bars + Gates</strong> — phase bars with stage gate diamonds overlaid at their target dates</li>
-    <li><strong>Bars + Gates + Notes</strong> — everything above plus a date and label annotation beneath each bar</li>
+    <li><strong>Bars + Gates</strong> — phase bars with stage gate diamonds at their target dates</li>
+    <li><strong>Bars + Gates + Notes</strong> — everything above plus date and label annotation beneath each bar</li>
   </ul>
-  <p>Each phase bar spans from the earliest step start date to the latest step end date. The stage gate diamond sits at the latest end date (same as the bar's right edge). Click a diamond to mark the gate met — it records today's date automatically.</p>
-  <p>Step dates: each step has a <strong>Start</strong> and <strong>End</strong> date. Start defaults to blank (bar left edge falls back to earliest end date if no starts are set). Enter dates directly in the task list below the chart.</p>
+  <p>Each phase bar spans from the earliest step start date to the latest step end date. The gate diamond sits at the latest end date. Click a diamond to mark it met — today's date is recorded automatically.</p>
+  <p>Each step has a <strong>Start</strong> and <strong>End</strong> date. Enter them in the task list below the chart.</p>
 
   <h3 style="margin-top:28px">&#9654; Data Safety</h3>
   <ul>
-    <li>Old localStorage keys (v3, v4) are automatically deleted the first time you open a new version of the file. No accumulation over time.</li>
-    <li>If you forget to export at the end of a session, your work is still in localStorage on that device. Open the file on the same device, export, then give it to Claude.</li>
-    <li>The file is the source of truth. localStorage is a working buffer.</li>
+    <li>Old localStorage keys are deleted automatically on first open — no accumulation over time.</li>
+    <li>If you forget to export at session end, your work is still in localStorage on that device. Open the hub on the same device, export, then give it to Claude.</li>
+    <li>GitHub is the source of truth. localStorage is a working buffer for the current session.</li>
   </ul>
 
   <h3 style="margin-top:28px">&#9654; Asking Claude for Changes</h3>
   <p>At the start of any session, Claude reads the Project Instructions and has your memory context. You can ask for:</p>
   <ul>
-    <li>Edits to the roadmap data (add phases, steps, gates)</li>
+    <li>Edits to the roadmap (add phases, steps, gates, dates)</li>
     <li>Interface improvements to this hub</li>
     <li>Document work on the manuscript</li>
     <li>Research, sourcing, or editorial passes</li>
   </ul>
-  <p>Always paste the JSON export at the start of a session if you've made roadmap changes since the last HTML was generated — that keeps Claude's copy current.</p>
+  <p>Paste the JSON export at the start of any session where you've made roadmap changes — that keeps Claude's copy current before producing a new file.</p>
 
 </div></div>
 
@@ -1769,7 +1780,6 @@ function buildExportJSON(){
 function copyToClaude(){
   const json=buildExportJSON();
   const btn=document.getElementById('copy-btn');if(btn)btn.disabled=true;
-  // Try to save as file (iCloud Drive / Files) first, clipboard as fallback
   try{
     const blob=new Blob([json],{type:'application/json'});
     const url=URL.createObjectURL(blob);
@@ -1777,9 +1787,14 @@ function copyToClaude(){
     a.href=url;a.download='oc_hub_export.json';
     document.body.appendChild(a);a.click();
     document.body.removeChild(a);URL.revokeObjectURL(url);
-    // Also copy to clipboard
+    // Copy to clipboard simultaneously
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).catch(()=>{});}
     clipOk();
+    // Show save-location reminder
+    setTimeout(()=>{
+      const el=document.getElementById('export-location-note');
+      if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',8000);}
+    },300);
   }catch(e){
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));}else clipFb(json);
   }
