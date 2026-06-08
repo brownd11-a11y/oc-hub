@@ -167,149 +167,135 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .copy-btn:hover{background:var(--accent)}
 .copy-ok{color:var(--done-fg);font-size:10px;display:none}
 
-/* ── ROADMAP TAB ── */
-.road-panel{padding:0 0 40px}
-.road-section-hd{display:flex;align-items:center;gap:12px;padding:11px 32px;cursor:pointer;user-select:none;background:#1e1c18;border-bottom:1px solid #2a2820;transition:background .15s}
-.road-section-hd:hover{background:#252218}
-.road-section-title{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#b0a080;flex:1}
-.road-section-sub{font-family:'Source Code Pro',monospace;font-size:11px;color:#706858}
-.road-section-tog{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#555045;border:1px solid #333028;background:none;padding:3px 9px;cursor:pointer}
-.road-section-body{background:var(--page-bg)}
+/* ── INTEGRATED GANTT (Roadmap tab) ── */
+.road-tab-wrap{padding:0 0 40px}
 
-/* ── ROADMAP COLLAPSE TOGGLE STRIP ── */
+/* Collapse-level strip */
 .road-collapse-strip{display:flex;align-items:center;gap:0;padding:10px 32px;background:#f0ece0;border-bottom:1px solid #d8d3c5}
 .road-collapse-strip span{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-right:10px}
 .rcl-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 14px;cursor:pointer;transition:all .15s;border-right:none}
 .rcl-btn:last-child{border-right:1px solid var(--separator)}
 .rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
 
-/* ── GANTT ── */
-.gantt-wrap{padding:20px 32px 24px;overflow-x:auto}
-.gantt-outer{display:flex;flex-direction:column;overflow:hidden;border:1px solid #D1D5DB;border-radius:6px;background:#F8F9FB}
-.gantt-sticky-header{position:sticky;top:0;z-index:10;background:#F0F2F7;border-bottom:2px solid #C7CBD6;display:flex;align-items:stretch;min-height:28px}
-.gantt-sticky-label{width:190px;flex-shrink:0;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;position:sticky;left:0;z-index:11}
-.gantt-sticky-label span{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:#C70025;letter-spacing:.04em;text-transform:uppercase}
-.gantt-sticky-label .today-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#C70025;margin-right:5px;vertical-align:middle}
-.gantt-header-track{flex:1;position:relative;height:28px;overflow:hidden}
-.gantt-week-lbl{position:absolute;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:6px;z-index:2}
+/* ── Outer scroll wrapper: full width, sticky label col ── */
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:visible;position:relative;border-bottom:1px solid #D1D5DB}
+.gantt-scroll-inner{min-width:900px;position:relative}
+
+/* Sticky label column */
+.gantt-label-col{position:sticky;left:0;z-index:20;background:var(--page-bg);flex-shrink:0;width:224px;min-width:224px}
+
+/* Header row */
+.gantt-header-row{display:flex;align-items:stretch;height:36px;border-bottom:2px solid #C7CBD6;position:sticky;top:0;z-index:15;background:#F0F2F7}
+.gantt-header-label{width:224px;flex-shrink:0;position:sticky;left:0;z-index:21;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;gap:8px}
+.gantt-header-label span{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:#C70025;letter-spacing:.06em;text-transform:uppercase}
+.gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(199,0,37,.4);background:none;color:#C70025;padding:2px 8px;cursor:pointer;transition:all .15s}
+.gantt-today-btn:hover{background:rgba(199,0,37,.1)}
+.gantt-header-timeline{flex:1;position:relative;overflow:hidden}
+.gantt-week-lbl{position:absolute;font-family:'Source Code Pro',monospace;font-size:9px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:10px;z-index:2;pointer-events:none}
 .gantt-week-lbl.today-week{color:#C70025;font-weight:700}
-.gantt-header-today{position:absolute;top:0;bottom:0;width:2px;background:#C70025;opacity:.5;z-index:3}
-.gantt-header-sep{position:absolute;top:4px;bottom:4px;width:1px;border-left:1px dashed #C7CBD6;z-index:1}
-/* Scrollable body */
-.gantt-scroll-body{overflow-y:auto;overflow-x:auto;flex:1}
-.gantt-chart{min-width:600px;position:relative}
-/* Week band grid */
-.gantt-grid{position:absolute;top:0;left:190px;right:0;bottom:0;pointer-events:none;z-index:0}
-.gantt-week-band{position:absolute;top:0;bottom:0}
-.gantt-week-band.even{background:rgba(209,213,219,.28)}
-.gantt-week-band.odd{background:rgba(248,249,251,.6)}
-.gantt-week-sep{position:absolute;top:0;bottom:0;width:1px;border-left:1px dashed #D1D5DB;z-index:1}
-/* Phase bar row */
-.gantt-row{display:flex;align-items:center;margin-bottom:0;margin-top:6px;position:relative;z-index:2;min-height:44px}
-.gantt-label{width:190px;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#111827;padding-right:14px;text-align:right;line-height:1.3;position:sticky;left:0;background:#F8F9FB;z-index:6;border-right:1px solid #D1D5DB}
-.gantt-track{flex:1;position:relative;height:36px;background:#E8EBF2;border:1px solid #CDD2DC;border-radius:4px;overflow:visible}
-.gantt-track.undated{background:#EEF0F5;border-color:#DDE0E8}
-.gantt-bar{position:absolute;top:4px;height:28px;min-width:4px;border-radius:3px;overflow:hidden}
-.gantt-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s;border-radius:3px 0 0 3px}
-.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.55)}
-.gantt-pct{position:absolute;right:-36px;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#6B7280;width:32px;text-align:left}
-.gantt-done-stamp{position:absolute;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:var(--done-fg);white-space:nowrap;right:-72px}
-/* Today line on bar track */
-.gantt-today-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:#C70025;opacity:.6;z-index:5;pointer-events:none;border-radius:1px}
-/* Gate diamond */
-.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #4F6DF5;background:#fff;cursor:pointer;transition:all .18s;z-index:4;box-shadow:0 1px 3px rgba(79,109,245,.3)}
-.gantt-diamond.met{background:#4F6DF5;border-color:#3451D1}
-.gantt-diamond:hover{transform:translateY(-50%) translateX(-7px) rotate(45deg) scale(1.25)}
-/* Annotation strip */
-.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:2px;min-height:26px;position:relative;z-index:2}
-.gantt-annot-spacer{width:190px;flex-shrink:0;position:sticky;left:0;background:#F8F9FB;border-right:1px solid #D1D5DB}
-.gantt-annot-track{flex:1;position:relative;height:28px}
-.gantt-annot-pin{position:absolute;top:3px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;line-height:1.4;pointer-events:none;max-width:200px}
-.gantt-annot-pin .ap-date{font-weight:700;color:#2338A8}
-.gantt-annot-pin .ap-date.met{color:var(--done-fg)}
-.gantt-annot-pin .ap-label{font-style:italic;color:#4F6DF5}
-/* Legend */
-.gantt-legend{display:flex;gap:14px;padding:8px 32px 4px;flex-wrap:wrap}
-.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#6B7280}
-.gantt-leg-swatch{width:14px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.1)}
 
-/* ── ADD BAR ── */
-.road-add-bar{display:flex;gap:8px;align-items:center;padding:10px 32px;background:var(--page-bg);border-bottom:1px solid var(--separator);flex-wrap:wrap}
-.road-add-sel{font-family:'Source Code Pro',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:0 8px;outline:none;cursor:pointer;
-  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
-.road-add-sel:focus{border-color:var(--accent)}
-.road-add-inp{font-family:'Libre Baskerville',Georgia,serif;font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:5px 10px;outline:none;flex:1;min-width:160px}
-.road-add-inp:focus{border-color:var(--accent)}
-.road-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:6px 14px;cursor:pointer;
-  height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
-.road-add-btn:hover{background:var(--accent)}
+/* Timeline content area */
+.gantt-timeline-area{flex:1;position:relative}
 
-/* Phase number + label display */
-.phase-num-badge{display:inline-flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:10px;font-weight:600;background:var(--label-primary);color:var(--card-bg);padding:1px 7px;margin-right:6px;border-radius:2px;min-width:28px}
+/* Week lines (dotted only, no bands) */
+.gantt-week-line{position:absolute;top:0;bottom:0;width:1px;border-left:1px dashed #D1D5DB;z-index:1;pointer-events:none}
+.gantt-today-line-v{position:absolute;top:0;bottom:0;width:2px;background:#C70025;opacity:.55;z-index:5;pointer-events:none}
 
-/* ── TASK LIST ── */
-.road-task-wrap{padding:0 32px 24px}
-.road-phase-block{margin-bottom:2px}
-.road-phase-hd{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#e8e8ed;border-bottom:1px solid var(--separator);cursor:pointer;user-select:none}
-.road-phase-hd:hover{background:#dddde6}
-.road-phase-name{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:600;color:var(--label-primary);flex:1;display:flex;align-items:center}
-.road-phase-prog{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
-.road-phase-chev{font-size:11px;color:#bbb;transition:transform .2s}
-.road-phase-block.open .road-phase-chev{transform:rotate(90deg)}
-.road-phase-items{display:none}
-.road-phase-block.open .road-phase-items{display:block}
-.road-step{display:flex;align-items:flex-start;gap:8px;padding:8px 12px 8px 24px;background:var(--card-bg);border-bottom:1px solid var(--separator)}
-.road-step:hover{background:#faf9ff}
-.road-step.done-step{background:var(--done-bg)}
-.road-step-cb{width:14px;height:14px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;margin-top:2px;transition:all .15s}
-.road-step.done-step .road-step-cb{background:var(--done-fg);border-color:var(--done-fg);color:white}
-.road-step-body{flex:1;min-width:0}
-.road-step-label{font-size:15px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:var(--label-primary);line-height:1.4}
-.road-step.done-step .road-step-label{text-decoration:line-through;color:var(--done-fg);opacity:.7}
-.road-step-note{font-size:11px;color:var(--label-secondary);margin-top:2px;line-height:1.4}
-.road-step-cmd{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--accent);background:rgba(199,0,37,.06);border:1px solid rgba(199,0,37,.15);padding:1px 5px;margin-top:3px;display:inline-block}
-.road-step-dates{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;min-width:118px}
-.road-step-date-pair{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.road-step-date-lbl{font-family:'Source Code Pro',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary)}
-.road-step-date-inp{font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:1px 4px;width:96px;outline:none}
-.road-step-date-inp:focus{border-color:var(--accent)}
-.road-step-date-val{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--done-fg)}
-.road-step-del{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:0 2px;flex-shrink:0;margin-top:2px}
-.road-step-del:hover{color:var(--accent)}
-.road-gate-row{display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fdf8ed;border-bottom:1px solid rgba(176,96,0,.2);border-left:3px solid #b06000}
-.road-gate-diamond-sm{width:12px;height:12px;flex-shrink:0;border:2px solid #b06000;background:var(--page-bg);transform:rotate(45deg);cursor:pointer;transition:all .15s}
-.road-gate-diamond-sm.met{background:#b06000}
-.road-gate-text{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;color:var(--hold-fg)}
-.road-gate-date-val{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-secondary)}
-.road-gate-del{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:0 2px}
-.road-gate-del:hover{color:var(--accent)}
-.road-add-step-row{padding:5px 12px 5px 24px;background:var(--page-bg);border-bottom:1px solid var(--separator)}
-.road-add-step-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);background:none;border:1px dashed var(--separator);padding:3px 10px;cursor:pointer;width:100%;text-align:left}
-.road-add-step-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* ── Phase row ── */
+.gantt-phase-row{display:flex;align-items:stretch;min-height:54px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
+.gantt-phase-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
+/* phase label cell colored border */
+.gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
+.gantt-drag-handle{font-size:14px;color:#ccc;cursor:grab;flex-shrink:0;user-select:none;line-height:1}
+.gantt-expand-btn{width:20px;height:20px;border:1.5px solid var(--ph-color,#3a6b9e);border-radius:3px;background:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;color:var(--ph-color,#3a6b9e);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
+.gantt-expand-btn:hover{background:var(--ph-color,#3a6b9e);color:#fff}
+.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:12px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.gantt-phase-pct{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--ph-color,#3a6b9e);flex-shrink:0}
+.gantt-phase-track{flex:1;position:relative;background:transparent}
 
-/* Move, edit, clone controls */
-.road-move-btns{display:flex;flex-direction:column;gap:1px;flex-shrink:0;margin-right:2px}
-.road-move-btn{font-size:9px;line-height:1;background:none;border:1px solid var(--separator);color:#bbb;cursor:pointer;padding:1px 4px;transition:all .12s;font-family:'Source Code Pro',monospace;
-  box-sizing:border-box}
-.road-move-btn:hover{border-color:var(--accent);color:var(--accent)}
-.road-move-btn:disabled{opacity:.2;cursor:default}
-.road-edit-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);cursor:pointer;padding:2px 6px;flex-shrink:0;margin-top:1px;transition:all .12s}
-.road-edit-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
-.road-clone-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);cursor:pointer;padding:2px 6px;flex-shrink:0;margin-top:1px;transition:all .12s}
-.road-clone-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* Phase bar */
+.gantt-ph-bar{position:absolute;top:50%;transform:translateY(-50%);height:26px;border-radius:4px;overflow:hidden;min-width:6px;border:1.5px solid transparent}
+.gantt-ph-bar-bg{position:absolute;inset:0}
+.gantt-ph-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
 
-/* Inline edit panel */
-.road-inline-edit{background:#faf9ff;border-top:1px solid var(--separator);padding:10px 12px 10px 24px}
-.road-inline-edit input,.road-inline-edit textarea,.road-inline-edit select{font-family:'Libre Baskerville',Georgia,serif;font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:5px 9px;outline:none;width:100%;margin-bottom:5px}
-.road-inline-edit input:focus,.road-inline-edit textarea:focus,.road-inline-edit select:focus{border-color:var(--accent)}
-.road-inline-edit textarea{resize:vertical;min-height:44px}
-.road-inline-edit-row{display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap}
-.road-inline-edit-row input,.road-inline-edit-row select{flex:1;min-width:120px;margin-bottom:0}
-.road-inline-save{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:4px 12px;cursor:pointer;margin-right:4px}
-.road-inline-save:hover{background:var(--done-fg)}
-.road-inline-cancel{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:none;color:var(--label-secondary);border:1px solid var(--separator);padding:4px 10px;cursor:pointer}
-.road-phase-edit-inp{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;border:1px solid var(--accent);background:var(--card-bg);color:var(--label-primary);padding:3px 8px;outline:none;flex:1;min-width:180px}
-.road-phase-num-inp{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;border:1px solid var(--accent);background:var(--card-bg);color:var(--label-primary);padding:3px 6px;outline:none;width:52px;text-align:center}
+/* Gate diamonds on phase rows */
+.gantt-gate-diamond{position:absolute;top:50%;transform:translateY(-50%) translateX(-8px) rotate(45deg);width:16px;height:16px;border:2.5px solid var(--ph-color,#3a6b9e);background:#fff;cursor:pointer;z-index:6;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:all .18s}
+.gantt-gate-diamond.met{background:var(--ph-color,#3a6b9e)}
+.gantt-gate-diamond:hover{transform:translateY(-50%) translateX(-8px) rotate(45deg) scale(1.25)}
+
+/* ── Task rows ── */
+.gantt-tasks-wrap{background:var(--page-bg)}
+.gantt-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
+.gantt-task-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
+.gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
+.gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
+.gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
+.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:11px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-task-name.done{text-decoration:line-through;color:var(--done-fg);opacity:.7}
+.gantt-task-pct{font-family:'Source Code Pro',monospace;font-size:9px;color:#9CA3AF;flex-shrink:0}
+.gantt-task-track{flex:1;position:relative;background:transparent}
+
+/* Task bar */
+.gantt-task-bar{position:absolute;top:50%;transform:translateY(-50%);height:10px;border-radius:3px;overflow:hidden;min-width:4px}
+.gantt-task-bar-bg{position:absolute;inset:0;opacity:.35}
+.gantt-task-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
+
+/* Gate-task row — shows diamond only in track */
+.gantt-gate-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
+.gantt-gate-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
+.gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:11px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-gate-task-track{flex:1;position:relative;background:transparent}
+
+/* Add task row */
+.gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:var(--page-bg);position:relative;z-index:2}
+.gantt-add-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-add-task-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#9CA3AF;background:none;border:1px dashed #D1D5DB;padding:2px 10px;cursor:pointer;width:100%;text-align:left;transition:all .15s}
+.gantt-add-task-btn:hover{border-color:var(--accent);color:var(--accent)}
+.gantt-add-task-track{flex:1;background:var(--page-bg)}
+
+/* Legend bar */
+.gantt-legend-bar{display:flex;gap:16px;padding:8px 32px 8px;flex-wrap:wrap;border-bottom:1px solid var(--separator);background:var(--card-bg)}
+.gantt-leg{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#6B7280}
+.gantt-leg-swatch{width:14px;height:8px;border-radius:2px}
+.gantt-leg-diamond{width:11px;height:11px;border:2px solid #888;transform:rotate(45deg);display:inline-block}
+.gantt-leg-diamond.filled{background:#888;border-color:#888}
+
+/* ── Slide-in panel ── */
+.gantt-panel-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.25)}
+.gantt-panel-overlay.open{display:block}
+.gantt-slide-panel{position:fixed;top:0;right:-260px;width:244px;height:100vh;background:var(--card-bg);border-left:1px solid var(--separator);z-index:101;overflow-y:auto;transition:right .22s ease;box-shadow:-4px 0 16px rgba(0,0,0,.12);display:flex;flex-direction:column}
+.gantt-slide-panel.open{right:0}
+.gantt-panel-hd{background:var(--label-primary);color:var(--card-bg);padding:14px 14px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.gantt-panel-title{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.gantt-panel-close{background:none;border:none;color:var(--card-bg);font-size:18px;cursor:pointer;line-height:1;padding:0 2px}
+.gantt-panel-body{padding:14px;flex:1;overflow-y:auto}
+.gantt-panel-field{margin-bottom:10px}
+.gantt-panel-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:4px}
+.gantt-panel-input{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:6px 9px;outline:none;resize:vertical}
+.gantt-panel-input:focus{border-color:var(--accent)}
+.gantt-panel-input.mono{font-family:'Source Code Pro',monospace;font-size:11px}
+.gantt-panel-row{display:flex;gap:6px}
+.gantt-panel-row .gantt-panel-input{flex:1}
+.gantt-panel-add-btn{width:100%;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:9px;cursor:pointer;margin-top:4px;transition:background .15s}
+.gantt-panel-add-btn:hover{background:var(--accent)}
+.gantt-panel-divider{border:none;border-top:1px solid var(--separator);margin:12px 0}
+.gantt-panel-section{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px}
+.gantt-panel-toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.gantt-panel-toggle-lbl{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);flex:1}
+.gantt-panel-toggle{position:relative;width:38px;height:20px;cursor:pointer}
+.gantt-panel-toggle input{opacity:0;width:0;height:0;position:absolute}
+.gantt-panel-toggle-track{position:absolute;inset:0;background:#ccc;border-radius:20px;transition:background .2s}
+.gantt-panel-toggle input:checked+.gantt-panel-toggle-track{background:var(--done-fg)}
+.gantt-panel-toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.gantt-panel-toggle input:checked~.gantt-panel-toggle-thumb{left:21px}
+
+/* Open panel button */
+.gantt-open-panel-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;cursor:pointer;transition:all .15s}
+.gantt-open-panel-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+
+/* Toolbar strip above chart */
+.gantt-toolbar{display:flex;align-items:center;gap:8px;padding:8px 32px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:wrap}
+.gantt-toolbar-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-right:auto}
 
 /* ── REFERENCE / STYLE / DIST / PASSES / OUTREACH ── */
 .ref-section{padding:20px 32px}
@@ -551,68 +537,49 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- ROADMAP PANEL -->
 <div class="panel" id="panel-roadmap">
-  <div class="road-panel">
-    <!-- Global collapse strip -->
+  <div class="road-tab-wrap">
     <div class="road-collapse-strip">
       <span>View:</span>
       <button class="rcl-btn" id="rcl-0" onclick="setRoadLevel(0)">Hidden</button>
-      <button class="rcl-btn" id="rcl-1" onclick="setRoadLevel(1)">Bars + Gates</button>
-      <button class="rcl-btn active" id="rcl-2" onclick="setRoadLevel(2)">Bars + Gates + Notes</button>
+      <button class="rcl-btn" id="rcl-1" onclick="setRoadLevel(1)">Phases + Gates</button>
+      <button class="rcl-btn active" id="rcl-2" onclick="setRoadLevel(2)">Full</button>
     </div>
-    <div class="road-section-hd" onclick="toggleSection('gantt')">
-      <span class="road-section-title" id="gantt-title">&#9660; Gantt Chart</span>
-      <span class="road-section-sub" id="gantt-summary"></span>
-      <button class="road-section-tog" onclick="event.stopPropagation();toggleSection('gantt')" id="gantt-tog">Collapse</button>
+    <div class="gantt-toolbar">
+      <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
+      <button class="gantt-today-btn" onclick="ganttScrollToday()">&#9654; Today</button>
+      <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
+      <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
+      <button class="gantt-open-panel-btn" onclick="openGanttPanel('gate')">+ Gate</button>
     </div>
-    <div class="road-section-body" id="gantt-body">
-      <div class="gantt-legend">
-        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,#3a6b9ecc,#3a6b9e55)"></div>In progress</div>
-        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
-        <div class="gantt-leg-item"><div class="gantt-leg-swatch" style="background:repeating-linear-gradient(45deg,#ccc,#ccc 3px,#ddd 3px,#ddd 6px)"></div>Undated</div>
-        <div class="gantt-leg-item"><div style="width:11px;height:11px;border:2px solid #b06000;transform:rotate(45deg)"></div>&nbsp;Stage Gate</div>
-        <div class="gantt-leg-item"><div style="width:11px;height:11px;background:#b06000;transform:rotate(45deg)"></div>&nbsp;Gate Met</div>
-        <div class="gantt-leg-item"><div style="width:2px;height:12px;background:var(--accent);opacity:.7;display:inline-block"></div>&nbsp;Today</div>
+    <div class="gantt-legend-bar">
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,rgba(56,100,160,.5),rgba(56,100,160,.15))"></div>Phase bar</div>
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:rgba(56,100,160,.9)"></div>Progress fill</div>
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
+      <div class="gantt-leg"><div class="gantt-leg-diamond"></div>&nbsp;Gate (open)</div>
+      <div class="gantt-leg"><div class="gantt-leg-diamond filled"></div>&nbsp;Gate (met)</div>
+      <div class="gantt-leg"><div style="width:2px;height:14px;background:#C70025;opacity:.6;display:inline-block;vertical-align:middle"></div>&nbsp;Today</div>
+    </div>
+    <!-- Integrated Gantt -->
+    <div class="gantt-scroll-outer" id="gantt-scroll-outer">
+      <div class="gantt-scroll-inner" id="gantt-scroll-inner">
+        <!-- Rendered by renderGantt() -->
       </div>
-      <div class="gantt-outer"><div class="gantt-chart" id="gantt-chart"></div></div>
-    </div>
-    <div class="road-section-hd" onclick="toggleSection('tasklist')">
-      <span class="road-section-title" id="tasklist-title">&#9660; Task List</span>
-      <span class="road-section-sub" id="tasklist-summary"></span>
-      <button class="road-section-tog" onclick="event.stopPropagation();toggleSection('tasklist')" id="tasklist-tog">Collapse</button>
-    </div>
-    <div class="road-section-body" id="tasklist-body">
-      <!-- Add bar: Phase row 1 + row 2 note; Step/gate adapted -->
-      <div class="road-add-bar" style="flex-direction:column;align-items:stretch;gap:6px">
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-          <select class="road-add-sel" id="ra-kind" onchange="raKindChange()">
-            <option value="phase">+ Phase</option>
-            <option value="step">+ Step</option>
-            <option value="gate">+ Stage Gate</option>
-          </select>
-          <!-- Phase number (shown for phase kind) -->
-          <input class="road-add-inp" type="number" id="ra-phase-num" placeholder="#" min="1" max="99" style="max-width:60px;display:none;font-family:'Source Code Pro',monospace;font-size:11px" />
-          <select class="road-add-sel" id="ra-phase-sel" style="display:none;flex:1" onchange="raSyncInsertAfter()"><option value="">-- Select Phase --</option></select>
-          <span id="ra-phase-mode-wrap" style="display:none;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">
-            <label style="cursor:pointer;margin-right:8px"><input type="radio" name="ra-phase-mode" value="existing" checked onchange="raPhaseMode()" /> Add to existing</label>
-            <label style="cursor:pointer"><input type="radio" name="ra-phase-mode" value="new" onchange="raPhaseMode()" /> New phase</label>
-          </span>
-          <input class="road-add-inp" type="text" id="ra-label" placeholder="Label&hellip;" style="flex:2;min-width:160px" />
-        </div>
-        <!-- Row 2: note + date + insert-after + add button -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-          <input class="road-add-inp" type="text" id="ra-note" placeholder="Note (optional)&hellip;" style="flex:2;min-width:140px" />
-          <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)" id="ra-date-lbl">Start</span>
-          <input class="road-add-inp" type="date" id="ra-start" style="max-width:130px;font-family:'Source Code Pro',monospace;font-size:11px" />
-          <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">End</span>
-          <input class="road-add-inp" type="date" id="ra-end" style="max-width:130px;font-family:'Source Code Pro',monospace;font-size:11px" />
-          <select class="road-add-sel" id="ra-insert-after" style="display:none;flex:1"><option value="">Insert at end</option></select>
-          <button class="road-add-btn" onclick="roadAddItem()">Add</button>
-        </div>
-      </div>
-      <div class="road-task-wrap" id="road-task-list"></div>
     </div>
   </div>
 </div>
+
+<!-- GANTT SLIDE-IN PANEL -->
+<div class="gantt-panel-overlay" id="gantt-overlay" onclick="closeGanttPanel()"></div>
+<div class="gantt-slide-panel" id="gantt-slide-panel">
+  <div class="gantt-panel-hd">
+    <span class="gantt-panel-title" id="gantt-panel-title">Add Phase</span>
+    <button class="gantt-panel-close" onclick="closeGanttPanel()">&#10005;</button>
+  </div>
+  <div class="gantt-panel-body" id="gantt-panel-body">
+    <!-- Populated by openGanttPanel() -->
+  </div>
+</div>
+
 <!-- ISBNs -->
 <div class="panel" id="panel-isbns"><div class="ref-section">
   <h2>Assigned ISBNs &mdash; Over-classified</h2>
@@ -964,7 +931,7 @@ function showTab(t,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+t).classList.add('active');
-  if(t==='roadmap'){renderGantt();renderTaskList();}
+  if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
 }
 
 function toggleSection(id){
@@ -977,57 +944,6 @@ function toggleSection(id){
 }
 
 /* ── ROADMAP COLLAPSE LEVELS ── */
-function setRoadLevel(level){
-  roadLevel=level;
-  // Update button states
-  [0,1,2].forEach(l=>{
-    const btn=document.getElementById('rcl-'+l);
-    if(btn)btn.className='rcl-btn'+(l===level?' active':'');
-  });
-  applyRoadLevel();
-  renderGantt();
-  renderTaskList();
-}
-function applyRoadLevel(){
-  const taskWrap=document.getElementById('road-task-list');
-  if(!taskWrap)return;
-  if(roadLevel===0){
-    taskWrap.style.display='none';
-    // Also hide gantt
-    document.getElementById('gantt-body').style.display='none';
-    document.getElementById('gantt-tog').textContent='Expand';
-    const titleEl=document.getElementById('gantt-title');
-    if(titleEl)titleEl.textContent='▶ Gantt Chart';
-    sectionOpen.gantt=false;
-  } else if(roadLevel===1){
-    taskWrap.style.display='block';
-    // Show gantt
-    if(!sectionOpen.gantt){
-      document.getElementById('gantt-body').style.display='block';
-      document.getElementById('gantt-tog').textContent='Collapse';
-      const titleEl=document.getElementById('gantt-title');
-      if(titleEl)titleEl.textContent='▼ Gantt Chart';
-      sectionOpen.gantt=true;
-    }
-    // Close all phase blocks
-    document.querySelectorAll('.road-phase-block').forEach(el=>el.classList.remove('open'));
-    // Update S.road phase open flags
-    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
-  } else {
-    taskWrap.style.display='block';
-    if(!sectionOpen.gantt){
-      document.getElementById('gantt-body').style.display='block';
-      document.getElementById('gantt-tog').textContent='Collapse';
-      const titleEl=document.getElementById('gantt-title');
-      if(titleEl)titleEl.textContent='▼ Gantt Chart';
-      sectionOpen.gantt=true;
-    }
-    // Open all phase blocks
-    document.querySelectorAll('.road-phase-block').forEach(el=>el.classList.add('open'));
-    S.road.forEach(r=>{if(r.kind==='phase')r.open=true;});
-  }
-}
-
 function counts(){
   let open=0,pri=0,hold=0,done=0;
   (S.items||[]).forEach(it=>{if(it.done){done++;return;}if(it.deferred){hold++;return;}open++;if(it.priority)pri++;});
@@ -1158,46 +1074,63 @@ function addItem(){
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
 
 /* ── ROADMAP ── */
+const RAINBOW=['#E8A020','#E8622A','#D43540','#B03090','#6040C8','#2070C8','#1A9E78','#4A9E20'];
+function rainbowColor(idx){return RAINBOW[idx%RAINBOW.length];}
+
 function roadPhases(){return S.road.filter(r=>r.kind==='phase');}
 function roadSteps(pid){return S.road.filter(r=>r.kind==='step'&&r.phase===pid);}
 function roadGates(pid){return S.road.filter(r=>r.kind==='gate'&&r.phase===pid);}
-function phaseProgress(pid){const s=roadSteps(pid);if(!s.length)return{done:0,total:0,pct:0};const d=s.filter(x=>x.done).length;return{done:d,total:s.length,pct:Math.round(d/s.length*100)};}
+function phaseProgress(pid){
+  const s=roadSteps(pid);
+  if(!s.length)return{done:0,total:0,pct:0};
+  const d=s.filter(x=>x.done).length;
+  return{done:d,total:s.length,pct:Math.round(d/s.length*100)};
+}
 function phaseRange(pid){
   const steps=roadSteps(pid);
   const ends=steps.map(s=>s.targetEnd).filter(Boolean).sort();
   if(!ends.length)return{start:null,end:null};
-  // Left edge: earliest targetStart; fall back to earliest targetEnd
   const starts=steps.map(s=>s.targetStart).filter(Boolean).sort();
   const left=starts.length?starts[0]:ends[0];
   return{start:left,end:ends[ends.length-1]};
 }
-
-/* Gate target date auto-inherit: latest targetDate among steps in phase */
 function gateInheritDate(pid){
   const dates=roadSteps(pid).map(s=>s.targetEnd).filter(Boolean).sort();
   return dates.length?dates[dates.length-1]:'';
 }
 
+/* ── GANTT RENDER ── */
+let ganttTimelineLeft=0,ganttTimelineSpan=1,ganttTimelinePadMin=null;
+
+function xpct(ds){
+  if(!ds||!ganttTimelinePadMin||!ganttTimelineSpan)return null;
+  const d=new Date(ds+'T12:00:00');
+  return Math.max(0,Math.min(100,(d-ganttTimelinePadMin)/ganttTimelineSpan*100));
+}
+
 function renderGantt(){
   const phases=roadPhases();
   const today=todayStr();
+
+  // Collect all dates
   let allDates=[today];
   S.road.forEach(r=>{
-    if(r.kind==='step'&&r.targetEnd)allDates.push(r.targetEnd);
-    if(r.kind==='step'&&r.targetStart)allDates.push(r.targetStart);
+    if(r.kind==='step'){if(r.targetEnd)allDates.push(r.targetEnd);if(r.targetStart)allDates.push(r.targetStart);}
     if(r.kind==='gate'&&r.date)allDates.push(r.date);
   });
   phases.forEach(ph=>{const inh=gateInheritDate(ph.id);if(inh)allDates.push(inh);});
   allDates.sort();
+
   let minD=new Date(allDates[0]+'T12:00:00');
   let maxD=new Date(allDates[allDates.length-1]+'T12:00:00');
   if((maxD-minD)<90*864e5){maxD=new Date(minD);maxD.setDate(maxD.getDate()+90);}
   const padMin=new Date(minD);padMin.setDate(padMin.getDate()-7);
   const padMax=new Date(maxD);padMax.setDate(padMax.getDate()+14);
   const span=padMax-padMin;
-  function xp(ds){if(!ds)return null;const d=new Date(ds+'T12:00:00');return Math.max(0,Math.min(100,(d-padMin)/span*100));}
+  ganttTimelinePadMin=padMin;
+  ganttTimelineSpan=span;
 
-  // ── Week boundaries (Mondays) ─────────────────────────────────
+  // Week boundaries (Mondays)
   const weeks=[];
   const wc=new Date(padMin);
   const dow=wc.getDay();
@@ -1207,326 +1140,380 @@ function renderGantt(){
     const pct=(wc-padMin)/span*100;
     if(pct>=0&&pct<=100){
       const ds=wc.toISOString().slice(0,10);
-      weeks.push({pct,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),even:wi%2===0,isToday:ds===today});
+      weeks.push({pct,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),isToday:ds===today});
     }
     wc.setDate(wc.getDate()+7);wi++;
   }
+  const todayPct=xpct(today);
 
-  const todayPct=xp(today);
+  let html='';
 
-  // ── Sticky header ─────────────────────────────────────────────
-  let headerHtml=`<div class="gantt-sticky-header">`;
-  headerHtml+=`<div class="gantt-sticky-label"><span class="today-dot"></span><span>Today</span></div>`;
-  headerHtml+=`<div class="gantt-header-track">`;
-  if(todayPct!==null)headerHtml+=`<div class="gantt-header-today" style="left:${todayPct}%"></div>`;
+  // ── Sticky header row ──
+  html+=`<div class="gantt-header-row">`;
+  html+=`<div class="gantt-header-label">
+    <span>Today</span>
+    <button class="gantt-today-btn" onclick="ganttScrollToday()" title="Scroll to today">&#8857;</button>
+  </div>`;
+  html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
+  // week labels
   weeks.forEach(w=>{
-    headerHtml+=`<div class="gantt-header-sep" style="left:${w.pct}%"></div>`;
-    headerHtml+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.pct}%">${w.label}</div>`;
+    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.pct}%">${w.label}</div>`;
   });
-  headerHtml+=`</div></div>`;
+  // today line in header
+  if(todayPct!==null)html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPct}%;width:2px;background:#C70025;opacity:.5;pointer-events:none;z-index:3"></div>`;
+  html+=`</div></div>`; // end header-row
 
-  // ── Grid bands + separators ───────────────────────────────────
-  let gridHtml='';
-  for(let i=0;i<weeks.length;i++){
-    const left=weeks[i].pct;
-    const right=i+1<weeks.length?weeks[i+1].pct:100;
-    const w=right-left;
-    gridHtml+=`<div class="gantt-week-band ${weeks[i].even?'even':'odd'}" style="left:${left}%;width:${w}%"></div>`;
-    gridHtml+=`<div class="gantt-week-sep" style="left:${left}%"></div>`;
-  }
-
-  // ── Phase rows ────────────────────────────────────────────────
-  let rowsHtml='';
+  // ── Phase + task rows ──
+  const showTasks = roadLevel >= 2;
   phases.forEach((ph,phIdx)=>{
-    const range=phaseRange(ph.id);
+    // Ensure color assigned
+    if(!ph.color)ph.color=rainbowColor(phIdx);
+    const color=ph.color;
     const prog=phaseProgress(ph.id);
+    const range=phaseRange(ph.id);
     const gates=roadGates(ph.id);
-    const color=ph.color||'#3a6b9e';
-    const isDated=range.start&&range.end;
     const isAllDone=prog.total>0&&prog.done===prog.total;
-    const numBadge=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
+    const isOpen=(ph.open!==false)&&showTasks;
+    const numStr=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
 
-    rowsHtml+=`<div class="gantt-row"${phIdx===0?' style="margin-top:2px"':''}>`;
-    rowsHtml+=`<div class="gantt-label" title="${esc(ph.label)}">${numBadge}${esc(ph.label)}</div>`;
-    rowsHtml+=`<div class="gantt-track${isDated?'':' undated'}">`;
-
-    // Today line on track (no label — label is in sticky header)
-    if(todayPct!==null)rowsHtml+=`<div class="gantt-today-line" style="left:${todayPct}%"></div>`;
-
-    if(isDated){
-      const lp=xp(range.start),rp=xp(range.end),bw=Math.max(1.5,rp-lp),fw=prog.pct;
-      const barBg=color+'25';
-      const fillColor=isAllDone?'#1D6B2A':color;
-      rowsHtml+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${barBg};border:1.5px solid ${color}66">`;
-      rowsHtml+=`<div class="gantt-bar-fill" style="background:${fillColor};width:${fw}%"></div>`;
-      rowsHtml+=`<div class="gantt-bar-label">${esc(ph.label)}</div>`;
-      rowsHtml+=`</div>`;
-      if(isAllDone)rowsHtml+=`<div class="gantt-done-stamp">\u2713 Done</div>`;
-      else if(fw>0)rowsHtml+=`<div class="gantt-pct" style="left:${Math.min(rp+0.5,95)}%">${fw}%</div>`;
-    } else {
-      rowsHtml+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#9CA3AF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
+    // Phase row
+    html+=`<div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'}">`;
+    // Label cell
+    html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}">`;
+    html+=`<span class="gantt-drag-handle" title="Drag to reorder (coming soon)">&#8942;</span>`;
+    html+=`<button class="gantt-expand-btn" onclick="toggleGanttPhase('${ph.id}')" style="--ph-color:${color}">${isOpen?'&#8722;':'+'}</button>`;
+    html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
+    if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
+    html+=`</div>`;
+    // Track cell
+    html+=`<div class="gantt-phase-track" style="position:relative">`;
+    // Week dotted lines
+    weeks.forEach(w=>{
+      html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`;
+    });
+    if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+    // Phase bar
+    if(range.start&&range.end){
+      const lp=xpct(range.start),rp=xpct(range.end);
+      if(lp!==null&&rp!==null){
+        const bw=Math.max(1.5,rp-lp);
+        const fillPct=prog.pct;
+        const fillColor=isAllDone?'#1D6B2A':color;
+        html+=`<div class="gantt-ph-bar" style="left:${lp}%;width:${bw}%;border-color:${color}55">`;
+        html+=`<div class="gantt-ph-bar-bg" style="background:${color};opacity:.18"></div>`;
+        html+=`<div class="gantt-ph-bar-fill" style="background:${fillColor};opacity:.85;width:${fillPct}%"></div>`;
+        html+=`</div>`;
+      }
     }
-
-    // Gate diamonds (level 1+) — no Today label, just line
+    // Gate diamonds (level 1+)
     if(roadLevel>=1){
       gates.forEach(g=>{
-        const inheritedDate=gateInheritDate(g.phase);
-        const displayDate=g.date||inheritedDate;
-        const plotDate=g.met&&g.metDate?g.metDate:displayDate;
-        const gp=xp(plotDate);
-        if(gp===null)return;
-        const tip=esc(g.label)+(g.met&&g.metDate?' \u00b7 Met: '+fmtDate(g.metDate):displayDate?' \u00b7 Target: '+fmtDate(displayDate):'');
-        const dateLabel=g.met&&g.metDate?fmtDate(g.metDate):(displayDate?fmtDate(displayDate):'');
-        const dateColor=g.met?'#1D6B2A':'#2338A8';
-        rowsHtml+=`<div class="gantt-diamond${g.met?' met':''}" style="left:${gp}%" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
-        if(dateLabel){
-          const anchor=gp<=65
-            ?`left:calc(${gp}% + 13px)`
-            :`right:calc(${100-gp}% + 13px);text-align:right`;
-          rowsHtml+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
-        }
-      });
-    }
-    rowsHtml+=`</div></div>`;
-
-    // Annotation strip (level 2)
-    if(roadLevel>=2&&gates.length>0){
-      const plottable=gates.filter(g=>{
         const inh=gateInheritDate(g.phase);
         const disp=g.date||inh;
         const plot=g.met&&g.metDate?g.metDate:disp;
-        return xp(plot)!==null;
+        const gp=xpct(plot);
+        if(gp===null)return;
+        const tip=esc(g.label)+(g.met&&g.metDate?' · Met: '+fmtDate(g.metDate):disp?' · Target: '+fmtDate(disp):'');
+        html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp}%;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
       });
-      if(plottable.length>0){
-        rowsHtml+=`<div class="gantt-annot-row"><div class="gantt-annot-spacer"></div><div class="gantt-annot-track">`;
-        plottable.forEach(g=>{
-          const inh=gateInheritDate(g.phase);
-          const disp=g.date||inh;
-          const plot=g.met&&g.metDate?g.metDate:disp;
-          const gp=xp(plot);
-          const dateStr=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?fmtDate(disp):'';
-          const labelStr=g.label.length>38?g.label.substring(0,38)+'\u2026':g.label;
-          const dateCls=g.met?'ap-date met':'ap-date';
-          const anchor=gp>68?`right:${100-gp}%;text-align:right`:`left:${gp}%`;
-          rowsHtml+=`<div class="gantt-annot-pin" style="${anchor}">`;
-          if(dateStr)rowsHtml+=`<div class="${dateCls}">${esc(dateStr)}</div>`;
-          rowsHtml+=`<div class="ap-label">${esc(labelStr)}</div></div>`;
-        });
-        rowsHtml+=`</div></div>`;
-      }
+    }
+    html+=`</div>`; // end track
+    html+=`</div>`; // end phase-row
+
+    // Task rows (shown when expanded)
+    if(isOpen){
+      const steps=roadSteps(ph.id);
+      steps.forEach((s)=>{
+        const isGateTask=s._isGate;
+        if(isGateTask){
+          // gate-task row (diamond only)
+          html+=`<div class="gantt-gate-task-row">`;
+          html+=`<div class="gantt-gate-task-label" style="--ph-color:${color}">`;
+          html+=`<div style="width:10px;height:10px;border:2px solid ${color};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${s._gateId}')"></div>`;
+          html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
+          html+=`</div>`;
+          html+=`<div class="gantt-gate-task-track" style="position:relative">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
+          if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+          const gp=xpct(s.targetEnd||s.targetStart||'');
+          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp}%;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
+          html+=`</div></div>`;
+        } else {
+          // Regular task row
+          const doneCls=s.done?' checked':'';
+          const nameCls=s.done?' done':'';
+          html+=`<div class="gantt-task-row">`;
+          html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
+          html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'&#10003;':''}</div>`;
+          html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
+          html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
+          if(s.done)html+=`<span class="gantt-task-pct" style="color:var(--done-fg)">✓</span>`;
+          html+=`</div>`;
+          html+=`<div class="gantt-task-track" style="position:relative">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
+          if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+          if(s.targetStart&&s.targetEnd){
+            const lp=xpct(s.targetStart),rp=xpct(s.targetEnd);
+            if(lp!==null&&rp!==null){
+              const bw=Math.max(0.5,rp-lp);
+              html+=`<div class="gantt-task-bar" style="left:${lp}%;width:${bw}%">`;
+              html+=`<div class="gantt-task-bar-bg" style="background:${color}"></div>`;
+              html+=`<div class="gantt-task-bar-fill" style="background:${color};width:${s.done?'100':'50'}%"></div>`;
+              html+=`</div>`;
+            }
+          } else if(s.targetEnd){
+            const ep=xpct(s.targetEnd);
+            if(ep!==null){
+              html+=`<div style="position:absolute;top:50%;left:${ep}%;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
+            }
+          }
+          html+=`</div></div>`;
+        }
+      });
+
+      // Gates as task rows too (level 2)
+      gates.forEach(g=>{
+        const inh=gateInheritDate(g.phase);
+        const disp=g.date||inh;
+        html+=`<div class="gantt-gate-task-row">`;
+        html+=`<div class="gantt-gate-task-label" style="--ph-color:${color};border-left-color:${color}">`;
+        html+=`<div style="width:10px;height:10px;border:2px solid ${color};${g.met?'background:'+color:''};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
+        html+=`<span class="gantt-gate-task-name" title="${esc(g.label)}">${esc(g.label)}</span>`;
+        html+=`</div>`;
+        html+=`<div class="gantt-gate-task-track" style="position:relative">`;
+        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
+        if(todayPct!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPct}%"></div>`;
+        const gp=xpct(g.met&&g.metDate?g.metDate:disp);
+        if(gp!==null){
+          html+=`<div style="position:absolute;top:50%;left:${gp}%;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
+          const lbl=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
+          if(lbl){
+            const anchor=gp>65?`right:${100-gp}%;text-align:right`:`left:calc(${gp}% + 10px)`;
+            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:${g.met?'var(--done-fg)':color};white-space:nowrap;pointer-events:none;z-index:5">${esc(lbl)}</div>`;
+          }
+        }
+        html+=`</div></div>`;
+      });
+
+      // Add task button row
+      html+=`<div class="gantt-add-task-row">`;
+      html+=`<div class="gantt-add-task-label"><button class="gantt-add-task-btn" onclick="openGanttPanel('step','${ph.id}')">+ Add task&hellip;</button></div>`;
+      html+=`<div class="gantt-add-task-track"></div>`;
+      html+=`</div>`;
     }
   });
 
-  // ── Assemble into outer container ────────────────────────────
-  const chartEl=document.getElementById('gantt-chart');
-  chartEl.innerHTML=
-    headerHtml+
-    `<div class="gantt-scroll-body"><div style="position:relative">` +
-    `<div class="gantt-grid">${gridHtml}</div>` +
-    rowsHtml +
-    `</div></div>`;
+  // Write to DOM
+  const inner=document.getElementById('gantt-scroll-inner');
+  if(!inner)return;
+  inner.innerHTML=html;
 
+  // Update summary
   const ts=S.road.filter(r=>r.kind==='step').length;
   const ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
-  document.getElementById('gantt-summary').textContent=ds+' / '+ts+' steps complete';
+  const lbl=document.getElementById('gantt-summary-lbl');
+  if(lbl)lbl.textContent=`Production Roadmap · ${ds}/${ts} tasks complete`;
 }
 
-function toggleGate(id){const g=S.road.find(r=>r.id===id);if(!g)return;g.met=!g.met;if(g.met){g.metDate=todayStr();}else{g.metDate='';}save();renderGantt();renderTaskList();}
+/* hex tint helper */
+function hexTint(hex,alpha){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return`rgba(${r},${g},${b},${alpha})`;
+}
 
-let roadEditingId=null;
+/* scroll to today */
+function ganttScrollToday(){
+  const outer=document.getElementById('gantt-scroll-outer');
+  const inner=document.getElementById('gantt-scroll-inner');
+  if(!outer||!inner||!ganttTimelinePadMin||!ganttTimelineSpan)return;
+  const todayPct=xpct(todayStr());
+  if(todayPct===null)return;
+  // timeline starts after label col (224px)
+  const timelineWidth=inner.offsetWidth-224;
+  const scrollTo=Math.max(0,(todayPct/100)*timelineWidth - outer.clientWidth/2 + 112);
+  outer.scrollLeft=scrollTo;
+}
 
-function renderTaskList(){
-  const phases=roadPhases();
-  const ts=S.road.filter(r=>r.kind==='step').length,ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
-  document.getElementById('tasklist-summary').textContent=ds+' / '+ts+' steps complete';
-  let html='';
-
-  phases.forEach((ph,pi)=>{
-    const steps=roadSteps(ph.id),gates=roadGates(ph.id),prog=phaseProgress(ph.id),isOpen=ph.open!==false;
-    const isEditingPhase=roadEditingId===ph.id;
-    const firstPh=pi===0,lastPh=pi===phases.length-1;
-    const numBadge=ph.num?`<span class="phase-num-badge">${String(ph.num).padStart(2,'0')}</span>`:'';
-
-    html+=`<div class="road-phase-block${isOpen?' open':''}" id="rpb_${ph.id}">`;
-
-    if(isEditingPhase){
-      html+=`<div class="road-phase-hd" style="gap:6px;flex-wrap:wrap">
-        <input class="road-phase-num-inp" type="number" id="rpe_num_${ph.id}" value="${ph.num||''}" min="1" max="99" onclick="event.stopPropagation()" />
-        <input class="road-phase-edit-inp" id="rpe_label_${ph.id}" value="${esc(ph.label)}" onclick="event.stopPropagation()" />
-        <button class="road-inline-save" onclick="event.stopPropagation();savePhaseEdit('${ph.id}')">Save</button>
-        <button class="road-inline-cancel" onclick="event.stopPropagation();roadEditingId=null;renderTaskList()">Cancel</button>
-        <button class="road-step-del" onclick="event.stopPropagation();deleteRoadItem('${ph.id}')" title="Delete phase" style="margin-left:auto">&#10005;</button>
-      </div>`;
-    } else {
-      html+=`<div class="road-phase-hd" onclick="togglePhaseBlock('${ph.id}')">
-        <div class="road-move-btns" onclick="event.stopPropagation()">
-          <button class="road-move-btn" onclick="movePhase('${ph.id}',-1)" title="Move up" ${firstPh?'disabled':''}>&#9650;</button>
-          <button class="road-move-btn" onclick="movePhase('${ph.id}',1)" title="Move down" ${lastPh?'disabled':''}>&#9660;</button>
-        </div>
-        <span class="road-phase-name">${numBadge}${esc(ph.label)}</span>
-        <span class="road-phase-prog">${prog.done}/${prog.total}</span>
-        <button class="road-clone-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase">Clone</button>
-        <button class="road-edit-btn" onclick="event.stopPropagation();roadEditingId='${ph.id}';renderTaskList()" title="Edit phase">Edit</button>
-        <span class="road-phase-chev">&#8250;</span>
-      </div>`;
-    }
-
-    html+=`<div class="road-phase-items">`;
-
-    steps.forEach((s,si)=>{
-      const isEditingStep=roadEditingId===s.id;
-      const firstS=si===0,lastS=si===steps.length-1;
-      const phaseOpts=phases.map(p=>`<option value="${p.id}"${p.id===ph.id?' selected':''}>${esc(p.label)}</option>`).join('');
-
-      if(isEditingStep){
-        html+=`<div class="road-step" style="flex-direction:column;padding:0">
-          <div class="road-inline-edit">
-            <div class="road-inline-edit-row">
-              <input type="text" id="rpe_sl_${s.id}" value="${esc(s.label)}" placeholder="Label" />
-            </div>
-            <textarea id="rpe_sn_${s.id}" placeholder="Note (optional)">${esc(s.note||'')}</textarea>
-            <div class="road-inline-edit-row">
-              <select id="rpe_sp_${s.id}">${phaseOpts}</select>
-              <input type="date" id="rpe_ss_${s.id}" value="${esc(s.targetStart||'')}" title="Start date" placeholder="Start" style="width:120px" />
-              <input type="date" id="rpe_sd_${s.id}" value="${esc(s.targetEnd||'')}" title="End date" placeholder="End" style="width:120px" />
-            </div>
-            <div>
-              <button class="road-inline-save" onclick="saveStepEdit('${s.id}')">Save</button>
-              <button class="road-inline-cancel" onclick="roadEditingId=null;renderTaskList()">Cancel</button>
-              <button class="road-step-del" onclick="deleteRoadItem('${s.id}')" style="margin-left:8px" title="Delete">&#10005; Delete</button>
-            </div>
-          </div>
-        </div>`;
-      } else {
-        html+=`<div class="road-step${s.done?' done-step':''}">
-          <div class="road-move-btns">
-            <button class="road-move-btn" onclick="moveStep('${s.id}',-1)" title="Move up" ${firstS?'disabled':''}>&#9650;</button>
-            <button class="road-move-btn" onclick="moveStep('${s.id}',1)" title="Move down" ${lastS?'disabled':''}>&#9660;</button>
-          </div>
-          <div class="road-step-cb" onclick="toggleStep('${s.id}')">${s.done?'&#10003;':''}</div>
-          <div class="road-step-body">
-            <div class="road-step-label">${esc(s.label)}</div>
-            ${s.note?`<div class="road-step-note">${esc(s.note)}</div>`:''}
-            ${s.cmd?`<span class="road-step-cmd">${esc(s.cmd)}</span>`:''}
-          </div>
-          <div class="road-step-dates">
-            <div class="road-step-date-pair"><span class="road-step-date-lbl">Start</span><input type="date" class="road-step-date-inp" value="${esc(s.targetStart||'')}" onchange="setStepDate('${s.id}','start',this.value)" /></div>
-            <div class="road-step-date-pair"><span class="road-step-date-lbl">End</span><input type="date" class="road-step-date-inp" value="${esc(s.targetEnd||'')}" onchange="setStepDate('${s.id}','end',this.value)" /></div>
-            <div class="road-step-date-pair"><span class="road-step-date-lbl">Completed</span><span class="road-step-date-val">${s.completedDate?fmtDate(s.completedDate):(s.done?'&#10003;':'\u2014')}</span></div>
-          </div>
-          <button class="road-clone-btn" onclick="cloneStep('${s.id}')" title="Clone step">Clone</button>
-          <button class="road-edit-btn" onclick="roadEditingId='${s.id}';renderTaskList()" title="Edit">Edit</button>
-          <button class="road-step-del" onclick="deleteRoadItem('${s.id}')" title="Delete">&#10005;</button>
-        </div>`;
-      }
-    });
-
-    // Gates
-    gates.forEach((g,gi)=>{
-      const isEditingGate=roadEditingId===g.id;
-      const firstG=gi===0,lastG=gi===gates.length-1;
-      const inheritedDate=gateInheritDate(g.phase);
-      const displayDate=g.date||inheritedDate;
-      if(isEditingGate){
-        html+=`<div class="road-gate-row" style="flex-wrap:wrap;gap:6px">
-          <input type="text" id="rpe_gl_${g.id}" value="${esc(g.label)}" placeholder="Gate label" style="flex:1;min-width:200px;font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid #b06000;background:var(--card-bg);color:var(--label-primary);padding:3px 8px;outline:none" />
-          <input type="date" id="rpe_gd_${g.id}" value="${esc(g.date||inheritedDate)}" title="Override date (leave blank to inherit from latest step)" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid #b06000;background:var(--card-bg);color:var(--label-primary);padding:3px 6px;outline:none;width:130px" />
-          <button class="road-inline-save" onclick="saveGateEdit('${g.id}')">Save</button>
-          <button class="road-inline-cancel" onclick="roadEditingId=null;renderTaskList()">Cancel</button>
-          <button class="road-gate-del" onclick="deleteRoadItem('${g.id}')" title="Delete">&#10005;</button>
-        </div>`;
-      } else {
-        const gateDateDisplay=g.met&&g.metDate?`<span style="color:var(--done-fg);font-weight:600">Met: ${fmtDate(g.metDate)}</span>`:(displayDate?`<span>Target: ${fmtDate(displayDate)}</span>`:'<span style="color:#bbb">No date set</span>');
-        html+=`<div class="road-gate-row" style="flex-wrap:wrap;align-items:flex-start">
-          <div class="road-move-btns" style="flex-direction:row;gap:2px;margin-top:2px">
-            <button class="road-move-btn" onclick="moveGate('${g.id}',-1)" title="Move up" ${firstG?'disabled':''}>&#9650;</button>
-            <button class="road-move-btn" onclick="moveGate('${g.id}',1)" title="Move down" ${lastG?'disabled':''}>&#9660;</button>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:3px">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div class="road-gate-diamond-sm${g.met?' met':''}" onclick="toggleGate('${g.id}')" title="${g.met?'Mark unmet':'Mark met'}"></div>
-              <span class="road-gate-text">${esc(g.label)}</span>
-            </div>
-            <div style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);padding-left:24px;font-style:italic">${gateDateDisplay} &nbsp;·&nbsp; <span style="color:#aaa">${g.met?'Stage gate met':'Stage gate — click ◆ to mark complete'}</span></div>
-          </div>
-          <button class="road-edit-btn" onclick="roadEditingId='${g.id}';renderTaskList()" title="Edit">Edit</button>
-          <button class="road-gate-del" onclick="deleteRoadItem('${g.id}')" title="Delete">&#10005;</button>
-        </div>`;
-      }
-    });
-
-    html+=`<div class="road-add-step-row"><button class="road-add-step-btn" onclick="quickAddStep('${ph.id}')">+ Add step to this phase&hellip;</button></div>`;
-    html+=`</div></div>`;
+/* ── GANTT COLLAPSE LEVELS ── */
+function setRoadLevel(level){
+  roadLevel=level;
+  [0,1,2].forEach(l=>{
+    const btn=document.getElementById('rcl-'+l);
+    if(btn)btn.className='rcl-btn'+(l===level?' active':'');
   });
-
-  document.getElementById('road-task-list').innerHTML=html;
-  // sync phase selector in add bar
-  const sel=document.getElementById('ra-phase-sel');
-  if(sel){const prev=sel.value;sel.innerHTML='<option value="">-- Phase --</option>'+phases.map(ph=>`<option value="${ph.id}"${ph.id===prev?' selected':''}>${esc(ph.num?`[${String(ph.num).padStart(2,'0')}] `:'')}${esc(ph.label)}</option>`).join('');}
-
-  // Apply current roadLevel
-  applyRoadLevel();
+  // For level 0, collapse all phases
+  if(level===0){
+    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
+  } else if(level===1){
+    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
+  } else {
+    S.road.forEach(r=>{if(r.kind==='phase')r.open=true;});
+  }
+  renderGantt();
 }
 
-/* ── RENUMBER PHASES ── */
+function toggleGanttPhase(pid){
+  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
+  ph.open=!ph.open;
+  save();renderGantt();
+}
+
+function toggleGate(id){
+  const g=S.road.find(r=>r.id===id);if(!g)return;
+  g.met=!g.met;
+  if(g.met){g.metDate=todayStr();}else{g.metDate='';}
+  save();renderGantt();
+}
+
+function toggleStep(id){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  s.done=!s.done;
+  if(s.done)s.completedDate=todayStr();else s.completedDate='';
+  save();renderGantt();
+}
+
+function setStepDate(id,which,val){
+  const s=S.road.find(r=>r.id===id);if(!s)return;
+  if(which==='start')s.targetStart=val;
+  if(which==='end')s.targetEnd=val;
+  save();renderGantt();
+}
+function setGateDate(id,val){const g=S.road.find(r=>r.id===id);if(!g)return;g.date=val;save();renderGantt();}
+function deleteRoadItem(id){if(!confirm('Delete?'))return;S.road=S.road.filter(r=>r.id!==id);renumberPhases();save();renderGantt();}
+
+/* ── RENUMBER ── */
 function renumberPhases(){
   let n=1;S.road.forEach(r=>{if(r.kind==='phase'){r.num=n;n++;}});
 }
 
-/* ── INLINE SAVE ── */
-function savePhaseEdit(id){
-  const ph=S.road.find(r=>r.id===id);if(!ph)return;
-  const lbl=document.getElementById('rpe_label_'+id);
-  if(lbl&&lbl.value.trim())ph.label=lbl.value.trim();
-  const numInp=document.getElementById('rpe_num_'+id);
-  if(numInp&&numInp.value){
-    const newNum=parseInt(numInp.value,10);
-    if(newNum!==ph.num){
-      // Renumber cascade: shift phases at newNum and above up by 1 (if not out of range)
-      const phases=roadPhases();
-      const conflict=phases.find(p=>p.id!==id&&p.num===newNum);
-      if(conflict){
-        // Shift all phases >= newNum up by 1, then assign
-        S.road.forEach(r=>{if(r.kind==='phase'&&r.num>=newNum&&r.id!==id)r.num++;});
-      }
-      ph.num=newNum;
-    }
-  }
-  roadEditingId=null;save();renderGantt();renderTaskList();
-}
-function saveStepEdit(id){
-  const s=S.road.find(r=>r.id===id);if(!s)return;
-  const lbl=document.getElementById('rpe_sl_'+id);if(lbl&&lbl.value.trim())s.label=lbl.value.trim();
-  const nt=document.getElementById('rpe_sn_'+id);if(nt)s.note=nt.value.trim();
-  const ds=document.getElementById('rpe_ss_'+id);if(ds)s.targetStart=ds.value||'';
-  const dt=document.getElementById('rpe_sd_'+id);if(dt)s.targetEnd=dt.value||'';
-  const ph=document.getElementById('rpe_sp_'+id);
-  if(ph&&ph.value&&ph.value!==s.phase){
-    s.phase=ph.value;
-    const idx=S.road.findIndex(r=>r.id===id);
-    if(idx>=0){
-      const [item]=S.road.splice(idx,1);
-      let insertAt=S.road.length;
-      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===ph.value||S.road[i].id===ph.value){insertAt=i+1;break;}}
-      S.road.splice(insertAt,0,item);
-    }
-  }
-  roadEditingId=null;save();renderGantt();renderTaskList();
-}
-function saveGateEdit(id){
-  const g=S.road.find(r=>r.id===id);if(!g)return;
-  const lbl=document.getElementById('rpe_gl_'+id);if(lbl&&lbl.value.trim())g.label=lbl.value.trim();
-  const dt=document.getElementById('rpe_gd_'+id);
-  if(dt){
-    const enteredDate=dt.value||'';
-    const inheritedDate=gateInheritDate(g.phase);
-    // Only store if it differs from pure inheritance (acts as manual override); clear if matches inherited or empty
-    g.date=(enteredDate&&enteredDate!==inheritedDate)?enteredDate:'';
-  }
-  roadEditingId=null;save();renderGantt();renderTaskList();
+/* ── SLIDE-IN PANEL ── */
+let ganttPanelMode='phase',ganttPanelPhaseId=null;
+
+function openGanttPanel(kind,phaseId){
+  ganttPanelMode=kind;
+  ganttPanelPhaseId=phaseId||null;
+  const title=document.getElementById('gantt-panel-title');
+  const body=document.getElementById('gantt-panel-body');
+  if(title)title.textContent=kind==='phase'?'Add Phase':kind==='gate'?'Add Stage Gate':'Add Task';
+  if(body)body.innerHTML=buildPanelForm(kind,phaseId);
+  document.getElementById('gantt-overlay').classList.add('open');
+  document.getElementById('gantt-slide-panel').classList.add('open');
 }
 
-/* ── MOVE UP/DOWN ── */
+function closeGanttPanel(){
+  document.getElementById('gantt-overlay').classList.remove('open');
+  document.getElementById('gantt-slide-panel').classList.remove('open');
+}
+
+function buildPanelForm(kind,phaseId){
+  const phases=roadPhases();
+  const phOpts=phases.map(p=>`<option value="${p.id}"${p.id===phaseId?' selected':''}>${esc(p.num?'['+String(p.num).padStart(2,'0')+'] ':'')}${esc(p.label)}</option>`).join('');
+
+  let html='';
+  html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Label</label><input class="gantt-panel-input" id="gp-label" type="text" placeholder="Label…" /></div>`;
+  html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Note</label><textarea class="gantt-panel-input" id="gp-note" rows="2" placeholder="Note (optional)…"></textarea></div>`;
+
+  if(kind==='step'||kind==='gate'){
+    html+=`<hr class="gantt-panel-divider">`;
+    html+=`<div class="gantt-panel-section">Phase</div>`;
+    html+=`<div class="gantt-panel-field"><select class="gantt-panel-input mono" id="gp-phase" onchange="gpSyncInsertAfter()">${phOpts}</select></div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Insert after</label><select class="gantt-panel-input mono" id="gp-insert-after"><option value="">End of phase</option></select></div>`;
+    // populate insert-after
+    setTimeout(()=>gpSyncInsertAfter(),0);
+  }
+
+  if(kind!=='gate'){
+    html+=`<hr class="gantt-panel-divider">`;
+    html+=`<div class="gantt-panel-section">Dates</div>`;
+    html+=`<div class="gantt-panel-row"><div style="flex:1"><label class="gantt-panel-lbl">Start</label><input class="gantt-panel-input mono" id="gp-start" type="date" /></div><div style="flex:1;margin-left:6px"><label class="gantt-panel-lbl">End</label><input class="gantt-panel-input mono" id="gp-end" type="date" /></div></div>`;
+  }
+
+  if(kind==='step'){
+    html+=`<hr class="gantt-panel-divider">`;
+    html+=`<div class="gantt-panel-toggle-row"><span class="gantt-panel-toggle-lbl">Stage gate</span><label class="gantt-panel-toggle"><input type="checkbox" id="gp-is-gate"><div class="gantt-panel-toggle-track"></div><div class="gantt-panel-toggle-thumb"></div></label></div>`;
+  }
+
+  html+=`<button class="gantt-panel-add-btn" onclick="ganttPanelAdd()">Add &#8594;</button>`;
+  return html;
+}
+
+function gpSyncInsertAfter(){
+  const phSel=document.getElementById('gp-phase');
+  const iaSel=document.getElementById('gp-insert-after');
+  if(!phSel||!iaSel)return;
+  const pid=phSel.value;
+  const steps=roadSteps(pid);
+  iaSel.innerHTML='<option value="__begin">Beginning of phase</option>'+steps.map((s,i)=>`<option value="${s.id}">After: ${esc(s.label.length>30?s.label.substring(0,30)+'\u2026':s.label)}</option>`).join('')+'<option value="" selected>End of phase</option>';
+}
+
+function ganttPanelAdd(){
+  const label=(document.getElementById('gp-label').value||'').trim();
+  if(!label){alert('Label required');return;}
+  const note=(document.getElementById('gp-note')?.value||'').trim();
+  const kind=ganttPanelMode;
+  const id='r_'+Date.now();
+  const phases=roadPhases();
+
+  if(kind==='phase'){
+    const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
+    const colIdx=phases.length;
+    S.road.push({id,kind:'phase',num:maxNum+1,label,color:rainbowColor(colIdx),open:true});
+    renumberPhases();
+  } else {
+    const phSel=document.getElementById('gp-phase');
+    const phaseId=phSel?phSel.value:ganttPanelPhaseId;
+    if(!phaseId){alert('Select a phase');return;}
+    const start=(document.getElementById('gp-start')?.value||'');
+    const end=(document.getElementById('gp-end')?.value||'');
+    const iaSel=document.getElementById('gp-insert-after');
+    const insertAfterId=iaSel?iaSel.value:'';
+    let idx=S.road.length;
+    if(insertAfterId==='__begin'){
+      const phIdx=S.road.findIndex(r=>r.id===phaseId);
+      idx=phIdx+1;
+    } else if(insertAfterId){
+      const ai=S.road.findIndex(r=>r.id===insertAfterId);
+      if(ai>=0)idx=ai+1;
+    } else {
+      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===phaseId){idx=i+1;break;}}
+    }
+    if(kind==='step'){
+      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false});
+    } else {
+      S.road.splice(idx,0,{id,kind:'gate',phase:phaseId,label,date:'',met:false});
+    }
+  }
+  closeGanttPanel();
+  save();renderGantt();
+}
+
+/* ── CLONE / MOVE ── */
+function clonePhase(pid){
+  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
+  const phIdx=S.road.findIndex(r=>r.id===pid);
+  const block=[];
+  block.push(ph);
+  for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
+  const idMap={};
+  const clones=block.map(r=>{
+    const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+    idMap[r.id]=newId;
+    const clone={...r,id:newId};
+    if(clone.kind==='phase'){clone.num=(ph.num||0)+1;}
+    if(clone.phase)clone.phase=idMap[clone.phase]||clone.phase;
+    return clone;
+  });
+  S.road.splice(phIdx+block.length,0,...clones);
+  renumberPhases();
+  save();renderGantt();
+}
+function cloneStep(sid){
+  const s=S.road.find(r=>r.id===sid);if(!s)return;
+  const si=S.road.findIndex(r=>r.id===sid);
+  const clone={...s,id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),done:false,completedDate:''};
+  S.road.splice(si+1,0,clone);
+  save();renderGantt();
+}
 function movePhase(id,dir){
   const phases=roadPhases();
   const pi=phases.findIndex(p=>p.id===id);
@@ -1539,21 +1526,17 @@ function movePhase(id,dir){
     return{start:phIdx,items};
   }
   const curBlock=phaseBlock(id);
-  const tgtBlock=phaseBlock(phases[targetPi].id);
   S.road.splice(curBlock.start,curBlock.items.length);
   const newTgt=S.road.findIndex(r=>r.id===phases[targetPi].id);
-  const insertAt=dir<0?newTgt:newTgt+phaseBlock2Count(phases[targetPi].id);
-  S.road.splice(insertAt,0,...curBlock.items);
-  renumberPhases();
-  save();renderGantt();renderTaskList();
-}
-function phaseBlock2Count(phId){
-  let count=0,found=false;
-  for(const r of S.road){
-    if(r.id===phId){found=true;count++;continue;}
-    if(found){if(r.kind==='phase')break;count++;}
+  let insertAt;
+  if(dir<0){insertAt=newTgt;}
+  else{
+    let cnt=0,found=false;
+    for(const r of S.road){if(r.id===phases[targetPi].id){found=true;cnt++;continue;}if(found){if(r.kind==='phase')break;cnt++;}}
+    insertAt=newTgt+cnt;
   }
-  return count;
+  S.road.splice(insertAt,0,...curBlock.items);
+  renumberPhases();save();renderGantt();
 }
 function moveStep(id,dir){
   const s=S.road.find(r=>r.id===id);if(!s)return;
@@ -1564,206 +1547,18 @@ function moveStep(id,dir){
   const ai=S.road.findIndex(r=>r.id===id);
   const bi=S.road.findIndex(r=>r.id===steps[targetSi].id);
   [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
-  save();renderGantt();renderTaskList();
-}
-function moveGate(id,dir){
-  const g=S.road.find(r=>r.id===id);if(!g)return;
-  const gates=roadGates(g.phase);
-  const gi=gates.findIndex(x=>x.id===id);
-  const targetGi=gi+dir;
-  if(targetGi<0||targetGi>=gates.length)return;
-  const ai=S.road.findIndex(r=>r.id===id);
-  const bi=S.road.findIndex(r=>r.id===gates[targetGi].id);
-  [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
-  save();renderGantt();renderTaskList();
+  save();renderGantt();
 }
 
-/* ── CLONE ── */
-function clonePhase(pid){
-  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
-  const phIdx=S.road.findIndex(r=>r.id===pid);
-  // Collect all items in the phase block
-  const block=[];
-  block.push(ph);
-  for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
-  // Build clones with new IDs
-  const idMap={};
-  const clones=block.map(r=>{
-    const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-    idMap[r.id]=newId;
-    const clone={...r,id:newId};
-    if(clone.kind==='phase'){clone.num=(ph.num||0)+1;}
-    if(clone.phase)clone.phase=idMap[clone.phase]||clone.phase;
-    return clone;
+/* ── ROADMAP INIT ── */
+function initRoadmap(){
+  // Assign rainbow colors to phases that have no color or legacy color
+  roadPhases().forEach((ph,idx)=>{
+    if(!ph.color||ph.color==='#3a6b9e'||ph.color==='#3a7a5a'||ph.color==='#9e3a3a'||ph.color==='#6b3a9e'||ph.color==='#7a6a2a'||ph.color==='#2a6a7a'||ph.color==='#4a6b2a'||ph.color==='#6b4a2a'||ph.color==='#2a4a6b'){
+      ph.color=rainbowColor(idx);
+    }
   });
-  // Insert immediately after original block
-  const insertAt=phIdx+block.length;
-  S.road.splice(insertAt,0,...clones);
-  renumberPhases();
-  save();renderGantt();renderTaskList();
-}
-function cloneStep(sid){
-  const s=S.road.find(r=>r.id===sid);if(!s)return;
-  const si=S.road.findIndex(r=>r.id===sid);
-  const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  const clone={...s,id:newId,done:false,completedDate:''};
-  S.road.splice(si+1,0,clone);
-  save();renderGantt();renderTaskList();
-}
-
-function togglePhaseBlock(pid){
-  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
-  ph.open=!ph.open;
-  save();renderTaskList();
-}
-function toggleStep(id){
-  const s=S.road.find(r=>r.id===id);if(!s)return;
-  s.done=!s.done;
-  if(s.done)s.completedDate=todayStr();else s.completedDate='';
-  save();renderGantt();renderTaskList();
-}
-function setStepDate(id,which,val){
-  const s=S.road.find(r=>r.id===id);if(!s)return;
-  if(which==='start')s.targetStart=val;
-  if(which==='end')s.targetEnd=val;
-  save();renderGantt();renderTaskList();
-}
-function setGateDate(id,val){const g=S.road.find(r=>r.id===id);if(!g)return;g.date=val;save();renderGantt();renderTaskList();}
-function deleteRoadItem(id){if(!confirm('Delete?'))return;S.road=S.road.filter(r=>r.id!==id);renumberPhases();save();renderGantt();renderTaskList();}
-
-function raPhaseMode(){
-  const mode=document.querySelector('input[name="ra-phase-mode"]:checked').value;
-  const phaseSel=document.getElementById('ra-phase-sel');
-  const insertAfterSel=document.getElementById('ra-insert-after');
-  const kind=document.getElementById('ra-kind').value;
-  if(mode==='new'){
-    phaseSel.disabled=true;phaseSel.style.opacity='.4';
-    if(insertAfterSel)insertAfterSel.style.display='none';
-  } else {
-    phaseSel.disabled=false;phaseSel.style.opacity='1';
-    if(insertAfterSel&&kind==='step')insertAfterSel.style.display='inline-block';
-  }
-}
-function raKindChange(){
-  const v=document.getElementById('ra-kind').value;
-  const needPhase=v==='step'||v==='gate';
-  document.getElementById('ra-phase-sel').style.display=needPhase?'inline-flex':'none';
-  document.getElementById('ra-phase-mode-wrap').style.display=needPhase?'inline-flex':'none';
-  document.getElementById('ra-note').style.display=v==='gate'?'none':'inline-block';
-  document.getElementById('ra-phase-num').style.display=v==='phase'?'inline-block':'none';
-  const insertAfterSel=document.getElementById('ra-insert-after');
-  if(insertAfterSel){
-    insertAfterSel.style.display=(v==='step'&&document.querySelector('input[name="ra-phase-mode"]:checked')?.value==='existing')?'inline-block':'none';
-  }
-}
-function raSyncInsertAfter(){
-  const phaseId=document.getElementById('ra-phase-sel').value;
-  const sel=document.getElementById('ra-insert-after');
-  if(!sel||!phaseId)return;
-  const steps=roadSteps(phaseId);
-  // Position 0 = insert at beginning
-  sel.innerHTML='<option value="__begin">Position 0 — beginning</option>'+steps.map((s,i)=>`<option value="${s.id}">After step ${i+1}: ${esc(s.label.length>38?s.label.substring(0,38)+'\u2026':s.label)}</option>`).join('')+'<option value="">Insert at end</option>';
-}
-function roadAddItem(){
-  const kind=document.getElementById('ra-kind').value;
-  const label=(document.getElementById('ra-label').value||'').trim();
-  const note=(document.getElementById('ra-note').value||'').trim();
-  const targetStart=document.getElementById('ra-start').value||'';
-  const targetEnd=document.getElementById('ra-end')?document.getElementById('ra-end').value||'':'';
-  if(!label){alert('Label required');return;}
-  const id='r_'+Date.now();
-  const colors=['#3a6b9e','#6b3a9e','#3a7a5a','#9e3a3a','#7a6a2a','#2a6a7a','#4a6b2a','#6b4a2a','#2a4a6b'];
-
-  if(kind==='phase'){
-    const numInp=document.getElementById('ra-phase-num');
-    const reqNum=numInp&&numInp.value?parseInt(numInp.value,10):null;
-    const phases=roadPhases();
-    let insertPos=phases.length; // default: append
-    if(reqNum){
-      const conflict=phases.find(p=>p.num===reqNum);
-      if(conflict){
-        // Shift all phases >= reqNum up
-        S.road.forEach(r=>{if(r.kind==='phase'&&r.num>=reqNum)r.num++;});
-        // Insert before the conflict phase
-        const conflictIdx=S.road.findIndex(r=>r.id===conflict.id);
-        S.road.splice(conflictIdx,0,{id,kind:'phase',num:reqNum,label,color:colors[phases.length%colors.length],open:true});
-      } else {
-        // Beyond count: append at end with next sequential number
-        const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
-        S.road.push({id,kind:'phase',num:maxNum+1,label,color:colors[phases.length%colors.length],open:true});
-      }
-    } else {
-      const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
-      S.road.push({id,kind:'phase',num:maxNum+1,label,color:colors[phases.length%colors.length],open:true});
-    }
-  } else {
-    const modeEl=document.querySelector('input[name="ra-phase-mode"]:checked');
-    const mode=modeEl?modeEl.value:'existing';
-    let phaseId=document.getElementById('ra-phase-sel').value;
-
-    if(mode==='new'){
-      const phId='r_'+Date.now()+'_ph';
-      const maxNum=roadPhases().reduce((m,p)=>Math.max(m,p.num||0),0);
-      S.road.push({id:phId,kind:'phase',num:maxNum+1,label:'New Phase',color:colors[roadPhases().length%colors.length],open:true});
-      phaseId=phId;
-    }
-
-    if(!phaseId){alert('Select a phase');return;}
-
-    const insertAfterSel=document.getElementById('ra-insert-after');
-    const insertAfterId=insertAfterSel?insertAfterSel.value:'';
-    let idx;
-    if(insertAfterId==='__begin'){
-      // Insert at beginning of phase (before first step)
-      const phIdx=S.road.findIndex(r=>r.id===phaseId);
-      idx=phIdx+1; // immediately after phase header
-    } else if(insertAfterId){
-      idx=S.road.findIndex(r=>r.id===insertAfterId);
-      if(idx>=0)idx=idx+1;else idx=S.road.length;
-    } else {
-      idx=S.road.length;
-      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===phaseId){idx=i+1;break;}}
-    }
-
-    if(kind==='step'){
-      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,cmd:null,targetStart,targetEnd,completedDate:'',done:false});
-    } else {
-      S.road.splice(idx,0,{id,kind:'gate',phase:phaseId,label,date:'',met:false});
-    }
-  }
-
-  document.getElementById('ra-label').value='';
-  document.getElementById('ra-note').value='';
-  document.getElementById('ra-start').value='';
-  if(document.getElementById('ra-phase-num'))document.getElementById('ra-phase-num').value='';
-  save();renderGantt();renderTaskList();
-}
-function quickAddStep(pid){
-  const label=prompt('Step label:');if(!label||!label.trim())return;
-  const note=prompt('Note (optional):','')||'';
-  const id='r_'+Date.now();
-  const steps=roadSteps(pid);
-  let insertIdx=S.road.length;
-  if(steps.length>0){
-    const choices='0. Beginning\n'+steps.map((s,i)=>`${i+1}. ${s.label.substring(0,50)}`).join('\n');
-    const ans=prompt(`Insert after which step? (0 = beginning, or end number)\n${choices}`,'0');
-    const n=parseInt(ans,10);
-    if(n===0){
-      // Insert at beginning — immediately after phase header
-      const phIdx=S.road.findIndex(r=>r.id===pid);
-      insertIdx=phIdx+1;
-    } else if(n>0&&n<=steps.length){
-      const afterId=steps[n-1].id;
-      const aidx=S.road.findIndex(r=>r.id===afterId);
-      if(aidx>=0)insertIdx=aidx+1;
-    } else {
-      for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===pid){insertIdx=i+1;break;}}
-    }
-  } else {
-    for(let i=S.road.length-1;i>=0;i--){if(S.road[i].phase===pid){insertIdx=i+1;break;}}
-  }
-  S.road.splice(insertIdx,0,{id,kind:'step',phase:pid,label:label.trim(),note,cmd:null,targetStart:'',targetEnd:'',completedDate:'',done:false});
-  save();renderGantt();renderTaskList();
+  save();
 }
 
 /* ── EXPORT ── */
@@ -1844,8 +1639,8 @@ function rfRender(){
 
 /* ── INIT ── */
 load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
-// Roadmap renders when tab is clicked; set default level
-setRoadLevel(2);
+// Roadmap renders when Roadmap tab is clicked
+roadLevel=2;
 </script>
 </body>
 </html>
