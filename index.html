@@ -185,46 +185,53 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── GANTT ── */
 .gantt-wrap{padding:20px 32px 24px;overflow-x:auto}
-.gantt-wrap{position:relative;overflow:hidden}
+.gantt-outer{display:flex;flex-direction:column;overflow:hidden;border:1px solid #D1D5DB;border-radius:6px;background:#F8F9FB}
+.gantt-sticky-header{position:sticky;top:0;z-index:10;background:#F0F2F7;border-bottom:2px solid #C7CBD6;display:flex;align-items:stretch;min-height:28px}
+.gantt-sticky-label{width:190px;flex-shrink:0;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;position:sticky;left:0;z-index:11}
+.gantt-sticky-label span{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:#C70025;letter-spacing:.04em;text-transform:uppercase}
+.gantt-sticky-label .today-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#C70025;margin-right:5px;vertical-align:middle}
+.gantt-header-track{flex:1;position:relative;height:28px;overflow:hidden}
+.gantt-week-lbl{position:absolute;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:6px;z-index:2}
+.gantt-week-lbl.today-week{color:#C70025;font-weight:700}
+.gantt-header-today{position:absolute;top:0;bottom:0;width:2px;background:#C70025;opacity:.5;z-index:3}
+.gantt-header-sep{position:absolute;top:4px;bottom:4px;width:1px;border-left:1px dashed #C7CBD6;z-index:1}
+/* Scrollable body */
+.gantt-scroll-body{overflow-y:auto;overflow-x:auto;flex:1}
 .gantt-chart{min-width:600px;position:relative}
-/* Week band grid — rendered behind all rows */
-.gantt-grid{position:absolute;top:0;left:190px;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden}
+/* Week band grid */
+.gantt-grid{position:absolute;top:0;left:190px;right:0;bottom:0;pointer-events:none;z-index:0}
 .gantt-week-band{position:absolute;top:0;bottom:0}
-.gantt-week-band.even{background:rgba(220,224,232,.35)}
-.gantt-week-band.odd{background:rgba(236,238,244,.18)}
-/* Week header */
-.gantt-header{display:flex;margin-bottom:2px;margin-left:190px;position:relative;z-index:2}
-.gantt-week-lbl{position:absolute;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;font-weight:500;letter-spacing:.02em;color:#8E8E93;white-space:nowrap;transform:translateX(-50%);top:2px}
-.gantt-header-spacer{height:18px;flex:1;position:relative}
+.gantt-week-band.even{background:rgba(209,213,219,.28)}
+.gantt-week-band.odd{background:rgba(248,249,251,.6)}
+.gantt-week-sep{position:absolute;top:0;bottom:0;width:1px;border-left:1px dashed #D1D5DB;z-index:1}
 /* Phase bar row */
-.gantt-row{display:flex;align-items:center;margin-bottom:0;min-height:40px;margin-top:8px;position:relative;z-index:2}
-.gantt-label{width:190px;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:14px;font-weight:600;color:#1C1C1E;padding-right:14px;text-align:right;line-height:1.3}
-.gantt-track{flex:1;position:relative;height:36px;background:#E5E8EF;border:none;border-radius:4px;overflow:visible}
-.gantt-track.undated{background:#ECEEF3}
+.gantt-row{display:flex;align-items:center;margin-bottom:0;margin-top:6px;position:relative;z-index:2;min-height:44px}
+.gantt-label{width:190px;flex-shrink:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#111827;padding-right:14px;text-align:right;line-height:1.3;position:sticky;left:0;background:#F8F9FB;z-index:6;border-right:1px solid #D1D5DB}
+.gantt-track{flex:1;position:relative;height:36px;background:#E8EBF2;border:1px solid #CDD2DC;border-radius:4px;overflow:visible}
+.gantt-track.undated{background:#EEF0F5;border-color:#DDE0E8}
 .gantt-bar{position:absolute;top:4px;height:28px;min-width:4px;border-radius:3px;overflow:hidden}
 .gantt-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s;border-radius:3px 0 0 3px}
-.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.gantt-pct{position:absolute;right:-36px;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#8E8E93;width:32px;text-align:left}
+.gantt-bar-label{position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.gantt-pct{position:absolute;right:-36px;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#6B7280;width:32px;text-align:left}
 .gantt-done-stamp{position:absolute;top:50%;transform:translateY(-50%);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:var(--done-fg);white-space:nowrap;right:-72px}
+/* Today line on bar track */
+.gantt-today-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:#C70025;opacity:.6;z-index:5;pointer-events:none;border-radius:1px}
 /* Gate diamond */
-.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #4F6DF5;background:#fff;cursor:pointer;transition:all .18s;z-index:4;box-shadow:0 1px 3px rgba(79,109,245,.25)}
+.gantt-diamond{position:absolute;top:50%;width:14px;height:14px;transform:translateY(-50%) translateX(-7px) rotate(45deg);border:2px solid #4F6DF5;background:#fff;cursor:pointer;transition:all .18s;z-index:4;box-shadow:0 1px 3px rgba(79,109,245,.3)}
 .gantt-diamond.met{background:#4F6DF5;border-color:#3451D1}
 .gantt-diamond:hover{transform:translateY(-50%) translateX(-7px) rotate(45deg) scale(1.25)}
-/* Today line */
-.gantt-today-line{position:absolute;top:-4px;bottom:-4px;width:2px;background:#C70025;opacity:.7;z-index:5;pointer-events:none;border-radius:1px}
-.gantt-today-lbl{position:absolute;top:-16px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;font-weight:600;color:#C70025;transform:translateX(-50%);white-space:nowrap}
 /* Annotation strip */
-.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:0;min-height:26px;position:relative;z-index:2}
-.gantt-annot-spacer{width:190px;flex-shrink:0}
+.gantt-annot-row{display:flex;align-items:flex-start;margin-bottom:2px;min-height:26px;position:relative;z-index:2}
+.gantt-annot-spacer{width:190px;flex-shrink:0;position:sticky;left:0;background:#F8F9FB;border-right:1px solid #D1D5DB}
 .gantt-annot-track{flex:1;position:relative;height:28px}
 .gantt-annot-pin{position:absolute;top:3px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:9px;line-height:1.4;pointer-events:none;max-width:200px}
-.gantt-annot-pin .ap-date{font-weight:700;color:#3451D1}
+.gantt-annot-pin .ap-date{font-weight:700;color:#2338A8}
 .gantt-annot-pin .ap-date.met{color:var(--done-fg)}
-.gantt-annot-pin .ap-label{font-style:italic;color:#4F6DF5;opacity:.85}
+.gantt-annot-pin .ap-label{font-style:italic;color:#4F6DF5}
 /* Legend */
 .gantt-legend{display:flex;gap:14px;padding:8px 32px 4px;flex-wrap:wrap}
-.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#8E8E93}
-.gantt-leg-swatch{width:14px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.08)}
+.gantt-leg-item{display:flex;align-items:center;gap:5px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;color:#6B7280}
+.gantt-leg-swatch{width:14px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.1)}
 
 /* ── ADD BAR ── */
 .road-add-bar{display:flex;gap:8px;align-items:center;padding:10px 32px;background:var(--page-bg);border-bottom:1px solid var(--separator);flex-wrap:wrap}
@@ -566,7 +573,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <div class="gantt-leg-item"><div style="width:11px;height:11px;background:#b06000;transform:rotate(45deg)"></div>&nbsp;Gate Met</div>
         <div class="gantt-leg-item"><div style="width:2px;height:12px;background:var(--accent);opacity:.7;display:inline-block"></div>&nbsp;Today</div>
       </div>
-      <div class="gantt-wrap"><div class="gantt-wrap"><div class="gantt-chart" id="gantt-chart"></div></div>
+      <div class="gantt-outer"><div class="gantt-chart" id="gantt-chart"></div></div>
     </div>
     <div class="road-section-hd" onclick="toggleSection('tasklist')">
       <span class="road-section-title" id="tasklist-title">&#9660; Task List</span>
@@ -745,73 +752,41 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <div class="panel" id="panel-help"><div class="ref-section">
   <h2>How to Use This Hub</h2>
 
-  <h3 style="margin-top:28px">The Basics</h3>
-  <p>This is your project hub for <em>Over-classified</em>. It runs at <strong>https://brownd11-a11y.github.io/oc-hub/</strong> and opens in Safari on any Apple device — bookmark it on Mac and add it to your iPhone/iPad home screen for one-tap access.</p>
-  <p>There are two places your data lives:</p>
-  <ul>
-    <li><strong>Baked into the file</strong> — the seed data Claude provides at the end of each session. This is the authoritative record, hosted on GitHub.</li>
-    <li><strong>Browser localStorage</strong> — changes you make during a working session save here automatically. This is temporary working storage for the current session only.</li>
-  </ul>
-  <p>When you open the hub, it compares the two. If the hosted file is newer (Claude produced a fresh version), it uses that. If localStorage is newer (you've been working this session), it keeps your session work.</p>
-
-  <h3 style="margin-top:28px">&#9654; End of a Working Session — Step by Step</h3>
+  <h3 style="margin-top:24px">&#9654; End of Session</h3>
   <ol>
-    <li>Click or tap the <strong>Export</strong> button at the top of the Notes tab. This copies your data JSON to the clipboard. No file download, no folder — just clipboard.</li>
-    <li>Open Claude (claude.ai) in the Over-classified project on any device.</li>
-    <li>Paste the clipboard contents into the chat and say: <em>"Update the project hub."</em></li>
-    <li>Claude produces a new <code>index.html</code> — download it to <code>iCloud Drive/Downloads</code> on your Mac.</li>
-    <li>Press <strong>&#8679;&#8984;U</strong> (Shift+Command+U) to run the OC Hub Upload Quick Action. It uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> directly to GitHub.</li>
-    <li>Wait about 60 seconds, then refresh the hub on any device — all devices are now current.</li>
+    <li>Click <strong>Export</strong> at the top of the Notes tab — copies your data to clipboard.</li>
+    <li>Open Claude in the Over-classified project → paste → say <em>"Update the project hub."</em></li>
+    <li>Download the new <code>index.html</code> Claude produces → save to <code>iCloud Drive/Downloads</code>.</li>
+    <li>Press <strong>&#8679;&#8984;U</strong> to run OC Hub Upload → uploads to GitHub → live in ~60 seconds.</li>
+    <li>Refresh the hub on any device.</li>
   </ol>
 
-  <h3 style="margin-top:28px">&#9654; Starting a Session on Any Device</h3>
-  <ol>
-    <li>On Mac: click the OC Hub bookmark in Safari.</li>
-    <li>On iPhone/iPad: tap the OC Hub icon on your home screen.</li>
-    <li>Your data loads automatically — no import needed.</li>
-  </ol>
-  <p>If data looks stale, it means localStorage on that device is older than the file. Clear site data for the hub URL in Safari settings and reload — the fresh seed takes over.</p>
+  <h3 style="margin-top:24px">&#9654; Starting a Session</h3>
+  <p>Open <strong>https://brownd11-a11y.github.io/oc-hub/</strong> in Safari on any device. Bookmark on Mac; home screen icon on iPhone/iPad. Data loads automatically.</p>
 
-  <h3 style="margin-top:28px">&#9654; Multi-Device Sync</h3>
-  <p>The hub syncs through Claude, not automatically. The safe rule:</p>
-  <ul>
-    <li><strong>One device at a time.</strong> Finish a session, export, update GitHub, then open on the next device.</li>
-    <li>If you've made changes on multiple devices before syncing, paste all exports into Claude in one session and say: <em>"Merge these exports."</em> Claude reconciles them and produces one unified file.</li>
-    <li>localStorage is per-device and per-browser. GitHub is the single source of truth shared across all devices.</li>
-  </ul>
+  <h3 style="margin-top:24px">&#9654; Multi-Device</h3>
+  <p>One device at a time — finish and sync before switching. If you made changes on multiple devices before syncing, paste all exports to Claude in one session and say <em>"Merge these exports."</em></p>
 
-  <h3 style="margin-top:28px">&#9654; Mac Keyboard Shortcut</h3>
+  <h3 style="margin-top:24px">&#9654; Mac Shortcuts</h3>
   <ul>
-    <li><strong>&#8679;&#8984;U</strong> — OC Hub Upload: uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> to GitHub. Run after downloading Claude's new file.</li>
+    <li><strong>&#8679;&#8984;U</strong> — OC Hub Upload: uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> to GitHub.</li>
   </ul>
-  <p>To assign or change this shortcut: System Settings &#8594; Keyboard &#8594; Keyboard Shortcuts &#8594; Services &#8594; find <strong>OC Hub Upload</strong>.</p>
+  <p>To reassign: System Settings → Keyboard → Keyboard Shortcuts → Services → OC Hub Upload.</p>
 
-  <h3 style="margin-top:28px">&#9654; The Roadmap Tab</h3>
-  <p>The Gantt chart has three display levels — use the buttons to control what shows:</p>
+  <h3 style="margin-top:24px">&#9654; Roadmap Gantt</h3>
   <ul>
-    <li><strong>Hidden</strong> — chart not visible</li>
-    <li><strong>Bars + Gates</strong> — phase bars with stage gate diamonds at their target dates</li>
-    <li><strong>Bars + Gates + Notes</strong> — everything above plus date and label annotation beneath each bar</li>
+    <li><strong>Hidden</strong> — chart off</li>
+    <li><strong>Bars + Gates</strong> — phase bars with gate diamonds at target dates</li>
+    <li><strong>Bars + Gates + Notes</strong> — adds date/label annotation below each bar</li>
   </ul>
-  <p>Each phase bar spans from the earliest step start date to the latest step end date. The gate diamond sits at the latest end date. Click a diamond to mark it met — today's date is recorded automatically.</p>
-  <p>Each step has a <strong>Start</strong> and <strong>End</strong> date. Enter them directly in the task list below the chart.</p>
+  <p>Bar spans earliest start → latest end date across steps. Gate diamond sits at latest end date. Click a diamond to mark it met — records today automatically. Each step has Start and End date fields in the task list.</p>
 
-  <h3 style="margin-top:28px">&#9654; Data Safety</h3>
+  <h3 style="margin-top:24px">&#9654; Data Safety</h3>
   <ul>
-    <li>Old localStorage keys are deleted automatically on first open — no accumulation over time.</li>
-    <li>If you forget to export at session end, your work is still in localStorage on that device. Open the hub on the same device, export, give to Claude.</li>
-    <li>GitHub is the source of truth. localStorage is a working buffer for the current session.</li>
+    <li>Old localStorage keys deleted automatically — no accumulation.</li>
+    <li>Forgot to export? Work is still in localStorage on that device — open, export, give to Claude.</li>
+    <li>GitHub is source of truth. localStorage is a session buffer.</li>
   </ul>
-
-  <h3 style="margin-top:28px">&#9654; Asking Claude for Changes</h3>
-  <p>At the start of any session, Claude reads the Project Instructions and has your memory context. You can ask for:</p>
-  <ul>
-    <li>Edits to the roadmap (add phases, steps, gates, dates)</li>
-    <li>Interface improvements to this hub</li>
-    <li>Document work on the manuscript</li>
-    <li>Research, sourcing, or editorial passes</li>
-  </ul>
-  <p>If you've made roadmap changes since the last GitHub upload, paste the JSON export at the start of the session so Claude's copy is current before producing a new file.</p>
 
 
 </div></div>
@@ -1222,45 +1197,46 @@ function renderGantt(){
   const span=padMax-padMin;
   function xp(ds){if(!ds)return null;const d=new Date(ds+'T12:00:00');return Math.max(0,Math.min(100,(d-padMin)/span*100));}
 
-  // ── Week boundaries (Mondays) ──────────────────────────────────
+  // ── Week boundaries (Mondays) ─────────────────────────────────
   const weeks=[];
   const wc=new Date(padMin);
-  // Advance to nearest Monday
-  const dow=wc.getDay(); // 0=Sun
+  const dow=wc.getDay();
   wc.setDate(wc.getDate()+(dow===0?1:(8-dow)%7||7));
   let wi=0;
   while(wc<=padMax){
     const pct=(wc-padMin)/span*100;
     if(pct>=0&&pct<=100){
-      weeks.push({
-        pct,
-        label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),
-        even:wi%2===0
-      });
+      const ds=wc.toISOString().slice(0,10);
+      weeks.push({pct,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),even:wi%2===0,isToday:ds===today});
     }
-    wc.setDate(wc.getDate()+7);
-    wi++;
+    wc.setDate(wc.getDate()+7);wi++;
   }
 
-  // ── Week band grid (absolute, behind rows) ─────────────────────
+  const todayPct=xp(today);
+
+  // ── Sticky header ─────────────────────────────────────────────
+  let headerHtml=`<div class="gantt-sticky-header">`;
+  headerHtml+=`<div class="gantt-sticky-label"><span class="today-dot"></span><span>Today</span></div>`;
+  headerHtml+=`<div class="gantt-header-track">`;
+  if(todayPct!==null)headerHtml+=`<div class="gantt-header-today" style="left:${todayPct}%"></div>`;
+  weeks.forEach(w=>{
+    headerHtml+=`<div class="gantt-header-sep" style="left:${w.pct}%"></div>`;
+    headerHtml+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.pct}%">${w.label}</div>`;
+  });
+  headerHtml+=`</div></div>`;
+
+  // ── Grid bands + separators ───────────────────────────────────
   let gridHtml='';
   for(let i=0;i<weeks.length;i++){
     const left=weeks[i].pct;
     const right=i+1<weeks.length?weeks[i+1].pct:100;
     const w=right-left;
     gridHtml+=`<div class="gantt-week-band ${weeks[i].even?'even':'odd'}" style="left:${left}%;width:${w}%"></div>`;
+    gridHtml+=`<div class="gantt-week-sep" style="left:${left}%"></div>`;
   }
 
-  // ── Week header ────────────────────────────────────────────────
-  let headerHtml=`<div class="gantt-header"><div class="gantt-header-spacer">`;
-  weeks.forEach(w=>{
-    headerHtml+=`<div class="gantt-week-lbl" style="left:${w.pct}%">${w.label}</div>`;
-  });
-  headerHtml+=`</div></div>`;
-
-  const todayPct=xp(today);
-  let html='';
-
+  // ── Phase rows ────────────────────────────────────────────────
+  let rowsHtml='';
   phases.forEach((ph,phIdx)=>{
     const range=phaseRange(ph.id);
     const prog=phaseProgress(ph.id);
@@ -1270,26 +1246,28 @@ function renderGantt(){
     const isAllDone=prog.total>0&&prog.done===prog.total;
     const numBadge=ph.num?`[${String(ph.num).padStart(2,'0')}] `:'';
 
-    // ── Phase bar row ────────────────────────────────────────────
-    html+=`<div class="gantt-row"${phIdx===0?' style="margin-top:0"':''}>`;
-    html+=`<div class="gantt-label" title="${esc(ph.label)}">${numBadge}${esc(ph.label)}</div>`;
-    html+=`<div class="gantt-track${isDated?'':' undated'}">`;
-    if(todayPct!==null)html+=`<div class="gantt-today-line" style="left:${todayPct}%"><span class="gantt-today-lbl">Today</span></div>`;
+    rowsHtml+=`<div class="gantt-row"${phIdx===0?' style="margin-top:2px"':''}>`;
+    rowsHtml+=`<div class="gantt-label" title="${esc(ph.label)}">${numBadge}${esc(ph.label)}</div>`;
+    rowsHtml+=`<div class="gantt-track${isDated?'':' undated'}">`;
+
+    // Today line on track (no label — label is in sticky header)
+    if(todayPct!==null)rowsHtml+=`<div class="gantt-today-line" style="left:${todayPct}%"></div>`;
+
     if(isDated){
       const lp=xp(range.start),rp=xp(range.end),bw=Math.max(1.5,rp-lp),fw=prog.pct;
-      // Bar fill: use phase color, lighter bg
-      const barBg=color+'28';
-      const fillColor=isAllDone?'#2d6b2d':color;
-      html+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${barBg};border:1.5px solid ${color}55">`;
-      html+=`<div class="gantt-bar-fill" style="background:${fillColor};width:${fw}%"></div>`;
-      html+=`<div class="gantt-bar-label">${esc(ph.label)}</div>`;
-      html+=`</div>`;
-      if(isAllDone)html+=`<div class="gantt-done-stamp">\u2713 Done</div>`;
-      else if(fw>0)html+=`<div class="gantt-pct" style="left:${Math.min(rp+0.5,95)}%">${fw}%</div>`;
+      const barBg=color+'25';
+      const fillColor=isAllDone?'#1D6B2A':color;
+      rowsHtml+=`<div class="gantt-bar" style="left:${lp}%;width:${bw}%;background:${barBg};border:1.5px solid ${color}66">`;
+      rowsHtml+=`<div class="gantt-bar-fill" style="background:${fillColor};width:${fw}%"></div>`;
+      rowsHtml+=`<div class="gantt-bar-label">${esc(ph.label)}</div>`;
+      rowsHtml+=`</div>`;
+      if(isAllDone)rowsHtml+=`<div class="gantt-done-stamp">\u2713 Done</div>`;
+      else if(fw>0)rowsHtml+=`<div class="gantt-pct" style="left:${Math.min(rp+0.5,95)}%">${fw}%</div>`;
     } else {
-      html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;font-weight:600;color:#AEAEB2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
+      rowsHtml+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:13px;font-weight:600;color:#9CA3AF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ph.label)}</div>`;
     }
-    // Gate diamonds on track (level 1+)
+
+    // Gate diamonds (level 1+) — no Today label, just line
     if(roadLevel>=1){
       gates.forEach(g=>{
         const inheritedDate=gateInheritDate(g.phase);
@@ -1299,20 +1277,19 @@ function renderGantt(){
         if(gp===null)return;
         const tip=esc(g.label)+(g.met&&g.metDate?' \u00b7 Met: '+fmtDate(g.metDate):displayDate?' \u00b7 Target: '+fmtDate(displayDate):'');
         const dateLabel=g.met&&g.metDate?fmtDate(g.metDate):(displayDate?fmtDate(displayDate):'');
-        const dateColor=g.met?'#2d6b2d':'#3451D1';
-        html+=`<div class="gantt-diamond${g.met?' met':''}" style="left:${gp}%" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
+        const dateColor=g.met?'#1D6B2A':'#2338A8';
+        rowsHtml+=`<div class="gantt-diamond${g.met?' met':''}" style="left:${gp}%" onclick="toggleGate('${g.id}')" title="${tip}"></div>`;
         if(dateLabel){
-          if(gp<=65){
-            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(${gp}% + 13px);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
-          } else {
-            html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);right:calc(${100-gp}% + 13px);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:600;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5;text-align:right">${esc(dateLabel)}</div>`;
-          }
+          const anchor=gp<=65
+            ?`left:calc(${gp}% + 13px)`
+            :`right:calc(${100-gp}% + 13px);text-align:right`;
+          rowsHtml+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:10px;font-weight:700;color:${dateColor};white-space:nowrap;pointer-events:none;z-index:5">${esc(dateLabel)}</div>`;
         }
       });
     }
-    html+=`</div></div>`; // close track + row
+    rowsHtml+=`</div></div>`;
 
-    // ── Annotation strip (level 2) ──────────────────────────────
+    // Annotation strip (level 2)
     if(roadLevel>=2&&gates.length>0){
       const plottable=gates.filter(g=>{
         const inh=gateInheritDate(g.phase);
@@ -1321,7 +1298,7 @@ function renderGantt(){
         return xp(plot)!==null;
       });
       if(plottable.length>0){
-        html+=`<div class="gantt-annot-row"><div class="gantt-annot-spacer"></div><div class="gantt-annot-track">`;
+        rowsHtml+=`<div class="gantt-annot-row"><div class="gantt-annot-spacer"></div><div class="gantt-annot-track">`;
         plottable.forEach(g=>{
           const inh=gateInheritDate(g.phase);
           const disp=g.date||inh;
@@ -1330,20 +1307,27 @@ function renderGantt(){
           const dateStr=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?fmtDate(disp):'';
           const labelStr=g.label.length>38?g.label.substring(0,38)+'\u2026':g.label;
           const dateCls=g.met?'ap-date met':'ap-date';
-          const anchorStyle=gp>68?`right:${100-gp}%;text-align:right`:`left:${gp}%`;
-          html+=`<div class="gantt-annot-pin" style="${anchorStyle}">`;
-          if(dateStr)html+=`<div class="${dateCls}">${esc(dateStr)}</div>`;
-          html+=`<div class="ap-label">${esc(labelStr)}</div></div>`;
+          const anchor=gp>68?`right:${100-gp}%;text-align:right`:`left:${gp}%`;
+          rowsHtml+=`<div class="gantt-annot-pin" style="${anchor}">`;
+          if(dateStr)rowsHtml+=`<div class="${dateCls}">${esc(dateStr)}</div>`;
+          rowsHtml+=`<div class="ap-label">${esc(labelStr)}</div></div>`;
         });
-        html+=`</div></div>`;
+        rowsHtml+=`</div></div>`;
       }
     }
   });
 
-  // Assemble: wrap grid + header + rows
+  // ── Assemble into outer container ────────────────────────────
   const chartEl=document.getElementById('gantt-chart');
-  chartEl.innerHTML=`<div class="gantt-grid">${gridHtml}</div>${headerHtml}${html}`;
-  const ts=S.road.filter(r=>r.kind==='step').length,ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
+  chartEl.innerHTML=
+    headerHtml+
+    `<div class="gantt-scroll-body"><div style="position:relative">` +
+    `<div class="gantt-grid">${gridHtml}</div>` +
+    rowsHtml +
+    `</div></div>`;
+
+  const ts=S.road.filter(r=>r.kind==='step').length;
+  const ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
   document.getElementById('gantt-summary').textContent=ds+' / '+ts+' steps complete';
 }
 
