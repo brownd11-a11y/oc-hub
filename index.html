@@ -822,14 +822,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 
 <script>
-const SK='oc_hub_v5',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-07T23:00:00.000Z'; // bump this each time seed data is updated
+const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
+const SEED_VERSION='2026-06-08T04:00:00.000Z'; // bump this each time seed data is updated
 
-/* ── SEED DATA (v4, 2026-06-07 — updated post-import) ── */
+/* ── SEED DATA (v5, 2026-06-08 — merged iPhone + iPad exports) ── */
 const SEED_ITEMS=[
-  {id:'i_1780867624952',type:'reminder',text:'Hub roadmap: insert target date to right of stage gate emblem; when met, show met date; move gate explanation to follow right of date (not left of Gantt chart).',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:27:04.952Z',dueDate:'',completedDate:''},
-  {id:'i_1780867396928',type:'reminder',text:'Hub tabs: increase bottom-row tab label size ≥50%; create graphical tab representation; active tab lighter, inactive slightly darker (gray or maroon).',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:23:16.928Z',dueDate:'',completedDate:''},
-  {id:'i_1780867301726',type:'reminder',text:'Hub task list and phase display: much larger font, closer to height of box; raise stage gate font size.',done:false,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:21:41.726Z',dueDate:'2026-06-07',completedDate:''},
+  {id:'i_1780890159018',type:'reminder',text:'Test note from iPhone',done:false,priority:true,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-08T03:42:39.018Z',dueDate:'',completedDate:''},
+  {id:'i_1780890999025',type:'question',text:'Test 2 iPad',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T03:56:39.025Z',dueDate:'',completedDate:''},
+  {id:'i_1780867624952',type:'reminder',text:'Hub roadmap: insert target date to right of stage gate emblem; when met, show met date; move gate explanation to follow right of date (not left of Gantt chart).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:27:04.952Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780867396928',type:'reminder',text:'Hub tabs: increase bottom-row tab label size ≥50%; create graphical tab representation; active tab lighter, inactive slightly darker (gray or maroon).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:23:16.928Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780867301726',type:'reminder',text:'Hub task list and phase display: much larger font, closer to height of box; raise stage gate font size.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:21:41.726Z',dueDate:'2026-06-07',completedDate:'2026-06-08'},
   {id:'i_1780840643824',type:'reminder',text:'Clone roadmap entries at any level — clone phase (full contents) or clone step (within phase).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Confirmed built in prior session — clonePhase() and cloneStep() both verified present.',created:'2026-06-07T13:10:43.824Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780840467186',type:'reminder',text:'Two date behavior fixes: (1) completion date allowed before due date; (2) stage gate fields inherit latest target completion date among steps in phase.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Implemented this session — gateInheritDate() confirmed correct; gate edit form now pre-populates with inherited date and allows manual override.',created:'2026-06-07T13:07:47.186Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780836765101',type:'note',text:'On the Project Notes Form tab — move Copy To Cloud button to same line as Show All; move Show All next to All Types; move Copy To Cloud to right.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:52:45.101Z',dueDate:'',completedDate:'2026-06-07'},
@@ -848,6 +850,7 @@ const SEED_ITEMS=[
   {id:'i_1780705349833',type:'reminder',text:"Move Villarroel's picture into the proper place over the caption in Chapter 11.",done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:"Done — v254. Converted from floating wp:anchor to wp:inline.",created:'2026-06-06T00:22:29.833Z',dueDate:'',completedDate:'2026-06-06'},
   {id:'i_session0606a',type:'note',text:'Session 2026-06-06: Full image pass v253→v254. 15 replacements, 5 upscales, whitespace trimmed on 4 images. USS Omaha sphere removed; footnote added. Fig 11.1 anchor→inline.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-06T00:00:00.000Z',dueDate:'',completedDate:'2026-06-06'},
 ];
+
 const ROAD_SEED=[
   // ── Phase 1: Mechanical rescan ──────────────────────────────────────────
   {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#3a6b9e',open:true,num:1},
@@ -946,7 +949,7 @@ let sectionOpen={gantt:true,tasklist:true};
 let roadLevel=2; // 0=closed,1=phases,2=full
 
 function load(){
-  const OLD_KEYS=['oc_hub_v4','oc_hub_v3','oc_hub_v2','oc_hub_v1'];
+  const OLD_KEYS=['oc_hub_v5','oc_hub_v4','oc_hub_v3','oc_hub_v2','oc_hub_v1'];
   try{
     let raw=localStorage.getItem(SK);
     if(!raw){
