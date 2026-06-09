@@ -501,6 +501,41 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .device-guide li::before{content:'›';position:absolute;left:0;color:var(--gold-dim)}
 .device-guide li strong{color:var(--paper)}
 
+
+/* ── UNIVERSAL SEARCH ── */
+.search-bar{display:flex;align-items:center;gap:8px;padding:6px 16px 6px 12px;background:#0f0e0c;border-bottom:1px solid #2a2820}
+.search-input-wrap{display:flex;align-items:center;flex:1;background:#1a1815;border:1px solid #3a3630;border-radius:6px;padding:0 10px;gap:6px;transition:border-color .15s}
+.search-input-wrap:focus-within{border-color:var(--gold)}
+.search-icon{color:#706858;font-size:14px;flex-shrink:0;line-height:1}
+.search-input{flex:1;background:none;border:none;outline:none;font-family:'Source Code Pro',monospace;font-size:12px;color:#d4c9a8;padding:7px 0;min-width:0}
+.search-input::placeholder{color:#504840}
+.search-clear{background:none;border:none;cursor:pointer;color:#706858;font-size:16px;padding:0 2px;line-height:1;flex-shrink:0;display:none}
+.search-clear.visible{display:block}
+.search-clear:hover{color:#c9a050}
+.search-results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
+.search-results-panel.open{display:flex}
+.search-results-box{background:#1a1815;border:1px solid #3a3630;border-radius:8px;width:min(680px,96vw);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.search-results-header{padding:12px 16px;border-bottom:1px solid #2a2820;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.search-results-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#706858}
+.search-results-close{background:none;border:none;cursor:pointer;color:#706858;font-size:20px;line-height:1;padding:0 4px}
+.search-results-close:hover{color:#d4c9a8}
+.search-results-scroll{overflow-y:auto;flex:1;padding:8px 0}
+.search-result-item{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;border-bottom:1px solid #221f1a;transition:background .1s}
+.search-result-item:hover{background:#221f1a}
+.search-result-item:last-child{border-bottom:none}
+.sr-source{flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840;width:72px;padding-top:2px;line-height:1.4}
+.sr-source.src-roadmap{color:#2070C8}
+.sr-source.src-notes{color:#c9a050}
+.sr-source.src-passes{color:#1A9E78}
+.sr-source.src-refs{color:#B03090}
+.sr-source.src-other{color:#706858}
+.sr-body{flex:1;min-width:0}
+.sr-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:#d4c9a8;line-height:1.3;margin-bottom:2px}
+.sr-title mark{background:rgba(200,169,110,.25);color:#e8d4a8;border-radius:2px;padding:0 1px}
+.sr-sub{font-family:'Source Code Pro',monospace;font-size:10px;color:#504840;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-arrow{flex-shrink:0;color:#3a3630;font-size:16px;align-self:center}
+.search-empty{padding:24px 16px;text-align:center;font-family:'Source Code Pro',monospace;font-size:11px;color:#504840}
+
 </style>
 </head>
 <body>
@@ -559,6 +594,24 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab" onclick="showTab('dist',this)">Distribution</button>
     <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
     <button class="tab" onclick="showTab('help',this)">Help</button>
+  </div>
+</div>
+<!-- SEARCH BAR -->
+<div class="search-bar" id="search-bar">
+  <div class="search-input-wrap">
+    <span class="search-icon">&#9740;</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Search all tabs…" autocomplete="off" oninput="searchUpdate()" onkeydown="searchKeydown(event)" />
+    <button class="search-clear" id="search-clear" onclick="searchClear()" title="Clear">&#215;</button>
+  </div>
+</div>
+<!-- SEARCH RESULTS OVERLAY -->
+<div class="search-results-panel" id="search-results-panel" onclick="searchPanelClick(event)">
+  <div class="search-results-box">
+    <div class="search-results-header">
+      <span class="search-results-title" id="search-results-title">Results</span>
+      <button class="search-results-close" onclick="searchClose()">&#215;</button>
+    </div>
+    <div class="search-results-scroll" id="search-results-scroll"></div>
   </div>
 </div>
 <!-- NOTES PANEL -->
@@ -922,7 +975,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-09T15:18:49.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-09T15:32:38.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v279'; // current manuscript version — update each session
 
 /* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
@@ -968,12 +1021,12 @@ const SEED_ITEMS=[
   {id:'i_1781002229441',type:'reminder',text:'Hub: allow toggling stage gate on/off in edit panel after task is already saved.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:50:29.441Z',dueDate:'',completedDate:'2026-06-09'},
   {id:'i_1781002363394',type:'reminder',text:'Hub: add standalone Gate as 3rd entry type (beside Task and Phase). Gate on task line inherits to phase bar automatically. Larger diamond for standalone gates.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:52:43.394Z',dueDate:'',completedDate:'2026-06-09'},
   {id:'i_1781004087718',type:'reminder',text:'Claude, please look at A2 to see how we created an index offset by the app headline style and recommend other candidates where this same type of index would work well for hyperlinks to the content in the appendices.',done:false,priority:false,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-09T11:21:27.718Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_2',type:'fordave',text:'v279: Review new Ch. 4 subheading "Secret programs as explanation" + 2 paragraphs inserted after Mick West / Peings section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:01.000Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_3',type:'fordave',text:'v279: Review Ch. 6 para 619 connective sentence appended to end of F-117 section. Confirm it bridges forward naturally.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:02.000Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_5',type:'fordave',text:'v279: Verify Jacobsen, Pentagon\'s Brain — find exact page number for the 10–20 year technology lead figure. Needed for notes 1_4_32 and 3_5_31 before final production.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:04.000Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_6',type:'fordave',text:'PI v18 chapter titles out of date: manuscript has Ch. 3 = "Off the Books" and Ch. 4 = "What We Agreed to See". PI v18 still lists "Noise" and "What Counts". Update PI v18 before next session.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:05.000Z',dueDate:'',completedDate:''},
+  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'Intro § Human-tech hypothesis — 2 new paras after note 11, near para 99'},
+  {id:'i_fordave_v279_2',type:'fordave',text:'v279: Review new Ch. 4 subheading "Secret programs as explanation" + 2 paragraphs inserted after Mick West / Peings section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:01.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 4 § Secret programs as explanation — subheading + 2 paras after Mick West / Peings'},
+  {id:'i_fordave_v279_3',type:'fordave',text:'v279: Review Ch. 6 para 619 connective sentence appended to end of F-117 section. Confirm it bridges forward naturally.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:02.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 6 § End of F-117 section — new connective sentence at para 619'},
+  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 13 § The human technology hypothesis — new subheading + 4 paras before ETH section'},
+  {id:'i_fordave_v279_5',type:'fordave',text:'v279: Verify Jacobsen, Pentagon\'s Brain — find exact page number for the 10–20 year technology lead figure. Needed for notes 1_4_32 and 3_5_31 before final production.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:04.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 4 note ref_1_4_32 and Ch. 5 note ref_3_5_31 — both cite Jacobsen 10–20yr figure; page # unverified'},
+  {id:'i_fordave_v279_6',type:'fordave',text:'PI v18 chapter titles out of date: manuscript has Ch. 3 = "Off the Books" and Ch. 4 = "What We Agreed to See". PI v18 still lists "Noise" and "What Counts". Update PI v18 before next session.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:05.000Z',dueDate:'',completedDate:'',itemUrl:'Project_Instructions_v18.docx § Chapter titles table — update Ch. 3 and Ch. 4 entries'},
   {id:'i_session0609b',type:'note',text:'Session 2026-06-09 (afternoon): Human-tech hypothesis research + drafting. Inserted new content in v279: Intro notes 11–12 (2 paras), Ch. 4 "Secret programs as explanation" (subheading + 2 paras, notes 28–32), Ch. 6 para 619 connective sentence, Ch. 13 "The human technology hypothesis" (subheading + 4 paras, notes 27–31). All 12 new footnote pairs four-count gate confirmed. v278→v279.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T18:00:06.000Z',dueDate:'',completedDate:'2026-06-09'},
 ];
 
@@ -2182,6 +2235,236 @@ load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=2;
 initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
+
+/* ══════════════════════════════════════════════════════
+   UNIVERSAL SEARCH
+   Sources (in order): Roadmap → Notes/Checklist → Passes → References → other tabs
+   ══════════════════════════════════════════════════════ */
+
+let _searchResults=[];
+let _searchIdx=-1;
+
+function searchUpdate(){
+  const q=(document.getElementById('search-input')?.value||'').trim();
+  const clr=document.getElementById('search-clear');
+  if(clr)clr.className='search-clear'+(q?' visible':'');
+  if(!q){searchClose();return;}
+  _searchResults=searchBuild(q);
+  _searchIdx=-1;
+  searchRender(q);
+  document.getElementById('search-results-panel').classList.add('open');
+}
+
+function searchClear(){
+  const inp=document.getElementById('search-input');
+  if(inp)inp.value='';
+  document.getElementById('search-clear').className='search-clear';
+  searchClose();
+  inp?.focus();
+}
+
+function searchClose(){
+  document.getElementById('search-results-panel').classList.remove('open');
+  _searchResults=[];_searchIdx=-1;
+}
+
+function searchPanelClick(e){
+  // Close if clicking the backdrop (not the box)
+  if(e.target===document.getElementById('search-results-panel'))searchClose();
+}
+
+function searchKeydown(e){
+  if(e.key==='Escape'){searchClose();return;}
+  if(!_searchResults.length)return;
+  const scroll=document.getElementById('search-results-scroll');
+  if(e.key==='ArrowDown'){
+    e.preventDefault();
+    _searchIdx=Math.min(_searchIdx+1,_searchResults.length-1);
+    searchHighlightRow();
+  } else if(e.key==='ArrowUp'){
+    e.preventDefault();
+    _searchIdx=Math.max(_searchIdx-1,0);
+    searchHighlightRow();
+  } else if(e.key==='Enter'&&_searchIdx>=0){
+    e.preventDefault();
+    searchGo(_searchResults[_searchIdx]);
+  }
+}
+
+function searchHighlightRow(){
+  document.querySelectorAll('.search-result-item').forEach((el,i)=>{
+    el.style.background=i===_searchIdx?'#2a2720':'';
+  });
+  const el=document.querySelector(`.search-result-item:nth-child(${_searchIdx+1})`);
+  if(el)el.scrollIntoView({block:'nearest'});
+}
+
+function hl(text,q){
+  // Highlight query terms in text
+  if(!q||!text)return esc(text||'');
+  const safe=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return esc(text).replace(new RegExp('('+safe+')','gi'),'<mark>$1</mark>');
+}
+
+function searchBuild(q){
+  const lq=q.toLowerCase();
+  const results=[];
+
+  // ── 1. Roadmap (phases, steps, gates) ────────────────────────────────
+  const phases=roadPhases();
+  const phaseMap={};
+  phases.forEach(ph=>{phaseMap[ph.id]=ph;});
+  (S.road||[]).forEach(r=>{
+    const haystack=((r.label||'')+' '+(r.note||'')).toLowerCase();
+    if(!haystack.includes(lq))return;
+    let sub='Roadmap';
+    if(r.kind==='step'||r.kind==='gate'){
+      const ph=phaseMap[r.phase];
+      if(ph)sub='Roadmap › '+ph.label;
+    }
+    results.push({
+      source:'roadmap',
+      sourceLabel:'Roadmap',
+      title:r.label,
+      sub:sub+(r.kind==='gate'?' · Gate':''),
+      note:r.note||'',
+      action:()=>{
+        searchClose();
+        showTab('roadmap',document.querySelector('[onclick*=\'roadmap\']'));
+        // Expand the phase if it's a step
+        if((r.kind==='step'||r.kind==='gate')&&r.phase){
+          const ph=S.road.find(x=>x.id===r.phase);
+          if(ph&&!ph.open){ph.open=true;renderGantt();}
+        }
+      }
+    });
+  });
+
+  // ── 2. Notes / Checklist ──────────────────────────────────────────────
+  (S.items||[]).forEach(it=>{
+    const haystack=((it.text||'')+' '+(it.answer||'')+' '+(it.tag||'')+' '+(it.itemUrl||'')).toLowerCase();
+    if(!haystack.includes(lq))return;
+    const typeLabel=it.type==='fordave'?'For Dave':it.type||'note';
+    results.push({
+      source:'notes',
+      sourceLabel:'Notes',
+      title:it.text,
+      sub:'Notes & Checklist · '+typeLabel+(it.tag?' · '+it.tag:'')+(it.done?' · done':''),
+      action:()=>{
+        searchClose();
+        showTab('notes',document.querySelector('[onclick*=\'notes\']'));
+        // Expand the item
+        it._exp=true;
+        render();
+        setTimeout(()=>{
+          const el=document.getElementById('it_'+it.id);
+          if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+        },150);
+      }
+    });
+  });
+
+  // ── 3. Passes (static text search) ───────────────────────────────────
+  const passRows=document.querySelectorAll('.pass-table tbody tr');
+  passRows.forEach(row=>{
+    const text=(row.textContent||'').toLowerCase();
+    if(!text.includes(lq))return;
+    const cmd=row.querySelector('.pass-cmd')?.textContent||'';
+    const lbl=row.querySelector('.pass-label')?.textContent||'';
+    const desc=row.querySelector('.pass-desc')?.textContent||'';
+    if(!cmd&&!lbl)return;
+    results.push({
+      source:'passes',
+      sourceLabel:'Passes',
+      title:cmd||lbl,
+      sub:'Passes · '+(lbl||'')+(desc?' — '+desc.substring(0,60)+'…':''),
+      action:()=>{
+        searchClose();
+        showTab('passes',document.querySelector('[onclick*=\'passes\']'));
+      }
+    });
+  });
+
+  // ── 4. References ─────────────────────────────────────────────────────
+  (typeof RF!=='undefined'?RF:[]).forEach(ref=>{
+    const haystack=((ref.kw||'')+' '+(ref.url||'')+' '+(ref.desc||'')).toLowerCase();
+    if(!haystack.includes(lq))return;
+    results.push({
+      source:'refs',
+      sourceLabel:'Refs',
+      title:ref.kw||ref.url||'Reference',
+      sub:'References · '+(ref.desc?ref.desc.substring(0,60):''),
+      action:()=>{
+        searchClose();
+        showTab('refs',document.querySelector('[onclick*=\'refs\']'));
+      }
+    });
+  });
+
+  // ── 5. ISBNs / Style (static DOM search) ─────────────────────────────
+  ['isbns','style','dist','outreach'].forEach(tid=>{
+    const panel=document.getElementById('panel-'+tid);
+    if(!panel)return;
+    const text=(panel.textContent||'').toLowerCase();
+    if(!text.includes(lq))return;
+    // Find specific rows if possible
+    const rows=panel.querySelectorAll('tr,li,p');
+    let matched=false;
+    rows.forEach(el=>{
+      if(matched)return; // one hit per tab is enough for static tabs
+      if((el.textContent||'').toLowerCase().includes(lq)){
+        const snippet=(el.textContent||'').trim().substring(0,80);
+        results.push({
+          source:'other',
+          sourceLabel:tid.charAt(0).toUpperCase()+tid.slice(1),
+          title:snippet||tid,
+          sub:tid.charAt(0).toUpperCase()+tid.slice(1)+' tab',
+          action:()=>{
+            searchClose();
+            showTab(tid,document.querySelector('[onclick*=\''+tid+'\']'));
+          }
+        });
+        matched=true;
+      }
+    });
+  });
+
+  return results;
+}
+
+function searchRender(q){
+  const scroll=document.getElementById('search-results-scroll');
+  const title=document.getElementById('search-results-title');
+  if(!scroll)return;
+  if(!_searchResults.length){
+    scroll.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>';
+    if(title)title.textContent='No results';
+    return;
+  }
+  if(title)title.textContent=_searchResults.length+' result'+(_searchResults.length===1?'':'s');
+  scroll.innerHTML=_searchResults.map((r,i)=>`
+    <div class="search-result-item" onclick="searchGo(_searchResults[${i}])">
+      <span class="sr-source src-${r.source}">${esc(r.sourceLabel)}</span>
+      <div class="sr-body">
+        <div class="sr-title">${hl(r.title.length>100?r.title.substring(0,100)+'\u2026':r.title,q)}</div>
+        <div class="sr-sub">${esc(r.sub.length>80?r.sub.substring(0,80)+'\u2026':r.sub)}</div>
+      </div>
+      <span class="sr-arrow">&#8250;</span>
+    </div>
+  `).join('');
+}
+
+function searchGo(result){
+  if(result&&result.action)result.action();
+}
+
+// Close search on Escape anywhere
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&document.getElementById('search-results-panel')?.classList.contains('open')){
+    searchClose();
+  }
+});
+
 </script>
 </body>
 </html>
