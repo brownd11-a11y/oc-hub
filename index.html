@@ -25,23 +25,56 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);color:var(--label-primary);min-height:100vh}
 
-/* ── HEADER (cover palette) ── */
-.hd{background:var(--cover-black);padding:18px 32px 0;position:relative}
-.hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel))}
-.hd-eyebrow{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cover-steel);margin-bottom:4px}
-.hd h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cover-cream)}
-.hd h1 em{font-style:italic;color:#c8bfa8}
-.hd-meta{display:flex;gap:18px;margin-top:6px;font-family:'Source Code Pro',monospace;font-size:12px;color:var(--cover-steel);flex-wrap:wrap}
-.hd-meta strong{color:#b0a080}
 
-/* ── STATS (cover palette) ── */
-.stats{background:#141210;border-bottom:1px solid #2a2820;padding:8px 32px;overflow-x:auto}
-.stats-inner{display:flex;gap:0;min-width:max-content}
-.stat{display:flex;flex-direction:column;align-items:center;padding:6px 16px;border-right:1px solid #2a2820;cursor:default}
-.stat:first-child{padding-left:0}.stat:last-child{border-right:none}
-.stat-val{font-family:'Source Code Pro',monospace;font-size:22px;font-weight:500;color:#d4c9a8;line-height:1;letter-spacing:-.02em}
-.stat-val.highlight{color:#c9a050}
-.stat-lbl{font-family:'Source Code Pro',monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#706858;margin-top:3px;white-space:nowrap}
+/* ── COMPACT HEADER ROW ── */
+.hd{background:var(--cover-black);padding:0;position:relative}
+.hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel));z-index:1}
+.hd-compact{display:flex;align-items:center;gap:0;padding:0 16px 0 20px;height:44px;margin-top:3px}
+.hd-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--cover-cream);white-space:nowrap;margin-right:16px;flex-shrink:0}
+.hd-title em{font-style:italic;color:#c8bfa8}
+.hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
+.hd-stat{display:flex;align-items:baseline;gap:4px;padding:0 12px;border-right:1px solid #2a2820;white-space:nowrap;flex-shrink:0}
+.hd-stat:last-child{border-right:none}
+.hd-stat-val{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:500;color:#c9a050;line-height:1}
+.hd-stat-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840}
+.hd-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 12px;height:28px;cursor:pointer;border-radius:3px;white-space:nowrap;transition:background .15s}
+.hd-copy-btn:hover{background:#a50020}
+.hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
+
+/* ── SEARCH BAR (between header and tabs) ── */
+.search-bar{display:flex;align-items:center;padding:6px 16px;background:#0f0e0c;border-top:1px solid #2a2820;border-bottom:1px solid #2a2820}
+.search-input-wrap{display:flex;align-items:center;flex:1;background:#1a1815;border:2px solid #b09050;border-radius:5px;padding:0 10px;gap:8px;transition:border-color .15s}
+.search-input-wrap:focus-within{border-color:var(--cover-red)}
+.search-icon{color:#b09050;font-size:15px;flex-shrink:0;line-height:1}
+.search-input{flex:1;background:none;border:none;outline:none;font-family:'Source Code Pro',monospace;font-size:14px;font-weight:500;color:#d4c9a8;padding:7px 0;min-width:0}
+.search-input::placeholder{color:#6a5a30;font-weight:400}
+.search-clear{background:none;border:none;cursor:pointer;color:#706858;font-size:18px;padding:0 2px;line-height:1;flex-shrink:0;display:none}
+.search-clear.visible{display:block}
+.search-clear:hover{color:#c9a050}
+
+/* ── TAB ROW ── */
+.tabs{display:flex;background:#0e0d0b;padding:4px 16px 0;gap:4px;border-top:2px solid #b09050;align-items:flex-end;flex-wrap:nowrap;overflow:visible}
+.tab{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px 7px;border:2px solid #6a5a30;border-bottom:none;background:#1a1810;color:#8a7a50;cursor:pointer;border-radius:5px 5px 0 0;transition:all .15s;white-space:nowrap;position:relative;top:2px;text-align:center;flex-shrink:0}
+.tab:hover{color:#d4c080;background:#252015;border-color:#b09050}
+.tab.active{color:#1a1208;background:#d4b860;border-color:#e8cc70;border-bottom:2px solid #d4b860;font-weight:700;top:0;padding-bottom:9px}
+.tab-spacer{flex:1}
+
+/* ── DECK TAB GROUP ── */
+.deck-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
+.deck-trigger{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px 7px;border:2px solid #6a5a30;border-bottom:none;background:#1a1810;color:#8a7a50;cursor:pointer;border-radius:5px 5px 0 0;white-space:nowrap;position:relative;top:2px;user-select:none;transition:all .15s;display:flex;align-items:center;gap:6px}
+.deck-trigger:hover,.deck-group:hover .deck-trigger{color:#d4c080;background:#252015;border-color:#b09050}
+.deck-trigger.active{color:#1a1208;background:#d4b860;border-color:#e8cc70;border-bottom:2px solid #d4b860;font-weight:700;top:0;padding-bottom:9px}
+.deck-arrow{font-size:9px;opacity:.7;transition:transform .2s}
+.deck-group:hover .deck-arrow{transform:rotate(180deg)}
+.deck-flyout{position:absolute;top:100%;left:0;background:#1a1810;border:2px solid #b09050;border-top:none;border-radius:0 0 6px 6px;min-width:180px;z-index:200;display:none;flex-direction:column;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.deck-group:hover .deck-flyout{display:flex}
+.deck-flyout-item{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:10px 16px;color:#8a7a50;cursor:pointer;border-bottom:1px solid #2a2820;white-space:nowrap;transition:all .12s}
+.deck-flyout-item:last-child{border-bottom:none}
+.deck-flyout-item:hover{background:#252015;color:#d4c080}
+.deck-flyout-item.active{color:#d4b860;background:#252015}
+
+
 
 /* ── DARK BAND / DASHBOARD (cover palette) ── */
 .dark-band{background:var(--cover-black)}
@@ -62,11 +95,7 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 .dash-sel option{background:var(--cover-black);color:var(--cover-cream)}
 .dash-showall{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#666050;background:none;border:1px solid #2a2820;padding:0 12px;cursor:pointer;transition:all .15s;height:var(--ctrl-h);line-height:var(--ctrl-h);vertical-align:middle}
 .dash-showall:hover{color:var(--cover-cream);border-color:var(--cover-steel)}
-.tabs{display:flex;background:#0e0d0b;padding:4px 16px 0;gap:4px;flex-wrap:wrap;border-top:2px solid #b09050;align-items:flex-end}
-.tab{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:8px 16px 8px;border:2px solid #6a5a30;border-bottom:none;background:#1a1810;color:#8a7a50;cursor:pointer;border-radius:6px 6px 0 0;transition:all .15s;white-space:nowrap;position:relative;top:2px;min-width:80px;text-align:center}
-.tab:hover{color:#d4c080;background:#252015;border-color:#b09050}
-.tab.active{color:#1a1208;background:#d4b860;border-color:#e8cc70;border-bottom:2px solid #d4b860;font-weight:700;top:0px;padding-bottom:10px}
-.tab-divider{width:1px;background:#2a2418;margin:4px 2px 0;align-self:stretch;flex-shrink:0}
+
 
 /* ── PANELS (Apple light) ── */
 .panel{display:none;background:var(--page-bg)}
@@ -503,15 +532,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 
 /* ── UNIVERSAL SEARCH ── */
-.search-bar{display:flex;align-items:center;gap:8px;padding:6px 16px 6px 12px;background:#0f0e0c;border-bottom:1px solid #2a2820}
-.search-input-wrap{display:flex;align-items:center;flex:1;background:#1a1815;border:1px solid #3a3630;border-radius:6px;padding:0 10px;gap:6px;transition:border-color .15s}
-.search-input-wrap:focus-within{border-color:var(--gold)}
-.search-icon{color:#706858;font-size:14px;flex-shrink:0;line-height:1}
-.search-input{flex:1;background:none;border:none;outline:none;font-family:'Source Code Pro',monospace;font-size:12px;color:#d4c9a8;padding:7px 0;min-width:0}
-.search-input::placeholder{color:#504840}
-.search-clear{background:none;border:none;cursor:pointer;color:#706858;font-size:16px;padding:0 2px;line-height:1;flex-shrink:0;display:none}
-.search-clear.visible{display:block}
-.search-clear:hover{color:#c9a050}
+
 .search-results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
 .search-results-panel.open{display:flex}
 .search-results-box{background:#1a1815;border:1px solid #3a3630;border-radius:8px;width:min(680px,96vw);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.6)}
@@ -539,31 +560,56 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </style>
 </head>
 <body>
-<!-- HEADER -->
+<!-- COMPACT HEADER -->
 <div class="hd">
-  <div class="hd-eyebrow">Vigilia Press &middot; Project Control</div>
-  <h1><em>Over-classified</em> &mdash; Project Hub</h1>
-  <div class="hd-meta">
-    <span>DIST <strong>Draft2Digital &middot; KDP &middot; IngramSpark</strong></span>
-    <span>LCCN <strong>2026914489</strong></span>
+  <div class="hd-compact">
+    <span class="hd-title"><em>Over-classified</em> &mdash; Hub</span>
+    <div class="hd-stats-inline">
+      <div class="hd-stat"><span class="hd-stat-val">152,492</span><span class="hd-stat-lbl">Words</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">110,235</span><span class="hd-stat-lbl">Prose</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">495</span><span class="hd-stat-lbl">Notes</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">330</span><span class="hd-stat-lbl">Sources</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">516</span><span class="hd-stat-lbl">Index</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">43</span><span class="hd-stat-lbl">Figures</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">42</span><span class="hd-stat-lbl">Sightings</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">446</span><span class="hd-stat-lbl">Subheads</span></div>
+      <div class="hd-stat"><span class="hd-stat-val">18</span><span class="hd-stat-lbl">Chapters</span></div>
+    </div>
+    <div class="hd-actions">
+      <div id="dash-status" style="display:inline-flex;gap:4px;align-items:center;padding:0"></div>
+      <span class="hd-copy-ok" id="copy-ok" style="display:none">&#10003; Copied</span>
+      <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()">Copy to Claude</button>
+    </div>
   </div>
 </div>
-<!-- STATS -->
-<div class="stats"><div class="stats-inner">
-  <div class="stat"><span class="stat-val highlight">152,492</span><span class="stat-lbl">Words (total)</span></div>
-  <div class="stat"><span class="stat-val">110,235</span><span class="stat-lbl">Words (prose)</span></div>
-  <div class="stat"><span class="stat-val">495</span><span class="stat-lbl">Notes</span></div>
-  <div class="stat"><span class="stat-val highlight">330</span><span class="stat-lbl">Sources Cited</span></div>
-  <div class="stat"><span class="stat-val">516</span><span class="stat-lbl">Index Entries</span></div>
-  <div class="stat"><span class="stat-val highlight">43</span><span class="stat-lbl">Figures</span></div>
-  <div class="stat"><span class="stat-val">42</span><span class="stat-lbl">Sightings</span></div>
-  <div class="stat"><span class="stat-val">446</span><span class="stat-lbl">Subheadings</span></div>
-  <div class="stat"><span class="stat-val">18</span><span class="stat-lbl">Chapters</span></div>
-</div></div>
-<!-- DARK BAND -->
+<!-- SEARCH BAR -->
+<div class="search-bar" id="search-bar">
+  <div class="search-input-wrap">
+    <span class="search-icon">&#9740;</span>
+    <input class="search-input" id="search-input" type="text" placeholder="Search all tabs&hellip;" autocomplete="off" oninput="searchUpdate()" onkeydown="searchKeydown(event)" />
+    <button class="search-clear" id="search-clear" onclick="searchClear()" title="Clear">&#215;</button>
+  </div>
+</div>
+<!-- TABS + FILTER -->
 <div class="dark-band">
-  <div class="status-row" id="dash-status"></div>
-  <div class="filter-row">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('roadmap',this)">Roadmap</button>
+    <button class="tab" onclick="showTab('notes',this)">Notes</button>
+    <button class="tab" onclick="showTab('refs',this)">Resources</button>
+    <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
+    <div class="deck-group">
+      <div class="deck-trigger" id="deck-trigger">Reference <span class="deck-arrow">&#9660;</span></div>
+      <div class="deck-flyout">
+        <div class="deck-flyout-item" onclick="showDeckTab('passes',this)">Passes</div>
+        <div class="deck-flyout-item" onclick="showDeckTab('style',this)">Style &amp; Chapter Map</div>
+        <div class="deck-flyout-item" onclick="showDeckTab('isbns',this)">ISBNs &amp; Pricing</div>
+        <div class="deck-flyout-item" onclick="showDeckTab('dist',this)">Distribution</div>
+      </div>
+    </div>
+    <div class="tab-spacer"></div>
+    <button class="tab" onclick="showTab('help',this)">Help &#9881;</button>
+  </div>
+  <div class="filter-row" id="filter-row" style="display:none">
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
       <option value="">All Tags</option>
       <option value="editing">Editing</option>
@@ -577,33 +623,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="question">Questions</option>
       <option value="reminder">Reminders</option>
       <option value="note">Project Notes</option>
-      <option value="fordave">⚑ For Dave</option>
+      <option value="fordave">&#9873; For Dave</option>
     </select>
     <button class="dash-showall" onclick="showAll()">Show All</button>
-    <span class="copy-ok" id="copy-ok" style="color:#8aba80;font-family:'Source Code Pro',monospace;font-size:10px;display:none">&#10003; Copied</span>
-    <button class="copy-btn" id="copy-btn" onclick="copyToClaude()">Copy to Claude</button>
-  </div>
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('roadmap',this)">Roadmap</button>
-    <button class="tab" onclick="showTab('notes',this)">Notes &amp; Checklist</button>
-    <button class="tab" onclick="showTab('passes',this)">Passes</button>
-    <button class="tab" onclick="showTab('refs',this)">References</button>
-    <div class="tab-divider"></div>
-    <button class="tab" onclick="showTab('isbns',this)">ISBNs &amp; Pricing</button>
-    <button class="tab" onclick="showTab('style',this)">Style + Chapter Map</button>
-    <button class="tab" onclick="showTab('dist',this)">Distribution</button>
-    <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
-    <button class="tab" onclick="showTab('help',this)">Help</button>
   </div>
 </div>
-<!-- SEARCH BAR -->
-<div class="search-bar" id="search-bar">
-  <div class="search-input-wrap">
-    <span class="search-icon">&#9740;</span>
-    <input class="search-input" id="search-input" type="text" placeholder="Search all tabs…" autocomplete="off" oninput="searchUpdate()" onkeydown="searchKeydown(event)" />
-    <button class="search-clear" id="search-clear" onclick="searchClear()" title="Clear">&#215;</button>
-  </div>
-</div>
+
 <!-- SEARCH RESULTS OVERLAY -->
 <div class="search-results-panel" id="search-results-panel" onclick="searchPanelClick(event)">
   <div class="search-results-box">
@@ -881,10 +906,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <label class="settings-lbl">Manuscript folder path (Mac only)</label>
       <input class="settings-input" id="settings-folder-input" type="text"
         placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
-      <div class="settings-note">Enter the folder containing your manuscript. The filename is set automatically from the current master version each session (e.g. <em>Overclassified_279.docx</em>). You only need to update this if you move the folder.</div>
+      <div class="settings-note">Enter the folder containing your manuscript. You only need to update this if you move the folder.</div>
+    </div>
+    <div class="settings-field" style="margin-top:10px">
+      <label class="settings-lbl">Manuscript filename <span style="color:#504840;font-weight:400;text-transform:none;letter-spacing:0">(optional override)</span></label>
+      <input class="settings-input" id="settings-filename-input" type="text"
+        placeholder="Auto: Overclassified_279.docx" />
+      <div class="settings-note">Leave blank to use the auto-derived filename (updates automatically each session when Claude packs a new version). Override only if your filename differs from the standard pattern — e.g. <em>Overclassified_280_EDIT.docx</em>. Stored locally only, never exported.</div>
     </div>
     <div class="settings-preview" id="settings-path-preview">Enter your folder path above to activate Word bookmarks.</div>
-    <div style="margin-top:10px"><button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Path</button></div>
+    <div style="margin-top:10px"><button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button></div>
     <div class="settings-note" style="margin-top:10px">
       <strong>Stored locally only</strong> — this path is saved in your browser's localStorage and never exported in the JSON.<br>
       <strong>iPad / iPhone</strong> — Word deep links are not supported on iOS. Bookmark names are shown as plain labels so you can locate them manually.<br>
@@ -975,7 +1006,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-09T15:32:38.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-09T15:51:46.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v279'; // current manuscript version — update each session
 
 /* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
@@ -1169,10 +1200,24 @@ function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION}
 
 function showTab(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.deck-flyout-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
+  document.getElementById('deck-trigger')?.classList.remove('active');
+  if(btn)btn.classList.add('active');
   document.getElementById('panel-'+t).classList.add('active');
+  const fr=document.getElementById('filter-row');
+  if(fr)fr.style.display=(t==='notes'?'flex':'none');
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
+}
+function showDeckTab(t,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.deck-flyout-item').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('deck-trigger')?.classList.add('active');
+  if(btn)btn.classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+  const fr=document.getElementById('filter-row');
+  if(fr)fr.style.display='none';
 }
 
 function toggleSection(id){
@@ -1193,10 +1238,10 @@ function counts(){
 function rdash(){
   const{open,pri,hold,done,fordave}=counts();
   document.getElementById('dash-status').innerHTML=[
-    {k:'open',l:'Open',c:open},{k:'priority',l:'Priority',c:pri},
-    {k:'hold',l:'On Hold',c:hold},{k:'done',l:'Done',c:done}
-  ].map(s=>`<button class="dash-btn${fSt===s.k?' act-red':''}" onclick="tSt('${s.k}')"><span class="dash-count">${s.c}</span><span class="dash-lbl">${s.l}</span></button>`).join('')
-  +`<button class="dash-btn${fSt==='fordave'?' act-amber':''}" onclick="tSt('fordave')" style="border-left:3px solid var(--fordave-border)"><span class="dash-count">${fordave}</span><span class="dash-lbl">&#9873; For Dave</span></button>`;
+    {k:'open',l:'Open',c:open,col:'#e06070'},{k:'priority',l:'Pri',c:pri,col:'#c9a050'},
+    {k:'hold',l:'Hold',c:hold,col:'#888888'},{k:'done',l:'Done',c:done,col:'#5a9a5a'},
+    {k:'fordave',l:'\u2691Dave',c:fordave,col:'#9a70c0'}
+  ].map(s=>`<button onclick="tSt('${s.k}')" style="background:${fSt===s.k?'rgba(199,0,37,.25)':'rgba(255,255,255,.06)'};border:1px solid ${fSt===s.k?'#c70025':'#333028'};border-radius:3px;padding:2px 8px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:${fSt===s.k?'#fff':s.col};white-space:nowrap;height:24px;line-height:1;transition:all .15s"><strong>${s.c}</strong> ${s.l}</button>`).join('');
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
   const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
 }
@@ -1254,7 +1299,14 @@ function getWordBasePath(){
   return loadSettings().wordBasePath||'';
 }
 function getWordFilename(){
-  // Auto-derive from masterVersion in seed — e.g. v279 → Overclassified_279.docx
+  // Check localStorage override first; fall back to auto-derive from MASTER_VERSION
+  const s=loadSettings();
+  if(s.wordFilename&&s.wordFilename.trim())return s.wordFilename.trim();
+  const mv=(typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:'').replace(/^v/i,'');
+  return mv?`Overclassified_${mv}.docx`:'';
+}
+function getWordFilenameDefault(){
+  // Always returns the auto-derived name regardless of override
   const mv=(typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:'').replace(/^v/i,'');
   return mv?`Overclassified_${mv}.docx`:'';
 }
@@ -1267,29 +1319,39 @@ function getFullWordPath(){
 }
 function settingsSave(){
   const folder=(document.getElementById('settings-folder-input')?.value||'').trim();
+  const filename=(document.getElementById('settings-filename-input')?.value||'').trim();
   const s=loadSettings();
   s.wordBasePath=folder;
+  s.wordFilename=filename||null;
   saveSettings(s);
   updateSettingsPreview();
   const btn=document.getElementById('settings-save-btn');
-  if(btn){btn.textContent='Saved ✓';setTimeout(()=>{btn.textContent='Save Path';},2000);}
+  if(btn){btn.textContent='Saved ✓';setTimeout(()=>{btn.textContent='Save Settings';},2000);}
 }
 function updateSettingsPreview(){
   const folder=(document.getElementById('settings-folder-input')?.value||getWordBasePath()||'').trim();
-  const file=getWordFilename();
+  const filenameOverride=(document.getElementById('settings-filename-input')?.value||'').trim();
+  const file=filenameOverride||getWordFilenameDefault();
+  const source=filenameOverride?'custom':'auto from v'+( (typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:'?'));
   const prev=document.getElementById('settings-path-preview');
   if(!prev)return;
   if(!folder){prev.innerHTML='<span>Enter your folder path above to activate Word bookmarks.</span>';return;}
   const sep=folder.endsWith('/')?'':'/'
   const full=folder+sep+file;
-  prev.innerHTML=`<span style="color:#706858">Full path: </span><span>${full||'(filename auto-set when master version is known)'}</span>`;
+  prev.innerHTML=`<span style="color:#706858">Path: </span><span>${full}</span><span style="color:#504840;margin-left:8px">(filename: ${source})</span>`;
 }
 function initSettings(){
   const s=loadSettings();
   const inp=document.getElementById('settings-folder-input');
   if(inp&&s.wordBasePath)inp.value=s.wordBasePath;
+  const finp=document.getElementById('settings-filename-input');
+  if(finp){
+    finp.value=s.wordFilename||'';
+    finp.placeholder=getWordFilenameDefault()||'Overclassified_279.docx';
+  }
   updateSettingsPreview();
   if(inp)inp.addEventListener('input',updateSettingsPreview);
+  if(finp)finp.addEventListener('input',updateSettingsPreview);
 }
 
 function rlist(){
@@ -2181,7 +2243,26 @@ function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disab
 
 /* ── OUTREACH ── */
 let OT=[];
-function otLoad(){try{const r=localStorage.getItem(OT_SK);OT=r?JSON.parse(r):[];}catch(e){OT=[];}}
+const OT_SEED=[
+  {id:'ot_seed_1',name:'Eric Burlison',role:'U.S. Rep., Missouri — UAP legislation',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Strong UAP advocate; co-sponsored UAP disclosure bills. Target: blurb or foreword.',_open:false,wave:1},
+  {id:'ot_seed_2',name:'Tim Burchett',role:'U.S. Rep., Tennessee — UAP oversight',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Vocal on UAP transparency; chairs oversight hearings.',_open:false,wave:1},
+  {id:'ot_seed_3',name:'Anna Paulina Luna',role:'U.S. Rep., Florida — UAP disclosure',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Active UAP caucus member; high public profile.',_open:false,wave:1},
+  {id:'ot_seed_4',name:'Lue Elizondo',role:'Fmr. AATIP director / author',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-29',notes:'Wave 2 — Insider credibility tier. Ideal blurb source; firsthand SAP knowledge.',_open:false,wave:2},
+  {id:'ot_seed_5',name:'Christopher Mellon',role:'Fmr. Dep. Asst. Sec. Def. for Intelligence',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-29',notes:'Wave 2 — Policy credibility tier. Co-founded TTSA; deep classification expertise.',_open:false,wave:2},
+  {id:'ot_seed_6',name:'Ross Coulthart',role:'Investigative journalist / author',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Validation tier. Author of In Plain Sight; broad UAP audience.',_open:false,wave:3},
+  {id:'ot_seed_7',name:'Kevin Knuth',role:'Physicist / UAP researcher, Univ. at Albany',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Academic credibility tier. Published peer-reviewed UAP analysis.',_open:false,wave:3},
+  {id:'ot_seed_8',name:'Avi Loeb',role:'Harvard astrophysicist / Galileo Project',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Scientific credibility tier. High public profile; authored Extraterrestrial.',_open:false,wave:3},
+];
+function otLoad(){
+  try{
+    const r=localStorage.getItem(OT_SK);
+    if(r){OT=JSON.parse(r);}else{OT=[];}
+    // Inject seed contacts if not present
+    OT_SEED.forEach(sc=>{if(!OT.find(o=>o.id===sc.id))OT.push({...sc});});
+    // Sort by wave then name
+    OT.sort((a,b)=>(a.wave||9)-(b.wave||9)||(a.name||'').localeCompare(b.name||''));
+  }catch(e){OT=OT_SEED.map(s=>({...s}));}
+}
 function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}}
 function addContact(){
   const name=document.getElementById('ot-name').value.trim();if(!name){alert('Name required');return;}
@@ -2199,7 +2280,13 @@ function renderOT(){
   if(!OT.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   const isOD=(due,st)=>due&&st!=='confirmed'&&st!=='passed'&&new Date(due+'T23:59:59')<new Date();
-  tbody.innerHTML=OT.map(c=>`<tr><td><div class="ot-name">${esc(c.name)}</div><div class="ot-role">${esc(c.role)}</div></td><td>${fmtDate(c.contacted)}</td><td><select style="font-size:11px;border:1px solid var(--separator);padding:2px 4px;background:var(--card-bg);font-family:'Source Code Pro',monospace" onchange="updateStatus('${c.id}',this.value)"><option value="new"${c.status==='new'?' selected':''}>New</option><option value="pending"${c.status==='pending'?' selected':''}>Pending</option><option value="confirmed"${c.status==='confirmed'?' selected':''}>Confirmed</option><option value="passed"${c.status==='passed'?' selected':''}>Passed</option></select></td><td><span class="ot-due${isOD(c.due,c.status)?' overdue':''}">${c.due?fmtDate(c.due):'\u2014'}</span></td><td><span style="font-size:11px;color:var(--label-secondary)">${esc(c.method||'\u2014')}</span></td><td style="max-width:140px;overflow:hidden">${c.link?`<a class="ot-link" href="${esc(c.link)}" target="_blank">${esc(c.link.length>28?c.link.substring(0,28)+'\u2026':c.link)}</a>`:'\u2014'}</td><td><button class="ot-expand-btn" onclick="toggleOTNotes('${c.id}')">${c._open?'\u25b2 Hide':'\u25bc Notes'}</button></td><td><button class="ot-del-btn" onclick="delContact('${c.id}')">&#10005;</button></td></tr><tr class="ot-notes-row${c._open?' open':''}"><td class="ot-notes-cell" colspan="8"><textarea class="ot-notes-ta" id="otn_${c.id}" placeholder="Notes\u2026">${esc(c.notes||'')}</textarea><button class="ot-save-btn" onclick="saveOTNotes('${c.id}')">Save</button></td></tr>`).join('');
+  const waveLabels={1:'Wave 1 — Congressional (Target: July 31)',2:'Wave 2 — Insider Credibility (Target: Aug 29)',3:'Wave 3 — Validation Tier (Target: Aug 31)'};
+  let lastWave=null;
+  tbody.innerHTML=OT.map(c=>{
+    let waveHdr='';
+    if(c.wave&&c.wave!==lastWave){lastWave=c.wave;waveHdr=`<tr><td colspan="8" style="padding:10px 8px 4px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#8a7a50;border-bottom:1px solid var(--separator);background:#fafaf8">${esc(waveLabels[c.wave]||'Wave '+c.wave)}</td></tr>`;}
+    return waveHdr+`<tr><td><div class="ot-name">${esc(c.name)}</div><div class="ot-role">${esc(c.role)}</div></td><td>${fmtDate(c.contacted)}</td><td><select style="font-size:11px;border:1px solid var(--separator);padding:2px 4px;background:var(--card-bg);font-family:'Source Code Pro',monospace" onchange="updateStatus('${c.id}',this.value)"><option value="new"${c.status==='new'?' selected':''}>New</option><option value="pending"${c.status==='pending'?' selected':''}>Pending</option><option value="confirmed"${c.status==='confirmed'?' selected':''}>Confirmed</option><option value="passed"${c.status==='passed'?' selected':''}>Passed</option></select></td><td><span class="ot-due${isOD(c.due,c.status)?' overdue':''}">${c.due?fmtDate(c.due):'\u2014'}</span></td><td><span style="font-size:11px;color:var(--label-secondary)">${esc(c.method||'\u2014')}</span></td><td style="max-width:140px;overflow:hidden">${c.link?`<a class="ot-link" href="${esc(c.link)}" target="_blank">${esc(c.link.length>28?c.link.substring(0,28)+'\u2026':c.link)}</a>`:'\u2014'}</td><td><button class="ot-expand-btn" onclick="toggleOTNotes('${c.id}')">${c._open?'\u25b2 Hide':'\u25bc Notes'}</button></td><td><button class="ot-del-btn" onclick="delContact('${c.id}')">&#10005;</button></td></tr><tr class="ot-notes-row${c._open?' open':''}"><td class="ot-notes-cell" colspan="8"><textarea class="ot-notes-ta" id="otn_${c.id}" placeholder="Notes\u2026">${esc(c.notes||'')}</textarea><button class="ot-save-btn" onclick="saveOTNotes('${c.id}')">Save</button></td></tr>`;
+  }).join('');
 }
 
 /* ── REFERENCES ── */
@@ -2391,9 +2478,9 @@ function searchBuild(q){
     if(!haystack.includes(lq))return;
     results.push({
       source:'refs',
-      sourceLabel:'Refs',
+      sourceLabel:'Resources',
       title:ref.kw||ref.url||'Reference',
-      sub:'References · '+(ref.desc?ref.desc.substring(0,60):''),
+      sub:'Resources · '+(ref.desc?ref.desc.substring(0,60):''),
       action:()=>{
         searchClose();
         showTab('refs',document.querySelector('[onclick*=\'refs\']'));
@@ -2402,7 +2489,7 @@ function searchBuild(q){
   });
 
   // ── 5. ISBNs / Style (static DOM search) ─────────────────────────────
-  ['isbns','style','dist','outreach'].forEach(tid=>{
+  ['isbns','style','dist'].forEach(tid=>{
     const panel=document.getElementById('panel-'+tid);
     if(!panel)return;
     const text=(panel.textContent||'').toLowerCase();
