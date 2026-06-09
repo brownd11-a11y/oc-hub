@@ -455,7 +455,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <div class="stat"><span class="stat-val">15</span><span class="stat-lbl">Appendices</span></div>
   <div class="stat"><span class="stat-val">622</span><span class="stat-lbl">Chapter Notes</span></div>
   <div class="stat"><span class="stat-val highlight">315</span><span class="stat-lbl">Sources Cited</span></div>
-  <div class="stat"><span class="stat-val highlight">38</span><span class="stat-lbl">Figures</span></div>
+  <div class="stat"><span class="stat-val highlight">39</span><span class="stat-lbl">Figures</span></div>
   <div class="stat"><span class="stat-val">42</span><span class="stat-lbl">Sightings (A2)</span></div>
   <div class="stat"><span class="stat-val">40</span><span class="stat-lbl">Profiles (A13)</span></div>
   <div class="stat"><span class="stat-val">439</span><span class="stat-lbl">Glossary</span></div>
@@ -780,12 +780,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-08T04:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-09T04:00:00.000Z'; // bump this each time seed data is updated
 
-/* ── SEED DATA (v5, 2026-06-08 — merged iPhone + iPad exports) ── */
+/* ── SEED DATA (v6, 2026-06-09 — updated from session JSON export) ── */
 const SEED_ITEMS=[
-  {id:'i_1780890159018',type:'reminder',text:'Test note from iPhone',done:false,priority:true,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-08T03:42:39.018Z',dueDate:'',completedDate:''},
-  {id:'i_1780890999025',type:'question',text:'Test 2 iPad',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T03:56:39.025Z',dueDate:'',completedDate:''},
+  {id:'i_1780890159018',type:'reminder',text:'Test note from iPhone',done:true,priority:true,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-08T03:42:39.018Z',dueDate:'',completedDate:''},
+  {id:'i_1780890999025',type:'question',text:'Test 2 iPad',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T03:56:39.025Z',dueDate:'',completedDate:'2026-06-08'},
   {id:'i_1780867624952',type:'reminder',text:'Hub roadmap: insert target date to right of stage gate emblem; when met, show met date; move gate explanation to follow right of date (not left of Gantt chart).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:27:04.952Z',dueDate:'',completedDate:'2026-06-08'},
   {id:'i_1780867396928',type:'reminder',text:'Hub tabs: increase bottom-row tab label size ≥50%; create graphical tab representation; active tab lighter, inactive slightly darker (gray or maroon).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:23:16.928Z',dueDate:'',completedDate:'2026-06-08'},
   {id:'i_1780867301726',type:'reminder',text:'Hub task list and phase display: much larger font, closer to height of box; raise stage gate font size.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:21:41.726Z',dueDate:'2026-06-07',completedDate:'2026-06-08'},
@@ -797,7 +797,7 @@ const SEED_ITEMS=[
   {id:'i_1780836229160',type:'note',text:'On Project Hub input form — change type default to Reminders; move type block down next to tags.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:43:49.160Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780836128119',type:'reminder',text:'Update Project Notes interface to include due date on input form and in editing mode.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:42:08.119Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780836045602',type:'note',text:'Update ERA3 disclosure pressure — latest Capitol steps events and current activities.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,created:'2026-06-07T12:40:45.602Z',dueDate:'2026-06-10',completedDate:''},
-  {id:'i_1780835992892',type:'reminder',text:'Remove Brown, David and Mead, Margaret quotes from A15 — they are orphaned.',done:false,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-07T12:39:52.892Z',dueDate:'',completedDate:''},
+  {id:'i_1780835992892',type:'reminder',text:'Remove Brown, David and Mead, Margaret quotes from A15 — they are orphaned.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-07T12:39:52.892Z',dueDate:'',completedDate:'2026-06-08'},
   {id:'i_1780792541603',type:'reminder',text:'Recheck the timeline, era diagrams, and any others — text got lighter and white space at bottom needs trimming.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-07T00:35:41.603Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780787026296',type:'question',text:'Build a marketing/publishing Gantt-style to-do template for the project hub once further along.',done:true,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-06T23:03:46.296Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780785855822',type:'question',text:'Should we add Admiral Hillenkoetter to A13 On the Record?',done:true,priority:false,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-06T22:44:15.822Z',dueDate:'',completedDate:'2026-06-07'},
@@ -805,12 +805,17 @@ const SEED_ITEMS=[
   {id:'i_1780737293364',type:'question',text:'What is the best way to capture a screenshot of a video in high resolution?',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:'For low-res FLIR source video: screenshot + Pixelmator Pro ML Super Resolution. For print: TIFF or PNG master, 300 DPI, 1,275px wide min. For Kindle: JPEG at 80% quality, 1,600px wide.',created:'2026-06-06T09:14:53.364Z',dueDate:'',completedDate:'2026-06-06'},
   {id:'i_1780706210001',type:'question',text:'Once all images upscaled: export a folder of all images using their figure number.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'Done — v254. Full image ZIP output.',created:'2026-06-06T00:36:50.001Z',dueDate:'',completedDate:'2026-06-06'},
   {id:'i_1780705349833',type:'reminder',text:"Move Villarroel's picture into the proper place over the caption in Chapter 11.",done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:"Done — v254. Converted from floating wp:anchor to wp:inline.",created:'2026-06-06T00:22:29.833Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1780911866410',type:'reminder',text:'v265 should have Vigilia Press Logo on the title page. It has the Roswell Army Air Force headline instead — find the Vigilia Press logo and replace it.',done:false,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-08T09:44:26.410Z',dueDate:'',completedDate:''},
+  {id:'i_1780926907920',type:'reminder',text:'Update appendices with long lists (sightings, On the Record) to include hyperlinked names for ebook navigation. Brief description needed for each entry. Sequence with manual editing of applicable material.',done:false,priority:false,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-08T13:55:07.920Z',dueDate:'',completedDate:''},
+  {id:'i_1780927019383',type:'reminder',text:'Foreword page removed from book. No forward expected; can reinsert later if needed.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T13:56:59.383Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780973797441',type:'reminder',text:'Caption figure number style confirmed: keep abbreviated "Fig." — current standard throughout. No change needed.',done:true,priority:false,memFlag:false,tag:'todo',deferred:false,answer:'Keep "Fig." abbreviated. Current aCaption1 standard: bold roman "Fig. X.X:" label, italic description. Spelling out "Figure" would require a book-wide find-and-replace pass.',created:'2026-06-09T02:56:37.441Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_session0609a',type:'note',text:'Session 2026-06-09: Fig A7.1 rounded corners fixed (all four). Image inserted as Fig. 4.1 Ch.4 + replaced in A7. A2 hyperlinked sightings index (42 entries). 3 stray paras deleted before Congress acts in Ch.4. Ch.4 opening para extended (Pentagon sentence merged). Caption two-run structure corrected. v275→v277.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T00:00:00.000Z',dueDate:'',completedDate:'2026-06-09'},
   {id:'i_session0606a',type:'note',text:'Session 2026-06-06: Full image pass v253→v254. 15 replacements, 5 upscales, whitespace trimmed on 4 images. USS Omaha sphere removed; footnote added. Fig 11.1 anchor→inline.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-06T00:00:00.000Z',dueDate:'',completedDate:'2026-06-06'},
 ];
 
 const ROAD_SEED=[
   // ── Phase 1: Mechanical rescan ──────────────────────────────────────────
-  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#3a6b9e',open:true,num:1},
+  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#E8A020',open:true,num:1},
   {id:'rph1_s1',kind:'step',phase:'rph1',label:'W3.1 — Mechanical pass rescan',note:'Re-run against chapters edited since v229. Trigger: \"Mechanical pass\"',cmd:'\"Mechanical pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
   {id:'rph1_s2',kind:'step',phase:'rph1',label:'W3.8 — Word-by-word rescan',note:'Focus on recently touched sections. Trigger: \"Word-by-word pass\"',cmd:'\"Word-by-word pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
   {id:'r_1780838559575',kind:'step',phase:'rph1',label:'Orphan authors out',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
@@ -818,7 +823,7 @@ const ROAD_SEED=[
   {id:'rph1_g1',kind:'gate',phase:'rph1',label:'Ready for manual editing — no dropped letters, doubled words, punctuation errors',date:'2026-06-07',met:false},
 
   // ── Phase 2: Manual editing Pass 5 ──────────────────────────────────────
-  {id:'r_1780839259957',kind:'phase',label:'Manual editing Pass 5',color:'#3a7a5a',open:true,num:2},
+  {id:'r_1780839259957',kind:'phase',label:'Manual editing Pass 5',color:'#E8622A',open:true,num:2},
   {id:'r_1780839399135',kind:'step',phase:'r_1780839259957',label:'Front matter to Part 2',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-08',completedDate:'',done:false},
   {id:'r_1780839415621',kind:'step',phase:'r_1780839259957',label:'Part 2 to Part 3',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-09',completedDate:'',done:false},
   {id:'r_1780839447883',kind:'step',phase:'r_1780839259957',label:'Part 3 to Part 4',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'',done:false},
@@ -827,7 +832,7 @@ const ROAD_SEED=[
   {id:'r_1780840560799',kind:'gate',phase:'r_1780839259957',label:'Manual editing complete',date:'2026-06-13',met:false},
 
   // ── Phase 3: June 9 Capitol Event Contingencies ──────────────────────────
-  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#9e3a3a',open:true,num:3},
+  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#D43540',open:true,num:3},
   {id:'rph4_s1',kind:'step',phase:'rph4',label:'Watch June 9 Capitol event — update Ch. 18 and Conclusion',note:'Grusch · Burlison · Moskowitz · Luna · Burchett — hosted by Kean and Fox.',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'2026-06-10',done:false},
   {id:'r_1780869619317',kind:'step',phase:'rph4',label:'Update Fig 5.3 Disclosure Pressure',note:'Note the nature of the advocacy event',cmd:null,targetStart:'',targetEnd:'2026-06-11',completedDate:'',done:false},
   {id:'r_1780839029403',kind:'step',phase:'rph4',label:'Update intro to include pace of change, even Degrasse Tyson',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
@@ -835,13 +840,13 @@ const ROAD_SEED=[
   {id:'rph4_g1',kind:'gate',phase:'rph4',label:'Ch. 18 and Conclusion final',date:'2026-06-10',met:false},
 
   // ── Phase 4: Repetition check ────────────────────────────────────────────
-  {id:'rph2',kind:'phase',label:'Repetition check',color:'#6b3a9e',open:true,num:4},
+  {id:'rph2',kind:'phase',label:'Repetition check',color:'#B03090',open:true,num:4},
   {id:'r_1780839159182',kind:'step',phase:'rph2',label:'Word for Word on entire book',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
   {id:'rph2_s1',kind:'step',phase:'rph2',label:'Thematic echo scan',note:'Flag arguments or phrases appearing in substantially similar form across chapters.',cmd:'\"Thematic echo scan\"',targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
   {id:'rph2_g1',kind:'gate',phase:'rph2',label:'No material repetition — Dave reviews and approves any cuts',date:'2026-06-16',met:false},
 
   // ── Phase 5: Fresh eyes read ─────────────────────────────────────────────
-  {id:'rph3',kind:'phase',label:'Fresh eyes read',color:'#3a7a5a',open:true,num:5},
+  {id:'rph3',kind:'phase',label:'Fresh eyes read',color:'#6040C8',open:true,num:5},
   {id:'rph3_s2',kind:'step',phase:'rph3',label:'Flow — continuity and rhythm read',note:'Flag repetition, weak transitions, register drift.',cmd:'\"Flow read\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
   {id:'rph3_s3',kind:'step',phase:'rph3',label:'Reese — sourcing integrity pass',note:'Any unsourced factual claims surfaced by fresh read?',cmd:'\"Reese pass\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
   {id:'rph3_s1',kind:'step',phase:'rph3',label:'Sterling — commercial coherence read',note:'Argument arc, chapter transitions, author positioning.',cmd:'\"Sterling review\"',targetStart:'',targetEnd:'2026-06-18',completedDate:'',done:false},
@@ -1697,7 +1702,7 @@ function buildExportJSON(){
     version:5,
     exported:new Date().toISOString(),
     seedVersion:SEED_VERSION,
-    masterVersion:'v262',
+    masterVersion:'v277',
     filters:{status:fSt,tag:fTag,type:fType},
     items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||''})),
     road:(S.road||[])
