@@ -179,7 +179,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
-.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB}
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
 .gantt-scroll-inner{position:relative}
 
 /* Sticky label column */
@@ -470,6 +470,37 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 #gantt-tooltip.visible{opacity:1}
 #gantt-tooltip .tt-name{font-weight:600;color:#f0e8c8;display:block;margin-bottom:2px}
 #gantt-tooltip .tt-date{color:#a09070;font-size:10px}
+
+/* ── URL / BOOKMARK FIELD ── */
+.inp-url-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.inp-url{flex:1;background:var(--input-bg);border:1px solid var(--separator);border-radius:5px;padding:5px 8px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);outline:none}
+.inp-url:focus{border-color:var(--accent)}
+.inp-url-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);white-space:nowrap}
+.item-link-row{margin:4px 0 2px 0;display:flex;align-items:center;gap:6px}
+.item-link-a{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--accent);text-decoration:none;word-break:break-all}
+.item-link-a:hover{text-decoration:underline}
+.item-link-plain{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);font-style:italic}
+.item-link-badge{font-size:10px;flex-shrink:0;opacity:.7}
+
+/* ── SETTINGS PANEL ── */
+.settings-section{margin-bottom:28px}
+.settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.settings-field{margin-bottom:12px}
+.settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:4px}
+.settings-input{width:100%;background:#1e1c18;border:1px solid #3a3630;border-radius:5px;padding:7px 10px;font-family:'Source Code Pro',monospace;font-size:12px;color:#d4c9a8;outline:none;box-sizing:border-box}
+.settings-input:focus{border-color:var(--gold)}
+.settings-preview{margin-top:6px;padding:6px 10px;background:#141210;border-radius:4px;font-family:'Source Code Pro',monospace;font-size:10px;color:#706858;word-break:break-all}
+.settings-preview span{color:#c9a050}
+.settings-save-btn{background:var(--gold);color:#0f0e0c;border:none;border-radius:5px;padding:7px 18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em}
+.settings-save-btn:hover{background:var(--gold-light)}
+.settings-note{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px;line-height:1.6}
+.device-guide{background:#141210;border-radius:6px;padding:14px 16px;margin-bottom:16px}
+.device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:10px}
+.device-guide ul{list-style:none;padding:0;margin:0}
+.device-guide li{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:3px 0;padding-left:14px;position:relative;line-height:1.5}
+.device-guide li::before{content:'›';position:absolute;left:0;color:var(--gold-dim)}
+.device-guide li strong{color:var(--paper)}
+
 </style>
 </head>
 <body>
@@ -484,20 +515,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- STATS -->
 <div class="stats"><div class="stats-inner">
-  <div class="stat"><span class="stat-val highlight">462</span><span class="stat-lbl">Pages</span></div>
   <div class="stat"><span class="stat-val highlight">152,492</span><span class="stat-lbl">Words (total)</span></div>
   <div class="stat"><span class="stat-val">110,235</span><span class="stat-lbl">Words (prose)</span></div>
-  <div class="stat"><span class="stat-val">490</span><span class="stat-lbl">Pages (est.)</span></div>
-  <div class="stat"><span class="stat-val highlight">152K</span><span class="stat-lbl">Words</span></div>
-  <div class="stat"><span class="stat-val">18</span><span class="stat-lbl">Chapters</span></div>
-  <div class="stat"><span class="stat-val">15</span><span class="stat-lbl">Appendices</span></div>
-  <div class="stat"><span class="stat-val">495</span><span class="stat-lbl">Chapter Notes</span></div>
+  <div class="stat"><span class="stat-val">495</span><span class="stat-lbl">Notes</span></div>
   <div class="stat"><span class="stat-val highlight">330</span><span class="stat-lbl">Sources Cited</span></div>
-  <div class="stat"><span class="stat-val highlight">43</span><span class="stat-lbl">Figures</span></div>
-  <div class="stat"><span class="stat-val">42</span><span class="stat-lbl">Sightings (A2)</span></div>
-  <div class="stat"><span class="stat-val">40</span><span class="stat-lbl">Profiles (A13)</span></div>
-  <div class="stat"><span class="stat-val">446</span><span class="stat-lbl">Glossary</span></div>
   <div class="stat"><span class="stat-val">516</span><span class="stat-lbl">Index Entries</span></div>
+  <div class="stat"><span class="stat-val highlight">43</span><span class="stat-lbl">Figures</span></div>
+  <div class="stat"><span class="stat-val">42</span><span class="stat-lbl">Sightings</span></div>
+  <div class="stat"><span class="stat-val">446</span><span class="stat-lbl">Subheadings</span></div>
+  <div class="stat"><span class="stat-val">18</span><span class="stat-lbl">Chapters</span></div>
 </div></div>
 <!-- DARK BAND -->
 <div class="dark-band">
@@ -565,33 +591,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="ptoggle" id="ptoggle" onclick="togglePri()"><span id="plbl">Priority</span></button>
       <button class="ptoggle mem-toggle" id="memtoggle" onclick="toggleMem()"><span id="memlbl">Flag Memory</span></button>
     </div>
+    <div class="inp-url-row">
+      <span class="inp-url-lbl">🔗</span>
+      <input class="inp-url" id="input-url" type="text" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" />
+    </div>
   </div></div>
   <div class="list-wrap">
-    <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:12px 16px;margin-bottom:14px">
-      <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px">Manuscript Stats &mdash; v279 &middot; 2026-06-09</div>
-      <table style="width:100%;border-collapse:collapse;font-family:'Source Code Pro',monospace;font-size:11px">
-        <thead><tr style="border-bottom:1px solid var(--separator)">
-          <th style="text-align:left;padding:3px 8px 5px 0;color:var(--label-secondary);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:9px">Metric</th>
-          <th style="text-align:right;padding:3px 0 5px 8px;color:var(--label-secondary);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:9px">Count</th>
-          <th style="text-align:left;padding:3px 0 5px 12px;color:var(--label-secondary);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:9px">Notes</th>
-        </tr></thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Pages (est.)</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--accent);font-weight:600">490</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">~310 words/page incl. footnotes</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Words (total)</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--accent);font-weight:600">151,982</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">Body 123,497 · Footnotes 28,485</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Chapters</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">18</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">Continuous 1–18</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Appendices</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">15</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">A1–A15 + Further Reading, Bibliography, Glossary, Index</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Footnotes</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">495</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">Intro 12 · Ch 1–18 + Conclusion (bidirectional ref_/note_ pairs)</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Sources (URLs)</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">330</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">External hyperlinks in rels · 149 unique domains</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Figures</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">43</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">aCaption1 paragraphs</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Sightings (A2)</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">42</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">Hyperlinked index · cheadng3 entries</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Profiles (A13)</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">40</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">On the Record · cheadng3 entries</td></tr>
-          <tr style="border-bottom:1px solid var(--separator)"><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Glossary entries</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">446</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">GlossEnt style</td></tr>
-          <tr><td style="padding:4px 8px 4px 0;color:var(--label-primary)">Index entries</td><td style="text-align:right;padding:4px 0 4px 8px;color:var(--label-primary)">516</td><td style="padding:4px 0 4px 12px;color:var(--label-secondary)">IndexEnt style · hyperlink-based locators</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:8px;font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary)">Counted from v279 · upload a new master to Claude to refresh · page count is an estimate pending Vellum export</div>
-    </div>
-    <div class="list-bar">
+        <div class="list-bar">
       <span class="list-ct" id="list-count"></span>
       <button class="list-bar-btn" onclick="collapseAll()">Collapse All</button>
       <button class="list-bar-btn" onclick="expandAll()">Expand All</button>
@@ -810,62 +816,114 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div></div>
 <!-- HELP -->
 <div class="panel" id="panel-help"><div class="ref-section">
-  <h2>How to Use This Hub</h2>
+  <h2>Over-classified Project Hub</h2>
+  <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Help &amp; Settings &mdash; Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
 
-  <h3 style="margin-top:24px">&#9654; Editing Roadmap Items</h3>
+  <!-- ── SETTINGS ── -->
+  <h3 style="margin-top:28px">&#9654; Settings</h3>
+
+  <div class="settings-section">
+    <h3>Word File Path</h3>
+    <div class="settings-field">
+      <label class="settings-lbl">Manuscript folder path (Mac only)</label>
+      <input class="settings-input" id="settings-folder-input" type="text"
+        placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+      <div class="settings-note">Enter the folder containing your manuscript. The filename is set automatically from the current master version each session (e.g. <em>Overclassified_279.docx</em>). You only need to update this if you move the folder.</div>
+    </div>
+    <div class="settings-preview" id="settings-path-preview">Enter your folder path above to activate Word bookmarks.</div>
+    <div style="margin-top:10px"><button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Path</button></div>
+    <div class="settings-note" style="margin-top:10px">
+      <strong>Stored locally only</strong> — this path is saved in your browser's localStorage and never exported in the JSON.<br>
+      <strong>iPad / iPhone</strong> — Word deep links are not supported on iOS. Bookmark names are shown as plain labels so you can locate them manually.<br>
+      <strong>Using bookmarks</strong> — in the 🔗 link field of any note, type a bookmark name such as <em>ref_3_5_31</em> or <em>note_3_13_4</em>. On Mac, clicking the link opens Word and jumps to that exact location. You can find bookmark names in Word via Insert → Bookmarks, or ask Claude for the bookmark name of any footnote or index entry.
+    </div>
+  </div>
+
+  <!-- ── DEVICE GUIDE ── -->
+  <h3 style="margin-top:28px">&#9654; Using the Hub by Device</h3>
+
+  <div class="device-guide">
+    <h4>&#63743; Mac (Safari / Chrome)</h4>
+    <ul>
+      <li><strong>Gantt scroll:</strong> Horizontal scroll with trackpad two-finger swipe or scroll wheel. Vertical scroll works normally.</li>
+      <li><strong>Word links:</strong> Fully supported. Clicking a bookmark link opens Word and jumps to the bookmark. Requires the folder path set in Settings above.</li>
+      <li><strong>Export:</strong> Click Export on the Notes tab — copies JSON to clipboard. Paste into Claude to sync.</li>
+      <li><strong>Upload shortcut:</strong> <strong>⇧⌘U</strong> uploads <code>index.html</code> from iCloud Drive to GitHub Pages.</li>
+      <li><strong>Drag to reorder phases:</strong> Click and drag the ⋮ handle on any phase row.</li>
+      <li><strong>Clone:</strong> The ⎘ button on any phase or task row creates an immediate copy below it.</li>
+    </ul>
+  </div>
+
+  <div class="device-guide">
+    <h4>&#8965; iPad Pro (Safari)</h4>
+    <ul>
+      <li><strong>Gantt scroll:</strong> Two-finger drag inside the chart area to scroll horizontally and vertically. Single-finger drag moves phase bars (drag handle). If scroll feels locked, use two fingers.</li>
+      <li><strong>Phase drag/reorder:</strong> Touch and hold the ⋮ handle, then drag. On iPad the touch target is slightly larger than on Mac. If dragging is unresponsive, use the numeric position field in the Edit Phase panel instead (set <em>Position</em> to the slot number you want).</li>
+      <li><strong>Edit panel:</strong> Tap ✏️ on any phase or task row. The slide-in panel opens from the right. Scroll inside the panel independently of the chart.</li>
+      <li><strong>Word links:</strong> Not supported on iOS — bookmark names display as plain text labels. Use them as a reference to locate the passage manually when you open the file on Mac.</li>
+      <li><strong>Export:</strong> Tap Export on Notes tab — copies JSON to clipboard. Open Claude in Safari, paste, and say <em>"Update the project hub."</em></li>
+      <li><strong>Upload:</strong> Save the new <code>index.html</code> Claude delivers to iCloud Drive, then run the ⇧⌘U Automator action on Mac to push to GitHub.</li>
+    </ul>
+  </div>
+
+  <div class="device-guide">
+    <h4>&#9743; iPhone</h4>
+    <ul>
+      <li><strong>Gantt:</strong> Horizontal scroll with one finger inside the chart. The chart is readable but editing is easier on iPad or Mac.</li>
+      <li><strong>Notes tab:</strong> Fully functional for adding and reviewing items. Input form, type/tag selectors, priority and memory flags all work.</li>
+      <li><strong>Export:</strong> Tap Export — copies JSON to clipboard. Paste into Claude to log items or sync.</li>
+      <li><strong>Word links:</strong> Not supported on iOS — same as iPad.</li>
+      <li><strong>Best use:</strong> Capturing quick reminders and questions on the go. Full editing on Mac or iPad.</li>
+    </ul>
+  </div>
+
+  <!-- ── LINK / BOOKMARK FIELD ── -->
+  <h3 style="margin-top:28px">&#9654; Link &amp; Bookmark Field</h3>
+  <p>Every note, reminder, question, and For Dave item has a <strong>🔗 Link / Bookmark</strong> field. It accepts three kinds of input:</p>
   <ul>
-    <li><strong>Edit a phase or task:</strong> Hover over any phase bar or task row — a pencil icon (✏️) appears on the right side of the label. Click it to open the edit panel. You can rename the item, change its dates, update the note, pick a new color (phases), or delete it.</li>
-    <li><strong>Add a phase:</strong> Click <strong>+ Phase</strong> in the toolbar above the chart.</li>
-    <li><strong>Add a task:</strong> Click <strong>+ Task</strong> in the toolbar, or click <strong>+ Add task…</strong> at the bottom of any expanded phase.</li>
-    <li><strong>Reorder phases:</strong> Drag the ⋮ handle on the left of any phase row up or down.</li>
-    <li><strong>Mark a task done:</strong> Click the small checkbox to the left of the task name.</li>
-    <li><strong>Mark a gate met:</strong> Click the diamond on the chart.</li>
-    <li><strong>Collapse/expand:</strong> Use the +/− button on each phase bar, or use the Hidden / Phases + Gates / Full controls at the top of the roadmap.</li>
+    <li><strong>Web URL</strong> (<code>https://…</code>) — rendered as a clickable link. Works on all devices.</li>
+    <li><strong>Word bookmark</strong> (e.g. <code>ref_3_5_31</code>, <code>note_1_4_28</code>, <code>idx_grusch_10</code>) — on Mac, clicking opens Word and jumps to that bookmark. On iPad/iPhone, displays as a plain label. To find a bookmark name, ask Claude: <em>"What is the bookmark name for footnote 31 in Chapter 4?"</em></li>
+    <li><strong>Plain label</strong> (anything else, e.g. <em>Ch.13 para 450</em>) — displayed as a reference note with a 📌 pin. Not clickable but visible at a glance.</li>
   </ul>
+  <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px">Bookmark naming convention: <code>ref_[part]_[chapter]_[footnote#]</code> · <code>note_[part]_[chapter]_[footnote#]</code> · <code>idx_[slug]_[locator]</code></p>
 
-  <h3 style="margin-top:24px">&#9654; End of Session</h3>
-  <ol>
-    <li>Click <strong>Export</strong> at the top of the Notes tab — copies your data to clipboard.</li>
-    <li>Open Claude in the Over-classified project → paste → say <em>"Update the project hub."</em></li>
-    <li>Download the new <code>index.html</code> Claude produces → save to <code>iCloud Drive/Downloads</code>.</li>
-    <li>Press <strong>&#8679;&#8984;U</strong> to run OC Hub Upload → uploads to GitHub → live in ~60 seconds.</li>
-    <li>Refresh the hub on any device.</li>
-  </ol>
-
-  <h3 style="margin-top:24px">&#9654; Starting a Session</h3>
-  <p>Open <strong>https://brownd11-a11y.github.io/oc-hub/</strong> in Safari on any device. Bookmark on Mac; home screen icon on iPhone/iPad. Data loads automatically.</p>
-
-  <h3 style="margin-top:24px">&#9654; Multi-Device</h3>
-  <p>One device at a time — finish and sync before switching. If you made changes on multiple devices before syncing, paste all exports to Claude in one session and say <em>"Merge these exports."</em></p>
-
-  <h3 style="margin-top:24px">&#9654; Mac Shortcuts</h3>
-  <ul>
-    <li><strong>&#8679;&#8984;U</strong> — OC Hub Upload: uploads <code>index.html</code> from <code>iCloud Drive/Downloads</code> to GitHub.</li>
-  </ul>
-  <p>To reassign: System Settings → Keyboard → Keyboard Shortcuts → Services → OC Hub Upload.</p>
-
-  <h3 style="margin-top:24px">&#9654; Roadmap Gantt</h3>
+  <!-- ── ROADMAP ── -->
+  <h3 style="margin-top:28px">&#9654; Roadmap Gantt</h3>
   <ul>
     <li><strong>Hidden</strong> — chart off</li>
     <li><strong>Bars + Gates</strong> — phase bars with gate diamonds at target dates</li>
     <li><strong>Bars + Gates + Notes</strong> — adds date/label annotation below each bar</li>
   </ul>
-  <p>Bar spans earliest start → latest end date across steps. Gate diamond sits at latest end date. Click a diamond to mark it met — records today automatically. Each step has Start and End date fields in the task list.</p>
+  <p>Bar spans earliest start → latest end date across steps. Gate diamond sits at the latest end date in the phase. Click a diamond to mark it met. Each step has Start and End date fields in the edit panel.</p>
 
-  <h3 style="margin-top:24px">&#9654; Data Safety</h3>
+  <!-- ── SESSION WORKFLOW ── -->
+  <h3 style="margin-top:28px">&#9654; Session Workflow</h3>
+  <ol>
+    <li>Open the hub. Click <strong>Export</strong> on the Notes tab — copies JSON to clipboard.</li>
+    <li>Open Claude in the Over-classified project → paste the JSON → say <em>"Update the project hub."</em></li>
+    <li>Claude processes the JSON, makes interface updates, and delivers a new <code>index.html</code>.</li>
+    <li>Save to <code>iCloud Drive</code> (overwrite the existing file).</li>
+    <li>Press <strong>⇧⌘U</strong> on Mac → uploads to GitHub → live on all devices in ~60 seconds.</li>
+    <li>Refresh the hub on any device.</li>
+  </ol>
+  <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px"><strong>Multi-device:</strong> One device at a time. If you edited on multiple devices before syncing, paste both exports to Claude in one message and say <em>"Merge these exports."</em></p>
+
+  <!-- ── DATA SAFETY ── -->
+  <h3 style="margin-top:28px">&#9654; Data Safety</h3>
   <ul>
-    <li>Old localStorage keys deleted automatically — no accumulation.</li>
-    <li>Forgot to export? Work is still in localStorage on that device — open, export, give to Claude.</li>
-    <li>GitHub is source of truth. localStorage is a session buffer.</li>
+    <li>Old localStorage keys (v1–v5) are deleted automatically on first load — no accumulation.</li>
+    <li>Forgot to export? Your session work is still in localStorage on that device — open, export, give to Claude.</li>
+    <li>GitHub Pages is the source of truth. localStorage is a per-device session buffer.</li>
+    <li>The Word file path in Settings is local only — it is never included in the JSON export.</li>
   </ul>
-
 
 </div></div>
 
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-10T06:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-09T15:18:49.000Z'; // bump this each time seed data is updated
+const MASTER_VERSION='v279'; // current manuscript version — update each session
 
 /* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
 const SEED_ITEMS=[
@@ -1107,6 +1165,80 @@ function isOverdue(due){if(!due)return false;return new Date(due+'T23:59:59')<ne
 
 function render(){rdash();rlist();}
 
+
+/* ── ITEM LINK RENDERER ── */
+function renderItemLink(it){
+  const raw=(it.itemUrl||'').trim();
+  if(!raw)return '';
+  // Full https/http URL
+  if(/^https?:\/\//i.test(raw)){
+    return `<div class="item-link-row"><span class="item-link-badge">🔗</span><a class="item-link-a" href="${esc(raw)}" target="_blank" rel="noopener">${esc(raw.length>60?raw.substring(0,60)+'\u2026':raw)}</a></div>`;
+  }
+  // Word bookmark pattern: starts with ref_, note_, idx_, gloss_
+  if(/^(ref_|note_|idx_|gloss_)/i.test(raw)){
+    const base=getWordBasePath();
+    if(base){
+      const encoded=encodeURIComponent(base).replace(/%2F/g,'/').replace(/ /g,'%20');
+      const msLink=`ms-word:ofe|u|file:///${encoded}|bookmark|${raw}`;
+      return `<div class="item-link-row"><span class="item-link-badge">📄</span><a class="item-link-a" href="${msLink}" title="Open in Word at bookmark ${esc(raw)}">${esc(raw)}</a><span style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-left:4px">Word bookmark</span></div>`;
+    } else {
+      return `<div class="item-link-row"><span class="item-link-badge">📄</span><span class="item-link-plain">${esc(raw)}</span><span style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-left:4px">Word bookmark — set file path in Settings to activate</span></div>`;
+    }
+  }
+  // Plain label / reference text
+  return `<div class="item-link-row"><span class="item-link-badge">📌</span><span class="item-link-plain">${esc(raw)}</span></div>`;
+}
+
+/* ── SETTINGS: Word file path ── */
+const SETTINGS_SK='oc_settings_v1';
+function loadSettings(){
+  try{const s=JSON.parse(localStorage.getItem(SETTINGS_SK)||'{}');return s;}catch(e){return {};}
+}
+function saveSettings(obj){
+  try{localStorage.setItem(SETTINGS_SK,JSON.stringify(obj));}catch(e){}
+}
+function getWordBasePath(){
+  return loadSettings().wordBasePath||'';
+}
+function getWordFilename(){
+  // Auto-derive from masterVersion in seed — e.g. v279 → Overclassified_279.docx
+  const mv=(typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:'').replace(/^v/i,'');
+  return mv?`Overclassified_${mv}.docx`:'';
+}
+function getFullWordPath(){
+  const base=getWordBasePath();
+  const file=getWordFilename();
+  if(!base||!file)return '';
+  const sep=base.endsWith('/')?'':'/'
+  return base+sep+file;
+}
+function settingsSave(){
+  const folder=(document.getElementById('settings-folder-input')?.value||'').trim();
+  const s=loadSettings();
+  s.wordBasePath=folder;
+  saveSettings(s);
+  updateSettingsPreview();
+  const btn=document.getElementById('settings-save-btn');
+  if(btn){btn.textContent='Saved ✓';setTimeout(()=>{btn.textContent='Save Path';},2000);}
+}
+function updateSettingsPreview(){
+  const folder=(document.getElementById('settings-folder-input')?.value||getWordBasePath()||'').trim();
+  const file=getWordFilename();
+  const prev=document.getElementById('settings-path-preview');
+  if(!prev)return;
+  if(!folder){prev.innerHTML='<span>Enter your folder path above to activate Word bookmarks.</span>';return;}
+  const sep=folder.endsWith('/')?'':'/'
+  const full=folder+sep+file;
+  prev.innerHTML=`<span style="color:#706858">Full path: </span><span>${full||'(filename auto-set when master version is known)'}</span>`;
+}
+function initSettings(){
+  const s=loadSettings();
+  const inp=document.getElementById('settings-folder-input');
+  if(inp&&s.wordBasePath)inp.value=s.wordBasePath;
+  updateSettingsPreview();
+  if(inp)inp.addEventListener('input',updateSettingsPreview);
+}
+
 function rlist(){
   const list=document.getElementById('list');
   const visible=(S.items||[]).filter(iVis);
@@ -1132,10 +1264,11 @@ function rlist(){
           <div><label class="edit-wrap-label">Due date</label><input type="date" class="edit-sel" id="edu_${it.id}" value="${esc(it.dueDate||'')}" style="width:130px" /></div>
           <div style="flex:1"><label class="edit-wrap-label">Answer / note</label><textarea class="edit-ta" id="ean_${it.id}" rows="2" style="min-height:40px">${esc(it.answer||'')}</textarea></div>
         </div>
+        <div style="margin-top:6px"><label class="edit-wrap-label">🔗 Link / Bookmark</label><input type="text" class="edit-ta" id="eurl_${it.id}" value="${esc(it.itemUrl||'')}" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" style="min-height:0;padding:5px 8px;font-size:11px;font-family:'Source Code Pro',monospace" /></div>
         <div class="edit-actions"><button class="edit-save" onclick="saveEdit('${it.id}')">Save</button><button class="edit-cancel" onclick="cancelEdit()">Cancel</button></div>
       </div></div>`;
     } else {
-      bodyHtml=`<div class="ibody">${it.answer?`<div class="ianswer">${esc(it.answer)}</div>`:''}<div class="iactions">
+      bodyHtml=`<div class="ibody">${it.answer?`<div class="ianswer">${esc(it.answer)}</div>`:''}${renderItemLink(it)}<div class="iactions">
         <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
         <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
         <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
@@ -1172,12 +1305,13 @@ function cancelEdit(){editingId=null;rlist();}
 function togEditPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;const btn=document.getElementById('epr_'+id);if(btn){btn.textContent=it.priority?'★ Priority':'☆ Priority';btn.className='edit-pritoggle'+(it.priority?' on':'');}}
 function saveEdit(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
-  ['etx_','ety_','etg_','edu_','ean_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
+  ['etx_','ety_','etg_','edu_','ean_','eurl_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
     if(p==='etx_')it.text=el.value.trim();
     else if(p==='ety_')it.type=el.value;
     else if(p==='etg_')it.tag=el.value||null;
     else if(p==='edu_')it.dueDate=el.value||'';
     else if(p==='ean_')it.answer=el.value.trim()||null;
+    else if(p==='eurl_')it.itemUrl=el.value.trim()||null;
   });
   editingId=null;save();render();
 }
@@ -1192,12 +1326,14 @@ function addItem(){
   const status=document.getElementById('input-status').value;
   const dueDate=document.getElementById('input-due').value||'';
   const autoMem=type==='fordave'?true:inputMemFlag;
-  S.items.unshift({id:'i_'+Date.now(),type,text:txt,done:false,priority:inputPriFlag,memFlag:autoMem,tag,deferred:status==='deferred',answer:null,created:new Date().toISOString(),dueDate,completedDate:''});
+  const urlRaw=(document.getElementById('input-url')?.value||'').trim();
+  S.items.unshift({id:'i_'+Date.now(),type,text:txt,done:false,priority:inputPriFlag,memFlag:autoMem,tag,deferred:status==='deferred',answer:null,created:new Date().toISOString(),dueDate,completedDate:'',itemUrl:urlRaw||null});
   ta.value='';
   document.getElementById('input-type').value='reminder';
   document.getElementById('input-tag').value='';
   document.getElementById('input-status').value='open';
   document.getElementById('input-due').value='';
+  document.getElementById('input-url').value='';
   inputPriFlag=false;inputMemFlag=false;
   document.getElementById('ptoggle').className='ptoggle';document.getElementById('plbl').textContent='Priority';
   document.getElementById('memtoggle').className='ptoggle mem-toggle';document.getElementById('memlbl').textContent='Flag Memory';
@@ -1338,6 +1474,7 @@ function renderGantt(){
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
     if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
     html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('phase','${ph.id}')" title="Edit phase">✏️</button>`;
+    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase">⎘</button>`;
     html+=`</div>`;
     // Track cell
     html+=`<div class="gantt-phase-track" style="position:relative">`;
@@ -1419,6 +1556,7 @@ function renderGantt(){
           html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
           if(s.done)html+=`<span class="gantt-task-pct" style="color:var(--done-fg)">✓</span>`;
           html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('step','${s.id}')" title="Edit task">✏️</button>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();cloneStep('${s.id}')" title="Clone task">⎘</button>`;
           html+=`</div>`;
           html+=`<div class="gantt-task-track" style="position:relative">`;
           weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
@@ -2043,7 +2181,7 @@ function rfRender(){
 load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=2;
-initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);
+initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
 </script>
 </body>
 </html>
