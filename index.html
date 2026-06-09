@@ -379,35 +379,71 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .dist-warn{font-size:11px;color:var(--hold-fg);background:var(--hold-bg);border:1px solid rgba(122,90,16,.3);padding:5px 8px;margin-top:8px}
 .dist-note{padding:0 32px 20px;font-size:12px;color:var(--label-secondary);line-height:1.6}
 .dist-note strong{color:var(--label-primary)}
-.ot-wrap{padding:16px 32px}
-.ot-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px}
-.ot-add h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
+/* ── OUTREACH ── */
+.ot-wrap{padding:16px 24px}
+.ot-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px;border-radius:4px}
+.ot-add-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
 .ot-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ot-form input,.ot-form select{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%;font-family:'Libre Baskerville',Georgia,serif}
-.ot-form input:focus,.ot-form select:focus{border-color:var(--accent)}
+.ot-form input,.ot-form select,.ot-form textarea{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%;font-family:'Libre Baskerville',Georgia,serif;border-radius:3px}
+.ot-form input:focus,.ot-form select:focus,.ot-form textarea:focus{border-color:var(--accent)}
 .ot-form .full{grid-column:1/-1}
-.ot-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:6px 16px;cursor:pointer;margin-top:6px}
+.ot-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:6px 16px;cursor:pointer;margin-top:6px;border-radius:3px}
 .ot-add-btn:hover{background:var(--accent)}
-.ot-table-wrap{overflow-x:auto}
-.ot-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-.ot-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 8px 7px 8px;border-bottom:1.5px solid var(--label-primary);white-space:nowrap}
-.ot-table td{padding:8px;border-bottom:1px solid var(--separator);vertical-align:top}
-.ot-name{font-weight:600;color:var(--label-primary);font-size:13px}
-.ot-role{font-size:11px;color:var(--label-secondary);margin-top:1px}
-.ot-due{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary)}
-.ot-due.overdue{color:var(--accent);font-weight:600}
-.ot-link{color:var(--tag-editing);font-size:11px;text-decoration:none;word-break:break-all}
-.ot-link:hover{text-decoration:underline}
-.ot-expand-btn,.ot-del-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:2px 7px;cursor:pointer;color:var(--label-secondary)}
-.ot-expand-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
-.ot-del-btn:hover{border-color:var(--accent);color:var(--accent)}
-.ot-notes-row{display:none}
-.ot-notes-row.open{display:table-row}
-.ot-notes-cell{padding:8px 10px;border-bottom:1px solid var(--separator);background:var(--page-bg)}
-.ot-notes-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.5;color:var(--label-primary);background:var(--card-bg);border:1px solid var(--separator);padding:6px 10px;resize:vertical;min-height:52px;outline:none}
-.ot-notes-ta:focus{border-color:var(--accent)}
-.ot-save-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:var(--label-primary);color:var(--card-bg);border:none;padding:3px 10px;cursor:pointer;margin-top:4px}
-.ot-save-btn:hover{background:var(--done-fg)}
+/* contact cards */
+.ot-cards{display:flex;flex-direction:column;gap:10px}
+.ot-wave-hdr{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#8a7a50;padding:12px 0 4px;border-bottom:1px solid var(--separator);margin-bottom:4px}
+.ot-card{background:var(--card-bg);border:1px solid var(--separator);border-radius:4px;overflow:hidden}
+.ot-card-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;transition:background .12s}
+.ot-card-head:hover{background:var(--page-bg)}
+.ot-card-chevron{font-size:10px;color:var(--label-secondary);flex-shrink:0;transition:transform .18s;width:12px}
+.ot-card-chevron.open{transform:rotate(90deg)}
+.ot-card-name{font-weight:600;font-size:13px;color:var(--label-primary);flex-shrink:0}
+.ot-card-role{font-size:11px;color:var(--label-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ot-card-badges{display:flex;gap:5px;align-items:center;flex-shrink:0;margin-left:auto}
+.ot-status-badge{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;font-weight:600;white-space:nowrap}
+.ot-st-new{background:#f0f0f0;color:#888}
+.ot-st-waiting{background:#fdf6dc;color:#7a5a10}
+.ot-st-confirmed{background:#dff0d8;color:#2a5a1a}
+.ot-st-closed{background:#e8eaf0;color:#3a4a6b}
+.ot-st-rejected{background:#fde8e8;color:#8a1a1a}
+.ot-req-badge{font-family:'Source Code Pro',monospace;font-size:9px;padding:2px 7px;border-radius:2px;background:#f0eaf8;color:#5a1a8a;letter-spacing:.04em}
+.ot-note-ct{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);white-space:nowrap}
+.ot-card-body{display:none;border-top:1px solid var(--separator);padding:14px}
+.ot-card-body.open{display:block}
+.ot-fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ot-field{display:flex;flex-direction:column;gap:3px}
+.ot-field.full{grid-column:1/-1}
+.ot-field-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)}
+.ot-field-val{font-size:12px;color:var(--label-primary);line-height:1.4}
+.ot-field input,.ot-field select,.ot-field textarea{font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:5px 8px;outline:none;width:100%;font-family:'Libre Baskerville',Georgia,serif;border-radius:3px}
+.ot-field input:focus,.ot-field select:focus,.ot-field textarea:focus{border-color:var(--accent)}
+.ot-edit-actions{display:flex;gap:6px;margin-top:8px}
+.ot-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--separator);background:none;padding:4px 12px;cursor:pointer;color:var(--label-secondary);border-radius:3px;transition:all .12s}
+.ot-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.ot-btn.primary{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
+.ot-btn.primary:hover{background:var(--accent);border-color:var(--accent)}
+.ot-btn.danger{color:var(--accent)}
+.ot-btn.danger:hover{border-color:var(--accent);background:rgba(199,0,37,.06)}
+.ot-mat-link{color:var(--tag-editing);font-size:11px;text-decoration:none;word-break:break-all}
+.ot-mat-link:hover{text-decoration:underline}
+/* notes log */
+.ot-notes-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--separator)}
+.ot-notes-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ot-notes-title{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary)}
+.ot-note-add-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:3px 10px;cursor:pointer;color:var(--label-secondary);border-radius:3px}
+.ot-note-add-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
+.ot-note-compose{margin-bottom:10px;display:none}
+.ot-note-compose.open{display:block}
+.ot-note-compose textarea{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.5;color:var(--label-primary);background:var(--card-bg);border:1px solid var(--accent);padding:7px 10px;resize:vertical;min-height:56px;outline:none;border-radius:3px}
+.ot-note-compose-actions{display:flex;gap:6px;margin-top:4px}
+.ot-note-entry{background:var(--page-bg);border:1px solid var(--separator);border-radius:3px;padding:8px 10px;margin-bottom:6px}
+.ot-note-entry:last-child{margin-bottom:0}
+.ot-note-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.ot-note-ts{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary)}
+.ot-note-text{font-size:12px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap}
+.ot-note-edit-area{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.5;color:var(--label-primary);background:var(--card-bg);border:1px solid var(--accent);padding:5px 8px;resize:vertical;min-height:44px;outline:none;border-radius:3px;margin-top:4px;display:none}
+.ot-note-edit-area.open{display:block}
+.ot-note-actions{display:flex;gap:4px;margin-top:3px}
 .rf-wrap{padding:16px 32px}
 .rf-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px}
 .rf-add h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
@@ -523,12 +559,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .settings-save-btn{background:var(--gold);color:#0f0e0c;border:none;border-radius:5px;padding:7px 18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em}
 .settings-save-btn:hover{background:var(--gold-light)}
 .settings-note{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px;line-height:1.6}
-.device-guide{background:#141210;border-radius:6px;padding:14px 16px;margin-bottom:16px}
-.device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:10px}
+.device-guide{background:#222018;border:1px solid #3a3630;border-radius:6px;padding:14px 16px;margin-bottom:16px}
+.device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9a050;margin-bottom:10px}
 .device-guide ul{list-style:none;padding:0;margin:0}
-.device-guide li{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:3px 0;padding-left:14px;position:relative;line-height:1.5}
-.device-guide li::before{content:'›';position:absolute;left:0;color:var(--gold-dim)}
-.device-guide li strong{color:var(--paper)}
+.device-guide li{font-family:'Cormorant Garamond',serif;font-size:15px;color:#c8bfa8;padding:4px 0;padding-left:14px;position:relative;line-height:1.5}
+.device-guide li::before{content:'›';position:absolute;left:0;color:#706858}
+.device-guide li strong{color:#e8dfc8}
 
 
 /* ── UNIVERSAL SEARCH ── */
@@ -801,21 +837,23 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- OUTREACH -->
 <div class="panel" id="panel-outreach"><div class="ot-wrap">
-  <div class="ot-add"><h3>Add contact</h3>
+  <div class="ot-add">
+    <div class="ot-add-title">Add Contact</div>
     <div class="ot-form">
-      <input type="text" id="ot-name" placeholder="Name" /><input type="text" id="ot-role" placeholder="Role / affiliation" />
-      <input type="date" id="ot-date" />
-      <select id="ot-status"><option value="new">&mdash; Status &mdash;</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="passed">Passed</option></select>
-      <select id="ot-method"><option value="">&mdash; Contact method &mdash;</option><option value="Email">Email</option><option value="Twitter">Twitter</option><option value="LinkedIn">LinkedIn</option><option value="Substack">Substack</option><option value="Publisher">Publisher</option><option value="Web Form">Web Form</option></select>
-      <input type="text" id="ot-link" placeholder="Contact link / handle" />
-      <input type="text" id="ot-sent" placeholder="File title or link sent" class="full" />
+      <input type="text" id="ot-name" placeholder="Name" />
+      <input type="text" id="ot-role" placeholder="Role / affiliation" />
+      <select id="ot-req"><option value="">&#8212; Request type &#8212;</option><option value="Blurb">Blurb</option><option value="Foreword">Foreword</option><option value="Quote">Quote</option><option value="Interview">Interview</option><option value="Other">Other</option></select>
+      <select id="ot-status"><option value="new">New</option><option value="waiting">Waiting</option><option value="confirmed">Confirmed</option><option value="closed">Closed</option><option value="rejected">Rejected</option></select>
+      <select id="ot-method"><option value="">&#8212; Contact method &#8212;</option><option value="Email">Email</option><option value="Web Form">Web Form</option><option value="LinkedIn">LinkedIn</option><option value="Twitter / X">Twitter / X</option><option value="Substack">Substack</option><option value="Publisher">Through Publisher</option><option value="Direct">Direct / Known</option></select>
+      <input type="date" id="ot-due-inp" title="Target / follow-up date" />
+      <input type="text" id="ot-contact-link" placeholder="Contact link / handle / email" />
+      <input type="text" id="ot-webform" placeholder="Web form URL (if applicable)" />
+      <input type="text" id="ot-materials" placeholder="Materials link or folder path (what was sent)" class="full" />
     </div>
     <button class="ot-add-btn" onclick="addContact()">Add Contact</button>
   </div>
-  <div class="ot-table-wrap">
-    <table class="ot-table"><thead><tr><th style="width:150px">Name</th><th style="width:82px">Contacted</th><th style="width:90px">Status</th><th style="width:82px">Due</th><th style="width:80px">Method</th><th>Link / Sent</th><th style="width:60px">Notes</th><th style="width:38px"></th></tr></thead><tbody id="ot-tbody"></tbody></table>
-    <div id="ot-empty" class="empty-state">No contacts yet &mdash; add one above</div>
-  </div>
+  <div class="ot-cards" id="ot-cards"></div>
+  <div id="ot-empty" class="empty-state" style="display:none">No contacts yet &#8212; add one above</div>
 </div></div>
 <!-- PASSES -->
 <div class="panel" id="panel-passes"><div class="passes-wrap">
@@ -900,26 +938,18 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <!-- ── SETTINGS ── -->
   <h3 style="margin-top:28px">&#9654; Settings</h3>
 
-  <div class="settings-section">
-    <h3>Word File Path</h3>
+  <div style="border:1px solid #3a3630;border-radius:6px;padding:16px;margin-top:12px">
     <div class="settings-field">
-      <label class="settings-lbl">Manuscript folder path (Mac only)</label>
       <input class="settings-input" id="settings-folder-input" type="text"
-        placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
-      <div class="settings-note">Enter the folder containing your manuscript. You only need to update this if you move the folder.</div>
+        placeholder="Folder path: /Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
     </div>
-    <div class="settings-field" style="margin-top:10px">
-      <label class="settings-lbl">Manuscript filename <span style="color:#504840;font-weight:400;text-transform:none;letter-spacing:0">(optional override)</span></label>
+    <div class="settings-field" style="margin-top:8px">
       <input class="settings-input" id="settings-filename-input" type="text"
-        placeholder="Auto: Overclassified_279.docx" />
-      <div class="settings-note">Leave blank to use the auto-derived filename (updates automatically each session when Claude packs a new version). Override only if your filename differs from the standard pattern — e.g. <em>Overclassified_280_EDIT.docx</em>. Stored locally only, never exported.</div>
+        placeholder="Filename override (leave blank for auto: Overclassified_279.docx)" />
     </div>
-    <div class="settings-preview" id="settings-path-preview">Enter your folder path above to activate Word bookmarks.</div>
-    <div style="margin-top:10px"><button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button></div>
-    <div class="settings-note" style="margin-top:10px">
-      <strong>Stored locally only</strong> — this path is saved in your browser's localStorage and never exported in the JSON.<br>
-      <strong>iPad / iPhone</strong> — Word deep links are not supported on iOS. Bookmark names are shown as plain labels so you can locate them manually.<br>
-      <strong>Using bookmarks</strong> — in the 🔗 link field of any note, type a bookmark name such as <em>ref_3_5_31</em> or <em>note_3_13_4</em>. On Mac, clicking the link opens Word and jumps to that exact location. You can find bookmark names in Word via Insert → Bookmarks, or ask Claude for the bookmark name of any footnote or index entry.
+    <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+      <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
+      <span id="settings-path-preview" style="font-family:'Source Code Pro',monospace;font-size:10px;color:#504840"></span>
     </div>
   </div>
 
@@ -1006,7 +1036,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-09T15:51:46.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-09T16:09:36.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v279'; // current manuscript version — update each session
 
 /* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
@@ -1332,13 +1362,13 @@ function updateSettingsPreview(){
   const folder=(document.getElementById('settings-folder-input')?.value||getWordBasePath()||'').trim();
   const filenameOverride=(document.getElementById('settings-filename-input')?.value||'').trim();
   const file=filenameOverride||getWordFilenameDefault();
-  const source=filenameOverride?'custom':'auto from v'+( (typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:'?'));
+  const source=filenameOverride?'custom':'auto';
   const prev=document.getElementById('settings-path-preview');
   if(!prev)return;
-  if(!folder){prev.innerHTML='<span>Enter your folder path above to activate Word bookmarks.</span>';return;}
+  if(!folder){prev.textContent='';return;}
   const sep=folder.endsWith('/')?'':'/'
   const full=folder+sep+file;
-  prev.innerHTML=`<span style="color:#706858">Path: </span><span>${full}</span><span style="color:#504840;margin-left:8px">(filename: ${source})</span>`;
+  prev.textContent=full+' ('+source+')';
 }
 function initSettings(){
   const s=loadSettings();
@@ -2244,51 +2274,206 @@ function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disab
 /* ── OUTREACH ── */
 let OT=[];
 const OT_SEED=[
-  {id:'ot_seed_1',name:'Eric Burlison',role:'U.S. Rep., Missouri — UAP legislation',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Strong UAP advocate; co-sponsored UAP disclosure bills. Target: blurb or foreword.',_open:false,wave:1},
-  {id:'ot_seed_2',name:'Tim Burchett',role:'U.S. Rep., Tennessee — UAP oversight',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Vocal on UAP transparency; chairs oversight hearings.',_open:false,wave:1},
-  {id:'ot_seed_3',name:'Anna Paulina Luna',role:'U.S. Rep., Florida — UAP disclosure',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-07-31',notes:'Wave 1 — Congressional. Active UAP caucus member; high public profile.',_open:false,wave:1},
-  {id:'ot_seed_4',name:'Lue Elizondo',role:'Fmr. AATIP director / author',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-29',notes:'Wave 2 — Insider credibility tier. Ideal blurb source; firsthand SAP knowledge.',_open:false,wave:2},
-  {id:'ot_seed_5',name:'Christopher Mellon',role:'Fmr. Dep. Asst. Sec. Def. for Intelligence',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-29',notes:'Wave 2 — Policy credibility tier. Co-founded TTSA; deep classification expertise.',_open:false,wave:2},
-  {id:'ot_seed_6',name:'Ross Coulthart',role:'Investigative journalist / author',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Validation tier. Author of In Plain Sight; broad UAP audience.',_open:false,wave:3},
-  {id:'ot_seed_7',name:'Kevin Knuth',role:'Physicist / UAP researcher, Univ. at Albany',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Academic credibility tier. Published peer-reviewed UAP analysis.',_open:false,wave:3},
-  {id:'ot_seed_8',name:'Avi Loeb',role:'Harvard astrophysicist / Galileo Project',contacted:'',status:'new',method:'',link:'',sent:'',due:'2026-08-31',notes:'Wave 3 — Scientific credibility tier. High public profile; authored Extraterrestrial.',_open:false,wave:3},
+  {id:'ot_seed_1',name:'Eric Burlison',role:'U.S. Rep., Missouri — UAP legislation',req:'Blurb',status:'new',method:'Web Form',contactLink:'',webForm:'',materials:'',dueDate:'2026-07-31',notes:[],_open:false,wave:1},
+  {id:'ot_seed_2',name:'Tim Burchett',role:'U.S. Rep., Tennessee — UAP oversight',req:'Blurb',status:'new',method:'Web Form',contactLink:'',webForm:'',materials:'',dueDate:'2026-07-31',notes:[],_open:false,wave:1},
+  {id:'ot_seed_3',name:'Anna Paulina Luna',role:'U.S. Rep., Florida — UAP disclosure',req:'Blurb',status:'new',method:'Web Form',contactLink:'',webForm:'',materials:'',dueDate:'2026-07-31',notes:[],_open:false,wave:1},
+  {id:'ot_seed_4',name:'Lue Elizondo',role:'Fmr. AATIP director / author',req:'Blurb',status:'new',method:'',contactLink:'',webForm:'',materials:'',dueDate:'2026-08-29',notes:[],_open:false,wave:2},
+  {id:'ot_seed_5',name:'Christopher Mellon',role:'Fmr. Dep. Asst. Sec. Def. for Intelligence',req:'Blurb',status:'new',method:'',contactLink:'',webForm:'',materials:'',dueDate:'2026-08-29',notes:[],_open:false,wave:2},
+  {id:'ot_seed_6',name:'Ross Coulthart',role:'Investigative journalist / author',req:'Blurb',status:'new',method:'',contactLink:'',webForm:'',materials:'',dueDate:'2026-08-31',notes:[],_open:false,wave:3},
+  {id:'ot_seed_7',name:'Kevin Knuth',role:'Physicist / UAP researcher, Univ. at Albany',req:'Blurb',status:'new',method:'Email',contactLink:'',webForm:'',materials:'',dueDate:'2026-08-31',notes:[],_open:false,wave:3},
+  {id:'ot_seed_8',name:'Avi Loeb',role:'Harvard astrophysicist / Galileo Project',req:'Blurb',status:'new',method:'',contactLink:'',webForm:'',materials:'',dueDate:'2026-08-31',notes:[],_open:false,wave:3},
 ];
+
 function otLoad(){
   try{
     const r=localStorage.getItem(OT_SK);
     if(r){OT=JSON.parse(r);}else{OT=[];}
+    // Migrate legacy records that lack new fields
+    OT.forEach(c=>{
+      if(!c.notes)c.notes=[];
+      if(c.notes&&typeof c.notes==='string')c.notes=[{id:'n_0',ts:c.contacted||new Date().toISOString(),text:c.notes}];
+      if(!c.req)c.req='';
+      if(!c.webForm)c.webForm='';
+      if(!c.materials)c.materials='';
+      if(!c.contactLink)c.contactLink=c.link||'';
+      if(!c.dueDate)c.dueDate=c.due||'';
+    });
     // Inject seed contacts if not present
-    OT_SEED.forEach(sc=>{if(!OT.find(o=>o.id===sc.id))OT.push({...sc});});
-    // Sort by wave then name
+    OT_SEED.forEach(sc=>{if(!OT.find(o=>o.id===sc.id))OT.push({...sc,notes:[]});});
     OT.sort((a,b)=>(a.wave||9)-(b.wave||9)||(a.name||'').localeCompare(b.name||''));
-  }catch(e){OT=OT_SEED.map(s=>({...s}));}
-}
-function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}}
-function addContact(){
-  const name=document.getElementById('ot-name').value.trim();if(!name){alert('Name required');return;}
-  const role=document.getElementById('ot-role').value.trim(),contacted=document.getElementById('ot-date').value,status=document.getElementById('ot-status').value||'new',method=document.getElementById('ot-method').value,link=document.getElementById('ot-link').value.trim(),sent=document.getElementById('ot-sent').value.trim();
-  let due=null;if(contacted&&status!=='confirmed'&&status!=='passed'){const d=new Date(contacted);d.setDate(d.getDate()+15);due=d.toISOString().split('T')[0];}
-  OT.unshift({id:'ot_'+Date.now(),name,role,contacted,status,method,link,sent,due,notes:'',_open:false});
-  otSave();['ot-name','ot-role','ot-link','ot-sent'].forEach(id=>document.getElementById(id).value='');document.getElementById('ot-date').value='';document.getElementById('ot-status').value='new';document.getElementById('ot-method').value='';renderOT();
-}
-function toggleOTNotes(id){const c=OT.find(o=>o.id===id);if(c){c._open=!c._open;renderOT();}}
-function saveOTNotes(id){const ta=document.getElementById('otn_'+id);const c=OT.find(o=>o.id===id);if(c&&ta){c.notes=ta.value;otSave();}}
-function delContact(id){if(!confirm('Delete?'))return;OT=OT.filter(o=>o.id!==id);otSave();renderOT();}
-function updateStatus(id,val){const c=OT.find(o=>o.id===id);if(c){c.status=val;if(val==='confirmed'||val==='passed')c.due=null;otSave();renderOT();}}
-function renderOT(){
-  const tbody=document.getElementById('ot-tbody'),empty=document.getElementById('ot-empty');
-  if(!OT.length){tbody.innerHTML='';empty.style.display='block';return;}
-  empty.style.display='none';
-  const isOD=(due,st)=>due&&st!=='confirmed'&&st!=='passed'&&new Date(due+'T23:59:59')<new Date();
-  const waveLabels={1:'Wave 1 — Congressional (Target: July 31)',2:'Wave 2 — Insider Credibility (Target: Aug 29)',3:'Wave 3 — Validation Tier (Target: Aug 31)'};
-  let lastWave=null;
-  tbody.innerHTML=OT.map(c=>{
-    let waveHdr='';
-    if(c.wave&&c.wave!==lastWave){lastWave=c.wave;waveHdr=`<tr><td colspan="8" style="padding:10px 8px 4px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#8a7a50;border-bottom:1px solid var(--separator);background:#fafaf8">${esc(waveLabels[c.wave]||'Wave '+c.wave)}</td></tr>`;}
-    return waveHdr+`<tr><td><div class="ot-name">${esc(c.name)}</div><div class="ot-role">${esc(c.role)}</div></td><td>${fmtDate(c.contacted)}</td><td><select style="font-size:11px;border:1px solid var(--separator);padding:2px 4px;background:var(--card-bg);font-family:'Source Code Pro',monospace" onchange="updateStatus('${c.id}',this.value)"><option value="new"${c.status==='new'?' selected':''}>New</option><option value="pending"${c.status==='pending'?' selected':''}>Pending</option><option value="confirmed"${c.status==='confirmed'?' selected':''}>Confirmed</option><option value="passed"${c.status==='passed'?' selected':''}>Passed</option></select></td><td><span class="ot-due${isOD(c.due,c.status)?' overdue':''}">${c.due?fmtDate(c.due):'\u2014'}</span></td><td><span style="font-size:11px;color:var(--label-secondary)">${esc(c.method||'\u2014')}</span></td><td style="max-width:140px;overflow:hidden">${c.link?`<a class="ot-link" href="${esc(c.link)}" target="_blank">${esc(c.link.length>28?c.link.substring(0,28)+'\u2026':c.link)}</a>`:'\u2014'}</td><td><button class="ot-expand-btn" onclick="toggleOTNotes('${c.id}')">${c._open?'\u25b2 Hide':'\u25bc Notes'}</button></td><td><button class="ot-del-btn" onclick="delContact('${c.id}')">&#10005;</button></td></tr><tr class="ot-notes-row${c._open?' open':''}"><td class="ot-notes-cell" colspan="8"><textarea class="ot-notes-ta" id="otn_${c.id}" placeholder="Notes\u2026">${esc(c.notes||'')}</textarea><button class="ot-save-btn" onclick="saveOTNotes('${c.id}')">Save</button></td></tr>`;
-  }).join('');
+  }catch(e){OT=OT_SEED.map(s=>({...s,notes:[]}));}
 }
 
+function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}}
+
+function addContact(){
+  const name=document.getElementById('ot-name').value.trim();
+  if(!name){alert('Name required');return;}
+  const c={
+    id:'ot_'+Date.now(),
+    name,
+    role:document.getElementById('ot-role').value.trim(),
+    req:document.getElementById('ot-req').value,
+    status:document.getElementById('ot-status').value||'new',
+    method:document.getElementById('ot-method').value,
+    contactLink:document.getElementById('ot-contact-link').value.trim(),
+    webForm:document.getElementById('ot-webform').value.trim(),
+    materials:document.getElementById('ot-materials').value.trim(),
+    dueDate:document.getElementById('ot-due-inp').value||'',
+    notes:[],_open:false,wave:null
+  };
+  OT.unshift(c);
+  otSave();
+  ['ot-name','ot-role','ot-contact-link','ot-webform','ot-materials'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ot-req','ot-status','ot-method'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=el.options[0].value;});
+  document.getElementById('ot-due-inp').value='';
+  renderOT();
+}
+
+function otToggle(id){const c=OT.find(o=>o.id===id);if(c){c._open=!c._open;renderOT();}}
+
+function otSaveEdit(id){
+  const c=OT.find(o=>o.id===id);if(!c)return;
+  c.req=document.getElementById('ote-req-'+id)?.value||c.req;
+  c.status=document.getElementById('ote-status-'+id)?.value||c.status;
+  c.method=document.getElementById('ote-method-'+id)?.value||c.method;
+  c.dueDate=document.getElementById('ote-due-'+id)?.value||'';
+  c.contactLink=document.getElementById('ote-link-'+id)?.value||'';
+  c.webForm=document.getElementById('ote-form-'+id)?.value||'';
+  c.materials=document.getElementById('ote-mat-'+id)?.value||'';
+  c.role=document.getElementById('ote-role-'+id)?.value||c.role;
+  otSave();renderOT();
+}
+
+function delContact(id){if(!confirm('Delete this contact?'))return;OT=OT.filter(o=>o.id!==id);otSave();renderOT();}
+
+function otShowNoteCompose(id){
+  const el=document.getElementById('otnc-'+id);
+  if(el){el.classList.toggle('open');if(el.classList.contains('open'))document.getElementById('otnt-'+id)?.focus();}
+}
+
+function otAddNote(id){
+  const ta=document.getElementById('otnt-'+id);
+  if(!ta)return;
+  const text=ta.value.trim();if(!text)return;
+  const c=OT.find(o=>o.id===id);if(!c)return;
+  if(!c.notes)c.notes=[];
+  c.notes.unshift({id:'n_'+Date.now(),ts:new Date().toISOString(),text});
+  ta.value='';
+  document.getElementById('otnc-'+id)?.classList.remove('open');
+  otSave();renderOT();
+}
+
+function otEditNoteToggle(cid,nid){
+  const area=document.getElementById('otne-'+cid+'-'+nid);
+  const txt=document.getElementById('otntxt-'+cid+'-'+nid);
+  if(!area)return;
+  const opening=!area.classList.contains('open');
+  area.classList.toggle('open');
+  if(opening&&txt)area.value=txt.textContent;
+}
+
+function otSaveNoteEdit(cid,nid){
+  const c=OT.find(o=>o.id===cid);if(!c)return;
+  const n=c.notes.find(x=>x.id===nid);if(!n)return;
+  const area=document.getElementById('otne-'+cid+'-'+nid);
+  if(area)n.text=area.value.trim();
+  otSave();renderOT();
+}
+
+function otDelNote(cid,nid){
+  const c=OT.find(o=>o.id===cid);if(!c)return;
+  c.notes=c.notes.filter(n=>n.id!==nid);
+  otSave();renderOT();
+}
+
+function otStatusClass(s){
+  return{new:'ot-st-new',waiting:'ot-st-waiting',confirmed:'ot-st-confirmed',closed:'ot-st-closed',rejected:'ot-st-rejected'}[s]||'ot-st-new';
+}
+
+function otStatusLabel(s){
+  return{new:'New',waiting:'Waiting',confirmed:'Confirmed',closed:'Closed',rejected:'Rejected'}[s]||s;
+}
+
+function otFmtTs(ts){
+  try{const d=new Date(ts);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'})+' '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});}catch(e){return ts;}
+}
+
+function renderOT(){
+  const wrap=document.getElementById('ot-cards');
+  const empty=document.getElementById('ot-empty');
+  if(!OT.length){if(wrap)wrap.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  const waveLabels={1:'Wave 1 \u2014 Congressional  \u00b7  Target Jul 31',2:'Wave 2 \u2014 Insider Credibility  \u00b7  Target Aug 29',3:'Wave 3 \u2014 Validation Tier  \u00b7  Target Aug 31'};
+  let lastWave=null;
+  let out='';
+  OT.forEach(c=>{
+    if(c.wave&&c.wave!==lastWave){lastWave=c.wave;out+=`<div class="ot-wave-hdr">${esc(waveLabels[c.wave]||'Wave '+c.wave)}</div>`;}
+    const noteCount=(c.notes||[]).length;
+    const isOD=c.dueDate&&c.status!=='confirmed'&&c.status!=='closed'&&new Date(c.dueDate+'T23:59:59')<new Date();
+    // HEAD
+    out+=`<div class="ot-card" id="otcard-${c.id}">`;
+    out+=`<div class="ot-card-head" onclick="otToggle('${c.id}')">`;
+    out+=`<span class="ot-card-chevron${c._open?' open':''}">&#9658;</span>`;
+    out+=`<span class="ot-card-name">${esc(c.name)}</span>`;
+    out+=`<span class="ot-card-role">${esc(c.role)}</span>`;
+    out+=`<div class="ot-card-badges">`;
+    if(c.req)out+=`<span class="ot-req-badge">${esc(c.req)}</span>`;
+    out+=`<span class="ot-status-badge ${otStatusClass(c.status)}">${otStatusLabel(c.status)}</span>`;
+    if(c.dueDate)out+=`<span style="font-family:'Source Code Pro',monospace;font-size:9px;color:${isOD?'var(--accent)':'var(--label-secondary)'};white-space:nowrap">${isOD?'OVERDUE ':''}${fmtDate(c.dueDate)}</span>`;
+    if(noteCount)out+=`<span class="ot-note-ct">${noteCount} note${noteCount>1?'s':''}</span>`;
+    out+=`</div></div>`;
+    // BODY
+    out+=`<div class="ot-card-body${c._open?' open':''}" id="otbody-${c.id}">`;
+    // Editable fields grid
+    out+=`<div class="ot-fields-grid">`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Role</span><input id="ote-role-${c.id}" value="${esc(c.role)}" placeholder="Role / affiliation" /></div>`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Request</span><select id="ote-req-${c.id}"><option value="">&#8212;</option><option value="Blurb"${c.req==='Blurb'?' selected':''}>Blurb</option><option value="Foreword"${c.req==='Foreword'?' selected':''}>Foreword</option><option value="Quote"${c.req==='Quote'?' selected':''}>Quote</option><option value="Interview"${c.req==='Interview'?' selected':''}>Interview</option><option value="Other"${c.req==='Other'?' selected':''}>Other</option></select></div>`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Status</span><select id="ote-status-${c.id}"><option value="new"${c.status==='new'?' selected':''}>New</option><option value="waiting"${c.status==='waiting'?' selected':''}>Waiting</option><option value="confirmed"${c.status==='confirmed'?' selected':''}>Confirmed</option><option value="closed"${c.status==='closed'?' selected':''}>Closed</option><option value="rejected"${c.status==='rejected'?' selected':''}>Rejected</option></select></div>`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Target Date</span><input type="date" id="ote-due-${c.id}" value="${esc(c.dueDate||'')}" /></div>`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Method</span><select id="ote-method-${c.id}"><option value="">&#8212;</option><option value="Email"${c.method==='Email'?' selected':''}>Email</option><option value="Web Form"${c.method==='Web Form'?' selected':''}>Web Form</option><option value="LinkedIn"${c.method==='LinkedIn'?' selected':''}>LinkedIn</option><option value="Twitter / X"${c.method==='Twitter / X'?' selected':''}>Twitter / X</option><option value="Substack"${c.method==='Substack'?' selected':''}>Substack</option><option value="Publisher"${c.method==='Publisher'?' selected':''}>Through Publisher</option><option value="Direct"${c.method==='Direct'?' selected':''}>Direct / Known</option></select></div>`;
+    out+=`<div class="ot-field"><span class="ot-field-lbl">Contact Link / Handle</span><input id="ote-link-${c.id}" value="${esc(c.contactLink||'')}" placeholder="Email, URL, @handle" /></div>`;
+    out+=`<div class="ot-field full"><span class="ot-field-lbl">Web Form URL</span><input id="ote-form-${c.id}" value="${esc(c.webForm||'')}" placeholder="https://&#8230; submission form" /></div>`;
+    out+=`<div class="ot-field full"><span class="ot-field-lbl">Materials Sent (link or path)</span><input id="ote-mat-${c.id}" value="${esc(c.materials||'')}" placeholder="https://&#8230; or /path/to/folder" /></div>`;
+    // Render materials as clickable if URL
+    if(c.materials){const isUrl=/^https?:\/\//i.test(c.materials);out+=`<div class="ot-field full"><span class="ot-field-lbl">Materials</span><div>${isUrl?`<a class="ot-mat-link" href="${esc(c.materials)}" target="_blank">${esc(c.materials.length>60?c.materials.substring(0,60)+'\u2026':c.materials)}</a>`:`<span style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary)">${esc(c.materials)}</span>`}</div></div>`;}
+    out+=`</div>`;
+    out+=`<div class="ot-edit-actions"><button class="ot-btn primary" onclick="otSaveEdit('${c.id}')">Save</button><button class="ot-btn danger" onclick="delContact('${c.id}')">Delete</button></div>`;
+    // Notes log
+    out+=`<div class="ot-notes-section">`;
+    out+=`<div class="ot-notes-hdr"><span class="ot-notes-title">Contact Log${noteCount?' ('+noteCount+')':''}</span><button class="ot-note-add-btn" onclick="otShowNoteCompose('${c.id}')">+ Add Note</button></div>`;
+    out+=`<div class="ot-note-compose" id="otnc-${c.id}"><textarea id="otnt-${c.id}" placeholder="Add a note&#8230; (date/time stamped automatically)"></textarea><div class="ot-note-compose-actions"><button class="ot-btn primary" onclick="otAddNote('${c.id}')">Save Note</button><button class="ot-btn" onclick="otShowNoteCompose('${c.id}')">Cancel</button></div></div>`;
+    if(noteCount){
+      (c.notes||[]).forEach(n=>{
+        out+=`<div class="ot-note-entry" id="otnote-${c.id}-${n.id}">`;
+        out+=`<div class="ot-note-meta"><span class="ot-note-ts">${otFmtTs(n.ts)}</span><div class="ot-note-actions" style="margin-left:auto;margin-top:0"><button class="ot-btn" style="font-size:9px;padding:1px 6px" onclick="otEditNoteToggle('${c.id}','${n.id}')">Edit</button><button class="ot-btn danger" style="font-size:9px;padding:1px 6px" onclick="otDelNote('${c.id}','${n.id}')">&#10005;</button></div></div>`;
+        out+=`<div class="ot-note-text" id="otntxt-${c.id}-${n.id}">${esc(n.text)}</div>`;
+        out+=`<textarea class="ot-note-edit-area" id="otne-${c.id}-${n.id}"></textarea>`;
+        out+=`<div class="ot-note-actions" id="otneact-${c.id}-${n.id}" style="display:none"><button class="ot-btn primary" style="font-size:9px" onclick="otSaveNoteEdit('${c.id}','${n.id}');document.getElementById('otneact-${c.id}-${n.id}').style.display='none'">Save</button><button class="ot-btn" style="font-size:9px" onclick="otEditNoteToggle('${c.id}','${n.id}');document.getElementById('otneact-${c.id}-${n.id}').style.display='none'">Cancel</button></div>`;
+        out+=`</div>`;
+      });
+    } else {
+      out+=`<div style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);padding:6px 0">No notes yet.</div>`;
+    }
+    out+=`</div>`; // notes-section
+    out+=`</div>`; // card-body
+    out+=`</div>`; // card
+  });
+  if(wrap)wrap.innerHTML=out;
+}
+
+/* note edit toggle — also show save/cancel actions */
+const _otEditNoteToggleOrig=otEditNoteToggle;
+function otEditNoteToggle(cid,nid){
+  const area=document.getElementById('otne-'+cid+'-'+nid);
+  const txt=document.getElementById('otntxt-'+cid+'-'+nid);
+  const acts=document.getElementById('otneact-'+cid+'-'+nid);
+  if(!area)return;
+  const opening=!area.classList.contains('open');
+  area.classList.toggle('open');
+  if(acts)acts.style.display=opening?'flex':'none';
+  if(opening&&txt)area.value=txt.textContent;
+}
 /* ── REFERENCES ── */
 let RF=[],RF_KW=[],rfEditId=null;
 function rfLoad(){try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}}
