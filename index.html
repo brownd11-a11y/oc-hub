@@ -2624,12 +2624,12 @@ function ganttMovePhaseToTarget(fromId,toId,dropY){
 
 /* ── GANTT HOVER TOOLTIPS ── */
 let _ttTimer=null,_ttEl=null;
-function ttShow(e,name,dateStr){
+function ttShow(e,ttName,dateStr){
   _ttEl=document.getElementById('gantt-tooltip');
   if(!_ttEl)return;
   clearTimeout(_ttTimer);
   _ttTimer=setTimeout(()=>{
-    document.getElementById('tt-name').textContent=name;
+    document.getElementById('tt-name').textContent=ttName;
     document.getElementById('tt-date').textContent=dateStr||'';
     _ttEl.classList.add('visible');
     ttPos(e);
@@ -2723,10 +2723,10 @@ function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}
 
 function addContact(){
   const contactName=document.getElementById('ot-name').value.trim();
-  if(!name){alert('Name required');return;}
+  if(!contactName){alert('Name required');return;}
   const c={
     id:'ot_'+Date.now(),
-    name,
+    name:contactName,
     role:document.getElementById('ot-role').value.trim(),
     req:document.getElementById('ot-req').value,
     status:document.getElementById('ot-status').value||'new',
