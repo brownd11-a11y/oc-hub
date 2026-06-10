@@ -593,6 +593,60 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .sr-arrow{flex-shrink:0;color:#3a3630;font-size:16px;align-self:center}
 .search-empty{padding:24px 16px;text-align:center;font-family:'Source Code Pro',monospace;font-size:11px;color:#504840}
 
+/* ── URL / BOOKMARK FIELD ── */
+.inp-url-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.inp-url{flex:1;background:var(--input-bg);border:1px solid var(--separator);border-radius:5px;padding:5px 8px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);outline:none}
+.inp-url:focus{border-color:var(--accent)}
+.inp-url-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);white-space:nowrap}
+.item-link-row{margin:4px 0 2px 0;display:flex;align-items:center;gap:6px}
+.item-link-a{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--accent);text-decoration:none;word-break:break-all}
+.item-link-a:hover{text-decoration:underline}
+.item-link-plain{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);font-style:italic}
+.item-link-badge{font-size:10px;flex-shrink:0;opacity:.7}
+/* ── DIALOGUE THREAD ── */
+.item.flow-item:not(.done){background:var(--forclaude-bg);border-left-color:var(--forclaude-border)}
+.item.needs-response:not(.done){background:var(--fordave-bg);border-left-color:var(--fordave-border)}
+.item.dave-replied:not(.done){background:rgba(0,120,80,.06);border-left-color:#1a7a55;}
+.flow-badge{display:inline-flex;align-items:center;gap:3px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.flow-badge.for-claude{background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);border:1px solid var(--forclaude-border)}
+.flow-badge.for-dave{background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);border:1px solid var(--fordave-border)}
+.dialogue-thread{padding:10px 14px;border-top:1px solid var(--separator);display:flex;flex-direction:column;gap:8px}
+.dl-entry{border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.55}
+.dl-entry.from-dave{background:var(--forclaude-badge-bg);border-left:3px solid var(--forclaude-border)}
+.dl-entry.from-claude{background:var(--fordave-badge-bg);border-left:3px solid var(--fordave-border)}
+.dl-meta{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-bottom:3px;display:flex;gap:8px;align-items:center}
+.dl-from{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.dl-ts{color:var(--label-secondary)}
+.dl-text{white-space:pre-wrap;word-break:break-word}
+.dl-reply-row{padding:8px 14px;border-top:1px solid var(--separator)}
+.dl-reply-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.45;border:1px solid var(--separator);border-radius:5px;padding:7px 10px;background:var(--input-bg);resize:vertical;min-height:48px;outline:none}
+.dl-reply-ta:focus{border-color:var(--forclaude-border)}
+.dl-reply-actions{display:flex;gap:8px;margin-top:6px;align-items:center}
+.dl-send-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--forclaude-border);color:#fff;border:none;border-radius:4px;padding:5px 14px;cursor:pointer;transition:background .15s}
+.dl-send-btn:hover{background:#1a5aaa}
+.dl-cancel-link{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);cursor:pointer;text-decoration:underline}
+.dl-awaiting{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);font-style:italic;padding:4px 0}
+/* ── MOVE-TO-ROADMAP SLIDE PANEL ── */
+.mtr-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.25)}
+.mtr-overlay.open{display:block}
+.mtr-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:var(--card-bg);border-left:1px solid var(--separator);z-index:201;overflow-y:auto;transition:right .22s ease;box-shadow:-4px 0 20px rgba(0,0,0,.14);display:flex;flex-direction:column}
+.mtr-panel.open{right:0}
+.mtr-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--separator);flex-shrink:0}
+.mtr-title{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-primary);font-weight:600}
+.mtr-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--label-secondary);padding:0 4px;line-height:1}
+.mtr-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px}
+.mtr-field label{display:block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:5px}
+.mtr-field input,.mtr-field select,.mtr-field textarea{width:100%;border:1px solid var(--separator);border-radius:5px;padding:7px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;background:var(--input-bg);color:var(--label-primary);outline:none}
+.mtr-field input:focus,.mtr-field select:focus,.mtr-field textarea:focus{border-color:var(--accent)}
+.mtr-type-row{display:flex;gap:8px}
+.mtr-type-btn{flex:1;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1.5px solid var(--separator);border-radius:5px;padding:8px 4px;cursor:pointer;background:var(--card-bg);color:var(--label-secondary);transition:all .15s;text-align:center}
+.mtr-type-btn.active{border-color:var(--accent);background:rgba(199,0,37,.08);color:var(--accent);font-weight:600}
+.mtr-actions{display:flex;gap:10px;padding:16px 18px;border-top:1px solid var(--separator);flex-shrink:0}
+.mtr-save-btn{flex:1;background:var(--accent);color:#fff;border:none;border-radius:5px;padding:10px 0;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;transition:background .15s}
+.mtr-save-btn:hover{background:#a50020}
+.mtr-cancel-btn{background:none;border:1.5px solid var(--separator);border-radius:5px;padding:10px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);transition:all .15s}
+.mtr-source-preview{background:var(--input-bg);border-radius:5px;padding:8px 10px;font-size:12px;color:var(--label-secondary);line-height:1.45;font-style:italic;border:1px solid var(--separator)}
+
 </style>
 </head>
 <body>
@@ -634,7 +688,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab" onclick="showTab('refs',this)">Resources</button>
     <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
     <div class="deck-group">
-      <div class="deck-trigger" id="deck-trigger">Reference <span class="deck-arrow">&#9660;</span></div>
+      <div class="deck-trigger" id="deck-trigger" onclick="toggleDeck(event)">Reference <span class="deck-arrow">&#9660;</span></div>
       <div class="deck-flyout">
         <div class="deck-flyout-item" onclick="showDeckTab('passes',this)">Passes</div>
         <div class="deck-flyout-item" onclick="showDeckTab('style',this)">Style &amp; Chapter Map</div>
@@ -728,8 +782,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div class="road-collapse-strip">
       <span>View:</span>
       <button class="rcl-btn" id="rcl-0" onclick="setRoadLevel(0)">Hidden</button>
-      <button class="rcl-btn" id="rcl-1" onclick="setRoadLevel(1)">Phases + Gates</button>
-      <button class="rcl-btn active" id="rcl-2" onclick="setRoadLevel(2)">Full</button>
+      <button class="rcl-btn active" id="rcl-1" onclick="setRoadLevel(1)">Phases + Gates</button>
+      <button class="rcl-btn" id="rcl-2" onclick="setRoadLevel(2)">Full</button>
       <div class="road-open-filter">
         <button class="road-open-filter-btn" id="road-open-btn" onclick="toggleRoadOpenFilter()">Open Only</button>
       </div>
@@ -1036,11 +1090,24 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-10T14:30:00.000Z'; // bump this each time seed data is updated
-const MASTER_VERSION='v279'; // current manuscript version — update each session
+const SEED_VERSION='2026-06-10T15:30:00.000Z'; // bump this each time seed data is updated
+const MASTER_VERSION='v283'; // current manuscript version — update each session
 
 /* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
 const SEED_ITEMS=[
+  {id:'i_session0610d',type:'note',text:'Session 2026-06-10 (afternoon/evening): v282→v283. Ch.9 full pass complete. Bibliography: Turner NAA + Washington Times June 9. A15: Grusch slush funds + Burlison constitutional crisis inserted. Luna A15 pending. Ch.8 Rebelo update done. Afootnote audit: Ch.6/11/14/15/Conclusion PASS; Ch.10/12/13/16/17 FAIL — queued for v284.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_fn_reorder_v284',type:'fordave',text:'v284 planned: Afootnote physical reorder — 5 chapters. Ch.16 notes 19/20 swapped (our fault v281). Ch.17 notes 6/7 swapped (our fault v281). Ch.10 notes 23-26 out of sequence (pre-existing). Ch.12 notes 16-20 block misplaced (pre-existing). Ch.13 notes 3-13 scrambled + 26-31 out of order (pre-existing). Claude will fix all five mechanically in next manuscript session on v283.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_fordave_v282_1b',type:'fordave',text:'v283 DONE — Bibliography: Washington Times June 9 2026 entry added near W entries.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Washington Times, Lawmakers Whistleblower Demand Full Disclosure, June 9 2026 — inserted before Walton.',created:'2026-06-10T10:30:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Washington (W entries in Bibliography)'},
+  {id:'i_fordave_v282_2b',type:'fordave',text:'v283 DONE — Bibliography: Turner, O.H. NAA B30030606 entry added after Twining.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Entry inserted after Twining, Nathan.',created:'2026-06-10T10:30:02.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Twining, Nathan'},
+  {id:'i_fordave_v282_3b',type:'fordave',text:'v283 DONE — Ch.9 [FNXX] resolved as note_2_5_6. Full resequencing 1-36. Four-count PASS.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283. Pre-existing bugs also fixed: orphaned OBSOLETE paragraph, ref_2_5_25 instrText, notes 35/36 destack.',created:'2026-06-10T10:30:03.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → An allied intelligence service reached the same conclusion independently'},
+  {id:'i_fordave_v282_4b',type:'fordave',text:'v282/v283 A15 Quotations — Grusch (Ch.6) and Burlison (Ch.17) inserted. Luna PENDING verbatim text.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'PARTIAL v283: Luna immunity announcement — no verbatim found in any source. Please paste her exact words from YouTube u_emZmzkTtM or confirm paraphrase is OK.',created:'2026-06-10T10:30:04.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → The dual-track did not end with Blue Book'},
+  {id:'i_varginha_done',type:'reminder',text:'Ch.8 Varginha/Rebelo update — DONE v283. Sentence added confirming June 9 public renewal of commitment to release Brazilian files.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283',created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_burlison_queue',type:'reminder',text:'Burlison June 9 additional material — queued pending decisions. (1) To hell with the safe way — the safe way protects the system — A15 candidate + possibly Ch.10 or Ch.17. (2) Transnational call to action (worldwide) — one sentence Ch.18 or Conclusion. (3) Matthew Sullivan deceased whistleblower — research check required before manuscript use.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_plasma_0610',type:'reminder',text:'Grusch plasma statement at 24:45: It is a continuum from corporeal bipedal type life to what I would consider sentient plasmoid life, but there are several that the US government is aware of. Source: NewsNation YouTube https://www.youtube.com/watch?v=u_emZmzkTtM Assess for Ch.13 theories of origin.',done:false,priority:false,memFlag:false,tag:'research',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-13',completedDate:'',itemUrl:'https://www.youtube.com/watch?v=u_emZmzkTtM'},
+  {id:'i_era3_deferred',type:'reminder',text:'Update ERA3 Disclosure Pressure diagram to reflect June 9 2026 Capitol press conference. Cascades to appendix detail version. Image in two places in manuscript.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-11',completedDate:'',itemUrl:null},
+  {id:'i_hub_workflow_fix',type:'reminder',text:'Hub update workflow hardening needed. Failure mode: Claude rebuilds index.html from JSON instead of updating existing file, losing functionality. Fix: always fetch live file from GitHub API at session start as base. Never reconstruct from JSON. Document in PI v20.',done:false,priority:true,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-10T15:30:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_pi_v20_needed',type:'reminder',text:'PI v20 items: (1) Paste-to-find convention for all manuscript locations. (2) In-thread reminder creation. (3) Hub update protocol — fetch live from GitHub at session start, never rebuild from JSON. (4) Ch.3 = Off the Books, Ch.4 = What We Agreed to See (fix in PI chapter table).',done:false,priority:false,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_elizondo_flag',type:'reminder',text:'Memory flag: Retrieve prior Elizondo conversation context before any session touching Ch.9, Ch.10, Ch.12, or A13 On the Record entries related to Elizondo.',done:false,priority:false,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_session0610c',type:'note',text:'Session 2026-06-10 (morning): v281→v282. Verification pass: Ch.4 afootnote content reorder corrected. Ch.5 cascade corrected and afootnote paragraphs physically reordered 1–18. Ch.9 display number and return link damage repaired (11 display fixes, 35 return link fixes). Back matter audit: Washington Times June 9 cite not in Bibliography; Turner NAA B30030606 not in Bibliography; A15 Quotations has no June 9 entries.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T10:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_session0610d',type:'note',text:'Session 2026-06-10 (afternoon): v282→v283. Ch.9 full pass complete (Turner/NAA [FNXX] resolved as note_2_5_6; full resequencing 1–36; four-count PASS; pre-existing bugs fixed). Bibliography: Turner NAA + Washington Times June 9 entries added. A15: Grusch slush funds (Ch.6) + Burlison constitutional crisis (Ch.17) inserted. Luna A15 entry PENDING verbatim text. Ch.8 Rebelo update: sentence added confirming June 9 renewal of commitment.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T14:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_fordave_v282_1',type:'fordave',text:'v282 — Bibliography: Add Washington Times June 9 2026 entry. Needed by 6 new afootnotes (Ch.6 note 11, Ch.10 note 17, Ch.16 note 19, Ch.17 notes 6–7, Conclusion note 2). Confirm article headline, then add Chicago-format entry. YouTube video: https://www.youtube.com/watch?v=x_tmeaNboWE.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Washington Times, "Lawmakers, Whistleblower Demand Full Disclosure of Government\'s Extraterrestrial Files," June 9, 2026 — Bibliography entry inserted near W entries. rId397 added to rels.',created:'2026-06-10T10:30:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Washington (find nearest existing W entry in Bibliography to insert near)'},
@@ -1199,7 +1266,7 @@ const ROAD_SEED=[
 let S={items:[],road:[]};
 let fSt=null,fTag=null,fType=null,inputPriFlag=false,inputMemFlag=false,editingId=null;
 let sectionOpen={gantt:true,tasklist:true};
-let roadLevel=2; // 0=closed,1=phases,2=full
+let roadLevel=1; // 0=closed,1=phases,2=full
 let roadOpenFilter=false; // true = show only incomplete phases
 
 function load(){
@@ -1253,6 +1320,19 @@ function showTab(t,btn){
   if(fr)fr.style.display=(t==='notes'?'flex':'none');
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
 }
+
+function toggleDeck(e){
+  e.stopPropagation();
+  const grp=document.querySelector('.deck-group');
+  if(grp)grp.classList.toggle('open');
+}
+// Close deck flyout when tapping anywhere else (iPad / touch)
+document.addEventListener('click',function(e){
+  const grp=document.querySelector('.deck-group');
+  if(grp&&grp.classList.contains('open')&&!grp.contains(e.target)){
+    grp.classList.remove('open');
+  }
+});
 function showDeckTab(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.deck-flyout-item').forEach(b=>b.classList.remove('active'));
@@ -1476,6 +1556,15 @@ function saveEdit(id){
 }
 function collapseAll(){(S.items||[]).forEach(it=>it._exp=false);rlist();}
 function expandAll(){(S.items||[]).forEach(it=>it._exp=true);rlist();}
+
+function dlReply(id){
+  const it=S.items.find(i=>i.id===id);if(!it)return;
+  const ta=document.getElementById('dlrta-'+id);
+  const txt=(ta?ta.value||'':'').trim();if(!txt)return;
+  if(!it.dialogue)it.dialogue=[];
+  it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
+  save();render();
+}
 function togglePri(){inputPriFlag=!inputPriFlag;const b=document.getElementById('ptoggle');b.className='ptoggle'+(inputPriFlag?' on':'');document.getElementById('plbl').textContent=inputPriFlag?'★ Priority':'Priority';}
 function toggleMem(){inputMemFlag=!inputMemFlag;const b=document.getElementById('memtoggle');b.className='ptoggle mem-toggle'+(inputMemFlag?' mem-on':'');document.getElementById('memlbl').textContent=inputMemFlag?'⚑ Memory':'Flag Memory';}
 function addItem(){
@@ -1500,6 +1589,72 @@ function addItem(){
 }
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
 
+
+/* ── MOVE-TO-ROADMAP ── */
+function mtrOpen(itemId){
+  const it=S.items.find(i=>i.id===itemId);if(!it)return;
+  mtrSourceId=itemId;
+  mtrType='phase';
+  const prev=document.getElementById('mtr-source-preview');
+  if(prev)prev.textContent=(it.text||'').length>120?(it.text||'').substring(0,120)+'\u2026':it.text||'';
+  const lbl=document.getElementById('mtr-label');
+  if(lbl)lbl.value=(it.text||'').split('\n')[0].substring(0,80);
+  mtrSetType('phase');
+  mtrFillPhases();
+  ['mtr-start','mtr-end','mtr-gate-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('mtr-overlay').classList.add('open');
+  document.getElementById('mtr-panel').classList.add('open');
+}
+function mtrClose(){
+  document.getElementById('mtr-overlay').classList.remove('open');
+  document.getElementById('mtr-panel').classList.remove('open');
+  mtrSourceId=null;
+}
+function mtrSetType(t){
+  mtrType=t;
+  ['phase','task','gate'].forEach(k=>{
+    const btn=document.getElementById('mtr-type-'+k);
+    if(btn)btn.className='mtr-type-btn'+(k===t?' active':'');
+  });
+  const af=document.getElementById('mtr-attach-field');
+  const pf=document.getElementById('mtr-position-field');
+  const df=document.getElementById('mtr-dates-field');
+  const gf=document.getElementById('mtr-gate-date-field');
+  if(t==='phase'){if(af)af.style.display='none';if(pf)pf.style.display='none';if(df)df.style.display='block';if(gf)gf.style.display='none';}
+  else if(t==='task'){if(af)af.style.display='block';if(pf)pf.style.display='block';if(df)df.style.display='block';if(gf)gf.style.display='none';}
+  else{if(af)af.style.display='block';if(pf)pf.style.display='none';if(df)df.style.display='none';if(gf)gf.style.display='block';}
+}
+function mtrFillPhases(){
+  const sel=document.getElementById('mtr-phase-sel');if(!sel)return;
+  sel.innerHTML=roadPhases().map(p=>`<option value="${p.id}">${esc(p.label)}</option>`).join('');
+}
+function mtrSave(){
+  if(!mtrSourceId)return;
+  const it=S.items.find(i=>i.id===mtrSourceId);if(!it)return;
+  const label=(document.getElementById('mtr-label')?.value||'').trim()||it.text.substring(0,60);
+  const phaseId=document.getElementById('mtr-phase-sel')?.value||null;
+  const position=document.getElementById('mtr-position-sel')?.value||'end';
+  const newId='r_'+Date.now();
+  if(mtrType==='phase'){
+    const start=document.getElementById('mtr-start')?.value||'';
+    const end=document.getElementById('mtr-end')?.value||'';
+    S.road.push({id:newId,kind:'phase',label,open:false,color:'',note:it.text,targetStart:start,targetEnd:end});
+    renumberPhases();
+  } else if(mtrType==='task'){
+    const start=document.getElementById('mtr-start')?.value||'';
+    const end=document.getElementById('mtr-end')?.value||'';
+    const newStep={id:newId,kind:'step',phase:phaseId,label,note:it.text,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false};
+    if(position==='start'){const idx=S.road.findIndex(r=>r.id===phaseId);if(idx>=0){S.road.splice(idx+1,0,newStep);}else{S.road.push(newStep);}}
+    else{let lastIdx=-1;S.road.forEach((r,i)=>{if((r.kind==='step'||r.kind==='gate')&&r.phase===phaseId)lastIdx=i;});if(lastIdx>=0){S.road.splice(lastIdx+1,0,newStep);}else{S.road.push(newStep);}}
+  } else {
+    const gateDate=document.getElementById('mtr-gate-date')?.value||'';
+    S.road.push({id:newId,kind:'gate',phase:phaseId,label,date:gateDate,met:false,metDate:''});
+  }
+  const keepNote=document.getElementById('mtr-keep-note')?.value||'yes';
+  if(keepNote==='no'){it.done=true;it.completedDate=todayStr();}
+  else{it.itemUrl='roadmap:'+newId;}
+  save();mtrClose();render();renderGantt();
+}
 /* ── ROADMAP ── */
 const RAINBOW=['#E8A020','#E8622A','#D43540','#B03090','#6040C8','#2070C8','#1A9E78','#4A9E20'];
 function rainbowColor(idx){return RAINBOW[idx%RAINBOW.length];}
@@ -2752,5 +2907,65 @@ document.addEventListener('keydown',function(e){
 });
 
 </script>
+<!-- MOVE-TO-ROADMAP SLIDE PANEL -->
+<div class="mtr-overlay" id="mtr-overlay" onclick="mtrClose()"></div>
+<div class="mtr-panel" id="mtr-panel">
+  <div class="mtr-header">
+    <span class="mtr-title">Move to Roadmap</span>
+    <button class="mtr-close" onclick="mtrClose()">&#215;</button>
+  </div>
+  <div class="mtr-body">
+    <div class="mtr-field">
+      <label>Source note</label>
+      <div class="mtr-source-preview" id="mtr-source-preview"></div>
+    </div>
+    <div class="mtr-field">
+      <label>Roadmap item type</label>
+      <div class="mtr-type-row">
+        <button class="mtr-type-btn active" id="mtr-type-phase" onclick="mtrSetType('phase')">Phase</button>
+        <button class="mtr-type-btn" id="mtr-type-task" onclick="mtrSetType('task')">Task</button>
+        <button class="mtr-type-btn" id="mtr-type-gate" onclick="mtrSetType('gate')">Gate</button>
+      </div>
+    </div>
+    <div class="mtr-field" id="mtr-attach-field" style="display:none">
+      <label>Attach to phase</label>
+      <select id="mtr-phase-sel"></select>
+    </div>
+    <div class="mtr-field" id="mtr-position-field" style="display:none">
+      <label>Insert position</label>
+      <select id="mtr-position-sel">
+        <option value="end">End of phase</option>
+        <option value="start">Start of phase</option>
+      </select>
+    </div>
+    <div class="mtr-field">
+      <label>Label</label>
+      <input type="text" id="mtr-label" placeholder="Task or phase label" />
+    </div>
+    <div class="mtr-field" id="mtr-dates-field" style="display:none">
+      <label>Target start &amp; end</label>
+      <div style="display:flex;gap:8px">
+        <input type="date" id="mtr-start" style="flex:1" />
+        <input type="date" id="mtr-end" style="flex:1" />
+      </div>
+    </div>
+    <div class="mtr-field" id="mtr-gate-date-field" style="display:none">
+      <label>Gate date</label>
+      <input type="date" id="mtr-gate-date" />
+    </div>
+    <div class="mtr-field">
+      <label>Keep note in Notes tab?</label>
+      <select id="mtr-keep-note">
+        <option value="yes">Yes &#8212; keep note, add roadmap link</option>
+        <option value="no">No &#8212; mark note done</option>
+      </select>
+    </div>
+  </div>
+  <div class="mtr-actions">
+    <button class="mtr-cancel-btn" onclick="mtrClose()">Cancel</button>
+    <button class="mtr-save-btn" onclick="mtrSave()">Add to Roadmap</button>
+  </div>
+</div>
+
 </body>
 </html>
