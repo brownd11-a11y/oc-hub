@@ -1244,7 +1244,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-10T16:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-10T17:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v283'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1346,7 +1346,16 @@ const ROAD_SEED=[
   {id:'r_1780868226753',kind:'step',phase:'r_1780841462043',label:'Update EIN number Record with new Vigilia Name',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780868272578',kind:'step',phase:'r_1780841462043',label:'Finalize business licensing filings in time for book sales',note:'',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
   {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'',met:false},
-  {id:'r_1781095322185',kind:'phase',label:'Appendix sequence change A2, A12',open:false,color:'#D43540',note:'Appendix sequence rationalization: consolidate reference/lookup appendices (A2, A12) into final grouping per filed remap doc requires a full cross-reference cascade pass.',targetStart:'2026-06-15',targetEnd:'2026-06-17',num:11}
+  {id:'r_1781095322185',kind:'phase',label:'Appendix sequence change A2, A12',open:false,color:'#D43540',note:'Appendix sequence rationalization: consolidate reference/lookup appendices (A2, A12) into final grouping per filed remap doc requires a full cross-reference cascade pass.',targetStart:'2026-06-15',targetEnd:'2026-06-17',num:11},
+  {id:'rph_tierA',kind:'phase',label:'Tier A — Prose Pass',color:'#1A9E78',open:false,num:13,note:'Full prose pass across all chapters. Trigger: "Prose pass [scope]". Covers: A1 Word-by-word, A2 Spelling/grammar, A3 AI-speak, A4 Paragraph logic, A5 Paragraph structure, A6 Flow check, A7 Thematic echo, A8 Sterling commercial read. Run before any Tier B work on the same scope.'},
+  {id:'rph_tierB',kind:'phase',label:'Tier B — Mechanical Pass',color:'#2070C8',open:false,num:14,note:'Mechanical verification passes. Run after Tier A is confirmed clean. Each sub-pass is discrete and logs on completion.'},
+  {id:'rph_tierB_s1',kind:'step',phase:'rph_tierB',label:'B1 — Formatting Pass',note:'Style ID compliance, image placement rule, caption construction, section breaks, pull quote/Attribution pairs, TextOpen after subheadings, chapter structure order, two-space title normalization.',cmd:'"Formatting pass [scope]"',targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s2',kind:'step',phase:'rph_tierB',label:'B2 — Citation Pass',note:'Four-point check: (1) every significant factual claim has a marker; (2) all citations are primary sources per hierarchy; (3) each citation fetched and read to confirm it supports the specific claim; (4) every citation appears in A15 Bibliography with complete entry. Logs to Citation_Verification_Log.md.',cmd:'"Citation pass [scope]"',targetStart:'',targetEnd:'2026-06-22',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s3',kind:'step',phase:'rph_tierB',label:'B3 — Cross-Reference Pass',note:'Every "see Chapter N" and "Appendix AX" reference verified to resolve to real content with matching material. Back matter included. Logs to CrossRef_Verification_Log.md.',cmd:'"Cross-ref pass [scope]"',targetStart:'',targetEnd:'2026-06-23',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s4',kind:'step',phase:'rph_tierB',label:'B4 — Footnote Pass',note:'Four-count gate: ref bookmarks = note bookmarks = forward hyperlinks = return hyperlinks. Adjacent marker audit. Sequence integrity 1→N. afootnote construction check. No orphaned markers.',cmd:'"Footnote pass [scope]"',targetStart:'',targetEnd:'2026-06-24',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s5',kind:'step',phase:'rph_tierB',label:'B5 — Appendix Pass',note:'A2 sightings scan, A12 figures/diagrams, A15 Quotations location codes, A15 Bibliography new entries, Glossary new terms, Index new subjects. Run after B2 confirmed for relevant chapters.',cmd:'"Appendix pass"',targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s6',kind:'step',phase:'rph_tierB',label:'B6 — URL Pass',note:'Every hyperlink verified to resolve. Invisible-hyperlink rendering confirmed (color=auto, u=none, no Hyperlink style).',cmd:'"URL pass"',targetStart:'',targetEnd:'2026-06-26',completedDate:'',done:false,isGate:true},
+  {id:'rph_tierB_s7',kind:'step',phase:'rph_tierB',label:'B7 — Index Pass',note:'Run last — after all content is locked. Locator codes, bookmark naming, subentry formatting, print vs. Kindle locator styles, exclusion rules (A15, A12). Editing body content after B7 potentially invalidates locators.',cmd:'"Index pass"',targetStart:'',targetEnd:'2026-06-27',completedDate:'',done:false,isGate:true}
 ];
 
 let S={items:[],road:[]};
@@ -2022,7 +2031,7 @@ function renderGantt(){
       const hasOpenStep=steps.some(s=>!s.done);
       const gates=roadGates(ph.id);
       const hasOpenGate=gates.some(g=>!g.met);
-      if(!hasOpenStep&&!hasOpenGate&&(isAllDone||steps.length===0))return;
+      if(!hasOpenStep&&!hasOpenGate&&isAllDone)return;
     }
 
     // Phase row
