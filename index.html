@@ -21,15 +21,6 @@
   --badge-un-bg:#eeebe4;--badge-un-fg:#6b6358;
   /* Universal control height */
   --ctrl-h:34px;
-  /* For Dave / For Claude dialogue */
-  --fordave-bg:#fffbf0;--fordave-border:#d4a020;
-  --fordave-badge-bg:#fff3cd;--fordave-badge-fg:#7a5a00;
-  --forclaude-bg:#f0f7ff;--forclaude-border:#2070C8;
-  --forclaude-badge-bg:#dbeafe;--forclaude-badge-fg:#1a4a8a;
-  --flow-on-bg:#1a6b2a;--flow-on-fg:#fff;
-  --input-bg:#f7f7f9;
-  /* Tab notification badge */
-  --tab-badge-bg:rgba(212,160,32,0.22);--tab-badge-fg:#c9a050;--tab-badge-border:rgba(212,160,32,0.45);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);color:var(--label-primary);min-height:100vh}
@@ -75,9 +66,9 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 .deck-trigger:hover,.deck-group:hover .deck-trigger{color:#d4c080;background:#252015;border-color:#b09050}
 .deck-trigger.active{color:#1a1208;background:#d4b860;border-color:#e8cc70;border-bottom:2px solid #d4b860;font-weight:700;top:0;padding-bottom:9px}
 .deck-arrow{font-size:9px;opacity:.7;transition:transform .2s}
-.deck-group:hover .deck-arrow,.deck-group.open .deck-arrow{transform:rotate(180deg)}
+.deck-group:hover .deck-arrow{transform:rotate(180deg)}
 .deck-flyout{position:absolute;top:100%;left:0;background:#1a1810;border:2px solid #b09050;border-top:none;border-radius:0 0 6px 6px;min-width:180px;z-index:200;display:none;flex-direction:column;box-shadow:0 6px 20px rgba(0,0,0,.5)}
-.deck-group:hover .deck-flyout,.deck-group.open .deck-flyout{display:flex}
+.deck-group:hover .deck-flyout{display:flex}
 .deck-flyout-item{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:10px 16px;color:#8a7a50;cursor:pointer;border-bottom:1px solid #2a2820;white-space:nowrap;transition:all .12s}
 .deck-flyout-item:last-child{border-bottom:none}
 .deck-flyout-item:hover{background:#252015;color:#d4c080}
@@ -585,11 +576,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .search-results-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#706858}
 .search-results-close{background:none;border:none;cursor:pointer;color:#706858;font-size:20px;line-height:1;padding:0 4px}
 .search-results-close:hover{color:#d4c9a8}
-.sr-filter-row{display:flex;gap:6px;align-items:center;padding:6px 16px 8px;border-bottom:1px solid #2a2820;flex-shrink:0}
-.sr-filter-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid #3a3630;background:none;color:#706858;padding:3px 10px;border-radius:3px;cursor:pointer;transition:all .15s}
-.sr-filter-btn:hover{border-color:#6a5a30;color:#c9a050}
-.sr-filter-btn.active{border-color:#c9a050;background:rgba(201,160,80,.15);color:#c9a050;font-weight:600}
-.sr-filter-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840}
 .search-results-scroll{overflow-y:auto;flex:1;padding:8px 0}
 .search-result-item{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;border-bottom:1px solid #221f1a;transition:background .1s}
 .search-result-item:hover{background:#221f1a}
@@ -606,91 +592,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .sr-sub{font-family:'Source Code Pro',monospace;font-size:10px;color:#504840;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr-arrow{flex-shrink:0;color:#3a3630;font-size:16px;align-self:center}
 .search-empty{padding:24px 16px;text-align:center;font-family:'Source Code Pro',monospace;font-size:11px;color:#504840}
-
-
-/* ── TAB NOTIFICATION BADGES ── */
-.tab{position:relative}
-.tab-nbadge{position:absolute;top:3px;right:4px;min-width:14px;height:14px;border-radius:7px;background:var(--tab-badge-bg);color:var(--tab-badge-fg);border:1px solid var(--tab-badge-border);font-family:'Source Code Pro',monospace;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px;pointer-events:none;line-height:1;letter-spacing:.02em}
-.tab-nbadge.zero{display:none}
-
-/* ── FLOW TOGGLE (entry form) ── */
-.flow-toggle{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--flow-on-bg);padding:0 11px;background:var(--flow-on-bg);color:var(--flow-on-fg);border-radius:20px;height:28px;transition:all .15s;font-weight:600;white-space:nowrap;flex-shrink:0}
-.flow-toggle.off{border-color:var(--separator);background:var(--card-bg);color:var(--label-secondary);font-weight:400}
-.flow-toggle:hover{opacity:.85}
-
-/* ── REMINDER TOGGLE ── */
-.rem-toggle{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--separator);padding:0 11px;background:var(--card-bg);color:var(--label-secondary);border-radius:20px;height:28px;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.rem-toggle.on{border-color:#b06000;background:#b06000;color:#fff7e0;font-weight:600}
-.rem-toggle:hover{opacity:.85}
-.rem-due-row{display:flex;align-items:center;gap:8px;margin-top:6px;padding:7px 10px;background:var(--input-bg);border-radius:6px;border:1px solid var(--separator)}
-.rem-due-row label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary);white-space:nowrap}
-
-/* ── STATUS TOGGLE (Open/Deferred) ── */
-.status-toggle{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--separator);padding:0 12px;background:var(--card-bg);color:var(--label-secondary);border-radius:20px;height:var(--ctrl-h);transition:all .15s;white-space:nowrap;flex-shrink:0}
-.status-toggle.deferred{border-color:#b06000;background:rgba(176,96,0,.12);color:#7a4500;font-weight:600}
-.status-toggle.open{border-color:#2a7a2a;background:rgba(42,122,42,.10);color:#1a5a1a;font-weight:600}
-
-/* ── PRIORITY CYCLE BUTTON ── */
-.pri-cycle{display:flex;align-items:center;gap:5px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--separator);padding:0 11px;background:var(--card-bg);color:var(--label-secondary);border-radius:20px;height:28px;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.pri-cycle.med{border-color:#b06000;background:rgba(176,96,0,.12);color:#7a4500;font-weight:600}
-.pri-cycle.high{border-color:#C70025;background:rgba(199,0,37,.12);color:#900020;font-weight:700}
-
-/* ── ENTRY FORM REDESIGN ── */
-.inp-section-divider{border:none;border-top:1px solid var(--separator);margin:10px 0 8px}
-.inp-field-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px;display:block}
-.inp-text-wrap{background:var(--input-bg);border:1px solid var(--separator);border-radius:6px;padding:9px 13px;margin-bottom:2px}
-.inp-text-wrap textarea{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.5;color:var(--label-primary);background:transparent;border:none;resize:vertical;min-height:52px;outline:none}
-.inp-text-wrap textarea::placeholder{color:var(--label-secondary);font-style:italic}
-.inp-url-block{background:var(--input-bg);border:1px solid var(--separator);border-radius:6px;padding:7px 13px;display:flex;align-items:center;gap:8px;margin-top:6px}
-.inp-url-block input{flex:1;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);background:transparent;border:none;outline:none}
-.inp-url-block input::placeholder{color:var(--label-secondary)}
-.inp-url-block-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);white-space:nowrap;flex-shrink:0}
-.inp-controls-row{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--separator);padding-top:9px}
-
-/* ── DIALOGUE THREAD ── */
-.item.flow-item:not(.done){background:var(--forclaude-bg);border-left-color:var(--forclaude-border)}
-.item.needs-response:not(.done){background:var(--fordave-bg);border-left-color:var(--fordave-border)}
-.item.dave-replied:not(.done){background:rgba(0,120,80,.06);border-left-color:#1a7a55;}
-.flow-badge{display:inline-flex;align-items:center;gap:3px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
-.flow-badge.for-claude{background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);border:1px solid var(--forclaude-border)}
-.flow-badge.for-dave{background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);border:1px solid var(--fordave-border)}
-.dialogue-thread{padding:10px 14px;border-top:1px solid var(--separator);display:flex;flex-direction:column;gap:8px}
-.dl-entry{border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.55}
-.dl-entry.from-dave{background:var(--forclaude-badge-bg);border-left:3px solid var(--forclaude-border)}
-.dl-entry.from-claude{background:var(--fordave-badge-bg);border-left:3px solid var(--fordave-border)}
-.dl-meta{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-bottom:3px;display:flex;gap:8px;align-items:center}
-.dl-from{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.dl-ts{color:var(--label-secondary)}
-.dl-text{white-space:pre-wrap;word-break:break-word}
-.dl-reply-row{padding:8px 14px;border-top:1px solid var(--separator)}
-.dl-reply-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.45;border:1px solid var(--separator);border-radius:5px;padding:7px 10px;background:var(--input-bg);resize:vertical;min-height:48px;outline:none}
-.dl-reply-ta:focus{border-color:var(--forclaude-border)}
-.dl-reply-actions{display:flex;gap:8px;margin-top:6px;align-items:center}
-.dl-send-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--forclaude-border);color:#fff;border:none;border-radius:4px;padding:5px 14px;cursor:pointer;transition:background .15s}
-.dl-send-btn:hover{background:#1a5aaa}
-.dl-cancel-link{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);cursor:pointer;text-decoration:underline}
-.dl-awaiting{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);font-style:italic;padding:4px 0}
-
-/* ── MOVE-TO-ROADMAP SLIDE PANEL ── */
-.mtr-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.25)}
-.mtr-overlay.open{display:block}
-.mtr-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:var(--card-bg);border-left:1px solid var(--separator);z-index:201;overflow-y:auto;transition:right .22s ease;box-shadow:-4px 0 20px rgba(0,0,0,.14);display:flex;flex-direction:column}
-.mtr-panel.open{right:0}
-.mtr-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--separator);flex-shrink:0}
-.mtr-title{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-primary);font-weight:600}
-.mtr-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--label-secondary);padding:0 4px;line-height:1}
-.mtr-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px}
-.mtr-field label{display:block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:5px}
-.mtr-field input,.mtr-field select,.mtr-field textarea{width:100%;border:1px solid var(--separator);border-radius:5px;padding:7px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;background:var(--input-bg);color:var(--label-primary);outline:none}
-.mtr-field input:focus,.mtr-field select:focus,.mtr-field textarea:focus{border-color:var(--accent)}
-.mtr-type-row{display:flex;gap:8px}
-.mtr-type-btn{flex:1;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1.5px solid var(--separator);border-radius:5px;padding:8px 4px;cursor:pointer;background:var(--card-bg);color:var(--label-secondary);transition:all .15s;text-align:center}
-.mtr-type-btn.active{border-color:var(--accent);background:rgba(199,0,37,.08);color:var(--accent);font-weight:600}
-.mtr-actions{display:flex;gap:10px;padding:16px 18px;border-top:1px solid var(--separator);flex-shrink:0}
-.mtr-save-btn{flex:1;background:var(--accent);color:#fff;border:none;border-radius:5px;padding:10px 0;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;transition:background .15s}
-.mtr-save-btn:hover{background:#a50020}
-.mtr-cancel-btn{background:none;border:1.5px solid var(--separator);border-radius:5px;padding:10px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);transition:all .15s}
-.mtr-source-preview{background:var(--input-bg);border-radius:5px;padding:8px 10px;font-size:12px;color:var(--label-secondary);line-height:1.45;font-style:italic;border:1px solid var(--separator)}
 
 </style>
 </head>
@@ -728,12 +629,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- TABS + FILTER -->
 <div class="dark-band">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('roadmap',this)" id="tab-roadmap">Roadmap<span class="tab-nbadge zero" id="tbadge-roadmap"></span></button>
-    <button class="tab" onclick="showTab('notes',this)" id="tab-notes">Notes<span class="tab-nbadge zero" id="tbadge-notes"></span></button>
-    <button class="tab" onclick="showTab('refs',this)" id="tab-refs">Resources</button>
-    <button class="tab" onclick="showTab('outreach',this)" id="tab-outreach">Outreach<span class="tab-nbadge zero" id="tbadge-outreach"></span></button>
+    <button class="tab active" onclick="showTab('roadmap',this)">Roadmap</button>
+    <button class="tab" onclick="showTab('notes',this)">Notes</button>
+    <button class="tab" onclick="showTab('refs',this)">Resources</button>
+    <button class="tab" onclick="showTab('outreach',this)">Outreach</button>
     <div class="deck-group">
-      <div class="deck-trigger" id="deck-trigger" onclick="toggleDeck(event)">Reference <span class="deck-arrow">&#9660;</span></div>
+      <div class="deck-trigger" id="deck-trigger">Reference <span class="deck-arrow">&#9660;</span></div>
       <div class="deck-flyout">
         <div class="deck-flyout-item" onclick="showDeckTab('passes',this)">Passes</div>
         <div class="deck-flyout-item" onclick="showDeckTab('style',this)">Style &amp; Chapter Map</div>
@@ -758,7 +659,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="question">Questions</option>
       <option value="reminder">Reminders</option>
       <option value="note">Project Notes</option>
-      <option value="fordave">&#9655; For Claude / Dave</option>
+      <option value="fordave">&#9873; For Dave</option>
     </select>
     <button class="dash-showall" onclick="showAll()">Show All</button>
   </div>
@@ -771,51 +672,24 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <span class="search-results-title" id="search-results-title">Results</span>
       <button class="search-results-close" onclick="searchClose()">&#215;</button>
     </div>
-    <div class="sr-filter-row">
-      <span class="sr-filter-lbl">Show</span>
-      <button class="sr-filter-btn active" id="srf-all" onclick="srSetFilter('all')">All</button>
-      <button class="sr-filter-btn" id="srf-open" onclick="srSetFilter('open')">Open only</button>
-    </div>
     <div class="search-results-scroll" id="search-results-scroll"></div>
   </div>
 </div>
 <!-- NOTES PANEL -->
 <div class="panel" id="panel-notes">
   <div class="inp-wrap"><div class="inp-card">
-    <!-- Row 1: action toggles + text area + add button -->
-    <div style="display:flex;gap:10px;align-items:flex-start">
-      <!-- Action toggles: Flow, Reminder, Priority — compose-time decisions -->
-      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;padding-top:1px">
-        <button class="flow-toggle off" id="flow-toggle" onclick="toggleFlow()" title="Flow = directed to Claude for dialogue. Toggle on to start a thread.">&#9675; Note only</button>
-        <button class="rem-toggle" id="rem-toggle" onclick="toggleReminder()">&#128276; Reminder</button>
-        <button class="pri-cycle" id="pri-cycle" onclick="cyclePriority()">&#9734; Low</button>
-      </div>
-      <div style="flex:1">
-        <div class="inp-text-wrap">
-          <textarea id="input-ta" placeholder="Capture a question, note, or message for Claude… (Cmd/Ctrl+Enter to save)" rows="2"></textarea>
-        </div>
-        <!-- URL field immediately below text, same gray fill -->
-        <div class="inp-url-block" id="inp-url-block">
-          <span class="inp-url-block-lbl">&#128279; Link</span>
-          <input id="input-url" type="text" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" />
-        </div>
-      </div>
+    <div class="inp-top">
+      <textarea class="inp-ta" id="input-ta" placeholder="Capture a reminder, question, or note&hellip; (Cmd/Ctrl+Enter to save)" rows="2"></textarea>
       <button class="inp-add" onclick="addItem()" title="Add">+</button>
     </div>
-    <!-- Reminder due date row (hidden until reminder toggled on) -->
-    <div class="rem-due-row" id="rem-due-row" style="display:none">
-      <label>Due</label>
-      <input type="date" id="input-due" />
-      <label style="margin-left:10px">Time</label>
-      <input type="time" id="input-due-time" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);border-radius:4px;padding:3px 6px;background:var(--card-bg);color:var(--label-primary);outline:none" />
-    </div>
-    <!-- Row 2: classification metadata — divider marks the boundary -->
-    <div class="inp-controls-row">
+    <div class="inp-ctrls">
       <select class="inp-sel" id="input-type">
+        <option value="reminder" selected>Reminder</option>
         <option value="question">Question</option>
-        <option value="note" selected>Project Note</option>
+        <option value="note">Project Note</option>
+        <option value="fordave">⚑ For Dave</option>
       </select>
-      <select class="inp-sel" id="input-tag" onchange="lastTag=this.value">
+      <select class="inp-sel" id="input-tag">
         <option value="">&mdash; Tag &mdash;</option>
         <option value="editing">Editing</option>
         <option value="publishing">Publishing</option>
@@ -823,7 +697,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="research">Research</option>
         <option value="hubui">Hub Interface</option>
       </select>
-      <button class="status-toggle open" id="status-toggle" onclick="toggleStatus()" title="Open / Deferred">Open</button>
+      <select class="inp-sel" id="input-status">
+        <option value="open">Open</option>
+        <option value="deferred">Deferred</option>
+      </select>
+      <input type="date" class="inp-sel" id="input-due" title="Due date (optional)" />
+      <button class="ptoggle" id="ptoggle" onclick="togglePri()"><span id="plbl">Priority</span></button>
+      <button class="ptoggle mem-toggle" id="memtoggle" onclick="toggleMem()"><span id="memlbl">Flag Memory</span></button>
+    </div>
+    <div class="inp-url-row">
+      <span class="inp-url-lbl">🔗</span>
+      <input class="inp-url" id="input-url" type="text" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" />
     </div>
   </div></div>
   <div class="list-wrap">
@@ -1107,98 +991,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </ul>
   </div>
 
-  <!-- ── NOTES ENTRY FORM ── -->
-  <h3 style="margin-top:28px">&#9654; Notes &mdash; Entry Form</h3>
-  <p>The entry form has been redesigned. The text area and URL field share the same gray fill and read as a single input zone. Controls appear below in a single row of toggle buttons.</p>
-
-  <div class="device-guide" style="margin-top:12px">
-    <h4>Flow toggle</h4>
-    <ul>
-      <li><strong>Default: off</strong> &mdash; renders as <em>&#9675; Note only</em> (gray). The note is saved locally as a Project Note or Question.</li>
-      <li><strong>Toggle on</strong> &mdash; button turns green and reads <em>&#9655; Flow</em>. The entry is directed to Claude as the opening message in a dialogue thread. The item saves as type <em>For Claude</em>.</li>
-      <li>Use Flow when you want Claude to respond, research, or act &mdash; not for routine captures.</li>
-    </ul>
-  </div>
-
-  <div class="device-guide" style="margin-top:10px">
-    <h4>Type selector</h4>
-    <ul>
-      <li><strong>Question</strong> &mdash; a question for the record, not necessarily directed to Claude.</li>
-      <li><strong>Project Note</strong> &mdash; default. A local note, log entry, or session record.</li>
-      <li><em>Reminder</em> is no longer a type &mdash; use the Reminder toggle instead (see below).</li>
-      <li><em>For Dave</em> has been removed from the entry form. Claude generates those internally when responding to Flow items.</li>
-    </ul>
-  </div>
-
-  <div class="device-guide" style="margin-top:10px">
-    <h4>Status toggle &mdash; Open / Deferred</h4>
-    <ul>
-      <li>Simple two-state button. <strong>Open</strong> (green tint) is the default. Click once to switch to <strong>Deferred</strong> (amber). Click again to return to Open.</li>
-      <li>Deferred items appear under the Hold filter and are visually muted in the list.</li>
-    </ul>
-  </div>
-
-  <div class="device-guide" style="margin-top:10px">
-    <h4>&#128276; Reminder toggle</h4>
-    <ul>
-      <li>Click to reveal a <strong>Due date</strong> and <strong>Time</strong> field inline. The item saves as type <em>Reminder</em>.</li>
-      <li>The Reminder toggle and date fields reset automatically after each save.</li>
-    </ul>
-  </div>
-
-  <div class="device-guide" style="margin-top:10px">
-    <h4>Priority cycle</h4>
-    <ul>
-      <li>Three-state button: <strong>&#9734; Low</strong> (default, gray) &rarr; <strong>&#9733; Medium</strong> (amber) &rarr; <strong>&#9733;&#9733; High</strong> (red). Click to cycle forward.</li>
-      <li>Priority is sticky &mdash; it stays at whatever level you set until you cycle it again.</li>
-      <li>High items show a red left border in the list.</li>
-    </ul>
-  </div>
-
-  <div class="device-guide" style="margin-top:10px">
-    <h4>Tag &mdash; sticky selection</h4>
-    <ul>
-      <li>The tag selector remembers your last choice. Every new item defaults to the tag you used most recently in this session.</li>
-      <li>Change it at any time; subsequent items will default to the new selection.</li>
-    </ul>
-  </div>
-
-  <!-- ── FLOW DIALOGUE THREADS ── -->
-  <h3 style="margin-top:28px">&#9654; Flow &mdash; Dave &#8596; Claude Dialogue</h3>
-  <p>When Flow is on, the item opens a threaded conversation. Each exchange is stored in order inside the item and rendered newest-first when expanded.</p>
-  <ul style="margin-top:8px">
-    <li><strong>&#9655; For Claude</strong> <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> &mdash; Dave initiated; awaiting Claude&rsquo;s response.</li>
-    <li><strong>&#9873; For Dave</strong> <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> &mdash; Claude has responded; awaiting Dave&rsquo;s reply. Also used for items Claude flagged directly (legacy).</li>
-  </ul>
-  <p style="margin-top:8px">When Claude&rsquo;s reply is the latest entry in an expanded item, a reply text area appears inline. Type your response and click <strong>Send</strong> to continue the thread. The conversation cascades indefinitely within the single item.</p>
-  <p style="margin-top:6px;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">Thread data is included in the JSON export. Claude reads the full dialogue history when you paste the export at session start.</p>
-
-  <!-- ── TAB BADGES ── -->
-  <h3 style="margin-top:28px">&#9654; Tab Notification Badges</h3>
-  <p>Three tabs carry a red numeric badge when items need attention. Badges disappear when the count reaches zero.</p>
-  <ul style="margin-top:8px">
-    <li><strong>Notes</strong> &mdash; count of active Flow / For Claude / For Dave threads not yet marked done.</li>
-    <li><strong>Roadmap</strong> &mdash; count of at-risk items: tasks past their target end date and not done, plus gates past their date and not yet met.</li>
-    <li><strong>Outreach</strong> &mdash; count of contacts past their target date whose status is not Confirmed, Closed, or Rejected.</li>
-  </ul>
-
-  <!-- ── MOVE TO ROADMAP ── -->
-  <h3 style="margin-top:28px">&#9654; Move Note to Roadmap</h3>
-  <p>Any note can be promoted to a roadmap item without leaving the Notes tab. Expand the item and click <strong>&rarr; Roadmap</strong> in the action row. A slide panel opens from the right while Notes remains visible beneath.</p>
-
-  <div class="device-guide" style="margin-top:12px">
-    <h4>Slide panel fields</h4>
-    <ul>
-      <li><strong>Type</strong> &mdash; Phase, Task, or Gate. The panel adjusts its fields to match.</li>
-      <li><strong>Attach to phase</strong> &mdash; visible for Task and Gate. Choose the parent phase from a dropdown of all current phases.</li>
-      <li><strong>Insert position</strong> &mdash; visible for Tasks. Start of phase or end of phase.</li>
-      <li><strong>Label</strong> &mdash; pre-filled from the first line of the note text. Edit freely before saving.</li>
-      <li><strong>Target dates</strong> &mdash; start and end for Phases and Tasks; single gate date for Gates.</li>
-      <li><strong>Keep note?</strong> &mdash; <em>Yes</em> retains the note in the Notes tab and adds a roadmap link. <em>No</em> marks the source note done.</li>
-    </ul>
-  </div>
-  <p style="margin-top:8px">Click <strong>Add to Roadmap</strong> to save. The item appears immediately in the Gantt. Close the panel with &times; or by clicking the dimmed overlay.</p>
-
   <!-- ── LINK / BOOKMARK FIELD ── -->
   <h3 style="margin-top:28px">&#9654; Link &amp; Bookmark Field</h3>
   <p>Every note, reminder, question, and For Dave item has a <strong>🔗 Link / Bookmark</strong> field. It accepts three kinds of input:</p>
@@ -1244,98 +1036,148 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-10T11:45:00.000Z'; // bump this each time seed data is updated
-const MASTER_VERSION='v282'; // current manuscript version — update each session
+const SEED_VERSION='2026-06-10T14:30:00.000Z'; // bump this each time seed data is updated
+const MASTER_VERSION='v279'; // current manuscript version — update each session
 
-/* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
+/* ── SEED DATA (v6, 2026-06-09 — v279 session update) ── */
 const SEED_ITEMS=[
-  {id:'i_1781026224455',type:'question',text:'Find Australian declassified document page 7 discussing US Cover up. Little known, but Grusch recommended it during June debrief.',done:false,priority:false,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-09T17:30:24.455Z',dueDate:'',completedDate:''},
+  {id:'i_session0610c',type:'note',text:'Session 2026-06-10 (morning): v281→v282. Verification pass: Ch.4 afootnote content reorder corrected. Ch.5 cascade corrected and afootnote paragraphs physically reordered 1–18. Ch.9 display number and return link damage repaired (11 display fixes, 35 return link fixes). Back matter audit: Washington Times June 9 cite not in Bibliography; Turner NAA B30030606 not in Bibliography; A15 Quotations has no June 9 entries.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T10:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_session0610d',type:'note',text:'Session 2026-06-10 (afternoon): v282→v283. Ch.9 full pass complete (Turner/NAA [FNXX] resolved as note_2_5_6; full resequencing 1–36; four-count PASS; pre-existing bugs fixed). Bibliography: Turner NAA + Washington Times June 9 entries added. A15: Grusch slush funds (Ch.6) + Burlison constitutional crisis (Ch.17) inserted. Luna A15 entry PENDING verbatim text. Ch.8 Rebelo update: sentence added confirming June 9 renewal of commitment.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T14:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_fordave_v282_1',type:'fordave',text:'v282 — Bibliography: Add Washington Times June 9 2026 entry. Needed by 6 new afootnotes (Ch.6 note 11, Ch.10 note 17, Ch.16 note 19, Ch.17 notes 6–7, Conclusion note 2). Confirm article headline, then add Chicago-format entry. YouTube video: https://www.youtube.com/watch?v=x_tmeaNboWE.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Washington Times, "Lawmakers, Whistleblower Demand Full Disclosure of Government\'s Extraterrestrial Files," June 9, 2026 — Bibliography entry inserted near W entries. rId397 added to rels.',created:'2026-06-10T10:30:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Washington (find nearest existing W entry in Bibliography to insert near)'},
+  {id:'i_fordave_v282_2',type:'fordave',text:'v282 — Bibliography: Add Turner, O.H. NAA entry. Cited in Ch.9 body paragraph (Turner/NAA [FNXX] still unresolved) and needed before that note can be completed. Entry: Turner, O.H. Classified assessment, Joint Intelligence Organisation, 1971. National Archives of Australia, Record B30030606.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Turner, O.H. Classified assessment, Joint Intelligence Organisation, 1971. National Archives of Australia, Record B30030606. — inserted after Twining in Bibliography.',created:'2026-06-10T10:30:02.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Twining, Nathan (find nearest T entry in Bibliography to insert near)'},
+  {id:'i_fordave_v282_3',type:'fordave',text:'v282 — Ch.9 [FNXX] still open: Turner/NAA paragraph in "Manufacturing Doubt" has an unresolved [FNXX] placeholder between body notes 3 and 4. Note should cite NAA Record B30030606. Also: Ch.9 body superscript sequence is disordered (1,2,9,10,3,4,5,11…) — needs a full resequencing pass before final production.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: [FNXX] resolved as note_2_5_6 (Turner/NAA cite). Full Ch.9 resequencing complete: body now 1–36 sequential, afootnotes 1–36 in order, four-count PASS. Pre-existing issues also fixed: orphaned OBSOLETE paragraph removed, ref_2_5_25 instrText repaired, notes 35/36 destack fixed.',created:'2026-06-10T10:30:03.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Ch.9 § Turner/NAA para — paste to find: An allied intelligence service reached the same conclusion independently'},
+  {id:'i_fordave_v282_4',type:'fordave',text:'v282 — A15 Quotations: Three June 9 Capitol press conference statements are candidates for A15 pull quotes. Need verbatim text sourced from Washington Times or YouTube (x_tmeaNboWE) for each: (1) Grusch "slush funds to the tune of billions of dollars per annum" — location code (Ch.6); (2) Burlison "that is not classification. That is a constitutional crisis." — location code (Ch.17); (3) Luna whistleblower immunity announcement — location code (Conclusion). Confirm exact wording and Claude will insert A15 entries.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'PARTIAL v283: Grusch (Ch.6) and Burlison (Ch.17) inserted. Luna PENDING — no verbatim quote found; NewsNation only paraphrases her immunity announcement. Please paste Luna\'s exact words from the video (YouTube u_emZmzkTtM) or confirm a paraphrase is acceptable.',created:'2026-06-10T10:30:04.000Z',dueDate:'',completedDate:'',itemUrl:'A15 § Quotations — paste to find: For decades the American people have been treated like children'},
+  {id:'i_flag_varginha_0610',type:'reminder',text:'Follow up June 12–13: Search post-event coverage of June 9 Capitol press conference for James Fox Varginha/Rebelo remarks. Verify what Fox said about Rebelo promise to release Brazilian files. Update Ch. 8 P785 Rebelo section accordingly.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Ch.8 Rebelo paragraph updated — sentence added confirming Rebelo publicly renewed commitment on June 9, characterizing it as escalation from conditional pledge to unambiguous public commitment.',created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-13',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_flag_a15_0610',type:'reminder',text:'Update A15 quotations appendix — check whether June 9 speaker quotes (Kean, Grusch, Burlison, Luna, Burchett) and Turner NAA document quotes belong there.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'PARTIAL v283: Grusch slush funds (Ch.6) and Burlison constitutional crisis (Ch.17) inserted. Luna immunity quote PENDING verbatim text.',created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_flag_fn_0610',type:'reminder',text:'Footnote sequencing pass — Ch. 5, 6, 10, 16, 17, Conclusion. Replace all [FNXX] placeholders with numbered footnotes. Turner cite: NAA Record B30030606. June 9 cite: Washington Times June 9 2026 + YouTube x_tmeaNboWE.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'Ch.9 DONE v283. Remaining chapters addressed in v281. Confirm all [FNXX] cleared or flag any outstanding.',created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_flag_piv19_0610',type:'reminder',text:'Create PI v19. Updates needed: (1) hub output always index.html not overclassified_notes.html; (2) JSON removal step uses choice form; (3) session end protocol — pull index.html from project files, never recreate from JSON; (4) update chapter titles for Ch. 3 and Ch. 4.',done:true,priority:true,memFlag:false,tag:'todo',deferred:false,answer:'DONE: PI v19 §18 confirmed — index.html output rule present. NOTE: Ch.3/Ch.4 title corrections (Off the Books / What We Agreed to See) still show old names in PI v19 chapter table — carry forward to PI v20.',created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_flag_era3_0610',type:'reminder',text:'Update ERA3 (Disclosure Pressure) architecture/secrecy timeline diagram to reflect June 9 2026 Capitol press conference events. Cascades to corresponding appendix (detail version). Image appears in two places in manuscript.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-11',completedDate:'',itemUrl:null},
+  {id:'i_flag_plasma_0610',type:'reminder',text:'Grusch end-of-press-conference statement (possibly unrecorded) — alleged some non-human intelligence may be plasma life forms and U.S. Government knows it. Search Washington Times and other outlets. Assess fit in Ch. 13 theories of origin / interdimensional hypotheses.',done:false,priority:true,memFlag:false,tag:'research',deferred:false,answer:'Grusch on NHI types: "It\'s a continuum from corporeal, bipedal type life to what I would consider sentient plasmoid life, but there are several that the US government is aware of." [24:45]',created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-13',completedDate:'',itemUrl:'https://www.youtube.com/watch?v=u_emZmzkTtM&t=691s'},
+  {id:'i_elizondo_memory_0610',type:'reminder',text:'Memory flag: Claude has prior conversation context on Elizondo (Lue Elizondo / AATIP director). Retrieve from past chats before any session touching Ch.9 Manufacturing Doubt, Ch.10, Ch.12, or A13 On the Record entries related to Elizondo.',done:false,priority:false,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_pi_v20_conventions',type:'reminder',text:'PI v20 additions: (1) Copy-paste Word-find block convention — all fordave and reminder items with manuscript locations must include a paste-ready search string (6–10 unique words from the target sentence) in the itemUrl or answer field, not paragraph numbers. (2) Ability to create hub reminder items from within the dialogue thread (UI feature request from Dave, June 10).',done:false,priority:false,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_1780890159018',type:'reminder',text:'Test note from iPhone',done:true,priority:true,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-08T03:42:39.018Z',dueDate:'',completedDate:''},
+  {id:'i_1780890999025',type:'question',text:'Test 2 iPad',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T03:56:39.025Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780867624952',type:'reminder',text:'Hub roadmap: insert target date to right of stage gate emblem; when met, show met date; move gate explanation to follow right of date (not left of Gantt chart).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:27:04.952Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780867396928',type:'reminder',text:'Hub tabs: increase bottom-row tab label size ≥50%; create graphical tab representation; active tab lighter, inactive slightly darker (gray or maroon).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:23:16.928Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780867301726',type:'reminder',text:'Hub task list and phase display: much larger font, closer to height of box; raise stage gate font size.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T21:21:41.726Z',dueDate:'2026-06-07',completedDate:'2026-06-08'},
+  {id:'i_1780840643824',type:'reminder',text:'Clone roadmap entries at any level — clone phase (full contents) or clone step (within phase).',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Confirmed built in prior session — clonePhase() and cloneStep() both verified present.',created:'2026-06-07T13:10:43.824Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780840467186',type:'reminder',text:'Two date behavior fixes: (1) completion date allowed before due date; (2) stage gate fields inherit latest target completion date among steps in phase.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:'Implemented this session — gateInheritDate() confirmed correct; gate edit form now pre-populates with inherited date and allows manual override.',created:'2026-06-07T13:07:47.186Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836765101',type:'note',text:'On the Project Notes Form tab — move Copy To Cloud button to same line as Show All; move Show All next to All Types; move Copy To Cloud to right.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:52:45.101Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836580659',type:'note',text:'If entering a step in an existing project phase, ask whether steps below it shift.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:49:40.659Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836549158',type:'note',text:'Change roadmap input form to include start and end dates; allow choosing existing phase or adding new one.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:49:09.158Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836229160',type:'note',text:'On Project Hub input form — change type default to Reminders; move type block down next to tags.',done:true,priority:true,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-07T12:43:49.160Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780836128119',type:'reminder',text:'Update Project Notes interface to include due date on input form and in editing mode.',done:true,priority:true,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-07T12:42:08.119Z',dueDate:'',completedDate:'2026-06-07'},
   {id:'i_1780836045602',type:'note',text:'Update ERA3 disclosure pressure — latest Capitol steps events and current activities.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,created:'2026-06-07T12:40:45.602Z',dueDate:'2026-06-10',completedDate:''},
-  {id:'i_1780737182150',type:'question',text:'Christina Gomez podcast "The UFO Story Just Got Much Bigger." Elizondo: China admitted UAP program using AI. Senior officials concluded human DNA was altered. Eric Burlison: White House considering UAP whistleblower amnesty, 60-day window floated. Needs primary source verification before inclusion.',done:false,priority:true,memFlag:true,tag:'research',deferred:false,answer:'Dave following up on primary source. Interface question (ability to create reminders from thread dialogue) noted — added to PI v20 list.',created:'2026-06-06T09:13:02.150Z',dueDate:'',completedDate:''},
+  {id:'i_1780835992892',type:'reminder',text:'Remove Brown, David and Mead, Margaret quotes from A15 — they are orphaned.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-07T12:39:52.892Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780792541603',type:'reminder',text:'Recheck the timeline, era diagrams, and any others — text got lighter and white space at bottom needs trimming.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-07T00:35:41.603Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780787026296',type:'question',text:'Build a marketing/publishing Gantt-style to-do template for the project hub once further along.',done:true,priority:true,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-06T23:03:46.296Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780785855822',type:'question',text:'Should we add Admiral Hillenkoetter to A13 On the Record?',done:true,priority:false,memFlag:true,tag:null,deferred:false,answer:null,created:'2026-06-06T22:44:15.822Z',dueDate:'',completedDate:'2026-06-07'},
+  {id:'i_1780737182150',type:'question',text:'Christina Gomez podcast "The UFO Story Just Got Much Bigger." Elizondo: China admitted UAP program using AI. Senior officials concluded human DNA was altered. Eric Burlison: White House considering UAP whistleblower amnesty, 60-day window floated. Needs primary source verification before inclusion.',done:false,priority:true,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-06T09:13:02.150Z',dueDate:'',completedDate:''},
+  {id:'i_1780737293364',type:'question',text:'What is the best way to capture a screenshot of a video in high resolution?',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:'For low-res FLIR source video: screenshot + Pixelmator Pro ML Super Resolution. For print: TIFF or PNG master, 300 DPI, 1,275px wide min. For Kindle: JPEG at 80% quality, 1,600px wide.',created:'2026-06-06T09:14:53.364Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1780706210001',type:'question',text:'Once all images upscaled: export a folder of all images using their figure number.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'Done — v254. Full image ZIP output.',created:'2026-06-06T00:36:50.001Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1780705349833',type:'reminder',text:"Move Villarroel's picture into the proper place over the caption in Chapter 11.",done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:"Done — v254. Converted from floating wp:anchor to wp:inline.",created:'2026-06-06T00:22:29.833Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1781002702005',type:'reminder',text:'Roadmap: add filter button to show only open items (expanded or collapsed).',done:true,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:58:22.005Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781002363394',type:'reminder',text:'Hub: add standalone Gate as 3rd entry type (beside Task and Phase). Gate on task line inherits to phase bar automatically. Larger diamond for standalone gates.',done:false,priority:true,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:52:43.394Z',dueDate:'',completedDate:''},
+  {id:'i_1781002229441',type:'reminder',text:'Hub: allow toggling stage gate on/off in edit panel after task is already saved.',done:false,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:50:29.441Z',dueDate:'',completedDate:''},
+  {id:'i_1781002188623',type:'reminder',text:'Hub: add Hub Interface tag type to Notes & Checklist. Items tagged Hub Interface are auto-addressed by Claude when JSON is uploaded.',done:false,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:49:48.623Z',dueDate:'',completedDate:''},
+  {id:'i_1781001553279',type:'reminder',text:'Hub: hover over task/phase name shows full label as tooltip.',done:false,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:39:13.279Z',dueDate:'',completedDate:''},
+  {id:'i_1781001416296',type:'question',text:'Hub: slide-out edit panel should be ~50% wider for comfortable writing.',done:false,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:null,created:'2026-06-09T10:36:56.296Z',dueDate:'',completedDate:''},
   {id:'i_1780926907920',type:'reminder',text:'Update appendices with long lists (sightings, On the Record) to include hyperlinked names for ebook navigation. Brief description needed for each entry. Sequence with manual editing of applicable material.',done:false,priority:false,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-08T13:55:07.920Z',dueDate:'',completedDate:''},
+  {id:'i_1780927019383',type:'reminder',text:'Foreword page removed from book. No forward expected; can reinsert later if needed.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,created:'2026-06-08T13:56:59.383Z',dueDate:'',completedDate:'2026-06-08'},
+  {id:'i_1780973797441',type:'reminder',text:'Caption figure number style confirmed: keep abbreviated "Fig." — current standard throughout. No change needed.',done:true,priority:false,memFlag:false,tag:'todo',deferred:false,answer:'Keep "Fig." abbreviated. Current aCaption1 standard: bold roman "Fig. X.X:" label, italic description. Spelling out "Figure" would require a book-wide find-and-replace pass.',created:'2026-06-09T02:56:37.441Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_session0609a',type:'note',text:'Session 2026-06-09: Fig A7.1 rounded corners fixed (all four). Image inserted as Fig. 4.1 Ch.4 + replaced in A7. A2 hyperlinked sightings index (42 entries). 3 stray paras deleted before Congress acts in Ch.4. Ch.4 opening para extended (Pentagon sentence merged). Caption two-run structure corrected. v275→v277.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T00:00:00.000Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_session0606a',type:'note',text:'Session 2026-06-06: Full image pass v253→v254. 15 replacements, 5 upscales, whitespace trimmed on 4 images. USS Omaha sphere removed; footnote added. Fig 11.1 anchor→inline.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-06T00:00:00.000Z',dueDate:'',completedDate:'2026-06-06'},
+  {id:'i_1781003505130',type:'reminder',text:'Claude, it looks like you added the open filter, but the open filter doesn\'t seem to filter at this point on the interface.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Fixed: open filter now hides completed task rows and met gates when expanded; phases with no open steps are also hidden.',created:'2026-06-09T11:11:45.130Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781003422538',type:'reminder',text:'Ask Claude to establish an edit icon and process for stage gates that are listed separately. There\'s a stage gate labeled "mechanical pass" that I want to change, and I\'m unable to do it right now.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Fixed: ✏️ edit button added to all gate task rows; Edit Gate panel supports label, target date, met toggle, and met date.',created:'2026-06-09T11:10:22.538Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781003672655',type:'reminder',text:'Please add Display on Hover functionality to all visible bars that the mouse is hovering over. As it hovers over the bar, after a second, the name of the phase or task that it\'s hovering over pops up so that you can read it. And in addition to the name, the due date or date completed if completed',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented: 500ms hover tooltip on phase bars, task bars, and all gate diamonds shows name + target/completion date.',created:'2026-06-09T11:14:32.655Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781001553279',type:'reminder',text:'Hub: hover over task/phase name shows full label as tooltip.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:39:13.279Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781001416296',type:'question',text:'Hub: slide-out edit panel should be ~50% wider for comfortable writing.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:36:56.296Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781002188623',type:'reminder',text:'Hub: add Hub Interface tag type to Notes & Checklist. Items tagged Hub Interface are auto-addressed by Claude when JSON is uploaded.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:49:48.623Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781002229441',type:'reminder',text:'Hub: allow toggling stage gate on/off in edit panel after task is already saved.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:50:29.441Z',dueDate:'',completedDate:'2026-06-09'},
+  {id:'i_1781002363394',type:'reminder',text:'Hub: add standalone Gate as 3rd entry type (beside Task and Phase). Gate on task line inherits to phase bar automatically. Larger diamond for standalone gates.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'Implemented.',created:'2026-06-09T10:52:43.394Z',dueDate:'',completedDate:'2026-06-09'},
   {id:'i_1781004087718',type:'reminder',text:'Claude, please look at A2 to see how we created an index offset by the app headline style and recommend other candidates where this same type of index would work well for hyperlinks to the content in the appendices.',done:false,priority:false,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-09T11:21:27.718Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → A third argument is more sophisticated than sensor artifacts'},
-  {id:'i_fordave_v279_2',type:'fordave',text:'v279: Review new Ch. 4 subheading "Secret programs as explanation" + 2 paragraphs inserted after Mick West / Peings section.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v281: Ch. 4 footnote cascade complete. Old notes 28–32 → 16–20; old 16–27 → 21–32. All bookmarks, instrText, display text, and return links updated.',created:'2026-06-09T18:00:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Ch. 4 § Secret programs as explanation — subheading + 2 paras after Mick West / Peings'},
-  {id:'i_fordave_v279_3',type:'fordave',text:'v279: Review Ch. 6 para 619 connective sentence appended to end of F-117 section. Confirm it bridges forward naturally.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'NEEDS DAVE INPUT: Para 619 reference does not map cleanly to Ch. 6 XML. Please identify the specific paragraph (quote last sentence or describe it). Closest candidate: XML para 954–961 (AARO / F-117 limitations section).',created:'2026-06-09T18:00:02.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE ONE TO FIND → (A) \'The F-117 case earns close attention for two reasons\' OR (B) \'AARO has publicly maintained that its access\' — tell Claude which paragraph you want the closing sentence added to'},
-  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → The human technology hypothesis'},
-  {id:'i_fordave_v279_5',type:'fordave',text:'v279: Verify Jacobsen, Pentagon\'s Brain — find exact page number for the 10–20 year technology lead figure. Needed for notes 1_4_32 and 3_5_31 before final production.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v281: Both FLAG placeholders replaced with "p. 10." — note_1_4_21 (Ch. 4) and note_3_5_31 (Ch. 13).',created:'2026-06-09T18:00:04.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Ch. 4 note ref_1_4_32 and Ch. 5 note ref_3_5_31 — both cite Jacobsen 10–20yr figure; page # unverified'},
+  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'Intro § Human-tech hypothesis — 2 new paras after note 11, near para 99'},
+  {id:'i_fordave_v279_2',type:'fordave',text:'v279: Review new Ch. 4 subheading "Secret programs as explanation" + 2 paragraphs inserted after Mick West / Peings section.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:01.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 4 § Secret programs as explanation — subheading + 2 paras after Mick West / Peings'},
+  {id:'i_fordave_v279_3',type:'fordave',text:'v279: Review Ch. 6 para 619 connective sentence appended to end of F-117 section. Confirm it bridges forward naturally.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:02.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 6 § End of F-117 section — new connective sentence at para 619'},
+  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 13 § The human technology hypothesis — new subheading + 4 paras before ETH section'},
+  {id:'i_fordave_v279_5',type:'fordave',text:'v279: Verify Jacobsen, Pentagon\'s Brain — find exact page number for the 10–20 year technology lead figure. Needed for notes 1_4_32 and 3_5_31 before final production.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:04.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 4 note ref_1_4_32 and Ch. 5 note ref_3_5_31 — both cite Jacobsen 10–20yr figure; page # unverified'},
   {id:'i_fordave_v279_6',type:'fordave',text:'PI v18 chapter titles out of date: manuscript has Ch. 3 = "Off the Books" and Ch. 4 = "What We Agreed to See". PI v18 still lists "Noise" and "What Counts". Update PI v18 before next session.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:05.000Z',dueDate:'',completedDate:'',itemUrl:'Project_Instructions_v18.docx § Chapter titles table — update Ch. 3 and Ch. 4 entries'},
-  {id:'i_session0609b',type:'note',text:'Session 2026-06-09 (afternoon): Human-tech hypothesis research + drafting. v278→v279.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T18:00:06.000Z',dueDate:'',completedDate:'2026-06-09'},
-  {id:'i_session0609c',type:'note',text:'Session 2026-06-09 (evening): Hub major rebuild. Compact header, search bar, deck tab group (Reference ▸: Passes/Style/ISBNs/Dist), Outreach contact management system (cards, timestamped notes log, status/request fields, materials link), Settings panel in Help, device guide, clone buttons, URL/bookmark field on all items, stats cleanup. SEED updated.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T20:00:00.000Z',dueDate:'',completedDate:'2026-06-09'}
-  ,{id:'i_session0610a',type:'note',text:'Session 2026-06-10: June 9 Capitol press conference analysis + insertions. v279→v280. 9 new paragraphs across 7 locations: Ch.5 (Turner facade), Ch.6 (Turner anti-gravity + Grusch slush funds), Ch.10 (Grusch Espionage Act retaliation), Ch.16 (Burlison MQ-9 dead drop), Ch.17 (Grusch DIA obstruction + Burlison constitutional framing), Conclusion (Kean biological argument + Luna immunity). Ch.8 Varginha/Rebelo update held pending Fox coverage. All [FNXX] placeholders in place.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:'2026-06-10'}
-  ,{id:'i_session0610b',type:'note',text:'Session 2026-06-10 (overnight): v280→v281. Footnote sequencing pass: Ch. 4 cascade (notes 28–32 → 16–20; 16–27 → 21–32), Ch. 5 resequencing (body order corrected), Ch. 6/9/10/16/17/Conclusion — all [FNXX] placeholders replaced with proper superscripts and afootnote paragraphs inserted (June 9 Capitol press conference citation). Jacobsen p. 10 fix (fordave_v279_5 complete). v281 packed clean. Hub: roadmap defaults to phases/gates (all tasks collapsed). Ch. 9 Turner/NAA [FNXX] left pending (not in session scope). fordave_v279_3 flagged for Dave input on paragraph identity.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T06:30:00.000Z',dueDate:'',completedDate:'2026-06-10'}
-  ,{id:'i_flag_varginha_0610',type:'reminder',text:'Follow up June 12–13: Search post-event coverage of June 9 Capitol press conference for James Fox Varginha/Rebelo remarks. Verify what Fox said about Rebelo promise to release Brazilian files. Update Ch. 8 P785 Rebelo section accordingly.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-13',completedDate:''}
-  ,{id:'i_flag_era3_0610',type:'reminder',text:'Update ERA3 (Disclosure Pressure) architecture/secrecy timeline diagram to reflect June 9 2026 Capitol press conference events. Cascades to corresponding appendix (detail version). Image appears in two places in manuscript.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-11',completedDate:''}
-  ,{id:'i_flag_plasma_0610',type:'reminder',text:'Grusch end-of-press-conference statement (possibly unrecorded) — alleged some non-human intelligence may be plasma life forms and U.S. Government knows it. Search Washington Times and other outlets. Assess fit in Ch. 13 theories of origin / interdimensional hypotheses.',done:false,priority:false,memFlag:false,tag:'research',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'2026-06-13',completedDate:''}
-  ,{id:'i_flag_a15_0610',type:'reminder',text:'Update A15 quotations appendix — check whether June 9 speaker quotes (Kean, Grusch, Burlison, Luna, Burchett) and Turner NAA document quotes belong there.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:''}
-  ,{id:'i_flag_fn_0610',type:'reminder',text:'Footnote sequencing pass — Ch. 5, 6, 10, 16, 17, Conclusion. Replace all [FNXX] placeholders with numbered footnotes. Turner cite: NAA Record B30030606. June 9 cite: Washington Times June 9 2026 + YouTube x_tmeaNboWE.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:''}
-  ,{id:'i_flag_piv19_0610',type:'reminder',text:'Create PI v19. Updates needed: (1) hub output always index.html not overclassified_notes.html; (2) JSON removal step uses choice form; (3) session end protocol — pull index.html from project files, never recreate from JSON; (4) update chapter titles for Ch. 3 and Ch. 4.',done:false,priority:true,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-10T01:17:00.000Z',dueDate:'',completedDate:''}
-
-  ,{id:'i_1781087754377',type:'fordave',text:'Please look at the in-line thread behavior of the flow between Claude and Dave. For the V282 A15 quotations where you needed verbatim language, I gave you that language. It still shows us for Dave on there. Shouldn\'t that now show us for Claude since I responded? And there will be a few other responses that still show as four-day, but they are responding too.',done:false,priority:true,memFlag:true,tag:null,deferred:false,answer:'DONE: Two root causes identified and fixed in this build. (1) Items where Dave\'s dialogue entry is the last entry correctly no longer show \"needs response\" badge. (2) Notes tab now defaults to open items only when switching to it.',created:'2026-06-10T10:35:54.377Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null}
-  ,{id:'i_1781087533855',type:'fordave',text:'I am pasting the full comments from Eric Burlison yesterday. One open question was whether to use the Varginha case. Burlison confirmed that Rebelo came forward on the same day as the conference. Burlison\'s comments are powerful throughout. Let\'s see if we can use any more of them.',done:false,priority:true,memFlag:true,tag:'editing',deferred:false,answer:'DONE analysis (no manuscript action yet): Rebelo confirmed — Ch.8 Varginha update can proceed. New quotable material: (1) \"To hell with the safe way — the safe way protects the system\" — A15 candidate + possible Ch.10 or Ch.17 pull quote. (2) Transnational call to action (worldwide) — one sentence in Ch.18 or Conclusion. (3) Matthew Sullivan name-checked as deceased whistleblower — needs a research check before any manuscript use. See session notes for full breakdown.',created:'2026-06-10T10:32:13.855Z',dueDate:'',completedDate:'',itemUrl:null}
-  ,{id:'i_1781085936453',type:'fordave',text:'The Notes tab is opening with a default of collapsed but open and closed items. It should be a default of collapsed open items only.',done:true,priority:false,memFlag:true,tag:'hubui',deferred:false,answer:'DONE: Notes tab now sets filter to open items only on activation. Done items are hidden by default; use the status filter bar to show them.',created:'2026-06-10T10:05:36.453Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null}
-  ,{id:'i_fordave_v282_4',type:'fordave',text:'v282 — A15 Quotations: Three June 9 Capitol press conference statements are candidates for A15 pull quotes. Need verbatim text sourced from Washington Times or YouTube (x_tmeaNboWE) for each: (1) Grusch \"slush funds to the tune of billions of dollars per annum\" — location code (Ch.6); (2) Burlison \"that is not classification. That is a constitutional crisis.\" — location code (Ch.17); (3) Luna whistleblower immunity announcement — location code (Conclusion). Confirm exact wording and Claude will insert A15 entries.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE: Verbatim quotes confirmed. All three queued for next manuscript session. Grusch (Ch.6): \"And during my investigation, I found slush funds to the tune of billions of dollars per annum for these activities.\" (NewsNation YouTube https://www.youtube.com/watch?v=u_emZmzkTtM at 23:17). Burlison (Ch.17): \"That is not classification. That\'s a constitutional crisis.\" (same video, 9:06–9:12). Luna (Conclusion): immunity announcement on record. Find text to paste into Word: The dual-track did not end with Blue Book',created:'2026-06-10T10:30:04.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'A15 § Quotations — three new June 9 entries queued for manuscript'}
-  ,{id:'i_fordave_v282_3',type:'fordave',text:'v282 — Ch.9 [FNXX] still open: Turner/NAA paragraph in \"Manufacturing Doubt\" has an unresolved [FNXX] placeholder between body notes 3 and 4. Note should cite NAA Record B30030606. Also: Ch.9 body superscript sequence is disordered (1,2,9,10,3,4,5,11…) — needs a full resequencing pass before final production.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'Confirmed — will handle Ch.9 [FNXX] assignment, NAA citation, and full Ch.9 resequencing as a single pass in the next editing session. Find text to paste into Word: An allied intelligence service reached the same conclusion independently',created:'2026-06-10T10:30:03.000Z',dueDate:'',completedDate:'',itemUrl:'Ch.9 § Turner/NAA para — paste to find: An allied intelligence service reached the same conclusion independently'}
-  ,{id:'i_fordave_v282_2',type:'fordave',text:'v282 — Bibliography: Add Turner, O.H. NAA entry. Cited in Ch.9 body paragraph (Turner/NAA [FNXX] still unresolved) and needed before that note can be completed. Entry: Turner, O.H. Classified assessment, Joint Intelligence Organisation, 1971. National Archives of Australia, Record B30030606.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'Confirmed — will add the Turner NAA Bibliography entry as part of the Ch.9 editing session along with the [FNXX] resolution. No action needed from Dave.',created:'2026-06-10T10:30:02.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → Twining, Nathan (find nearest T entry in Bibliography to insert near)'}
-  ,{id:'i_fordave_v282_1',type:'fordave',text:'v282 — Bibliography: Add Washington Times June 9 2026 entry. Needed by 6 new afootnotes (Ch.6 note 11, Ch.10 note 17, Ch.16 note 19, Ch.17 notes 6–7, Conclusion note 2). Confirm article headline, then add Chicago-format entry. YouTube video: https://www.youtube.com/watch?v=x_tmeaNboWE.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T10:30:01.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → Washington (find nearest existing W entry in Bibliography to insert near)'}
-  ,{id:'i_session0610c',type:'note',text:'Session 2026-06-10 (morning): v281→v282. Verification pass: Ch.4 afootnote content reorder corrected. Ch.5 cascade corrected and afootnote paragraphs physically reordered 1–18. Ch.9 display number and return link damage repaired (11 display fixes, 35 return link fixes). Back matter audit: Washington Times June 9 cite not in Bibliography; Turner NAA B30030606 not in Bibliography; A15 Quotations has no June 9 entries.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T10:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null}
-  ,{id:'i_elizondo_memory_0610',type:'reminder',text:'Memory flag: Claude has prior conversation context on Elizondo (Lue Elizondo / AATIP director). Retrieve from past chats before any session touching Ch.9 Manufacturing Doubt, Ch.10, Ch.12, or A13 On the Record entries related to Elizondo.',done:false,priority:false,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null}
-
-  ,{id:'i_pi_v20_conventions',type:'reminder',text:'PI v20 additions: (1) Copy-paste Word-find block convention — all fordave and reminder items with manuscript locations must include a paste-ready search string (6–10 unique words from the target sentence) in the itemUrl or answer field, not paragraph numbers. (2) Ability to create hub reminder items from within the dialogue thread (UI feature request from Dave, June 10).',done:false,priority:false,memFlag:false,tag:'todo',deferred:false,answer:null,created:'2026-06-10T11:15:00.000Z',dueDate:'',completedDate:'',itemUrl:null}
+  {id:'i_session0609b',type:'note',text:'Session 2026-06-09 (afternoon): Human-tech hypothesis research + drafting. Inserted new content in v279: Intro notes 11–12 (2 paras), Ch. 4 "Secret programs as explanation" (subheading + 2 paras, notes 28–32), Ch. 6 para 619 connective sentence, Ch. 13 "The human technology hypothesis" (subheading + 4 paras, notes 27–31). All 12 new footnote pairs four-count gate confirmed. v278→v279.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T18:00:06.000Z',dueDate:'',completedDate:'2026-06-09'},
 ];
 
 const ROAD_SEED=[
-  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#E8A020',open:false,num:1},
-  {id:'rph1_s1',kind:'step',phase:'rph1',label:'W3.1 — Mechanical pass rescan',note:'Re-run against chapters edited since v229.',cmd:'"Mechanical pass"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
-  {id:'rph1_s2',kind:'step',phase:'rph1',label:'W3.8 — Word-by-word rescan',note:'Focus on recently touched sections.',cmd:'"Word-by-word pass"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  // ── Phase 1: Mechanical rescan ──────────────────────────────────────────
+  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#E8A020',open:true,num:1},
+  {id:'rph1_s1',kind:'step',phase:'rph1',label:'W3.1 — Mechanical pass rescan',note:'Re-run against chapters edited since v229. Trigger: \"Mechanical pass\"',cmd:'\"Mechanical pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  {id:'rph1_s2',kind:'step',phase:'rph1',label:'W3.8 — Word-by-word rescan',note:'Focus on recently touched sections. Trigger: \"Word-by-word pass\"',cmd:'\"Word-by-word pass\"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
   {id:'r_1780838559575',kind:'step',phase:'rph1',label:'Orphan authors out',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
   {id:'r_1780840827808',kind:'step',phase:'rph1',label:'Image trim whitespace review table',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
-  {id:'rph1_g1',kind:'gate',phase:'rph1',label:'Ready for manual editing',date:'2026-06-07',met:false},
-  {id:'r_1780839259957',kind:'phase',label:'Write/Edit',color:'#2070C8',open:false,num:2,note:'Manual writing and mechanical cleanup passes'},
+  {id:'rph1_g1',kind:'gate',phase:'rph1',label:'Ready for manual editing — no dropped letters, doubled words, punctuation errors',date:'2026-06-07',met:false},
+
+  // ── Phase 2: Write/Edit ──────────────────────────────────────────────────
+  {id:'r_1780839259957',kind:'phase',label:'Write/Edit',color:'#2070C8',open:true,num:2,note:'Manual writing, and Mechanical cleanup passes'},
   {id:'r_1781002498021',kind:'step',phase:'r_1780839259957',label:'First Draft',note:'',cmd:null,targetStart:'2026-02-06',targetEnd:'2026-04-01',completedDate:'2026-04-15',done:true},
   {id:'r_1780839399135',kind:'step',phase:'r_1780839259957',label:'Edit second pass',note:'',cmd:null,targetStart:'2026-04-15',targetEnd:'2026-06-01',completedDate:'2026-05-17',done:true},
   {id:'r_1780839415621',kind:'step',phase:'r_1780839259957',label:'Mechanical Pass',note:'Word for Word, Thematic Echos, AI removal',cmd:null,targetStart:'2026-06-01',targetEnd:'2026-06-04',completedDate:'2026-06-06',done:true},
   {id:'r_1780839447883',kind:'step',phase:'r_1780839259957',label:'Edit Third Pass',note:'',cmd:null,targetStart:'2026-06-05',targetEnd:'2026-06-15',completedDate:'',done:false},
   {id:'r_1780840560799',kind:'gate',phase:'r_1780839259957',label:'Manual editing complete',date:'2026-06-13',met:false,metDate:''},
-  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#D43540',open:false,num:3},
-  {id:'rph4_s1',kind:'step',phase:'rph4',label:'Watch June 9 Capitol event — update Ch. 18 and Conclusion',note:'Grusch · Burlison · Moskowitz · Luna · Burchett — hosted by Kean and Fox.',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'',done:false},
+
+  // ── Phase 3: June 9 Capitol Event Contingencies ──────────────────────────
+  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#D43540',open:true,num:3},
+  {id:'rph4_s1',kind:'step',phase:'rph4',label:'Watch June 9 Capitol event — update Ch. 18 and Conclusion',note:'Grusch · Burlison · Moskowitz · Luna · Burchett — hosted by Kean and Fox.',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'2026-06-10',done:false},
   {id:'r_1780869619317',kind:'step',phase:'rph4',label:'Update Fig 5.3 Disclosure Pressure',note:'Note the nature of the advocacy event',cmd:null,targetStart:'',targetEnd:'2026-06-11',completedDate:'',done:false},
   {id:'r_1780839029403',kind:'step',phase:'rph4',label:'Update intro to include pace of change, even Degrasse Tyson',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
   {id:'r_1780838979272',kind:'step',phase:'rph4',label:'Review intro and conclusion for changes',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
   {id:'rph4_g1',kind:'gate',phase:'rph4',label:'Ch. 18 and Conclusion final',date:'2026-06-10',met:false},
-  {id:'rph2',kind:'phase',label:'Repetition check',color:'#B03090',open:false,num:4},
+
+  // ── Phase 4: Repetition check ────────────────────────────────────────────
+  {id:'rph2',kind:'phase',label:'Repetition check',color:'#B03090',open:true,num:4},
   {id:'r_1780839159182',kind:'step',phase:'rph2',label:'Word for Word on entire book',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
-  {id:'rph2_s1',kind:'step',phase:'rph2',label:'Thematic echo scan',note:'Flag arguments or phrases appearing in substantially similar form across chapters.',cmd:'"Thematic echo scan"',targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
+  {id:'rph2_s1',kind:'step',phase:'rph2',label:'Thematic echo scan',note:'Flag arguments or phrases appearing in substantially similar form across chapters.',cmd:'\"Thematic echo scan\"',targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
   {id:'rph2_g1',kind:'gate',phase:'rph2',label:'No material repetition — Dave reviews and approves any cuts',date:'2026-06-16',met:false},
-  {id:'rph3',kind:'phase',label:'Fresh eyes read',color:'#6040C8',open:false,num:5},
-  {id:'rph3_s2',kind:'step',phase:'rph3',label:'Flow — continuity and rhythm read',note:'Flag repetition, weak transitions, register drift.',cmd:'"Flow read"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
-  {id:'rph3_s3',kind:'step',phase:'rph3',label:'Reese — sourcing integrity pass',note:'Any unsourced factual claims surfaced by fresh read?',cmd:'"Reese pass"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
-  {id:'rph3_s1',kind:'step',phase:'rph3',label:'Sterling — commercial coherence read',note:'Argument arc, chapter transitions, author positioning.',cmd:'"Sterling review"',targetStart:'',targetEnd:'2026-06-18',completedDate:'',done:false},
+
+  // ── Phase 5: Fresh eyes read ─────────────────────────────────────────────
+  {id:'rph3',kind:'phase',label:'Fresh eyes read',color:'#6040C8',open:true,num:5},
+  {id:'rph3_s2',kind:'step',phase:'rph3',label:'Flow — continuity and rhythm read',note:'Flag repetition, weak transitions, register drift.',cmd:'\"Flow read\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
+  {id:'rph3_s3',kind:'step',phase:'rph3',label:'Reese — sourcing integrity pass',note:'Any unsourced factual claims surfaced by fresh read?',cmd:'\"Reese pass\"',targetStart:'',targetEnd:'2026-06-16',completedDate:'',done:false},
+  {id:'rph3_s1',kind:'step',phase:'rph3',label:'Sterling — commercial coherence read',note:'Argument arc, chapter transitions, author positioning.',cmd:'\"Sterling review\"',targetStart:'',targetEnd:'2026-06-18',completedDate:'',done:false},
   {id:'rph3_g1',kind:'gate',phase:'rph3',label:'Prose locked — no further content changes after this point',date:'',met:false},
-  {id:'r_1780838705405',kind:'phase',label:'Final Mechanical Pass',color:'#2070C8',open:false,num:6},
+
+  // ── Phase 6: Final Mechanical Pass ──────────────────────────────────────
+  {id:'r_1780838705405',kind:'phase',label:'Final Mechanical Pass',color:'#3a6b9e',open:true,num:6},
   {id:'r_1780838482971',kind:'step',phase:'r_1780838705405',label:'Footnote retrofit',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780838539117',kind:'step',phase:'r_1780838705405',label:'Index Entry Sweep',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
-  {id:'r_1780839999740',kind:'step',phase:'r_1780838705405',label:'Word for Word, Punctuation, Grammar, Spelling, Dups',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
-  {id:'rph5',kind:'phase',label:'Print production',color:'#1A9E78',open:false,num:7},
-  {id:'rph5_s1',kind:'step',phase:'rph5',label:'W3.9b — Production pass print',note:'Running heads · widow/orphan · image resolution · page breaks · TOC numbers.',cmd:'"Production pass print"',targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
+  {id:'r_1780839999740',kind:'step',phase:'r_1780838705405',label:'Word for Word, Punctuation, Grammar, Spelling, Dups,',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+
+  // ── Phase 7: Print production ────────────────────────────────────────────
+  {id:'rph5',kind:'phase',label:'Print production',color:'#7a6a2a',open:true,num:7},
+  {id:'rph5_s1',kind:'step',phase:'rph5',label:'W3.9b — Production pass print',note:'Running heads · widow/orphan · image resolution · page breaks · TOC numbers.',cmd:'\"Production pass print\"',targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
   {id:'rph5_g1',kind:'gate',phase:'rph5',label:'Print-ready master confirmed',date:'2026-06-20',met:false},
-  {id:'r_1780838742141',kind:'phase',label:'Final Marketing Review - Sterling',color:'#4A9E20',open:false,num:8},
+
+  // ── Phase 8: Final Marketing Review - Sterling ───────────────────────────
+  {id:'r_1780838742141',kind:'phase',label:'Final Marketing Review - Sterling',color:'#6b3a9e',open:true,num:8},
   {id:'r_1780841363965',kind:'step',phase:'r_1780838742141',label:'Read for interest, alignment with marketing approach',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
-  {id:'rph6',kind:'phase',label:'Export',color:'#E8A020',open:false,num:9},
+
+  // ── Phase 9: Export ──────────────────────────────────────────────────────
+  {id:'rph6',kind:'phase',label:'Export',color:'#2a6a7a',open:true,num:9},
   {id:'rph6_s1',kind:'step',phase:'rph6',label:'Export ebook via Vellum',note:'Generate EPUB. Verify footnote navigation, image rendering, TOC.',cmd:null,targetStart:'',targetEnd:'2026-06-22',completedDate:'',done:false},
   {id:'rph6_s2',kind:'step',phase:'rph6',label:'Export print PDF via Vellum',note:'Verify trim, bleed, margins, running heads, image resolution.',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false},
   {id:'rph6_s3',kind:'step',phase:'rph6',label:'Order and review proof copy',note:'Order proof from KDP or IngramSpark before approving for distribution.',cmd:null,targetStart:'',targetEnd:'2026-07-15',completedDate:'',done:false},
   {id:'rph6_g1',kind:'gate',phase:'rph6',label:'All formats exported and verified',date:'2026-06-30',met:false},
-  {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#E8622A',open:false,num:10},
+
+  // ── Phase 10: Marketing Plan ─────────────────────────────────────────────
+  {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#9e3a3a',open:true,num:10},
   {id:'r_1780868347381',kind:'step',phase:'r_1780841436950',label:'Establish overall plan outline',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false},
   {id:'r_1780868403899',kind:'step',phase:'r_1780841436950',label:'Develop channel plan',note:'Social media, messaging, methods',cmd:null,targetStart:'',targetEnd:'',completedDate:'',done:false},
   {id:'r_1780868436853',kind:'step',phase:'r_1780841436950',label:'Develop blurb candidates list',note:'Contact information, tailored approaches',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'rph7_s1',kind:'step',phase:'r_1780841436950',label:'Build blurb pitch sheet',note:'Title · subtitle · 150-word synopsis · 100-word bio · pub target window.',cmd:null,targetStart:'',targetEnd:'2026-07-03',completedDate:'',done:false},
-  {id:'rph8_s1',kind:'step',phase:'r_1780841436950',label:'Congressional — Burlison · Burchett · Luna',note:'First wave — allow ~10 weeks.',cmd:null,targetStart:'',targetEnd:'2026-07-31',completedDate:'',done:false},
+  {id:'rph8_s1',kind:'step',phase:'r_1780841436950',label:'Congressional — Burlison · Burchett · Luna',note:'First wave — allow ~10 weeks.',cmd:null,targetStart:'',targetEnd:'2026-07-31',completedDate:'2026-07-08',done:false},
   {id:'rph8_s2',kind:'step',phase:'r_1780841436950',label:'Elizondo · Mellon outreach',note:'Second wave — ~6–8 weeks.',cmd:null,targetStart:'',targetEnd:'2026-08-29',completedDate:'',done:false},
   {id:'rph8_s3',kind:'step',phase:'r_1780841436950',label:'Coulthart · Knuth · Loeb outreach',note:'Third wave — validation tier.',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
   {id:'r_1780868683433',kind:'gate',phase:'r_1780841436950',label:'Ready to publicize',date:'',met:false},
-  {id:'rph9',kind:'phase',label:'Publishing Distribution setup',color:'#D43540',open:false,num:11},
+
+  // ── Phase 11: Publishing Distribution setup ──────────────────────────────
+  {id:'rph9',kind:'phase',label:'Publishing Distribution setup',color:'#2a4a6b',open:true,num:11},
   {id:'r_1780841107590',kind:'step',phase:'rph9',label:'Establish accounts',note:'Set up relationships and learn process',cmd:null,targetStart:'',targetEnd:'2026-07-15',completedDate:'',done:false},
   {id:'r_1780841189745',kind:'step',phase:'rph9',label:'Trial run for loading demo',note:'',cmd:null,targetStart:'',targetEnd:'2026-07-17',completedDate:'',done:false},
   {id:'rph9_s1',kind:'step',phase:'rph9',label:'KDP setup — Kindle and POD',note:'Upload EPUB and print PDF. Do not enroll KDP Select.',cmd:null,targetStart:'',targetEnd:'2026-08-03',completedDate:'',done:false},
@@ -1343,25 +1185,19 @@ const ROAD_SEED=[
   {id:'rph9_s3',kind:'step',phase:'rph9',label:'IngramSpark — print to bookstores',note:'Upload print PDF and cover PDF. Set 55% trade discount.',cmd:null,targetStart:'',targetEnd:'2026-08-03',completedDate:'',done:false},
   {id:'rph9_s4',kind:'step',phase:'rph9',label:'Bowker metadata · website updates · press kit',note:'Update subtitle, LCCN, categories. Favicons, hero images, press kit.',cmd:null,targetStart:'',targetEnd:'2026-07-31',completedDate:'',done:false},
   {id:'rph9_g1',kind:'gate',phase:'rph9',label:'All platforms live — launch ready',date:'',met:false},
-  {id:'r_1780841462043',kind:'phase',label:'Business establishment',color:'#B03090',open:false,num:12},
+
+  // ── Phase 12: Business establishment ────────────────────────────────────
+  {id:'r_1780841462043',kind:'phase',label:'Business establishment',color:'#7a6a2a',open:true,num:12},
   {id:'r_1780868143685',kind:'step',phase:'r_1780841462043',label:'Learn real requirements from Hilton Head Island',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-13',completedDate:'',done:false},
   {id:'r_1780868167879',kind:'step',phase:'r_1780841462043',label:'Follow up with SC DOR',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-12',completedDate:'',done:false},
   {id:'r_1780868197640',kind:'step',phase:'r_1780841462043',label:'Register business SC DOR',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780868226753',kind:'step',phase:'r_1780841462043',label:'Update EIN number Record with new Vigilia Name',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780868272578',kind:'step',phase:'r_1780841462043',label:'Finalize business licensing filings in time for book sales',note:'',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
-  {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'',met:false}
+  {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'',met:false},
 ];
 
 let S={items:[],road:[]};
-let fSt=null,fTag=null,fType=null,inputPriFlag=0,inputMemFlag=false,editingId=null;
-// Entry form state
-let inputFlowOn=false;  // Flow toggle (false = local note by default)
-let inputIsReminder=false;
-let inputStatusDeferred=false;
-let inputPriLevel=0;    // 0=low, 1=medium, 2=high
-let lastTag='';         // remembers last-used tag
-let mtrSourceId=null;   // item being moved to roadmap
-let mtrType='phase';    // phase|task|gate
+let fSt=null,fTag=null,fType=null,inputPriFlag=false,inputMemFlag=false,editingId=null;
 let sectionOpen={gantt:true,tasklist:true};
 let roadLevel=2; // 0=closed,1=phases,2=full
 let roadOpenFilter=false; // true = show only incomplete phases
@@ -1405,13 +1241,6 @@ function load(){
   }catch(e){S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};}
 }
 function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION});localStorage.setItem(SK,JSON.stringify(payload));}catch(e){}}
-function migrateDialogue(){
-  (S.items||[]).forEach(it=>{
-    if(it.type==='fordave'&&it.answer&&!it.dialogue){
-      it.dialogue=[{from:'claude',text:it.answer,ts:it.created||new Date().toISOString()}];
-    }
-  });
-}
 
 function showTab(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -1422,21 +1251,8 @@ function showTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
   const fr=document.getElementById('filter-row');
   if(fr)fr.style.display=(t==='notes'?'flex':'none');
-  if(t==='notes'&&fSt===null){fSt='open';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
 }
-function toggleDeck(e){
-  e.stopPropagation();
-  const grp=document.querySelector('.deck-group');
-  if(grp)grp.classList.toggle('open');
-}
-// Close deck flyout when tapping anywhere else (iPad / touch)
-document.addEventListener('click',function(e){
-  const grp=document.querySelector('.deck-group');
-  if(grp&&grp.classList.contains('open')&&!grp.contains(e.target)){
-    grp.classList.remove('open');
-  }
-});
 function showDeckTab(t,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.deck-flyout-item').forEach(b=>b.classList.remove('active'));
@@ -1446,65 +1262,27 @@ function showDeckTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
   const fr=document.getElementById('filter-row');
   if(fr)fr.style.display='none';
-  // Close flyout after selection (iPad tap UX)
-  const grp=document.querySelector('.deck-group');
-  if(grp)grp.classList.remove('open');
 }
 
 function toggleSection(id){
   sectionOpen[id]=!sectionOpen[id];
-  const isOpen=sectionOpen[id];
-  document.getElementById(id+'-body').style.display=isOpen?'block':'none';
-  document.getElementById(id+'-tog').textContent=isOpen?'Collapse':'Expand';
+  const open=sectionOpen[id];
+  document.getElementById(id+'-body').style.display=open?'block':'none';
+  document.getElementById(id+'-tog').textContent=open?'Collapse':'Expand';
   const titleEl=document.getElementById(id+'-title');
-  if(titleEl)titleEl.textContent=(isOpen?'\u25bc ':'\u25ba ')+titleEl.textContent.replace(/^[▼▶]\s*/,'');
+  if(titleEl)titleEl.textContent=(open?'\u25bc ':'\u25ba ')+titleEl.textContent.replace(/^[▼▶]\s*/,'');
 }
 
 /* ── ROADMAP COLLAPSE LEVELS ── */
 function counts(){
-  let openCt=0,pri=0,hold=0,done=0,fordave=0,needsResp=0;
-  (S.items||[]).forEach(it=>{
-    if(it.done){done++;return;}
-    if(it.deferred){hold++;return;}
-    open++;
-    if(it.priority)pri++;
-    if(it.type==='fordave')fordave++;
-    const dlg=it.dialogue||[];
-    if(dlg.length&&dlg[dlg.length-1].from==='claude')needsResp++;
-  });
-  return{open:openCt,pri,hold,done,fordave,needsResp};
-}
-function updateTabBadges(){
-  // Notes badge: all active fordave items (threads awaiting attention)
-  const{fordave}=counts();
-  setBadge('tbadge-notes',fordave);
-  // Roadmap badge: at-risk items
-  const today=todayStr();
-  let atRisk=0;
-  (S.road||[]).forEach(r=>{
-    if(r.kind==='step'&&!r.done&&r.targetEnd&&r.targetEnd<today)atRisk++;
-    if(r.kind==='gate'&&!r.met&&r.date&&r.date<today)atRisk++;
-  });
-  setBadge('tbadge-roadmap',atRisk);
-  // Outreach badge: contacts past due
-  let otOverdue=0;
-  (OT||[]).forEach(c=>{
-    if(c.dueDate&&c.status!=='confirmed'&&c.status!=='closed'&&c.status!=='rejected'){
-      if(new Date(c.dueDate+'T23:59:59')<new Date())otOverdue++;
-    }
-  });
-  setBadge('tbadge-outreach',otOverdue);
-}
-function setBadge(id,count){
-  const el=document.getElementById(id);if(!el)return;
-  el.textContent=count||'';
-  el.className='tab-nbadge'+(count?'':' zero');
+  let open=0,pri=0,hold=0,done=0,fordave=0;
+  (S.items||[]).forEach(it=>{if(it.done){done++;return;}if(it.deferred){hold++;return;}open++;if(it.priority)pri++;if(it.type==='fordave')fordave++;});
+  return{open,pri,hold,done,fordave};
 }
 function rdash(){
-  const{open:openCt,pri,hold,done,fordave,needsResp}=counts();
-  updateTabBadges();
+  const{open,pri,hold,done,fordave}=counts();
   document.getElementById('dash-status').innerHTML=[
-    {k:'open',l:'Open',c:openCt,col:'#e06070'},{k:'priority',l:'Pri',c:pri,col:'#c9a050'},
+    {k:'open',l:'Open',c:open,col:'#e06070'},{k:'priority',l:'Pri',c:pri,col:'#c9a050'},
     {k:'hold',l:'Hold',c:hold,col:'#888888'},{k:'done',l:'Done',c:done,col:'#5a9a5a'},
     {k:'fordave',l:'\u2691Dave',c:fordave,col:'#9a70c0'}
   ].map(s=>`<button onclick="tSt('${s.k}')" style="background:${fSt===s.k?'rgba(199,0,37,.25)':'rgba(255,255,255,.06)'};border:1px solid ${fSt===s.k?'#c70025':'#333028'};border-radius:3px;padding:2px 8px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:${fSt===s.k?'#fff':s.col};white-space:nowrap;height:24px;line-height:1;transition:all .15s"><strong>${s.c}</strong> ${s.l}</button>`).join('');
@@ -1628,16 +1406,7 @@ function rlist(){
   list.innerHTML=visible.map(it=>{
     const exp=it._exp||false;
     const isEditing=editingId===it.id;
-    const dlgCheck=(it.dialogue||[]);
-    // Flow item = any fordave with dialogue (dave OR claude initiated).
-    // isNeedsResponse = last message is from claude (Dave should reply).
-    // flow-item = last message is from dave (Claude should respond) or mixed thread.
-    // isLegacyFordave = fordave with no dialogue at all (old-style, no thread).
-    const isFlowItem=it.type==='fordave'&&dlgCheck.length>0;
-    const isNeedsResponse=isFlowItem&&dlgCheck[dlgCheck.length-1].from==='claude'&&!it.done;
-    const isDaveReplied=isFlowItem&&dlgCheck[dlgCheck.length-1].from==='dave'&&!it.done;
-    const isLegacyFordave=it.type==='fordave'&&!isFlowItem;
-    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':isDaveReplied?'flow-item dave-replied':isFlowItem?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
+    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',!it.done&&it.type==='fordave'?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
     const preview=(it.text||'').length>120?(it.text||'').substring(0,120)+'\u2026':(it.text||'');
     const dueCls=isOverdue(it.dueDate)?' overdue':'';
     let bodyHtml='';
@@ -1658,28 +1427,10 @@ function rlist(){
         <div class="edit-actions"><button class="edit-save" onclick="saveEdit('${it.id}')">Save</button><button class="edit-cancel" onclick="cancelEdit()">Cancel</button></div>
       </div></div>`;
     } else {
-      // Build dialogue thread HTML
-      const dlg=(it.dialogue||[]);
-      const dlgHtml=dlg.length?`<div class="dialogue-thread">${
-        [...dlg].reverse().map(d=>`<div class="dl-entry from-${d.from}">
-          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':'Claude'}</span><span class="dl-ts">${fmtDate(d.ts.slice(0,10))}</span></div>
-          <div class="dl-text">${esc(d.text)}</div>
-        </div>`).join('')
-      }</div>`:'';
-      const needsReply=dlg.length&&dlg[dlg.length-1].from==='claude'&&!it.done;
-      const dlgReplyHtml=needsReply?`<div class="dl-reply-row" id="dlrep-${it.id}">
-        <textarea class="dl-reply-ta" id="dlrta-${it.id}" placeholder="Your response to Claude…"></textarea>
-        <div class="dl-reply-actions">
-          <button class="dl-send-btn" onclick="dlReply('${it.id}')">Send</button>
-          <span class="dl-cancel-link" onclick="document.getElementById('dlrta-${it.id}').value=''">Clear</span>
-        </div>
-      </div>`:'';
-      const legacyAnswer=(!it.dialogue&&it.answer)?`<div class="ianswer">${esc(it.answer)}</div>`:'';
-      bodyHtml=`<div class="ibody">${legacyAnswer}${dlgHtml}${dlgReplyHtml}${renderItemLink(it)}<div class="iactions">
+      bodyHtml=`<div class="ibody">${it.answer?`<div class="ianswer">${esc(it.answer)}</div>`:''}${renderItemLink(it)}<div class="iactions">
         <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
         <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
         <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
-        <button class="iabtn" onclick="mtrOpen('${it.id}')">&#8594; Roadmap</button>
         <button class="iabtn danger" onclick="delItem('${it.id}')">Delete</button>
       </div></div>`;
     }
@@ -1691,10 +1442,7 @@ function rlist(){
           <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')">&#9733;</span>
           <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag">&#9872;</span>
           ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
-          ${it.type==='fordave'
-            ?(isLegacyFordave?'<span class="fordave-badge">&#9873; For Dave</span>'
-              :(isNeedsResponse?'<span class="flow-badge for-dave">&#9873; For Dave</span>':'<span class="flow-badge for-claude">&#9655; For Claude</span>'))
-            :`<span class="type-pill">${esc(it.type||'note')}</span>`}
+          ${it.type==='fordave'?'<span class="fordave-badge">&#9873; For Dave</span>':`<span class="type-pill">${esc(it.type||'note')}</span>`}
         </div>
         <div class="idate-cols">
           <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
@@ -1728,190 +1476,29 @@ function saveEdit(id){
 }
 function collapseAll(){(S.items||[]).forEach(it=>it._exp=false);rlist();}
 function expandAll(){(S.items||[]).forEach(it=>it._exp=true);rlist();}
-function dlReply(id){
-  const it=S.items.find(i=>i.id===id);if(!it)return;
-  const ta=document.getElementById('dlrta-'+id);
-  const txt=(ta?ta.value||'':'').trim();if(!txt)return;
-  if(!it.dialogue)it.dialogue=[];
-  it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
-  save();render();
-}
-function togglePri(){/* legacy no-op */}
-function toggleMem(){/* legacy no-op */}
-function toggleFlow(){
-  inputFlowOn=!inputFlowOn;
-  const btn=document.getElementById('flow-toggle');
-  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='&#9655; Flow';}
-  else{btn.className='flow-toggle off';btn.innerHTML='&#9675; Note only';}
-}
-function toggleReminder(){
-  inputIsReminder=!inputIsReminder;
-  const btn=document.getElementById('rem-toggle');
-  btn.className='rem-toggle'+(inputIsReminder?' on':'');
-  btn.innerHTML=inputIsReminder?'&#128276; Reminder on':'&#128276; Reminder';
-  document.getElementById('rem-due-row').style.display=inputIsReminder?'flex':'none';
-}
-function toggleStatus(){
-  inputStatusDeferred=!inputStatusDeferred;
-  const btn=document.getElementById('status-toggle');
-  if(inputStatusDeferred){btn.className='status-toggle deferred';btn.textContent='Deferred';}
-  else{btn.className='status-toggle open';btn.textContent='Open';}
-}
-function cyclePriority(){
-  inputPriLevel=(inputPriLevel+1)%3;
-  const btn=document.getElementById('pri-cycle');
-  if(inputPriLevel===0){btn.className='pri-cycle';btn.innerHTML='&#9734; Low';}
-  else if(inputPriLevel===1){btn.className='pri-cycle med';btn.innerHTML='&#9733; Medium';}
-  else{btn.className='pri-cycle high';btn.innerHTML='&#9733;&#9733; High';}
-}
+function togglePri(){inputPriFlag=!inputPriFlag;const b=document.getElementById('ptoggle');b.className='ptoggle'+(inputPriFlag?' on':'');document.getElementById('plbl').textContent=inputPriFlag?'★ Priority':'Priority';}
+function toggleMem(){inputMemFlag=!inputMemFlag;const b=document.getElementById('memtoggle');b.className='ptoggle mem-toggle'+(inputMemFlag?' mem-on':'');document.getElementById('memlbl').textContent=inputMemFlag?'⚑ Memory':'Flag Memory';}
 function addItem(){
-  const ta=document.getElementById('input-ta');
-  const txt=(ta.value||'').trim();if(!txt)return;
-  // Determine type
-  let type=document.getElementById('input-type').value||'note';
-  if(inputIsReminder)type='reminder';
-  if(inputFlowOn)type='fordave'; // flow = directed to Claude
+  const ta=document.getElementById('input-ta');const txt=(ta.value||'').trim();if(!txt)return;
+  const type=document.getElementById('input-type').value||'reminder';
   const tag=document.getElementById('input-tag').value||null;
-  // Remember last tag
-  if(tag)lastTag=tag;
-  const dueDate=inputIsReminder?(document.getElementById('input-due').value||''):'';
+  const status=document.getElementById('input-status').value;
+  const dueDate=document.getElementById('input-due').value||'';
+  const autoMem=type==='fordave'?true:inputMemFlag;
   const urlRaw=(document.getElementById('input-url')?.value||'').trim();
-  const priority=inputPriLevel>=2?true:(inputPriLevel===1?'medium':false);
-  // Initial dialogue entry if flow is on
-  const dialogue=inputFlowOn?[{from:'dave',text:txt,ts:new Date().toISOString()}]:null;
-  const storeText=inputFlowOn?txt:txt; // always use full text
-  S.items.unshift({
-    id:'i_'+Date.now(),
-    type,
-    text:storeText,
-    done:false,
-    priority:inputPriLevel>0,
-    memFlag:inputFlowOn,
-    tag,
-    deferred:inputStatusDeferred,
-    answer:null,
-    dialogue:dialogue,
-    created:new Date().toISOString(),
-    dueDate,
-    completedDate:'',
-    itemUrl:urlRaw||null
-  });
-  // Reset form
+  S.items.unshift({id:'i_'+Date.now(),type,text:txt,done:false,priority:inputPriFlag,memFlag:autoMem,tag,deferred:status==='deferred',answer:null,created:new Date().toISOString(),dueDate,completedDate:'',itemUrl:urlRaw||null});
   ta.value='';
-  document.getElementById('input-type').value='note';
-  // Restore last tag
-  const tagSel=document.getElementById('input-tag');
-  if(lastTag&&tagSel){for(let i=0;i<tagSel.options.length;i++){if(tagSel.options[i].value===lastTag){tagSel.selectedIndex=i;break;}}}
-  document.getElementById('input-url').value='';
+  document.getElementById('input-type').value='reminder';
+  document.getElementById('input-tag').value='';
+  document.getElementById('input-status').value='open';
   document.getElementById('input-due').value='';
-  if(document.getElementById('input-due-time'))document.getElementById('input-due-time').value='';
-  // Keep flow/status/reminder/pri at their current state (sticky) — only reset reminder
-  if(inputIsReminder){inputIsReminder=false;document.getElementById('rem-toggle').className='rem-toggle';document.getElementById('rem-toggle').innerHTML='&#128276; Reminder';document.getElementById('rem-due-row').style.display='none';}
+  document.getElementById('input-url').value='';
+  inputPriFlag=false;inputMemFlag=false;
+  document.getElementById('ptoggle').className='ptoggle';document.getElementById('plbl').textContent='Priority';
+  document.getElementById('memtoggle').className='ptoggle mem-toggle';document.getElementById('memlbl').textContent='Flag Memory';
   save();render();
 }
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
-
-
-/* ── MOVE-TO-ROADMAP ── */
-function mtrOpen(itemId){
-  const it=S.items.find(i=>i.id===itemId);if(!it)return;
-  mtrSourceId=itemId;
-  mtrType='phase';
-  // Fill source preview
-  const prev=document.getElementById('mtr-source-preview');
-  if(prev)prev.textContent=(it.text||'').length>120?(it.text||'').substring(0,120)+'…':it.text||'';
-  // Fill label
-  const lbl=document.getElementById('mtr-label');
-  if(lbl)lbl.value=(it.text||'').split('\n')[0].substring(0,80);
-  // Set type buttons
-  mtrSetType('phase');
-  // Populate phase selector
-  mtrFillPhases();
-  // Clear dates
-  ['mtr-start','mtr-end','mtr-gate-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  // Open panel
-  document.getElementById('mtr-overlay').classList.add('open');
-  document.getElementById('mtr-panel').classList.add('open');
-}
-function mtrClose(){
-  document.getElementById('mtr-overlay').classList.remove('open');
-  document.getElementById('mtr-panel').classList.remove('open');
-  mtrSourceId=null;
-}
-function mtrSetType(t){
-  mtrType=t;
-  ['phase','task','gate'].forEach(k=>{
-    const btn=document.getElementById('mtr-type-'+k);
-    if(btn)btn.className='mtr-type-btn'+(k===t?' active':'');
-  });
-  const attachField=document.getElementById('mtr-attach-field');
-  const posField=document.getElementById('mtr-position-field');
-  const datesField=document.getElementById('mtr-dates-field');
-  const gateDateField=document.getElementById('mtr-gate-date-field');
-  if(t==='phase'){
-    if(attachField)attachField.style.display='none';
-    if(posField)posField.style.display='none';
-    if(datesField)datesField.style.display='block';
-    if(gateDateField)gateDateField.style.display='none';
-  } else if(t==='task'){
-    if(attachField)attachField.style.display='block';
-    if(posField)posField.style.display='block';
-    if(datesField)datesField.style.display='block';
-    if(gateDateField)gateDateField.style.display='none';
-  } else { // gate
-    if(attachField)attachField.style.display='block';
-    if(posField)posField.style.display='none';
-    if(datesField)datesField.style.display='none';
-    if(gateDateField)gateDateField.style.display='block';
-  }
-}
-function mtrFillPhases(){
-  const sel=document.getElementById('mtr-phase-sel');if(!sel)return;
-  const phases=roadPhases();
-  sel.innerHTML=phases.map(p=>`<option value="${p.id}">${esc(p.label)}</option>`).join('');
-}
-function mtrSave(){
-  if(!mtrSourceId)return;
-  const it=S.items.find(i=>i.id===mtrSourceId);if(!it)return;
-  const label=(document.getElementById('mtr-label')?.value||'').trim()||it.text.substring(0,60);
-  const phaseId=document.getElementById('mtr-phase-sel')?.value||null;
-  const position=document.getElementById('mtr-position-sel')?.value||'end';
-  const newId='r_'+Date.now();
-
-  if(mtrType==='phase'){
-    const start=document.getElementById('mtr-start')?.value||'';
-    const end=document.getElementById('mtr-end')?.value||'';
-    S.road.push({id:newId,kind:'phase',label,open:false,color:'',note:it.text,targetStart:start,targetEnd:end});
-    renumberPhases();
-  } else if(mtrType==='task'){
-    const start=document.getElementById('mtr-start')?.value||'';
-    const end=document.getElementById('mtr-end')?.value||'';
-    const newStep={id:newId,kind:'step',phase:phaseId,label,note:it.text,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false};
-    // Insert at position
-    if(position==='start'){
-      const idx=S.road.findIndex(r=>r.id===phaseId);
-      if(idx>=0){S.road.splice(idx+1,0,newStep);}else{S.road.push(newStep);}
-    } else {
-      // Find last step or gate in this phase
-      let lastIdx=-1;
-      S.road.forEach((r,i)=>{if((r.kind==='step'||r.kind==='gate')&&r.phase===phaseId)lastIdx=i;});
-      if(lastIdx>=0){S.road.splice(lastIdx+1,0,newStep);}else{S.road.push(newStep);}
-    }
-  } else { // gate
-    const gateDate=document.getElementById('mtr-gate-date')?.value||'';
-    S.road.push({id:newId,kind:'gate',phase:phaseId,label,date:gateDate,met:false,metDate:''});
-  }
-
-  // Handle source note
-  const keepNote=document.getElementById('mtr-keep-note')?.value||'yes';
-  if(keepNote==='no'){it.done=true;it.completedDate=todayStr();}
-  else{it.itemUrl='roadmap:'+newId;} // link badge back to roadmap item
-
-  save();
-  mtrClose();
-  render();
-  renderGantt();
-}
 
 /* ── ROADMAP ── */
 const RAINBOW=['#E8A020','#E8622A','#D43540','#B03090','#6040C8','#2070C8','#1A9E78','#4A9E20'];
@@ -2679,9 +2266,9 @@ function buildExportJSON(){
     version:5,
     exported:new Date().toISOString(),
     seedVersion:SEED_VERSION,
-    masterVersion:'v279',
+    masterVersion:'v283',
     filters:{status:fSt,tag:fTag,type:fType},
-    items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null})),
+    items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||''})),
     road:(S.road||[])
   },null,2);
 }
@@ -2734,7 +2321,7 @@ function otLoad(){
 function otSave(){try{localStorage.setItem(OT_SK,JSON.stringify(OT));}catch(e){}}
 
 function addContact(){
-  const contactName=document.getElementById('ot-name').value.trim();
+  const name=document.getElementById('ot-name').value.trim();
   if(!name){alert('Name required');return;}
   const c={
     id:'ot_'+Date.now(),
@@ -2887,7 +2474,6 @@ function renderOT(){
     out+=`</div>`; // card
   });
   if(wrap)wrap.innerHTML=out;
-  updateTabBadges();
 }
 
 /* note edit toggle — also show save/cancel actions */
@@ -2933,8 +2519,8 @@ function rfRender(){
 /* ── INIT ── */
 load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
-roadLevel=1;
-migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
+roadLevel=2;
+initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
@@ -2944,17 +2530,6 @@ migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),
 let _searchResults=[];
 let _searchIdx=-1;
 
-let _srFilter='all'; // 'all' | 'open'
-let _srVisible=[];   // filtered subset currently shown
-function srSetFilter(f){
-  _srFilter=f;
-  ['all','open'].forEach(k=>{
-    const btn=document.getElementById('srf-'+k);
-    if(btn)btn.className='sr-filter-btn'+(k===f?' active':'');
-  });
-  const q=(document.getElementById('search-input')?.value||'').trim();
-  if(q)searchRender(q);
-}
 function searchUpdate(){
   const q=(document.getElementById('search-input')?.value||'').trim();
   const clr=document.getElementById('search-clear');
@@ -2976,10 +2551,7 @@ function searchClear(){
 
 function searchClose(){
   document.getElementById('search-results-panel').classList.remove('open');
-  _searchResults=[];_srVisible=[];_searchIdx=-1;
-  // Reset filter to All for next open
-  _srFilter='all';
-  ['all','open'].forEach(k=>{const btn=document.getElementById('srf-'+k);if(btn)btn.className='sr-filter-btn'+(k==='all'?' active':'');});
+  _searchResults=[];_searchIdx=-1;
 }
 
 function searchPanelClick(e){
@@ -3062,7 +2634,6 @@ function searchBuild(q){
     results.push({
       source:'notes',
       sourceLabel:'Notes',
-      _done:it.done||false,
       title:it.text,
       sub:'Notes & Checklist · '+typeLabel+(it.tag?' · '+it.tag:'')+(it.done?' · done':''),
       action:()=>{
@@ -3151,23 +2722,14 @@ function searchRender(q){
   const scroll=document.getElementById('search-results-scroll');
   const title=document.getElementById('search-results-title');
   if(!scroll)return;
-  // Apply open filter: for notes source, hide done items
-  _srVisible=_srFilter==='open'
-    ?_searchResults.filter(r=>r.source!=='notes'||!r._done)
-    :_searchResults;
-  const visible=_srVisible;
-  if(!visible.length){
-    scroll.innerHTML='<div class="search-empty">'+(
-      _srFilter==='open'&&_searchResults.length
-        ?'No open items match &ldquo;'+esc(q)+'&rdquo; &mdash; <span style="cursor:pointer;text-decoration:underline;color:#c9a050" onclick="srSetFilter(\u0022all\u0022)">show all</span>'
-        :'No results for &ldquo;'+esc(q)+'&rdquo;'
-    )+'</div>';
+  if(!_searchResults.length){
+    scroll.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>';
     if(title)title.textContent='No results';
     return;
   }
-  if(title)title.textContent=visible.length+' result'+(visible.length===1?'':'s')+(_srFilter==='open'?' (open)':'');
-  scroll.innerHTML=visible.map((r,i)=>`
-    <div class="search-result-item" onclick="searchGo(_srVisible[${i}])">
+  if(title)title.textContent=_searchResults.length+' result'+(_searchResults.length===1?'':'s');
+  scroll.innerHTML=_searchResults.map((r,i)=>`
+    <div class="search-result-item" onclick="searchGo(_searchResults[${i}])">
       <span class="sr-source src-${r.source}">${esc(r.sourceLabel)}</span>
       <div class="sr-body">
         <div class="sr-title">${hl(r.title.length>100?r.title.substring(0,100)+'\u2026':r.title,q)}</div>
@@ -3190,66 +2752,5 @@ document.addEventListener('keydown',function(e){
 });
 
 </script>
-
-<!-- MOVE-TO-ROADMAP SLIDE PANEL -->
-<div class="mtr-overlay" id="mtr-overlay" onclick="mtrClose()"></div>
-<div class="mtr-panel" id="mtr-panel">
-  <div class="mtr-header">
-    <span class="mtr-title">Move to Roadmap</span>
-    <button class="mtr-close" onclick="mtrClose()">&#215;</button>
-  </div>
-  <div class="mtr-body">
-    <div class="mtr-field">
-      <label>Source note</label>
-      <div class="mtr-source-preview" id="mtr-source-preview"></div>
-    </div>
-    <div class="mtr-field">
-      <label>Roadmap item type</label>
-      <div class="mtr-type-row">
-        <button class="mtr-type-btn active" id="mtr-type-phase" onclick="mtrSetType('phase')">Phase</button>
-        <button class="mtr-type-btn" id="mtr-type-task" onclick="mtrSetType('task')">Task</button>
-        <button class="mtr-type-btn" id="mtr-type-gate" onclick="mtrSetType('gate')">Gate</button>
-      </div>
-    </div>
-    <div class="mtr-field" id="mtr-attach-field" style="display:none">
-      <label>Attach to phase</label>
-      <select id="mtr-phase-sel"></select>
-    </div>
-    <div class="mtr-field" id="mtr-position-field" style="display:none">
-      <label>Insert position</label>
-      <select id="mtr-position-sel">
-        <option value="end">End of phase</option>
-        <option value="start">Start of phase</option>
-      </select>
-    </div>
-    <div class="mtr-field">
-      <label>Label</label>
-      <input type="text" id="mtr-label" placeholder="Task or phase label" />
-    </div>
-    <div class="mtr-field" id="mtr-dates-field" style="display:none">
-      <label>Target start &amp; end</label>
-      <div style="display:flex;gap:8px">
-        <input type="date" id="mtr-start" style="flex:1" />
-        <input type="date" id="mtr-end" style="flex:1" />
-      </div>
-    </div>
-    <div class="mtr-field" id="mtr-gate-date-field" style="display:none">
-      <label>Gate date</label>
-      <input type="date" id="mtr-gate-date" />
-    </div>
-    <div class="mtr-field">
-      <label>Keep note in Notes tab?</label>
-      <select id="mtr-keep-note">
-        <option value="yes">Yes — keep note, add roadmap link</option>
-        <option value="no">No — mark note done</option>
-      </select>
-    </div>
-  </div>
-  <div class="mtr-actions">
-    <button class="mtr-cancel-btn" onclick="mtrClose()">Cancel</button>
-    <button class="mtr-save-btn" onclick="mtrSave()">Add to Roadmap</button>
-  </div>
-</div>
-
 </body>
 </html>
