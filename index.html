@@ -69,9 +69,6 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all .15s;box-shadow:0 2px 5px rgba(199,0,37,0.35),0 1px 2px rgba(0,0,0,0.15)}
 .hd-copy-btn:hover{background:#a50020;box-shadow:0 3px 8px rgba(199,0,37,0.45),0 1px 3px rgba(0,0,0,0.2)}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
-/* ── PERSISTENT COPY BAR ── */
-.copy-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #E5E5EA;display:flex;align-items:center;justify-content:flex-end;padding:5px 20px;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-.copy-bar-ok{font-family:'Source Code Pro',monospace;font-size:11px;color:#2a7a2a;display:none}
 
 /* ── SEARCH BAR (between header and tabs) ── */
 .search-bar{display:flex;align-items:center;padding:6px 16px;background:#ffffff;border-top:none;border-bottom:1px solid #E5E5EA}
@@ -90,6 +87,11 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .tab:hover{color:#000000;background:#ffffff;border-color:#C6C6C8;box-shadow:0 -2px 6px rgba(0,0,0,0.10),0 1px 2px rgba(0,0,0,0.04) inset}
 .tab.active{color:#ffffff;background:#C70025;border-color:#C70025;border-bottom:2px solid #ffffff;font-weight:700;top:0;padding-bottom:9px;box-shadow:0 -3px 8px rgba(199,0,37,0.30),0 2px 4px rgba(199,0,37,0.20);text-shadow:0 1px 2px rgba(0,0,0,0.20)}
 .tab-spacer{flex:1}
+/* ── TAB-ACTION BUTTON (Copy to Claude) ── */
+.tab-action{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:9px 18px;border:1px solid #C70025;border-bottom:none;background:#C70025;color:#fff;cursor:pointer;border-radius:6px 6px 0 0;transition:all .18s;white-space:nowrap;position:relative;top:2px;flex-shrink:0;box-shadow:0 -2px 6px rgba(199,0,37,0.25),0 2px 4px rgba(199,0,37,0.15);text-shadow:0 1px 2px rgba(0,0,0,0.18)}
+.tab-action:hover{background:#a50020;border-color:#a50020;box-shadow:0 -3px 10px rgba(199,0,37,0.38),0 2px 4px rgba(199,0,37,0.20)}
+.tab-action:active{top:1px}
+.tab-action-ok{font-family:'Source Code Pro',monospace;font-size:11px;color:#2a7a2a;display:none;margin-right:4px;align-self:center;position:relative;top:1px}
 
 /* ── DECK TAB GROUP ── */
 .deck-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
@@ -758,7 +760,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <div class="tab-spacer"></div>
-    <button class="tab" onclick="showTab('help',this)">Help &#9881;</button>
+    <span class="tab-action-ok" id="copy-tab-ok">&#10003; Copied</span>
+    <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()">Copy to Claude</button>
+    <button class="tab" onclick="showTab('help',this)" style="margin-left:4px">Help &#9881;</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none">
     <div id="fchip-all"     class="fchip act" onclick="tSt(null)"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
@@ -785,15 +789,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </select>
     <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
     <div style="margin-left:auto"></div>
-    <span class="hd-copy-ok" id="copy-ok-2" style="display:none;font-family:'Source Code Pro',monospace;font-size:11px;color:#8aba80">&#10003; Copied</span>
-    <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()" style="height:32px;font-size:13px;letter-spacing:.04em;border-radius:4px">Copy to Claude</button>
   </div>
-</div>
-
-<!-- PERSISTENT COPY BAR -->
-<div class="copy-bar" id="copy-bar">
-  <span class="copy-bar-ok" id="copy-bar-ok">&#10003; Copied</span>
-  <button class="hd-copy-btn" onclick="copyToClaude()" style="height:32px;font-size:13px;letter-spacing:.04em;border-radius:4px">Copy to Claude</button>
 </div>
 
 <!-- SEARCH RESULTS OVERLAY -->
@@ -2895,7 +2891,7 @@ function buildExportJSON(){
 }
 function copyToClaude(){
   const json=buildExportJSON();
-  const btn=document.getElementById('copy-btn');if(btn)btn.disabled=true;
+  const btn=document.getElementById('copy-tab-btn');if(btn)btn.disabled=true;
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));
   } else {
@@ -2904,7 +2900,7 @@ function copyToClaude(){
 }
 function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
 function clipFb2(txt){window.prompt('Auto-copy failed:',txt);clipOk();}
-function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;['copy-ok','copy-ok-2','copy-bar-ok'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
+function clipOk(){const btn=document.getElementById('copy-tab-btn');if(btn){btn.disabled=false;}['copy-ok','copy-tab-ok'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
 
 /* ── OUTREACH ── */
 let OT=[];
