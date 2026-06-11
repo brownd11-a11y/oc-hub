@@ -1288,7 +1288,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T09:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T10:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1424,7 +1424,39 @@ const ROAD_SEED=[
   {id:'r_1780868197640',kind:'step',phase:'r_1780841462043',label:'Register business SC DOR',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780868226753',kind:'step',phase:'r_1780841462043',label:'Update EIN number Record with new Vigilia Name',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
   {id:'r_1780868272578',kind:'step',phase:'r_1780841462043',label:'Finalize business licensing filings in time for book sales',note:'',cmd:null,targetStart:'',targetEnd:'2026-08-31',completedDate:'',done:false},
-  {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'2026-08-31',met:false}
+  {id:'r_1780868718771',kind:'gate',phase:'r_1780841462043',label:'Established business records',date:'2026-08-31',met:false},
+  {id:'rph1',kind:'phase',label:'Mechanical rescan',color:'#E8A020',open:false,num:1},
+  {id:'rph1_s1',kind:'step',phase:'rph1',label:'W3.1 — Mechanical pass rescan',note:'Re-run against chapters edited since v229.',cmd:'"Mechanical pass"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  {id:'rph1_s2',kind:'step',phase:'rph1',label:'W3.8 — Word-by-word rescan',note:'Focus on recently touched sections.',cmd:'"Word-by-word pass"',targetStart:'',targetEnd:'2026-06-05',completedDate:'2026-06-07',done:true},
+  {id:'r_1780838559575',kind:'step',phase:'rph1',label:'Orphan authors out',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
+  {id:'r_1780840827808',kind:'step',phase:'rph1',label:'Image trim whitespace review table',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-07',completedDate:'',done:false},
+  {id:'rph1_g1',kind:'gate',phase:'rph1',label:'Ready for manual editing',date:'2026-06-07',met:false},
+  {id:'rph4',kind:'phase',label:'June 9 Capitol Event Contingencies',color:'#D43540',open:false,num:3},
+  {id:'rph4_s1',kind:'step',phase:'rph4',label:'Watch June 9 Capitol event — update Ch. 18 and Conclusion',note:'Grusch · Burlison · Moskowitz · Luna · Burchett — hosted by Kean and Fox.',cmd:null,targetStart:'',targetEnd:'2026-06-10',completedDate:'2026-06-09',done:true},
+  {id:'r_1780869619317',kind:'step',phase:'rph4',label:'Update Fig 5.3 Disclosure Pressure',note:'ERA3 diagram updated — June 9 entry added; PURSUE revised to rolling/from May 2026.',cmd:null,targetStart:'',targetEnd:'2026-06-11',completedDate:'2026-06-10',done:true},
+  {id:'r_1780839029403',kind:'step',phase:'rph4',label:'Intro / Conclusion rework — pace of change, DeGrasse Tyson, in medias res framing',note:'Combine intro pace-of-change update (incl. DeGrasse Tyson) with full intro/conclusion review following June 9 insertions.',cmd:null,targetStart:'',targetEnd:'2026-06-18',completedDate:'',done:false},
+  {id:'rph4_g1',kind:'gate',phase:'rph4',label:'Ch. 18 and Conclusion final',date:'2026-06-18',met:false},
+  {id:'rph2',kind:'phase',label:'Repetition check',color:'#B03090',open:false,num:4},
+  {id:'r_1780839159182',kind:'step',phase:'rph2',label:'Word for Word on entire book',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
+  {id:'rph2_s1',kind:'step',phase:'rph2',label:'Thematic echo scan',note:'Flag arguments or phrases appearing in substantially similar form across chapters.',cmd:'"Thematic echo scan"',targetStart:'',targetEnd:'2026-06-15',completedDate:'',done:false},
+  {id:'rph2_g1',kind:'gate',phase:'rph2',label:'No material repetition — Dave reviews and approves any cuts',date:'2026-06-16',met:false},
+  {id:'r_1780838705405',kind:'phase',label:'Final Mechanical Pass',color:'#2070C8',open:false,num:6},
+  {id:'r_1780838482971',kind:'step',phase:'r_1780838705405',label:'Footnote retrofit',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780838539117',kind:'step',phase:'r_1780838705405',label:'Index Entry Sweep',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'r_1780839999740',kind:'step',phase:'r_1780838705405',label:'Word for Word, Punctuation, Grammar, Spelling, Dups',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-19',completedDate:'',done:false},
+  {id:'rph5_s1',kind:'step',phase:'rph5',label:'W3.9b — Production pass print',note:'Running heads · widow/orphan · image resolution · page breaks · TOC numbers.',cmd:'"Production pass print"',targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
+  {id:'rph6',kind:'phase',label:'Export',color:'#E8A020',open:false,num:9},
+  {id:'rph6_s1',kind:'step',phase:'rph6',label:'Export ebook via Vellum',note:'Generate EPUB. Verify footnote navigation, image rendering, TOC.',cmd:null,targetStart:'',targetEnd:'2026-07-12',completedDate:'',done:false},
+  {id:'rph6_s2',kind:'step',phase:'rph6',label:'Export print PDF via Vellum',note:'Verify trim, bleed, margins, running heads, image resolution.',cmd:null,targetStart:'',targetEnd:'2026-07-14',completedDate:'',done:false},
+  {id:'rph6_s3',kind:'step',phase:'rph6',label:'Order and review proof copy',note:'Order proof from KDP or IngramSpark before approving for distribution.',cmd:null,targetStart:'',targetEnd:'2026-07-15',completedDate:'',done:false},
+  {id:'rph6_g1',kind:'gate',phase:'rph6',label:'All formats exported and verified',date:'2026-07-18',met:false},
+  {id:'rph_agent',kind:'phase',label:'Literary Agent Query',color:'#7B5EA7',open:false,num:18,note:'Query literary agents before or alongside publisher pitch. All three target publishers (PublicAffairs, Dutton/Caliber, Twelve) require agent submission. Top targets: Keith Urbahn (Javelin), Eric Lupfer (Calligraph), Matt Latimer (Javelin). 60-day query window. If agent secured before vacation, they handle publisher submissions. If no agent by Aug 29, proceed direct self-publish.'},
+  {id:'rph_agent_s1',kind:'step',phase:'rph_agent',label:'Agent decision — go/no-go on querying',note:'Decide whether to pursue agents simultaneously with or before publisher pitch. Agents can submit to publishers more effectively and negotiate better terms. Time cost: 2–4 weeks to query; 4–8 weeks typical response.',cmd:null,targetStart:'',targetEnd:'2026-06-20',completedDate:'',done:false},
+  {id:'rph_agent_s2',kind:'step',phase:'rph_agent',label:'Build query letter + 25-page sample',note:'Query letter: 1 page. Hook (June 9 + Turner/NAA document), premise (analytical/structural vs. memoir wave), author credentials, chapter outline, word count. Sample: Ch.1 + Ch.5 opener. Calligraph: paste 25 pages in email body, no attachments, submissions@calligraphlit.com, name agent in subject. Javelin: check javelindc.com for current query instructions.',cmd:null,targetStart:'',targetEnd:'2026-06-24',completedDate:'',done:false},
+  {id:'rph_agent_s3',kind:'step',phase:'rph_agent',label:'Query Urbahn + Lupfer + Latimer simultaneously',note:'All three can be queried at once — no exclusivity requirement at query stage. Urbahn/Latimer (Javelin): national security insider nonfiction lane. Lupfer (Calligraph): explicitly lists national security and defense as focus; fastest known response time (1 day on record). Lead pitch: differentiation from Elizondo memoir wave + June 9 Capitol event + Turner/NAA document.',cmd:null,targetStart:'',targetEnd:'2026-06-27',completedDate:'',done:false},
+  {id:'rph_agent_g1',kind:'gate',phase:'rph_agent',label:'Agent query out — before vacation',date:'2026-06-30',met:false},
+  {id:'rph_agent_s4',kind:'step',phase:'rph_agent',label:'Agent response window',note:'Allow 6–8 weeks from submission. Follow up at 4 weeks if no acknowledgment. If agent offers representation, evaluate deal terms before committing.',cmd:null,targetStart:'2026-06-30',targetEnd:'2026-08-22',completedDate:'',done:false},
+  {id:'rph_agent_g2',kind:'gate',phase:'rph_agent',label:'Agent decision — sign or proceed self-publish',date:'2026-08-29',met:false}
 ];
 
 let S={items:[],road:[]};
