@@ -36,10 +36,11 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 
 
 /* ── COMPACT HEADER ROW ── */
-.hd{background:var(--cover-black);padding:0;position:relative}
-.hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel));z-index:1}
-.hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:52px;margin-top:3px}
-.hd-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--cover-cream);white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em}
+.hd{padding:0;position:relative;background:var(--cover-black);background-image:url('https://brownd11-a11y.github.io/oc-hub/banner.jpg');background-size:cover;background-position:center 35%}
+.hd::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,14,0.82) 0%,rgba(10,10,14,0.65) 50%,rgba(10,10,14,0.72) 100%);z-index:0}
+.hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel));z-index:2}
+.hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:64px;margin-top:3px;position:relative;z-index:1}
+.hd-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ebe2;white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 .hd-title em{font-style:italic;color:#c8bfa8}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
 .hd-stat{display:flex;align-items:baseline;gap:4px;padding:0 12px;border-right:1px solid #2a2820;white-space:nowrap;flex-shrink:0}
