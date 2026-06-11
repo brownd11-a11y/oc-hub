@@ -617,7 +617,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item-link-badge{font-size:10px;flex-shrink:0;opacity:.7}
 
 /* ── SETTINGS PANEL ── */
-.settings-section{margin-bottom:28px}
+.kw-chip{display:inline-flex;align-items:center;gap:4px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.05em;background:var(--page-bg);border:1px solid var(--separator);border-radius:20px;padding:2px 9px 2px 9px;color:var(--label-primary);white-space:nowrap}
+.kw-chip-x{cursor:pointer;color:var(--label-secondary);font-size:11px;line-height:1;margin-left:2px;transition:color .1s}
+.kw-chip-x:hover{color:var(--pri-color)}
 .settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
 .settings-field{margin-bottom:12px}
 .settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:4px}
@@ -1116,20 +1118,36 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div></div>
 <!-- REFERENCES -->
 <div class="panel" id="panel-refs"><div class="rf-wrap">
-  <div class="rf-add"><h3>Add reference</h3>
-    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-end;flex-wrap:wrap">
-      <div style="display:flex;flex-direction:column;gap:4px;min-width:200px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Keyword</label><div class="rf-kw-wrap"><select class="rf-kw-select" id="rf-kw-sel"></select></div></div>
-      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">New keyword</label><div style="display:flex;gap:6px"><input type="text" class="rf-kw-new" id="rf-kw-new" placeholder="Type new keyword&hellip;" /><button class="rf-add-kw-btn" onclick="rfAddKeyword()">+ Add</button></div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 2fr auto;gap:8px;align-items:end">
-      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">URL</label><input type="text" id="rf-url" placeholder="https://&hellip;" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%" /></div>
-      <div style="display:flex;flex-direction:column;gap:4px"><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Description</label><input type="text" id="rf-desc-in" placeholder="Brief description&hellip;" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none;width:100%" /></div>
-      <button class="rf-save-btn" onclick="rfAdd()">Save</button>
+  <div class="rf-add inp-card" style="margin-bottom:16px">
+    <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px">
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px">
+        <label class="settings-lbl">Keyword</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <select class="inp-sel" id="rf-kw-sel" style="flex:1"></select>
+          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new keyword" id="rf-kw-add-btn">＋</button>
+        </div>
+        <div id="rf-kw-new-row" style="display:none;margin-top:4px;display:none">
+          <div style="display:flex;gap:6px">
+            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New keyword…" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
+            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()" title="Save keyword">＋</button>
+            <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">✕</button>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px">
+        <label class="settings-lbl">URL</label>
+        <input type="text" class="inp-sel" id="rf-url" placeholder="https://…" style="width:100%;box-sizing:border-box" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
+        <label class="settings-lbl">Description</label>
+        <input type="text" class="inp-sel" id="rf-desc-in" placeholder="Brief description…" style="width:100%;box-sizing:border-box" />
+      </div>
+      <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
     </div>
   </div>
   <div class="rf-filter"><span class="rf-filter-lbl">Filter:</span><select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All keywords</option></select><span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-left:auto"></span></div>
   <table class="rf-table"><thead><tr><th style="width:160px">Keyword</th><th style="width:220px">URL</th><th>Description</th><th style="width:80px"></th></tr></thead><tbody id="rf-tbody"></tbody></table>
-  <div id="rf-empty" class="rf-empty">No references yet &mdash; add one above</div>
+  <div id="rf-empty" class="rf-empty">No references yet — add one above</div>
 </div></div>
 <!-- HELP -->
 <div class="panel" id="panel-help"><div class="ref-section">
@@ -1233,6 +1251,24 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span class="settings-card-label">Sync preferences</span>
     <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time unless you checked &ldquo;Don&rsquo;t show this again.&rdquo; Click below to restore it.</p>
     <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓ — modal will show next time'">Restore Update Claude dialog</button>
+  </div>
+
+  <div class="settings-card">
+    <span class="settings-card-label">Keywords</span>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared keyword list used across Notes, Resources, and outreach tagging. Add by chapter, part, topic, or anything you reference repeatedly.</p>
+    <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
+    <div id="kw-edit-row" style="display:none;flex-direction:column;gap:6px">
+      <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter keywords separated by commas…" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="dl-send-btn" onclick="kwSave()">Save keywords</button>
+        <span class="dl-cancel-link" onclick="kwCancelEdit()">Cancel</span>
+      </div>
+    </div>
+    <div id="kw-add-row" style="display:flex;gap:6px;align-items:center;margin-top:4px">
+      <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a keyword…" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
+      <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add keyword">＋</button>
+      <button class="iabtn" onclick="kwStartEdit()" style="height:34px;white-space:nowrap">Edit all…</button>
+    </div>
   </div>
 
   <div style="text-align:right;margin-top:16px">
@@ -1747,6 +1783,63 @@ function initSettings(){
   if(inp)inp.addEventListener('input',updateSettingsPreview);
   if(finp)finp.addEventListener('input',updateSettingsPreview);
 }
+
+// ── KEYWORD MANAGEMENT ────────────────────────────────────────────────────
+const KW_SK='oc_keywords_v1';
+const KW_DEFAULTS=[
+  'Ch.1','Ch.2','Ch.3','Ch.4','Ch.5','Ch.6','Ch.7','Ch.8','Ch.9',
+  'Ch.10','Ch.11','Ch.12','Ch.13','Ch.14','Ch.15','Ch.16','Ch.17','Ch.18',
+  'Part One','Part Two','Part Three','Part Four',
+  'Introduction','Conclusion','Appendix','Glossary','Index',
+  'footnote','citation','figure','editorial','fordave'
+];
+let KW=[];
+function kwLoad(){
+  try{const r=localStorage.getItem(KW_SK);KW=r?JSON.parse(r):[...KW_DEFAULTS];}
+  catch(e){KW=[...KW_DEFAULTS];}
+}
+function kwSaveStore(){try{localStorage.setItem(KW_SK,JSON.stringify(KW));}catch(e){}}
+function kwRender(){
+  const wrap=document.getElementById('kw-chips');
+  if(!wrap)return;
+  wrap.innerHTML=KW.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).map(k=>
+    `<span class="kw-chip">${esc(k)}<span class="kw-chip-x" onclick="kwRemove(${JSON.stringify(k)})" title="Remove">&#10005;</span></span>`
+  ).join('');
+  // Also sync to RF_KW so references tab shares the list
+  KW.forEach(k=>{if(!RF_KW.includes(k))RF_KW.push(k);});
+  rfBuildKwSelects();
+}
+function kwRemove(k){KW=KW.filter(w=>w!==k);kwSaveStore();kwRender();}
+function kwQuickAdd(){
+  const inp=document.getElementById('kw-quick-inp');
+  const val=(inp?inp.value||'':'').trim();
+  if(!val)return;
+  val.split(',').map(v=>v.trim()).filter(Boolean).forEach(v=>{if(!KW.includes(v))KW.push(v);});
+  kwSaveStore();kwRender();
+  if(inp)inp.value='';
+}
+function kwStartEdit(){
+  const ta=document.getElementById('kw-edit-ta');
+  const editRow=document.getElementById('kw-edit-row');
+  const addRow=document.getElementById('kw-add-row');
+  if(ta)ta.value=KW.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).join(', ');
+  if(editRow)editRow.style.display='flex';
+  if(addRow)addRow.style.display='none';
+}
+function kwCancelEdit(){
+  const editRow=document.getElementById('kw-edit-row');
+  const addRow=document.getElementById('kw-add-row');
+  if(editRow)editRow.style.display='none';
+  if(addRow)addRow.style.display='flex';
+}
+function kwSave(){
+  const ta=document.getElementById('kw-edit-ta');
+  const raw=(ta?ta.value||'':'');
+  KW=raw.split(',').map(v=>v.trim()).filter(Boolean);
+  KW=[...new Set(KW)]; // dedupe
+  kwSaveStore();kwRender();kwCancelEdit();
+}
+// ─────────────────────────────────────────────────────────────────────────
 
 function rlist(){
   const list=document.getElementById('list');
@@ -3220,7 +3313,19 @@ let RF=[],RF_KW=[],rfEditId=null;
 function rfLoad(){try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}}
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...RF_KW].sort((a,b)=>a.localeCompare(b));['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
-function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;inp.value='';}
+function rfShowKwInput(){
+  const row=document.getElementById('rf-kw-new-row');
+  const btn=document.getElementById('rf-kw-add-btn');
+  if(row){row.style.display='block';const inp=document.getElementById('rf-kw-new');if(inp)inp.focus();}
+  if(btn)btn.style.display='none';
+}
+function rfHideKwInput(){
+  const row=document.getElementById('rf-kw-new-row');
+  const btn=document.getElementById('rf-kw-add-btn');
+  if(row){row.style.display='none';const inp=document.getElementById('rf-kw-new');if(inp)inp.value='';}
+  if(btn)btn.style.display='';
+}
+function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a keyword first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),kw,url,desc});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
 function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();return ka!==kb?ka.localeCompare(kb):(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
@@ -3244,10 +3349,10 @@ function rfRender(){
 }
 
 /* ── INIT ── */
-load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
+load();otLoad();rfLoad();kwLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
-migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
+migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
