@@ -204,7 +204,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item.done{background:var(--done-bg);border-left-color:var(--done-fg)}
 .item.hold{background:var(--hold-bg);border-left-color:var(--hold-fg)}
 .item.pri:not(.done):not(.hold){background:var(--pri-bg);border-left-color:var(--pri-color)}
-.ihead{display:flex;align-items:flex-start;gap:10px;padding:5px 12px;cursor:pointer;user-select:none}
+.ihead{display:flex;align-items:flex-start;gap:10px;padding:5px 12px;cursor:pointer;user-select:none;flex-wrap:wrap}
+.ihead-pills{display:flex;gap:4px;align-items:center;flex-shrink:0;flex-basis:100%;padding-left:28px;padding-bottom:3px}
 .item:not(.done):not(.hold) .ihead:hover{background:var(--open-hover)}
 .item.done .ihead:hover{background:rgba(45,107,45,0.08)}
 .item.hold .ihead:hover{background:rgba(176,90,0,0.08)}
@@ -750,7 +751,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .dl-act-pill-inline.pill-defer:hover{background:#fde8cc}
 .dl-act-pill-inline.pill-else{border-color:var(--accent);color:var(--accent)}
 .dl-act-pill-inline.pill-else:hover{background:rgba(199,0,37,0.08)}
-.ihead-pills{display:flex;gap:4px;align-items:center;flex-shrink:0;margin-right:2px}
 .dl-compose{padding:6px 14px 10px;display:none}
 .dl-compose.open{display:block}
 .dl-compose-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.45;border:1px solid var(--forclaude-border);border-radius:5px;padding:7px 10px;background:var(--input-bg);resize:none;min-height:44px;outline:none;box-sizing:border-box}
@@ -823,11 +823,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div class="fchip-sep"></div>
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
       <option value="">All Tags</option>
-      <option value="editing">Editing</option>
-      <option value="publishing">Publishing</option>
-      <option value="todo">To-Do</option>
-      <option value="research">Research</option>
-      <option value="hubui">Hub Interface</option>
     </select>
     <select class="dash-sel" id="type-filter" onchange="setType(this.value)">
       <option value="">All Types</option>
@@ -894,11 +889,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </select>
       <select class="inp-sel" id="input-tag" onchange="lastTag=this.value">
         <option value="">&mdash; Tag &mdash;</option>
-        <option value="editing">Editing</option>
-        <option value="publishing">Publishing</option>
-        <option value="todo">To-Do</option>
-        <option value="research">Research</option>
-        <option value="hubui">Hub Interface</option>
       </select>
       <button class="status-toggle open" id="status-toggle" onclick="toggleStatus()" title="Open / Deferred">Open</button>
     </div>
@@ -1132,12 +1122,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <label class="settings-lbl">Keyword</label>
         <div style="display:flex;gap:6px;align-items:center">
           <select class="inp-sel" id="rf-kw-sel" style="flex:1"></select>
-          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new keyword" id="rf-kw-add-btn">＋</button>
+          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new tag" id="rf-kw-add-btn">＋</button>
         </div>
         <div id="rf-kw-new-row" style="display:none;margin-top:4px;display:none">
           <div style="display:flex;gap:6px">
-            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New keyword…" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
-            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()" title="Save keyword">＋</button>
+            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New tag…" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
+            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()" title="Save tag">＋</button>
             <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">✕</button>
           </div>
         </div>
@@ -1153,7 +1143,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
     </div>
   </div>
-  <div class="rf-filter"><span class="rf-filter-lbl">Filter:</span><select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All keywords</option></select><span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-left:auto"></span></div>
+  <div class="rf-filter"><span class="rf-filter-lbl">Filter:</span><select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All Tags</option></select><span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-left:auto"></span></div>
   <table class="rf-table"><thead><tr><th style="width:160px">Keyword</th><th style="width:220px">URL</th><th>Description</th><th style="width:80px"></th></tr></thead><tbody id="rf-tbody"></tbody></table>
   <div id="rf-empty" class="rf-empty">No references yet — add one above</div>
 </div></div>
@@ -1262,19 +1252,19 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div>
 
   <div class="settings-card">
-    <span class="settings-card-label">Keywords</span>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared keyword list used across Notes, Resources, and outreach tagging. Add by chapter, part, topic, or anything you reference repeatedly.</p>
+    <span class="settings-card-label">Tags</span>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, References, and outreach. Add by chapter, part, topic, or anything you reference repeatedly. Add by chapter, part, topic, or anything you reference repeatedly.</p>
     <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
     <div id="kw-edit-row" style="display:none;flex-direction:column;gap:6px">
-      <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter keywords separated by commas…" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
+      <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter tags separated by commas…" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="dl-send-btn" onclick="kwSave()">Save keywords</button>
         <span class="dl-cancel-link" onclick="kwCancelEdit()">Cancel</span>
       </div>
     </div>
     <div id="kw-add-row" style="display:flex;gap:6px;align-items:center;margin-top:4px">
-      <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a keyword…" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
-      <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add keyword">＋</button>
+      <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a tag…" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
+      <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add tag">＋</button>
       <button class="iabtn" onclick="kwStartEdit()" style="height:34px;white-space:nowrap">Edit all…</button>
     </div>
   </div>
@@ -1288,7 +1278,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T10:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T11:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1862,6 +1852,7 @@ function initSettings(){
 // ── KEYWORD MANAGEMENT ────────────────────────────────────────────────────
 const KW_SK='oc_keywords_v1';
 const KW_DEFAULTS=[
+  'editing','publishing','todo','research','hubui',
   'Ch.1','Ch.2','Ch.3','Ch.4','Ch.5','Ch.6','Ch.7','Ch.8','Ch.9',
   'Ch.10','Ch.11','Ch.12','Ch.13','Ch.14','Ch.15','Ch.16','Ch.17','Ch.18',
   'Part One','Part Two','Part Three','Part Four',
@@ -1876,12 +1867,26 @@ function kwLoad(){
 function kwSaveStore(){try{localStorage.setItem(KW_SK,JSON.stringify(KW));}catch(e){}}
 function kwRender(){
   const wrap=document.getElementById('kw-chips');
-  if(!wrap)return;
-  wrap.innerHTML=KW.sort(naturalSort).map(k=>
-    `<span class="kw-chip">${esc(k)}<span class="kw-chip-x" onclick="kwRemove(${JSON.stringify(k)})" title="Remove">&#10005;</span></span>`
-  ).join('');
-  // Also sync to RF_KW so references tab shares the list
+  if(wrap){
+    wrap.innerHTML=KW.sort(naturalSort).map(k=>
+      `<span class="kw-chip">${esc(k)}<span class="kw-chip-x" onclick="kwRemove(${JSON.stringify(k)})" title="Remove">&#10005;</span></span>`
+    ).join('');
+  }
+  // Sync to RF_KW so References tab shares the list
   KW.forEach(k=>{if(!RF_KW.includes(k))RF_KW.push(k);});
+  // Populate Notes tag filter dropdown dynamically
+  const tagFilter=document.getElementById('tag-filter');
+  const inputTag=document.getElementById('input-tag');
+  const sorted=KW.sort(naturalSort);
+  if(tagFilter){
+    const prev=tagFilter.value;
+    tagFilter.innerHTML='<option value="">All Tags</option>'+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');
+  }
+  if(inputTag){
+    const prev=inputTag.value||lastTag;
+    inputTag.innerHTML='<option value="">— Tag —</option>'+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');
+    if(prev&&inputTag.value!==prev){for(let i=0;i<inputTag.options.length;i++){if(inputTag.options[i].value===prev){inputTag.selectedIndex=i;break;}}}
+  }
   rfBuildKwSelects();
 }
 function kwRemove(k){KW=KW.filter(w=>w!==k);kwSaveStore();kwRender();}
@@ -3447,7 +3452,7 @@ function rfLoad(){
   RF_SEED.forEach(s=>{if(s.kw&&!RF_KW.includes(s.kw))RF_KW.push(s.kw);});
 }
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
-function rfBuildKwSelects(){const sorted=[...RF_KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
+function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
 function rfShowKwInput(){
   const row=document.getElementById('rf-kw-new-row');
   const btn=document.getElementById('rf-kw-add-btn');
@@ -3460,8 +3465,8 @@ function rfHideKwInput(){
   if(row){row.style.display='none';const inp=document.getElementById('rf-kw-new');if(inp)inp.value='';}
   if(btn)btn.style.display='';
 }
-function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
-function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a keyword first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),kw,url,desc});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
+function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
+function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),kw,url,desc});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
 function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
 function rfCancelEdit(){rfEditId=null;rfRender();}
