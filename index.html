@@ -616,16 +616,20 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── SETTINGS PANEL ── */
 .settings-section{margin-bottom:28px}
-.settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--separator)}
 .settings-field{margin-bottom:12px}
-.settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:4px}
-.settings-input{width:100%;background:#1e1c18;border:1px solid #3a3630;border-radius:5px;padding:7px 10px;font-family:'Source Code Pro',monospace;font-size:12px;color:#d4c9a8;outline:none;box-sizing:border-box}
-.settings-input:focus{border-color:var(--gold)}
-.settings-preview{margin-top:6px;padding:6px 10px;background:#141210;border-radius:4px;font-family:'Source Code Pro',monospace;font-size:10px;color:#706858;word-break:break-all}
-.settings-preview span{color:#c9a050}
-.settings-save-btn{background:var(--gold);color:#0f0e0c;border:none;border-radius:5px;padding:7px 18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em}
-.settings-save-btn:hover{background:var(--gold-light)}
+.settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:5px}
+.settings-input{width:100%;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:9px 12px;font-family:'Source Code Pro',monospace;font-size:12px;color:var(--label-primary);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.settings-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(199,0,37,0.08)}
+.settings-input::placeholder{color:var(--label-secondary);font-style:italic}
+.settings-preview{margin-top:6px;padding:7px 12px;background:var(--page-bg);border:1px solid var(--separator);border-radius:6px;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);word-break:break-all}
+.settings-preview span{color:var(--accent)}
+.settings-save-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em;transition:background .15s,box-shadow .15s;box-shadow:0 2px 6px rgba(199,0,37,0.2)}
+.settings-save-btn:hover{background:#a50020;box-shadow:0 3px 10px rgba(199,0,37,0.3)}
 .settings-note{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px;line-height:1.6}
+.settings-card{background:var(--card-bg);border:1px solid var(--separator);border-radius:10px;padding:18px 20px;margin-top:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.settings-card+.settings-card{margin-top:12px}
+.settings-card-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:14px;display:block}
 .device-guide{background:#222018;border:1px solid #3a3630;border-radius:6px;padding:14px 16px;margin-bottom:16px}
 .device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9a050;margin-bottom:10px}
 .device-guide ul{list-style:none;padding:0;margin:0}
@@ -1103,11 +1107,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
 
   <!-- ── ABOUT ── -->
-  <h3 style="margin-top:28px">&#9654; About</h3>
+  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">About</h3>
   <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The <em>Over&#8209;Classified</em> Project Hub is a two-way interface between Dave and Claude. It is not general project management software &mdash; it is purpose-built for a human-AI writing collaboration. Notes can be standalone captures, dialogue threads with Claude, or stepping stones to the Roadmap. The hub holds the working state of the book: what needs to happen, who is waiting on whom, and what has been done. Claude reads the JSON export at each session to pick up exactly where you left off, regardless of how much time has passed or how many changes have accumulated.</p>
 
   <!-- ── HOW TO USE ── -->
-  <h3 style="margin-top:32px">&#9654; How to Use</h3>
+  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How to Use</h3>
 
   <div style="margin-top:14px">
     <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Notes tab</h4>
@@ -1154,7 +1158,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div>
 
   <!-- ── KEEPING IN SYNC ── -->
-  <h3 style="margin-top:32px">&#9654; Keeping in Sync</h3>
+  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Keeping in Sync</h3>
   <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">You never need to worry about how much has changed since the last sync &mdash; Claude reads the full JSON export and reconciles everything at once, regardless of how many sessions have accumulated. There is no stale state to untangle.</p>
 
   <div style="margin-top:14px">
@@ -1173,7 +1177,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div>
 
   <!-- ── DEVICE GUIDE ── -->
-  <h3 style="margin-top:32px">&#9654; By Device</h3>
+  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">By Device</h3>
 
   <div style="margin-top:14px">
     <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#63743; Mac (Safari / Chrome)</h4>
@@ -1208,29 +1212,42 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div>
 
   <!-- ── SETTINGS ── -->
-  <h3 style="margin-top:32px">&#9654; Settings &amp; Preferences</h3>
+  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Settings &amp; Preferences</h3>
 
-  <div style="margin-top:14px;padding:16px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px">
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px">Word file location (Mac only)</p>
+  <div class="settings-card">
+    <span class="settings-card-label">Claude project</span>
     <div class="settings-field">
-      <input class="settings-input" id="settings-folder-input" type="text"
-        placeholder="Folder path: /Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+      <label class="settings-lbl" for="settings-project-input">Project name</label>
+      <input class="settings-input" id="settings-project-input" type="text"
+        placeholder="e.g. Over-classified" autocomplete="off" />
     </div>
-    <div class="settings-field" style="margin-top:8px">
-      <input class="settings-input" id="settings-filename-input" type="text"
-        placeholder="Filename override (leave blank for auto: Overclassified_279.docx)" />
-    </div>
-    <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
-      <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
-      <span id="settings-path-preview" style="font-family:'Source Code Pro',monospace;font-size:10px;color:#504840"></span>
-    </div>
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:12px">The folder path is stored locally on this device only and is never included in the JSON export.</p>
+    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:4px;line-height:1.6">Used in the Update Claude modal to remind you which project to paste into. Always paste into this project — not a new chat.</p>
   </div>
 
-  <div style="margin-top:16px;padding:14px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px">
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px">Update Claude preference</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">If you previously checked &ldquo;Don&rsquo;t show this again&rdquo; on the Update Claude dialog and want to restore it, click below.</p>
-    <button style="margin-top:10px;font-family:'Source Code Pro',monospace;font-size:11px;padding:6px 14px;background:none;border:1px solid var(--separator);border-radius:4px;color:var(--label-secondary);cursor:pointer" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓'">Restore Update Claude dialog</button>
+  <div class="settings-card">
+    <span class="settings-card-label">Word file location <span style="font-style:italic;font-weight:400">(Mac only)</span></span>
+    <div class="settings-field">
+      <label class="settings-lbl" for="settings-folder-input">Folder path</label>
+      <input class="settings-input" id="settings-folder-input" type="text"
+        placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+    </div>
+    <div class="settings-field">
+      <label class="settings-lbl" for="settings-filename-input">Filename override <span style="font-style:italic;font-weight:400;text-transform:none">(leave blank for auto)</span></label>
+      <input class="settings-input" id="settings-filename-input" type="text"
+        placeholder="Overclassified_292.docx" />
+    </div>
+    <div id="settings-path-preview" class="settings-preview" style="display:none"></div>
+    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px;line-height:1.6">Stored locally on this device only — never included in the JSON export.</p>
+  </div>
+
+  <div class="settings-card">
+    <span class="settings-card-label">Sync preferences</span>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">If you checked &ldquo;Don&rsquo;t show this again&rdquo; on the Update Claude dialog and want to restore it, click below.</p>
+    <button style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓'">Restore Update Claude dialog</button>
+  </div>
+
+  <div style="text-align:right;margin-top:16px">
+    <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
   </div>
 
 </div></div>
@@ -1238,7 +1255,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T17:30:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T18:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1644,9 +1661,11 @@ function getFullWordPath(){
 function settingsSave(){
   const folder=(document.getElementById('settings-folder-input')?.value||'').trim();
   const filename=(document.getElementById('settings-filename-input')?.value||'').trim();
+  const project=(document.getElementById('settings-project-input')?.value||'').trim();
   const s=loadSettings();
   s.wordBasePath=folder;
   s.wordFilename=filename||null;
+  s.claudeProject=project||null;
   saveSettings(s);
   updateSettingsPreview();
   const btn=document.getElementById('settings-save-btn');
@@ -1659,10 +1678,11 @@ function updateSettingsPreview(){
   const source=filenameOverride?'custom':'auto';
   const prev=document.getElementById('settings-path-preview');
   if(!prev)return;
-  if(!folder){prev.textContent='';return;}
-  const sep=folder.endsWith('/')?'':'/'
+  if(!folder){prev.style.display='none';prev.textContent='';return;}
+  const sep=folder.endsWith('/')?'':'/';
   const full=folder+sep+file;
-  prev.textContent=full+' ('+source+')';
+  prev.style.display='block';
+  prev.textContent=full+(file?' ('+source+')':'');
 }
 function initSettings(){
   const s=loadSettings();
@@ -1671,8 +1691,10 @@ function initSettings(){
   const finp=document.getElementById('settings-filename-input');
   if(finp){
     finp.value=s.wordFilename||'';
-    finp.placeholder=getWordFilenameDefault()||'Overclassified_279.docx';
+    finp.placeholder=getWordFilenameDefault()||'Overclassified_292.docx';
   }
+  const pinp=document.getElementById('settings-project-input');
+  if(pinp&&s.claudeProject)pinp.value=s.claudeProject;
   updateSettingsPreview();
   if(inp)inp.addEventListener('input',updateSettingsPreview);
   if(finp)finp.addEventListener('input',updateSettingsPreview);
@@ -2863,6 +2885,9 @@ function copyToClaude(){
   const done=()=>{if(btn)btn.disabled=false;};
   const afterCopy=()=>{
     done();
+    const proj=loadSettings().claudeProject||'Over\u2011Classified';
+    const body=document.getElementById('uc-modal-body');
+    if(body)body.innerHTML=`The JSON has been copied to your clipboard. Open Claude in the <strong>${proj}</strong> project and paste to sync. Always paste into your project &mdash; not a new chat.`;
     const skip=localStorage.getItem(UC_PREF_SK)==='1';
     if(skip){ucToast();}else{document.getElementById('uc-overlay').classList.add('open');}
   };
@@ -2884,10 +2909,7 @@ function ucOpenClaude(){
   const cb=document.getElementById('uc-remember-cb');
   if(cb&&cb.checked)localStorage.setItem(UC_PREF_SK,'1');
   document.getElementById('uc-overlay').classList.remove('open');
-  // Try the native app scheme first; fall back to web if app not installed
-  const fallback=setTimeout(()=>{window.open('https://claude.ai','_blank');},850);
-  window.addEventListener('blur',()=>clearTimeout(fallback),{once:true});
-  window.location.href='claude://';
+  window.open('https://claude.ai','_blank');
 }
 function ucOverlayClick(e){if(e.target===document.getElementById('uc-overlay'))ucClose();}
 
@@ -3460,7 +3482,7 @@ document.addEventListener('keydown',function(e){
 <div class="uc-overlay" id="uc-overlay" onclick="ucOverlayClick(event)">
   <div class="uc-modal">
     <h3>Update Claude</h3>
-    <p>The JSON has been copied to your clipboard. Open Claude in the <em>Over&#8209;Classified</em> project and paste to sync.</p>
+    <p id="uc-modal-body">The JSON has been copied to your clipboard. Open Claude in the <em>Over&#8209;Classified</em> project and paste to sync. Always paste into your project &mdash; not a new chat.</p>
     <div class="uc-modal-btns">
       <button class="uc-open-btn" onclick="ucOpenClaude()">Open Claude</button>
       <button class="uc-dismiss-btn" onclick="ucClose()">Dismiss</button>
