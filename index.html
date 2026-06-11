@@ -788,7 +788,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
       <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" ontouchend="event.preventDefault();hdSearchClear();" style="display:none">&#215;</button>
     </div>
-    <div class="hd-actions"><button class="hd-reload" onclick="window.location.reload()" title="Reload hub">&#8635;</button></div>
+    <div class="hd-actions"><button class="hd-reload" onclick="window.location.reload()" title="Reload hub"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg></button></div>
   </div>
 </div>
 <!-- search moved to header -->
@@ -800,7 +800,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab" onclick="showTab('refs',this)" id="tab-refs">Resources</button>
     <button class="tab" onclick="showTab('outreach',this)" id="tab-outreach">Outreach<span class="tab-nbadge zero" id="tbadge-outreach"></span></button>
     <div class="deck-group">
-      <div class="deck-trigger" id="deck-trigger" onclick="toggleDeck(event)">Reference <span class="deck-arrow">&#9660;</span></div>
+      <div class="deck-trigger" id="deck-trigger" onclick="toggleDeck(event)">Reference <span class="deck-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
       <div class="deck-flyout">
         <div class="deck-flyout-item" onclick="showDeckTab('passes',this)">Passes</div>
         <div class="deck-flyout-item" onclick="showDeckTab('style',this)">Style &amp; Chapter Map</div>
@@ -809,7 +809,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <div class="tab-spacer"></div>
-    <span class="tab-action-ok" id="copy-tab-ok">&#10003; Copied</span>
+    <span class="tab-action-ok" id="copy-tab-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied</span>
     <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
     <button class="tab" onclick="showTab('help',this)" style="margin-left:4px">Help &#9881;</button>
   </div>
@@ -818,7 +818,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div id="fchip-open"    class="fchip"     onclick="tSt('open')"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
     <div id="fchip-deferred" class="fchip"   onclick="tSt('deferred')"><span class="fchip-lbl">Deferred</span><span class="fchip-ct" id="fc-deferred">—</span></div>
     <div id="fchip-done"    class="fchip"     onclick="tSt('done')"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
-    <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
+    <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
     <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
     <div class="fchip-sep"></div>
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
@@ -834,7 +834,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="question">Questions</option>
       <option value="reminder">Reminders</option>
       <option value="note">Project Notes</option>
-      <option value="fordave">&#9655; For Claude / Dave</option>
+      <option value="fordave"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude / Dave</option>
     </select>
     <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
     <div style="margin-left:auto"></div>
@@ -865,7 +865,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;padding-top:1px">
         <button class="flow-toggle off" id="flow-toggle" onclick="toggleFlow()" title="Flow = directed to Claude for dialogue. Toggle on to start a thread.">&#9675; Note only</button>
         <button class="rem-toggle" id="rem-toggle" onclick="toggleReminder()">&#128276; Reminder</button>
-        <button class="pri-cycle" id="pri-cycle" onclick="cyclePriority()">&#9734; Low</button>
+        <button class="pri-cycle" id="pri-cycle" onclick="cyclePriority()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Low</button>
       </div>
       <div style="flex:1">
         <div class="inp-text-wrap">
@@ -929,7 +929,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <div class="gantt-toolbar">
       <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
-      <button class="gantt-today-btn" onclick="ganttScrollToday()">&#9654; Today</button>
+      <button class="gantt-today-btn" onclick="ganttScrollToday()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Today</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
@@ -1288,7 +1288,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T08:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T09:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1916,7 +1916,7 @@ function rlist(){
         <div class="edit-meta-row">
           <select class="edit-sel" id="ety_${it.id}"><option value="question"${it.type==='question'?' selected':''}>Question</option><option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option><option value="note"${it.type==='note'?' selected':''}>Project Note</option><option value="fordave"${it.type==='fordave'?' selected':''}>⚑ For Dave</option></select>
           <select class="edit-sel" id="etg_${it.id}"><option value=""${!it.tag?' selected':''}>&#8212; Tag &#8212;</option><option value="editing"${it.tag==='editing'?' selected':''}>Editing</option><option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option><option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option><option value="research"${it.tag==='research'?' selected':''}>Research</option></select>
-          <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'&#9733; Priority':'&#9734; Priority'}</button>
+          <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority':'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority'}</button>
         </div>
         <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
           <div><label class="edit-wrap-label">Due date</label><input type="date" class="edit-sel" id="edu_${it.id}" value="${esc(it.dueDate||'')}" style="width:130px" /></div>
@@ -1936,9 +1936,9 @@ function rlist(){
       }</div>`:'';
       const needsReply=dlg.length&&dlg[dlg.length-1].from==='claude'&&!it.done;
       const dlgReplyHtml=needsReply?`<div class="dl-actions" id="dlact-${it.id}">
-        <button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')">&#10003; Accept</button>
-        <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')">&#9208; Defer</button>
-        <button class="dl-act-pill pill-else" onclick="event.stopPropagation();dlElseOpen('${it.id}')">&#8617; Something else&hellip;</button>
+        <button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
+        <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
+        <button class="dl-act-pill pill-else" onclick="event.stopPropagation();dlElseOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Something else&hellip;</button>
       </div>
       <div class="dl-compose" id="dlcomp-${it.id}">
         <textarea class="dl-compose-ta" id="dlcta-${it.id}" rows="2" placeholder="Your response…" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
@@ -1952,32 +1952,32 @@ function rlist(){
         <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
         <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
         <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
-        <button class="iabtn" onclick="mtrOpen('${it.id}')">&#8594; Roadmap</button>
+        <button class="iabtn" onclick="mtrOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Roadmap</button>
         <button class="iabtn danger" onclick="delItem('${it.id}')">Delete</button>
       </div></div>`;
     }
     return`<div class="${cls}" id="it_${it.id}">
       <div class="ihead" onclick="xItem('${it.id}')">
-        <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'&#10003;':it.deferred?'&#9208;':''}</div>
+        <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':it.deferred?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>':''}</div>
         <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
         <div class="imeta">
-          <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')">&#9733;</span>
-          <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag">&#9872;</span>
+          <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
           ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
           ${it.type==='fordave'
-            ?(isNeedsResponse?'<span class="flow-badge for-dave">&#9873; For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude">&#9655; For Claude</span>':isLegacyFordave?'<span class="fordave-badge">&#9873; For Dave</span>':'<span class="flow-badge for-claude">&#9655; For Claude</span>')
+            ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
             :`<span class="type-pill">${esc(it.type||'note')}</span>`}
         </div>
         ${isNeedsResponse&&!it.done?`<div class="ihead-pills">
-          <button class="dl-act-pill-inline pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')">&#10003; Accept</button>
-          <button class="dl-act-pill-inline pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')">&#9208; Defer</button>
-          <button class="dl-act-pill-inline pill-else" onclick="event.stopPropagation();xItem('${it.id}');setTimeout(()=>dlElseOpen('${it.id}'),120)">&#8617; Other</button>
+          <button class="dl-act-pill-inline pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
+          <button class="dl-act-pill-inline pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
+          <button class="dl-act-pill-inline pill-else" onclick="event.stopPropagation();xItem('${it.id}');setTimeout(()=>dlElseOpen('${it.id}'),120)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Other</button>
         </div>`:''}
         <div class="idate-cols">
           <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
           <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
         </div>
-        <span class="chev">&#8250;</span>
+        <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>${bodyHtml}</div>`;
   }).join('');
 }
@@ -2048,7 +2048,7 @@ function toggleMem(){/* legacy no-op */}
 function toggleFlow(){
   inputFlowOn=!inputFlowOn;
   const btn=document.getElementById('flow-toggle');
-  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='&#9655; Flow';}
+  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> Flow';}
   else{btn.className='flow-toggle off';btn.innerHTML='&#9675; Note only';}
 }
 function toggleReminder(){
@@ -2068,8 +2068,8 @@ function cyclePriority(){
   inputPriLevel=(inputPriLevel+1)%3;
   const btn=document.getElementById('pri-cycle');
   if(inputPriLevel===0){btn.className='pri-cycle';btn.innerHTML='&#9734; Low';}
-  else if(inputPriLevel===1){btn.className='pri-cycle med';btn.innerHTML='&#9733; Medium';}
-  else{btn.className='pri-cycle high';btn.innerHTML='&#9733;&#9733; High';}
+  else if(inputPriLevel===1){btn.className='pri-cycle med';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Medium';}
+  else{btn.className='pri-cycle high';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> High';}
 }
 function addItem(){
   const ta=document.getElementById('input-ta');
@@ -2353,8 +2353,8 @@ function renderGantt(){
     html+=`<button class="gantt-expand-btn" onclick="toggleGanttPhase('${ph.id}')" style="--ph-color:${color}">${isOpen?'&#8722;':'+'}</button>`;
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
     if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
-    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('phase','${ph.id}')" title="Edit phase">✏️</button>`;
-    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase">⎘</button>`;
+    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('phase','${ph.id}')" title="Edit phase"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
+    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>`;
     html+=`</div>`;
     // Track cell
     html+=`<div class="gantt-phase-track" style="position:relative">`;
@@ -2431,12 +2431,12 @@ function renderGantt(){
           const nameCls=s.done?' done':'';
           html+=`<div class="gantt-task-row">`;
           html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
-          html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'&#10003;':''}</div>`;
+          html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`;
           html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
           html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
           if(s.done)html+=`<span class="gantt-task-pct" style="color:var(--done-fg)">✓</span>`;
-          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('step','${s.id}')" title="Edit task">✏️</button>`;
-          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();cloneStep('${s.id}')" title="Clone task">⎘</button>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('step','${s.id}')" title="Edit task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();cloneStep('${s.id}')" title="Clone task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>`;
           html+=`</div>`;
           html+=`<div class="gantt-task-track" style="position:relative">`;
           weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
@@ -2471,7 +2471,7 @@ function renderGantt(){
         html+=`<div class="gantt-gate-task-label" style="--ph-color:${color};border-left-color:${color}">`;
         html+=`<div style="width:10px;height:10px;border:2px solid ${color};${g.met?'background:'+color:''};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
         html+=`<span class="gantt-gate-task-name" title="${esc(g.label)}">${esc(g.label)}</span>`;
-        html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate">✏️</button>`;
+        html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
         html+=`</div>`;
         html+=`<div class="gantt-gate-task-track" style="position:relative">`;
         weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
@@ -2648,7 +2648,7 @@ function openGanttEdit(kind,id){
     html+=`<div id="ge-convert-phase-row" style="display:none"><div class="gantt-panel-field"><label class="gantt-panel-lbl">Move into phase</label><select class="gantt-panel-input" id="ge-convert-phase">${convertPhOpts}</select></div><p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-4px;margin-bottom:0">Child tasks of this phase will be removed on convert.</p></div>`;
 
   html+=`<hr class="gantt-panel-divider">`;
-  html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')">Save &#10003;</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
+  html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
   if(body)body.innerHTML=html;
   document.getElementById('gantt-overlay').classList.add('open');
   document.getElementById('gantt-slide-panel').classList.add('open');
@@ -2759,7 +2759,7 @@ function buildPanelForm(kind,phaseId){
     html+=`<p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-6px">Gate tasks inherit their end date to the phase bar automatically.</p>`;
   }
 
-  html+=`<button class="gantt-panel-add-btn" onclick="ganttPanelAdd()">Add &#8594;</button>`;
+  html+=`<button class="gantt-panel-add-btn" onclick="ganttPanelAdd()">Add <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
   return html;
 }
 
@@ -3694,7 +3694,7 @@ function searchRender(q){
         <div class="sr-title">${hl(r.title.length>100?r.title.substring(0,100)+'\u2026':r.title,q)}</div>
         <div class="sr-sub">${esc(r.sub.length>80?r.sub.substring(0,80)+'\u2026':r.sub)}</div>
       </div>
-      <span class="sr-arrow">&#8250;</span>
+      <span class="sr-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
     </div>
   `).join('');
 }
