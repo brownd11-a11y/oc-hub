@@ -720,9 +720,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
       <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" style="display:none">&#215;</button>
     </div>
-    <div class="hd-actions">
-      <span class="hd-copy-ok" id="copy-ok" style="display:none">&#10003; Copied</span>
-    </div>
+    <div class="hd-actions"></div>
   </div>
 </div>
 <!-- search moved to header -->
@@ -743,7 +741,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <div class="tab-spacer"></div>
-    <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()" style="margin-bottom:2px;align-self:center;border-radius:4px 4px 0 0">Copy to Claude</button>
     <button class="tab" onclick="showTab('help',this)">Help &#9881;</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none">
@@ -769,7 +766,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="note">Project Notes</option>
       <option value="fordave">&#9655; For Claude / Dave</option>
     </select>
-    <button class="dash-showall" onclick="showAll()">&#10005; Reset</button>
+    <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
+    <div style="margin-left:auto"></div>
+    <span class="hd-copy-ok" id="copy-ok-2" style="display:none;font-family:'Source Code Pro',monospace;font-size:11px;color:#8aba80">&#10003; Copied</span>
+    <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()" style="height:32px;font-size:13px;letter-spacing:.04em;border-radius:4px">Copy to Claude</button>
   </div>
 </div>
 
@@ -1254,7 +1254,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T02:27:38.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T02:32:34.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2849,7 +2849,7 @@ function copyToClaude(){
 }
 function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
 function clipFb2(txt){window.prompt('Auto-copy failed:',txt);clipOk();}
-function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;const el=document.getElementById('copy-ok');el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}
+function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;['copy-ok','copy-ok-2'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
 
 /* ── OUTREACH ── */
 let OT=[];
