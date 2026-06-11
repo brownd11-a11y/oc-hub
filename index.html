@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Over-classified — Project Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -3158,6 +3160,8 @@ load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
+// iOS standalone fallback — navigator.standalone is more reliable than CSS display-mode on Apple devices
+if(navigator.standalone===true){const r=document.querySelector('.hd-reload');if(r)r.style.display='flex';}
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
