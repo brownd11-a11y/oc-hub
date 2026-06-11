@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Over-classified — Project Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -65,12 +63,9 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .hd-search-input{width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:4px;color:#fff;font-family:'Source Code Pro',monospace;font-size:12px;padding:0 30px 0 10px;height:30px;outline:none;transition:border-color .15s}
 .hd-search-input::placeholder{color:rgba(255,255,255,.5);font-style:italic}
 .hd-search-input:focus{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.28)}
-.hd-search-clear{position:absolute;right:4px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:16px;line-height:1;padding:6px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center}
+.hd-search-clear{position:absolute;right:8px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;line-height:1;padding:0}
 .hd-search-clear:hover{color:#fff}
 .hd-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.hd-reload{display:none;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:5px;color:rgba(255,255,255,.85);font-size:16px;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;line-height:1}
-.hd-reload:hover{background:rgba(255,255,255,.28)}
-@media all and (display-mode:standalone){.hd-reload{display:flex}}
 .hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all .15s;box-shadow:0 2px 5px rgba(199,0,37,0.35),0 1px 2px rgba(0,0,0,0.15)}
 .hd-copy-btn:hover{background:#a50020;box-shadow:0 3px 8px rgba(199,0,37,0.45),0 1px 3px rgba(0,0,0,0.2)}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
@@ -92,29 +87,11 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .tab:hover{color:#000000;background:#ffffff;border-color:#C6C6C8;box-shadow:0 -2px 6px rgba(0,0,0,0.10),0 1px 2px rgba(0,0,0,0.04) inset}
 .tab.active{color:#ffffff;background:#C70025;border-color:#C70025;border-bottom:2px solid #ffffff;font-weight:700;top:0;padding-bottom:9px;box-shadow:0 -3px 8px rgba(199,0,37,0.30),0 2px 4px rgba(199,0,37,0.20);text-shadow:0 1px 2px rgba(0,0,0,0.20)}
 .tab-spacer{flex:1}
-/* ── TAB-ACTION BUTTON (Update Claude) ── */
+/* ── TAB-ACTION BUTTON (Copy to Claude) ── */
 .tab-action{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:9px 18px;border:1px solid #C70025;border-bottom:none;background:#C70025;color:#fff;cursor:pointer;border-radius:6px 6px 0 0;transition:all .18s;white-space:nowrap;position:relative;top:2px;flex-shrink:0;box-shadow:0 -2px 6px rgba(199,0,37,0.25),0 2px 4px rgba(199,0,37,0.15);text-shadow:0 1px 2px rgba(0,0,0,0.18)}
 .tab-action:hover{background:#a50020;border-color:#a50020;box-shadow:0 -3px 10px rgba(199,0,37,0.38),0 2px 4px rgba(199,0,37,0.20)}
 .tab-action:active{top:1px}
 .tab-action-ok{font-family:'Source Code Pro',monospace;font-size:11px;color:#2a7a2a;display:none;margin-right:4px;align-self:center;position:relative;top:1px}
-/* ── UPDATE CLAUDE MODAL ── */
-.uc-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9000;align-items:center;justify-content:center}
-.uc-overlay.open{display:flex}
-.uc-modal{background:#1c1a14;border:1px solid #3a3630;border-radius:10px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.6)}
-.uc-modal h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c9a050;margin:0 0 12px 0}
-.uc-modal p{font-family:'Cormorant Garamond',serif;font-size:15px;color:#c8bfa8;line-height:1.6;margin:0 0 20px 0}
-.uc-modal p strong{color:#e8dfc8}
-.uc-modal-btns{display:flex;gap:10px;align-items:center}
-.uc-open-btn{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:9px 20px;background:#C70025;color:#fff;border:none;border-radius:5px;cursor:pointer;transition:background .15s}
-.uc-open-btn:hover{background:#a50020}
-.uc-dismiss-btn{font-family:'Source Code Pro',monospace;font-size:11px;color:#706858;background:none;border:none;cursor:pointer;padding:9px 8px;text-decoration:underline}
-.uc-dismiss-btn:hover{color:#c8bfa8}
-.uc-remember{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #3a3630}
-.uc-remember input{accent-color:#c9a050;cursor:pointer}
-.uc-remember label{font-family:'Source Code Pro',monospace;font-size:10px;color:#706858;cursor:pointer;letter-spacing:.04em}
-/* ── UPDATE CLAUDE TOAST ── */
-.uc-toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1a14;border:1px solid #3a3630;border-radius:6px;padding:10px 20px;font-family:'Source Code Pro',monospace;font-size:11px;color:#c9a050;letter-spacing:.06em;z-index:9000;box-shadow:0 4px 20px rgba(0,0,0,0.5);pointer-events:none}
-.uc-toast.show{display:block}
 
 /* ── DECK TAB GROUP ── */
 .deck-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
@@ -618,20 +595,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── SETTINGS PANEL ── */
 .settings-section{margin-bottom:28px}
-.settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--separator)}
+.settings-section h3{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
 .settings-field{margin-bottom:12px}
-.settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:5px}
-.settings-input{width:100%;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:9px 12px;font-family:'Source Code Pro',monospace;font-size:12px;color:var(--label-primary);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-.settings-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(199,0,37,0.08)}
-.settings-input::placeholder{color:var(--label-secondary);font-style:italic}
-.settings-preview{margin-top:6px;padding:7px 12px;background:var(--page-bg);border:1px solid var(--separator);border-radius:6px;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);word-break:break-all}
-.settings-preview span{color:var(--accent)}
-.settings-save-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em;transition:background .15s,box-shadow .15s;box-shadow:0 2px 6px rgba(199,0,37,0.2)}
-.settings-save-btn:hover{background:#a50020;box-shadow:0 3px 10px rgba(199,0,37,0.3)}
+.settings-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);display:block;margin-bottom:4px}
+.settings-input{width:100%;background:#1e1c18;border:1px solid #3a3630;border-radius:5px;padding:7px 10px;font-family:'Source Code Pro',monospace;font-size:12px;color:#d4c9a8;outline:none;box-sizing:border-box}
+.settings-input:focus{border-color:var(--gold)}
+.settings-preview{margin-top:6px;padding:6px 10px;background:#141210;border-radius:4px;font-family:'Source Code Pro',monospace;font-size:10px;color:#706858;word-break:break-all}
+.settings-preview span{color:#c9a050}
+.settings-save-btn{background:var(--gold);color:#0f0e0c;border:none;border-radius:5px;padding:7px 18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em}
+.settings-save-btn:hover{background:var(--gold-light)}
 .settings-note{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px;line-height:1.6}
-.settings-card{background:var(--card-bg);border:1px solid var(--separator);border-radius:10px;padding:18px 20px;margin-top:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.settings-card+.settings-card{margin-top:12px}
-.settings-card-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:14px;display:block}
 .device-guide{background:#222018;border:1px solid #3a3630;border-radius:6px;padding:14px 16px;margin-bottom:16px}
 .device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9a050;margin-bottom:10px}
 .device-guide ul{list-style:none;padding:0;margin:0}
@@ -764,9 +737,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span class="hd-title"><em>Over&#8209;classified</em> Hub</span>
     <div class="hd-search-wrap">
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
-      <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" ontouchend="event.preventDefault();hdSearchClear();" style="display:none">&#215;</button>
+      <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" style="display:none">&#215;</button>
     </div>
-    <div class="hd-actions"><button class="hd-reload" onclick="window.location.reload()" title="Reload hub">&#8635;</button></div>
+    <div class="hd-actions"></div>
   </div>
 </div>
 <!-- search moved to header -->
@@ -788,7 +761,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <div class="tab-spacer"></div>
     <span class="tab-action-ok" id="copy-tab-ok">&#10003; Copied</span>
-    <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()">Update Claude</button>
+    <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()">Copy to Claude</button>
     <button class="tab" onclick="showTab('help',this)" style="margin-left:4px">Help &#9881;</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none">
@@ -1105,165 +1078,208 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div></div>
 <!-- HELP -->
 <div class="panel" id="panel-help"><div class="ref-section">
-  <h2>Help &amp; Settings</h2>
-  <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
+  <h2>Over-classified Project Hub</h2>
+  <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Help &amp; Settings &mdash; Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
 
-  <!-- ── ABOUT ── -->
-  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">About</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The <em>Over&#8209;Classified</em> Project Hub is a two-way interface between Dave and Claude. It is not general project management software &mdash; it is purpose-built for a human-AI writing collaboration. Notes can be standalone captures, dialogue threads with Claude, or stepping stones to the Roadmap. The hub holds the working state of the book: what needs to happen, who is waiting on whom, and what has been done. Claude reads the JSON export at each session to pick up exactly where you left off, regardless of how much time has passed or how many changes have accumulated.</p>
+  <!-- ── SETTINGS ── -->
+  <h3 style="margin-top:28px">&#9654; Settings</h3>
 
-  <!-- ── HOW TO USE ── -->
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How to Use</h3>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Notes tab</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">The main working surface. Add items using the entry form at the top. Items can be <strong>Project Notes</strong> (standalone captures), <strong>Questions</strong> (for the record), <strong>Reminders</strong> (with due dates), or <strong>For Dave / For Claude</strong> dialogue threads. Use the filter bar to narrow by status, tag, or type. The search bar finds text across all fields. Each item can carry a link, bookmark, or paste-to-find reference to the manuscript.</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-secondary);line-height:1.55;margin-top:6px">Any note can be promoted to the Roadmap: expand it and click <strong>&rarr; Roadmap</strong> in the action row.</p>
-  </div>
-
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Entry form controls</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Flow toggle</strong> &mdash; off by default (gray, saves as Note). Turn on (green) to direct the entry to Claude as the first message in a dialogue thread. Item saves as <em>For Claude</em>.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Type selector</strong> &mdash; Question or Project Note. <em>For Dave</em> is generated by Claude internally; <em>Reminder</em> is set via the bell toggle.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Status toggle</strong> &mdash; Open (green) or Deferred (amber). Deferred items appear under the Hold filter and are visually muted.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>&#128276; Reminder toggle</strong> &mdash; reveals a due date and time field inline. Saves as type Reminder. Fields reset after each save.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Priority cycle</strong> &mdash; three states: Low (gray) &rarr; Medium (amber) &rarr; High (red). Sticky until changed. High items show a red left border.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Tag selector</strong> &mdash; remembers your last choice for the session.</li>
-    </ul>
-  </div>
-
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Flow &mdash; Dave &#8596; Claude dialogue</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">When Flow is on, the item opens a threaded conversation. Entries are stored in order and rendered newest-first when expanded. <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> = awaiting Claude. <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> = awaiting Dave. When Claude&rsquo;s reply is the latest entry, a reply field appears inline &mdash; type and click <strong>Send</strong> to continue. Thread data is included in the JSON export.</p>
-  </div>
-
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Roadmap tab</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Gantt-style view of phases, tasks, and gates. Drag the &#8942; handle to reorder phases. Click &#9998; on any row to edit dates, labels, and notes. Click a gate diamond to mark it met. The red badge shows at-risk items past their target date. Three chart density options: Hidden / Bars + Gates / Bars + Gates + Notes.</p>
-  </div>
-
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Outreach tab</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Contact management for blurb and pitch outreach. Each card tracks contact method, request type, status, materials link, and a timestamped notes log. The red badge shows contacts past their target date without a confirmed or closed status. Default view hides confirmed, closed, and rejected contacts.</p>
-  </div>
-
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Reference &#9656; deck (Passes / Style / ISBNs / Distribution)</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Quick-reference panels for the editorial pass commands, style rules and prohibited terms, ISBN and pricing data, and distribution channel details. Read-only.</p>
-  </div>
-
-  <!-- ── TAB BADGES ── -->
-  <div style="margin-top:18px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Tab notification badges</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6"><strong>Notes</strong> &mdash; active Flow threads not yet done. <strong>Roadmap</strong> &mdash; tasks and gates past target date, not done. <strong>Outreach</strong> &mdash; contacts past target date, status not Confirmed / Closed / Rejected.</p>
-  </div>
-
-  <!-- ── KEEPING IN SYNC ── -->
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Keeping in Sync</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">You never need to worry about how much has changed since the last sync &mdash; Claude reads the full JSON export and reconciles everything at once, regardless of how many sessions have accumulated. There is no stale state to untangle.</p>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Standard sync</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Click <strong>Update Claude</strong> on any tab &rarr; JSON copies to clipboard &rarr; open Claude in the <em>Over&#8209;Classified</em> project &rarr; paste &rarr; say <em>&ldquo;Update the project hub.&rdquo;</em> Claude processes everything, pushes the updated hub directly to GitHub Pages, and confirms. Refresh on any device to see the result.</p>
-  </div>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">If you haven&rsquo;t exported in a while</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Your session work is always in localStorage on the device you used &mdash; it does not disappear. Open the hub on that device, export, paste to Claude. If you worked on multiple devices before syncing, paste both exports to Claude in one message and say <em>&ldquo;Merge these exports.&rdquo;</em></p>
-  </div>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">What is the source of truth?</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">GitHub Pages is the canonical hub. localStorage is a per-device session buffer. The JSON export is the bridge. Claude never reconstructs the hub from JSON &mdash; it always fetches the live GitHub file and applies surgical updates.</p>
+  <div style="border:1px solid #3a3630;border-radius:6px;padding:16px;margin-top:12px">
+    <div class="settings-field">
+      <input class="settings-input" id="settings-folder-input" type="text"
+        placeholder="Folder path: /Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+    </div>
+    <div class="settings-field" style="margin-top:8px">
+      <input class="settings-input" id="settings-filename-input" type="text"
+        placeholder="Filename override (leave blank for auto: Overclassified_279.docx)" />
+    </div>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+      <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
+      <span id="settings-path-preview" style="font-family:'Source Code Pro',monospace;font-size:10px;color:#504840"></span>
+    </div>
   </div>
 
   <!-- ── DEVICE GUIDE ── -->
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">By Device</h3>
+  <h3 style="margin-top:28px">&#9654; Using the Hub by Device</h3>
 
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#63743; Mac (Safari / Chrome)</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Clicking a bookmark link opens Word and jumps to the bookmark. Requires the folder path set in Settings below.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Roadmap drag:</strong> Click and drag the &#8942; handle to reorder phases.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe to scroll horizontally.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Clone:</strong> The &#8280; button on any phase or task row creates an immediate copy below it.</li>
+  <div class="device-guide">
+    <h4>&#63743; Mac (Safari / Chrome)</h4>
+    <ul>
+      <li><strong>Gantt scroll:</strong> Horizontal scroll with trackpad two-finger swipe or scroll wheel. Vertical scroll works normally.</li>
+      <li><strong>Word links:</strong> Fully supported. Clicking a bookmark link opens Word and jumps to the bookmark. Requires the folder path set in Settings above.</li>
+      <li><strong>Export:</strong> Click Export on the Notes tab — copies JSON to clipboard. Paste into Claude to sync.</li>
+      <li><strong>Upload shortcut:</strong> <strong>⇧⌘U</strong> uploads <code>index.html</code> from iCloud Drive to GitHub Pages.</li>
+      <li><strong>Drag to reorder phases:</strong> Click and drag the ⋮ handle on any phase row.</li>
+      <li><strong>Clone:</strong> The ⎘ button on any phase or task row creates an immediate copy below it.</li>
     </ul>
   </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#8965; iPad Pro (Safari)</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger drag inside the chart area. Single-finger drag moves phase bars.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Phase drag/reorder:</strong> Touch and hold the &#8942; handle, then drag. If unresponsive, use the numeric Position field in the Edit Phase panel instead.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported on iOS &mdash; bookmark names display as plain text labels for manual reference.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Sync:</strong> Tap <strong>Update Claude</strong> &rarr; JSON copies &rarr; open Claude in Safari &rarr; paste.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading (home screen app):</strong> Use the &#8635; button in the header. Pull-to-refresh from the top of the screen also works. Force-quit via app switcher is the nuclear option.</li>
+  <div class="device-guide">
+    <h4>&#8965; iPad Pro (Safari)</h4>
+    <ul>
+      <li><strong>Gantt scroll:</strong> Two-finger drag inside the chart area to scroll horizontally and vertically. Single-finger drag moves phase bars (drag handle). If scroll feels locked, use two fingers.</li>
+      <li><strong>Phase drag/reorder:</strong> Touch and hold the ⋮ handle, then drag. On iPad the touch target is slightly larger than on Mac. If dragging is unresponsive, use the numeric position field in the Edit Phase panel instead (set <em>Position</em> to the slot number you want).</li>
+      <li><strong>Edit panel:</strong> Tap ✏️ on any phase or task row. The slide-in panel opens from the right. Scroll inside the panel independently of the chart.</li>
+      <li><strong>Word links:</strong> Not supported on iOS — bookmark names display as plain text labels. Use them as a reference to locate the passage manually when you open the file on Mac.</li>
+      <li><strong>Export:</strong> Tap Export on Notes tab — copies JSON to clipboard. Open Claude in Safari, paste, and say <em>"Update the project hub."</em></li>
+      <li><strong>Upload:</strong> Save the new <code>index.html</code> Claude delivers to iCloud Drive, then run the ⇧⌘U Automator action on Mac to push to GitHub.</li>
     </ul>
   </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#9743; iPhone</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Best use:</strong> Capturing quick notes and questions on the go. Full editing on iPad or Mac.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Notes tab:</strong> Fully functional &mdash; entry form, type/tag selectors, priority and memory flags all work.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt:</strong> Readable, horizontal scroll with one finger. Editing easier on iPad or Mac.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported &mdash; displays as plain label.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading (home screen app):</strong> A &#8635; reload button appears in the top-right of the header when the hub is running as a home screen app &mdash; no browser chrome needed. Alternatively, pull down from the very top of the screen to trigger a reload, or force-quit from the app switcher and reopen.</li>
+  <div class="device-guide">
+    <h4>&#9743; iPhone</h4>
+    <ul>
+      <li><strong>Gantt:</strong> Horizontal scroll with one finger inside the chart. The chart is readable but editing is easier on iPad or Mac.</li>
+      <li><strong>Notes tab:</strong> Fully functional for adding and reviewing items. Input form, type/tag selectors, priority and memory flags all work.</li>
+      <li><strong>Export:</strong> Tap Export — copies JSON to clipboard. Paste into Claude to log items or sync.</li>
+      <li><strong>Word links:</strong> Not supported on iOS — same as iPad.</li>
+      <li><strong>Best use:</strong> Capturing quick reminders and questions on the go. Full editing on Mac or iPad.</li>
     </ul>
   </div>
 
-  <!-- ── SETTINGS ── -->
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Settings &amp; Preferences</h3>
+  <!-- ── NOTES ENTRY FORM ── -->
+  <h3 style="margin-top:28px">&#9654; Notes &mdash; Entry Form</h3>
+  <p>The entry form has been redesigned. The text area and URL field share the same gray fill and read as a single input zone. Controls appear below in a single row of toggle buttons.</p>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Claude project</span>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-project-input">Project name</label>
-      <input class="settings-input" id="settings-project-input" type="text"
-        placeholder="e.g. Over-classified" autocomplete="off" />
-    </div>
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:4px;line-height:1.6">Used in the Update Claude modal to remind you which project to paste into. Always paste into this project — not a new chat.</p>
+  <div class="device-guide" style="margin-top:12px">
+    <h4>Flow toggle</h4>
+    <ul>
+      <li><strong>Default: off</strong> &mdash; renders as <em>&#9675; Note only</em> (gray). The note is saved locally as a Project Note or Question.</li>
+      <li><strong>Toggle on</strong> &mdash; button turns green and reads <em>&#9655; Flow</em>. The entry is directed to Claude as the opening message in a dialogue thread. The item saves as type <em>For Claude</em>.</li>
+      <li>Use Flow when you want Claude to respond, research, or act &mdash; not for routine captures.</li>
+    </ul>
   </div>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Word file location <span style="font-style:italic;font-weight:400">(Mac only)</span></span>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-folder-input">Folder path</label>
-      <input class="settings-input" id="settings-folder-input" type="text"
-        placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
-    </div>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-filename-input">Filename override <span style="font-style:italic;font-weight:400;text-transform:none">(leave blank for auto)</span></label>
-      <input class="settings-input" id="settings-filename-input" type="text"
-        placeholder="Overclassified_292.docx" />
-    </div>
-    <div id="settings-path-preview" class="settings-preview" style="display:none"></div>
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px;line-height:1.6">Stored locally on this device only — never included in the JSON export.</p>
+  <div class="device-guide" style="margin-top:10px">
+    <h4>Type selector</h4>
+    <ul>
+      <li><strong>Question</strong> &mdash; a question for the record, not necessarily directed to Claude.</li>
+      <li><strong>Project Note</strong> &mdash; default. A local note, log entry, or session record.</li>
+      <li><em>Reminder</em> is no longer a type &mdash; use the Reminder toggle instead (see below).</li>
+      <li><em>For Dave</em> has been removed from the entry form. Claude generates those internally when responding to Flow items.</li>
+    </ul>
   </div>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Sync preferences</span>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time you click the button unless you've checked "Don't show this again." Click below to restore it.</p>
-    <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓ — modal will show next time'">Restore Update Claude dialog</button>
+  <div class="device-guide" style="margin-top:10px">
+    <h4>Status toggle &mdash; Open / Deferred</h4>
+    <ul>
+      <li>Simple two-state button. <strong>Open</strong> (green tint) is the default. Click once to switch to <strong>Deferred</strong> (amber). Click again to return to Open.</li>
+      <li>Deferred items appear under the Hold filter and are visually muted in the list.</li>
+    </ul>
   </div>
 
-  <div style="text-align:right;margin-top:16px">
-    <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
+  <div class="device-guide" style="margin-top:10px">
+    <h4>&#128276; Reminder toggle</h4>
+    <ul>
+      <li>Click to reveal a <strong>Due date</strong> and <strong>Time</strong> field inline. The item saves as type <em>Reminder</em>.</li>
+      <li>The Reminder toggle and date fields reset automatically after each save.</li>
+    </ul>
   </div>
+
+  <div class="device-guide" style="margin-top:10px">
+    <h4>Priority cycle</h4>
+    <ul>
+      <li>Three-state button: <strong>&#9734; Low</strong> (default, gray) &rarr; <strong>&#9733; Medium</strong> (amber) &rarr; <strong>&#9733;&#9733; High</strong> (red). Click to cycle forward.</li>
+      <li>Priority is sticky &mdash; it stays at whatever level you set until you cycle it again.</li>
+      <li>High items show a red left border in the list.</li>
+    </ul>
+  </div>
+
+  <div class="device-guide" style="margin-top:10px">
+    <h4>Tag &mdash; sticky selection</h4>
+    <ul>
+      <li>The tag selector remembers your last choice. Every new item defaults to the tag you used most recently in this session.</li>
+      <li>Change it at any time; subsequent items will default to the new selection.</li>
+    </ul>
+  </div>
+
+  <!-- ── FLOW DIALOGUE THREADS ── -->
+  <h3 style="margin-top:28px">&#9654; Flow &mdash; Dave &#8596; Claude Dialogue</h3>
+  <p>When Flow is on, the item opens a threaded conversation. Each exchange is stored in order inside the item and rendered newest-first when expanded.</p>
+  <ul style="margin-top:8px">
+    <li><strong>&#9655; For Claude</strong> <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> &mdash; Dave initiated; awaiting Claude&rsquo;s response.</li>
+    <li><strong>&#9873; For Dave</strong> <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> &mdash; Claude has responded; awaiting Dave&rsquo;s reply. Also used for items Claude flagged directly (legacy).</li>
+  </ul>
+  <p style="margin-top:8px">When Claude&rsquo;s reply is the latest entry in an expanded item, a reply text area appears inline. Type your response and click <strong>Send</strong> to continue the thread. The conversation cascades indefinitely within the single item.</p>
+  <p style="margin-top:6px;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">Thread data is included in the JSON export. Claude reads the full dialogue history when you paste the export at session start.</p>
+
+  <!-- ── TAB BADGES ── -->
+  <h3 style="margin-top:28px">&#9654; Tab Notification Badges</h3>
+  <p>Three tabs carry a red numeric badge when items need attention. Badges disappear when the count reaches zero.</p>
+  <ul style="margin-top:8px">
+    <li><strong>Notes</strong> &mdash; count of active Flow / For Claude / For Dave threads not yet marked done.</li>
+    <li><strong>Roadmap</strong> &mdash; count of at-risk items: tasks past their target end date and not done, plus gates past their date and not yet met.</li>
+    <li><strong>Outreach</strong> &mdash; count of contacts past their target date whose status is not Confirmed, Closed, or Rejected.</li>
+  </ul>
+
+  <!-- ── MOVE TO ROADMAP ── -->
+  <h3 style="margin-top:28px">&#9654; Move Note to Roadmap</h3>
+  <p>Any note can be promoted to a roadmap item without leaving the Notes tab. Expand the item and click <strong>&rarr; Roadmap</strong> in the action row. A slide panel opens from the right while Notes remains visible beneath.</p>
+
+  <div class="device-guide" style="margin-top:12px">
+    <h4>Slide panel fields</h4>
+    <ul>
+      <li><strong>Type</strong> &mdash; Phase, Task, or Gate. The panel adjusts its fields to match.</li>
+      <li><strong>Attach to phase</strong> &mdash; visible for Task and Gate. Choose the parent phase from a dropdown of all current phases.</li>
+      <li><strong>Insert position</strong> &mdash; visible for Tasks. Start of phase or end of phase.</li>
+      <li><strong>Label</strong> &mdash; pre-filled from the first line of the note text. Edit freely before saving.</li>
+      <li><strong>Target dates</strong> &mdash; start and end for Phases and Tasks; single gate date for Gates.</li>
+      <li><strong>Keep note?</strong> &mdash; <em>Yes</em> retains the note in the Notes tab and adds a roadmap link. <em>No</em> marks the source note done.</li>
+    </ul>
+  </div>
+  <p style="margin-top:8px">Click <strong>Add to Roadmap</strong> to save. The item appears immediately in the Gantt. Close the panel with &times; or by clicking the dimmed overlay.</p>
+
+  <!-- ── LINK / BOOKMARK FIELD ── -->
+  <h3 style="margin-top:28px">&#9654; Link &amp; Bookmark Field</h3>
+  <p>Every note, reminder, question, and For Dave item has a <strong>🔗 Link / Bookmark</strong> field. It accepts three kinds of input:</p>
+  <ul>
+    <li><strong>Web URL</strong> (<code>https://…</code>) — rendered as a clickable link. Works on all devices.</li>
+    <li><strong>Word bookmark</strong> (e.g. <code>ref_3_5_31</code>, <code>note_1_4_28</code>, <code>idx_grusch_10</code>) — on Mac, clicking opens Word and jumps to that bookmark. On iPad/iPhone, displays as a plain label. To find a bookmark name, ask Claude: <em>"What is the bookmark name for footnote 31 in Chapter 4?"</em></li>
+    <li><strong>Plain label</strong> (anything else, e.g. <em>Ch.13 para 450</em>) — displayed as a reference note with a 📌 pin. Not clickable but visible at a glance.</li>
+  </ul>
+  <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px">Bookmark naming convention: <code>ref_[part]_[chapter]_[footnote#]</code> · <code>note_[part]_[chapter]_[footnote#]</code> · <code>idx_[slug]_[locator]</code></p>
+
+  <!-- ── ROADMAP ── -->
+  <h3 style="margin-top:28px">&#9654; Roadmap Gantt</h3>
+  <ul>
+    <li><strong>Hidden</strong> — chart off</li>
+    <li><strong>Bars + Gates</strong> — phase bars with gate diamonds at target dates</li>
+    <li><strong>Bars + Gates + Notes</strong> — adds date/label annotation below each bar</li>
+  </ul>
+  <p>Bar spans earliest start → latest end date across steps. Gate diamond sits at the latest end date in the phase. Click a diamond to mark it met. Each step has Start and End date fields in the edit panel.</p>
+
+  <!-- ── SESSION WORKFLOW ── -->
+  <h3 style="margin-top:28px">&#9654; Session Workflow</h3>
+  <ol>
+    <li>Open the hub. Click <strong>Export</strong> on the Notes tab — copies JSON to clipboard.</li>
+    <li>Open Claude in the Over-classified project → paste the JSON → say <em>"Update the project hub."</em></li>
+    <li>Claude processes the JSON, makes interface updates, and delivers a new <code>index.html</code>.</li>
+    <li>Save to <code>iCloud Drive</code> (overwrite the existing file).</li>
+    <li>Press <strong>⇧⌘U</strong> on Mac → uploads to GitHub → live on all devices in ~60 seconds.</li>
+    <li>Refresh the hub on any device.</li>
+  </ol>
+  <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px"><strong>Multi-device:</strong> One device at a time. If you edited on multiple devices before syncing, paste both exports to Claude in one message and say <em>"Merge these exports."</em></p>
+
+  <!-- ── DATA SAFETY ── -->
+  <h3 style="margin-top:28px">&#9654; Data Safety</h3>
+  <ul>
+    <li>Old localStorage keys (v1–v5) are deleted automatically on first load — no accumulation.</li>
+    <li>Forgot to export? Your session work is still in localStorage on that device — open, export, give to Claude.</li>
+    <li>GitHub Pages is the source of truth. localStorage is a per-device session buffer.</li>
+    <li>The Word file path in Settings is local only — it is never included in the JSON export.</li>
+  </ul>
 
 </div></div>
 
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T21:00:00.000Z'; // bump this each time seed data is updated
-const MASTER_VERSION='v292'; // current manuscript version — update each session
+const SEED_VERSION='2026-06-11T16:00:00.000Z'; // bump this each time seed data is updated
+const MASTER_VERSION='v293'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
 const SEED_ITEMS=[
-  {id:'i_1781172463770',type:'fordave',text:'Update Claude button automation: copy JSON, confirm dialog with OK to update Claude, record one-time permission to open Claude app, paste JSON into chat.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE: Renamed to Update Claude. First use shows custom modal with Open Claude button and Don\'t show again checkbox. Subsequent uses show a brief toast only. localStorage pref key: oc_uc_skip_modal.',dialogue:[{from:'dave',text:'What do you think about a little more automation, around the Copy to Claude? Change the name of the button to Update Claude, then make the behavior as follows: 1) on activation, copy JSON, prompt user, "click OK to update Claude," 2) record permission to open the Claude App for these updates - once, while using app, paste JSON into chat.',ts:'2026-06-11T10:07:43.770Z'},{from:'claude',text:'DONE: Renamed to Update Claude. Custom modal on first use (Open Claude button + Don\'t show again). Toast on subsequent uses. Browser sandbox prevents auto-paste — manual paste remains the one irreducible step.',ts:'2026-06-11T16:30:00.000Z'}],created:'2026-06-11T10:07:43.770Z',dueDate:'',completedDate:'2026-06-11',itemUrl:null},
-  {id:'i_1781172035466',type:'fordave',text:'Help tab redesign: remove black frames, reorder as About / How to Use / Keeping in Sync / By Device / Settings & Preferences. Notes can be dialogue, standalone, or pushed to Roadmap.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE: Help tab fully rewritten. Five sections: About, How to Use (tabs + entry form controls + Flow + Roadmap + Outreach + Reference deck + badges), Keeping in Sync, By Device (Mac/iPad/iPhone), Settings & Preferences. Black device-guide frames removed; consistent inline list style throughout.',dialogue:[{from:'dave',text:'Format the help tab to remove the black clunky frames, reorder it to organization that makes the most sense and update it to reflect the current status.',ts:'2026-06-11T10:00:35.466Z'},{from:'claude',text:'DONE: Help tab rewritten with five sections. Black frames removed. About differentiates the hub from generic project software. How to Use covers all tabs and entry controls. Keeping in Sync surfaces the reassurance prominently. By Device condensed and consistent. Settings & Preferences includes Update Claude dialog restore option.',ts:'2026-06-11T16:30:00.000Z'}],created:'2026-06-11T10:00:35.466Z',dueDate:'',completedDate:'2026-06-11',itemUrl:null},
+  {id:'i_session0611a',type:'note',text:'Session 2026-06-11: Hub redesign (light theme, Apple white palette, per-tab photo backgrounds, shadow depth, Copy to Claude as tab-action button, copyright footer, banner photo/crop/overlay). Roadmap: date fills across all phases, Family Vacation phase (Jun 30-Jul 8), Publisher Pitch Window phase (6 steps + 2 gates, Aug 29 hard decision), June 9 Capitol phase completions, website description update task added to Marketing Plan. Transcript: June 9 2026 Capitol UAP press conference assembled and output as PDF. Introduction: Kean epigraph replaces Hillenkoetter (moved to Why this book); new in medias res opening (Capitol steps scene, Brazil/PURSUE/immunity context, pivot to Dec 2017). Conclusion: Grusch paragraph added (fn 3); Kean trimmed; Burchett moved/trimmed; controlled disclosure reordered before Eisenhower; double machinery line fixed; footnotes cascaded 1-7. v292→v293.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,dialogue:null,created:'2026-06-11T16:00:00.000Z',dueDate:'',completedDate:'2026-06-11',itemUrl:null},
   {id:'i_appendix_remap',type:'fordave',text:'Remap appendices — relabel and physically reorder all 15 appendices per the approved sequence. New order: A1 Sample Messages (unchanged), A2 Secrecy Framework (was A3), A3 Clearance Levels (was A6), A4 Accidents Measures Agreement (unchanged), A5 Condon Report (unchanged), A6 Observables (was A7), A7 Drones (was A8), A8 Propulsion (was A9), A9 Databases (was A10), A10 Public Opinion (was A11), A11 Sightings (was A2), A12 On the Record (was A13), A13 UAP Threats (was A14), A14 Table of Figures (was A12), A15 Quotations (unchanged). Scope of changes: (1) physically reorder appendix sections in document XML; (2) update all appendix labels and titles in body text, TOC, A12/A14 Table of Figures, index, and all cross-references; (3) rename all bookmarks using old appendix codes. SEQUENCE: this remap must be completed before the ebook hyperlink anchor work (i_appendix_hyperlinks) — hyperlink bookmarks must use the new codes from the start. Deferred until prose is locked.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:48:45.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → A1  Sample Messages and Members of Congress'},
   {id:'i_remap_map_note',type:'note',text:'Appendix remap reference: Remap_appendices.docx is saved in the project files. This document contains the full old-to-new mapping table for all 15 appendices. Read it at session start before executing the remap.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
     {id:'i_appendix_hyperlinks',type:'fordave',text:'Ebook hyperlink anchor work — add named bookmark anchors to long-list appendices. Scope: A1 Members of Congress section, A13 On the Record (40 profiles), A14 UAP Threats (10 incidents), A3 Secrecy Framework (~25 dated entries). Must follow appendix remap (i_appendix_remap). Deferred until prose locked.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:43:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
@@ -1572,19 +1588,17 @@ function rdash(){
 function tSt(k){fSt=k;render();}
 function tReminder(){fReminder=!fReminder;if(fReminder&&fSt==='open')fSt=null;render();}
 function hdSearchUpdate(v){
-  v=(v||'').trim();
+  var sci=document.getElementById('search-input');
+  if(sci)sci.value=v;
+  searchUpdate();
   var clr=document.getElementById('hd-search-clear');
   if(clr)clr.style.display=v?'block':'none';
-  if(!v){searchClose();return;}
-  _searchResults=searchBuild(v);
-  _searchIdx=-1;
-  searchRender(v);
-  document.getElementById('search-results-panel').classList.add('open');
 }
 function hdSearchClear(){
   var inp=document.getElementById('hd-search-input');if(inp)inp.value='';
+  var sci=document.getElementById('search-input');if(sci)sci.value='';
   var clr=document.getElementById('hd-search-clear');if(clr)clr.style.display='none';
-  searchClose();
+  searchClear();
 }
 function setTag(v){fTag=v||null;render();}
 function setType(v){fType=v||null;render();}
@@ -1665,11 +1679,9 @@ function getFullWordPath(){
 function settingsSave(){
   const folder=(document.getElementById('settings-folder-input')?.value||'').trim();
   const filename=(document.getElementById('settings-filename-input')?.value||'').trim();
-  const project=(document.getElementById('settings-project-input')?.value||'').trim();
   const s=loadSettings();
   s.wordBasePath=folder;
   s.wordFilename=filename||null;
-  s.claudeProject=project||null;
   saveSettings(s);
   updateSettingsPreview();
   const btn=document.getElementById('settings-save-btn');
@@ -1682,11 +1694,10 @@ function updateSettingsPreview(){
   const source=filenameOverride?'custom':'auto';
   const prev=document.getElementById('settings-path-preview');
   if(!prev)return;
-  if(!folder){prev.style.display='none';prev.textContent='';return;}
-  const sep=folder.endsWith('/')?'':'/';
+  if(!folder){prev.textContent='';return;}
+  const sep=folder.endsWith('/')?'':'/'
   const full=folder+sep+file;
-  prev.style.display='block';
-  prev.textContent=full+(file?' ('+source+')':'');
+  prev.textContent=full+' ('+source+')';
 }
 function initSettings(){
   const s=loadSettings();
@@ -1695,10 +1706,8 @@ function initSettings(){
   const finp=document.getElementById('settings-filename-input');
   if(finp){
     finp.value=s.wordFilename||'';
-    finp.placeholder=getWordFilenameDefault()||'Overclassified_292.docx';
+    finp.placeholder=getWordFilenameDefault()||'Overclassified_279.docx';
   }
-  const pinp=document.getElementById('settings-project-input');
-  if(pinp&&s.claudeProject)pinp.value=s.claudeProject;
   updateSettingsPreview();
   if(inp)inp.addEventListener('input',updateSettingsPreview);
   if(finp)finp.addEventListener('input',updateSettingsPreview);
@@ -2882,41 +2891,18 @@ function buildExportJSON(){
     road:(S.road||[])
   },null,2);
 }
-const UC_PREF_SK='oc_uc_skip_modal';
 function copyToClaude(){
   const json=buildExportJSON();
   const btn=document.getElementById('copy-tab-btn');if(btn)btn.disabled=true;
-  const done=()=>{if(btn)btn.disabled=false;};
-  const afterCopy=()=>{
-    done();
-    const proj=loadSettings().claudeProject||'Over\u2011Classified';
-    const body=document.getElementById('uc-modal-body');
-    if(body)body.innerHTML=`The JSON has been copied to your clipboard. Open Claude in the <strong>${proj}</strong> project and paste to sync. Always paste into your project &mdash; not a new chat.`;
-    const skip=localStorage.getItem(UC_PREF_SK)==='1';
-    if(skip){ucToast();}else{document.getElementById('uc-overlay').classList.add('open');}
-  };
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(json).then(afterCopy).catch(()=>{clipFb(json);afterCopy();});
+    navigator.clipboard.writeText(json).then(clipOk).catch(()=>clipFb(json));
   } else {
-    clipFb(json);afterCopy();
+    clipFb(json);
   }
 }
-function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);document.execCommand('copy');document.body.removeChild(ta);}catch(e){}}
-function ucToast(){const t=document.getElementById('uc-toast');if(!t)return;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
-function ucClose(){
-  const cb=document.getElementById('uc-remember-cb');
-  if(cb&&cb.checked)localStorage.setItem(UC_PREF_SK,'1');
-  document.getElementById('uc-overlay').classList.remove('open');
-}
-function ucOpenClaude(){
-  const cb=document.getElementById('uc-remember-cb');
-  if(cb&&cb.checked)localStorage.setItem(UC_PREF_SK,'1');
-  document.getElementById('uc-overlay').classList.remove('open');
-  const fallback=setTimeout(()=>{window.open('https://claude.ai','_blank');},850);
-  window.addEventListener('blur',()=>clearTimeout(fallback),{once:true});
-  window.location.href='claude://';
-}
-function ucOverlayClick(e){if(e.target===document.getElementById('uc-overlay'))ucClose();}
+function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
+function clipFb2(txt){window.prompt('Auto-copy failed:',txt);clipOk();}
+function clipOk(){const btn=document.getElementById('copy-tab-btn');if(btn){btn.disabled=false;}['copy-ok','copy-tab-ok'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
 
 /* ── OUTREACH ── */
 let OT=[];
@@ -3163,8 +3149,6 @@ load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
-// iOS standalone fallback — navigator.standalone is more reliable than CSS display-mode on Apple devices
-if(navigator.standalone===true){const r=document.querySelector('.hd-reload');if(r)r.style.display='flex';}
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
@@ -3484,22 +3468,5 @@ document.addEventListener('keydown',function(e){
 <div style="position:relative;z-index:2;text-align:center;padding:18px 20px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;color:rgba(0,0,0,0.35);border-top:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.70);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
   &copy; David R. Brown &nbsp;&middot;&nbsp; Hilton Head Island, South Carolina &nbsp;&middot;&nbsp; <em>Over&#8209;Classified</em> &nbsp;&middot;&nbsp; Vigilia Press &nbsp;&middot;&nbsp; info@vigiliapress.com
 </div>
-
-<!-- ── UPDATE CLAUDE MODAL ── -->
-<div class="uc-overlay" id="uc-overlay" onclick="ucOverlayClick(event)">
-  <div class="uc-modal">
-    <h3>Update Claude</h3>
-    <p id="uc-modal-body">The JSON has been copied to your clipboard. Open Claude in the <em>Over&#8209;Classified</em> project and paste to sync. Always paste into your project &mdash; not a new chat.</p>
-    <div class="uc-modal-btns">
-      <button class="uc-open-btn" onclick="ucOpenClaude()">Open Claude</button>
-      <button class="uc-dismiss-btn" onclick="ucClose()">Dismiss</button>
-    </div>
-    <div class="uc-remember">
-      <input type="checkbox" id="uc-remember-cb">
-      <label for="uc-remember-cb">Don&rsquo;t show this again &mdash; just copy and show a brief reminder</label>
-    </div>
-  </div>
-</div>
-<div class="uc-toast" id="uc-toast">JSON copied &mdash; paste into Claude ✓</div>
 </body>
 </html>
