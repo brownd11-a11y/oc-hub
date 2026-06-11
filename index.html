@@ -151,7 +151,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item.done{background:var(--done-bg);border-left-color:var(--done-fg)}
 .item.hold{background:var(--hold-bg);border-left-color:#b06000}
 .item.pri:not(.done){border-left-color:var(--accent)}
-.ihead{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;cursor:pointer;user-select:none}
+.ihead{display:flex;align-items:flex-start;gap:10px;padding:5px 12px;cursor:pointer;user-select:none}
 .ihead:hover{background:rgba(0,0,0,.025)}
 .icb{width:15px;height:15px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;margin-top:2px;transition:all .15s}
 .done .icb{background:var(--done-fg);border-color:var(--done-fg);color:white}
@@ -220,12 +220,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
 .gantt-scroll-inner{position:relative}
 
-/* Sticky label column */
-.gantt-label-col{position:sticky;left:0;z-index:20;background:var(--page-bg);flex-shrink:0;width:224px;min-width:224px}
+/* Sticky label column — width controlled by --gantt-label-w (resizable) */
+:root{--gantt-label-w:224px}
+.gantt-label-col{position:sticky;left:0;z-index:20;background:var(--page-bg);flex-shrink:0;width:var(--gantt-label-w);min-width:80px}
 
 /* Header row */
 .gantt-header-row{display:flex;align-items:stretch;height:36px;border-bottom:2px solid #C7CBD6;position:sticky;top:0;z-index:15;background:#F0F2F7}
-.gantt-header-label{width:224px;flex-shrink:0;position:sticky;left:0;z-index:21;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;gap:8px}
+.gantt-header-label{width:var(--gantt-label-w);flex-shrink:0;position:sticky;left:0;z-index:21;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;gap:8px;position:relative}
 .gantt-header-label span{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:#C70025;letter-spacing:.06em;text-transform:uppercase}
 .gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(199,0,37,.4);background:none;color:#C70025;padding:2px 8px;cursor:pointer;transition:all .15s}
 .gantt-today-btn:hover{background:rgba(199,0,37,.1)}
@@ -242,10 +243,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Phase row ── */
 .gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
-.gantt-phase-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
+.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
 /* phase label cell colored border */
 .gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
 .gantt-drag-handle{font-size:18px;color:#bbb;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;transition:color .15s}.gantt-drag-handle:hover{color:#555}.gantt-drag-handle:active{cursor:grabbing;color:#333}
+.gantt-col-resize-handle{position:absolute;right:0;top:0;bottom:0;width:6px;cursor:col-resize;background:transparent;z-index:25;flex-shrink:0}.gantt-col-resize-handle:hover{background:rgba(199,0,37,.25)}.gantt-col-resizing{cursor:col-resize!important;user-select:none!important}
 .gantt-expand-btn{width:20px;height:20px;border:1.5px solid var(--ph-color,#3a6b9e);border-radius:3px;background:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;color:var(--ph-color,#3a6b9e);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
 .gantt-expand-btn:hover{background:var(--ph-color,#3a6b9e);color:#fff}
 .gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
@@ -281,7 +283,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* Gate-task row — shows diamond only in track */
 .gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
-.gantt-gate-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
+.gantt-gate-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
 .gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-gate-task-track{flex:1;position:relative;background:transparent}
 
@@ -1244,20 +1246,20 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T00:30:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T00:28:34.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v291'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
 const SEED_ITEMS=[
   {id:'i_session0610g',type:'note',text:'Session 2026-06-10 (night): v286→v291. A15 Luna immunity inserted (statement 2 as pull quote, statement 1 as context). Ch.9 Smeared credibility tightened; Intimidation subheading added (Grusch Espionage Act, Sullivan, McCasland, Luna bridge). Ch.17 pull quote “To hell with the safe way” + playing dumb folded into close. A15 Burlison “To hell with the safe way” entry. Conclusion Burlison transnational paragraph. Ch.6 F-117 NDA closing sentence. Ch.13 Grusch plasma footnote (note_3_5_32). ERA3 diagram updated (June 9 entry; PURSUE revised to rolling/from May 2026). Hub reconciled. All June 9 flags closed.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-11T00:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_session0610f',type:'note',text:'Session 2026-06-10 (late evening): v285→v286. [FNXX] stray removed Ch.9 Turner para. Ch.16 notes 19/20 swapped (June 9 Capitol now before March 2024 NewsNation). Ch.12 notes 16-20 moved to after note 15 (1-20 sequential). Ch.13 all 31 notes reordered sequentially. JSON import: hub-UI items added, done items reconciled, Tier C phase added to roadmap. Memory: i_hub_workflow_fix removed.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T23:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
-  {id:'i_1781123164986',type:'fordave',text:'Update hub flow threading to change note/callout color after Dave replies. Once Dave has replied to a fordave item and directed Claude to act, it should display as a for-Claude item awaiting follow-up, not remain as a for-Dave item.',done:false,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:null,dialogue:[{from:'dave',text:'We need to update the flow threading to change the color of the note and the callout after I\'ve responded to something. For example, in the note that starts Chapter 13, "Notes 27-31 Contain Identical Corrupted Content", I edited that note. Told Claude to fix it, but it still shows as a for Dave item. Once I have replied to Claude, shouldn\'t it show as a for Claude item that Claude will automatically follow up on?',ts:'2026-06-10T20:26:04.986Z'}],created:'2026-06-10T20:26:04.986Z',dueDate:'',completedDate:'',itemUrl:null},
-  {id:'i_1781123027532',type:'fordave',text:'Reduce line spacing between hub note entries. Currently multiple lines of space separate items; reduce to a small visual break so more notes are visible simultaneously.',done:false,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:null,dialogue:[{from:'dave',text:'I think we can save space on the notes panel by narrowing the line space following the single line text in each entry item. Right now there\'s multiple lines of space between each. If we were to reduce that to just a small portion of space to create a visual break, it would give us more ability to see more notes at the same time. Thoughts?',ts:'2026-06-10T20:23:47.532Z'}],created:'2026-06-10T20:23:47.532Z',dueDate:'',completedDate:'',itemUrl:null},
-  {id:'i_1781122982939',type:'fordave',text:'Roadmap left column (phase names): make it resizable/stretchable so full phase name is visible or column can be minimized. Also: iPad version does not allow dragging phases up and down — needs fix.',done:false,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:null,dialogue:[{from:'dave',text:'Is it possible to make the left-hand column with the phase names stretchable so that I can see the full name or minimize it to give more space on the screen? If so, please do that. Also, please note the iPad version still does not allow dragging phases up and down.',ts:'2026-06-10T20:23:02.939Z'}],created:'2026-06-10T20:23:02.939Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_1781123164986',type:'fordave',text:'Update hub flow threading to change note/callout color after Dave replies. Once Dave has replied to a fordave item and directed Claude to act, it should display as a for-Claude item awaiting follow-up, not remain as a for-Dave item.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE v292: Legacy fordave items with dialogue now track last speaker. After Dave replies (last entry from Dave), item shows blue For-Claude badge and background. After Claude responds (last entry from Claude), shows amber For-Dave.',dialogue:[{from:'dave',text:'We need to update the flow threading to change the color of the note and the callout after I\'ve responded to something. For example, in the note that starts Chapter 13, "Notes 27-31 Contain Identical Corrupted Content", I edited that note. Told Claude to fix it, but it still shows as a for Dave item. Once I have replied to Claude, shouldn\'t it show as a for Claude item that Claude will automatically follow up on?',ts:'2026-06-10T20:26:04.986Z'}],created:'2026-06-10T20:26:04.986Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_1781123027532',type:'fordave',text:'Reduce line spacing between hub note entries. Currently multiple lines of space separate items; reduce to a small visual break so more notes are visible simultaneously.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE v292: Reduced .ihead padding from 9px to 5px top/bottom. Items are visibly more compact; separator line provides sufficient visual break.',dialogue:[{from:'dave',text:'I think we can save space on the notes panel by narrowing the line space following the single line text in each entry item. Right now there\'s multiple lines of space between each. If we were to reduce that to just a small portion of space to create a visual break, it would give us more ability to see more notes at the same time. Thoughts?',ts:'2026-06-10T20:23:47.532Z'}],created:'2026-06-10T20:23:47.532Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_1781122982939',type:'fordave',text:'Roadmap left column (phase names): make it resizable/stretchable so full phase name is visible or column can be minimized. Also: iPad version does not allow dragging phases up and down — needs fix.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE v292: (1) Left column now resizable via drag handle at right edge of header — clamps 80px–420px, saved in state. (2) Touch events added to drag handle for iPad phase reordering.',dialogue:[{from:'dave',text:'Is it possible to make the left-hand column with the phase names stretchable so that I can see the full name or minimize it to give more space on the screen? If so, please do that. Also, please note the iPad version still does not allow dragging phases up and down.',ts:'2026-06-10T20:23:02.939Z'}],created:'2026-06-10T20:23:02.939Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_session0610e',type:'note',text:'Session 2026-06-10 (evening): v283→v285. Rebelo Ch.8 paragraph strengthened with Burlison June 9 statement; Minister of Defense corrected. Ch.16 note_4_2_19 See also NewsNation added; note_4_2_20 anchor fixed. Ch.17 notes 6/7 moved before Ch.18 heading; sectPr fixed. Ch.10 note_3_2_23 numId+link fixed; note_3_2_29 artifact removed. Hub updated from GitHub live base. PI v20 output. Memory cleaned.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T21:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_ch13_notes_27_31',type:'fordave',text:'Ch.13 notes 27-31 contain identical corrupted content (all show Vallee Messengers of Deception). Correct citations from v279 session: note 27=Fravor July 2023 congressional testimony; note 28=Bray/Moultrie May 2022 House Intelligence testimony; note 29=CIA U-2/OXCART history Pedlow/Welzenbach declassified 2013; note 30=Knuth et al Entropy paper Nimitz g-force calculations; note 31=Jacobsen Pentagon\'s Brain p.10. Must restore correct content then reorder physically.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v286: Content confirmed correct in v285 (body text had been reorganized since v279 — assignments match current body). Ch.13 all 31 notes physically reordered sequentially.',created:'2026-06-10T21:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → The human technology hypothesis'},
   {id:'i_ch16_physical_reorder',type:'fordave',text:'Ch.16 notes 19/20 physical order still wrong — note_4_2_20 (March 2024 NewsNation) is physically before note_4_2_19 (June 9 Capitol) in document. Content of both notes is now correct. note_4_2_20 uses inline bookmark structure (paraId 381E18B6) — strip inline bookmark, rebuild as standalone, then reorder. note_4_2_19 forward link already points to ref_4_2_19 correctly.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v286: sectPr kept in place; content and bookmarks swapped between the two paragraphs. Note 19 (June 9 Capitol) now physically before note 20 (March 2024 NewsNation). Verified.',created:'2026-06-10T21:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Burlison named the implication directly'},
-  {id:'i_luna_a15',type:'fordave',text:'A15 Luna immunity — two verbatim statements. Statement 1 (3:33-3:48): immunity request call to action directed at White House. Statement 2 (29:12-29:42): White House considering permanent immunity so people cannot be hit with Espionage Act. Recommendation: statement 2 as primary A15 pull quote; statement 1 in footnote as context. Decision needed: silent cleanup of um hesitations or bracketed ellipsis.',done:false,priority:true,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T21:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → The dual-track did not end with Blue Book'},
+  {id:'i_luna_a15',type:'fordave',text:'A15 Luna immunity — two verbatim statements. Statement 1 (3:33-3:48): immunity request call to action directed at White House. Statement 2 (29:12-29:42): White House considering permanent immunity so people cannot be hit with Espionage Act. Recommendation: statement 2 as primary A15 pull quote; statement 1 in footnote as context. Decision needed: silent cleanup of um hesitations or bracketed ellipsis.',done:true,completedDate:'2026-06-10',priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v291: Use Statement 2 (29:12-29:42) as primary A15 pull quote — White House considering permanent immunity so people cannot be hit with Espionage Act. Silent cleanup of um hesitations (no bracketed ellipsis).',created:'2026-06-10T21:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → The dual-track did not end with Blue Book'},
   {id:'i_fordave_v282_1',type:'fordave',text:'v282 — Bibliography: Add Washington Times June 9 2026 entry. Needed by 6 new afootnotes (Ch.6 note 11, Ch.10 note 17, Ch.16 note 19, Ch.17 notes 6-7, Conclusion note 2).',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Washington Times entry inserted before Walton in Bibliography.',created:'2026-06-10T10:30:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Washington (find nearest W entry in Bibliography)'},
   {id:'i_fordave_v282_2',type:'fordave',text:'v282 — Bibliography: Add Turner, O.H. NAA entry. Turner, O.H. Classified assessment, Joint Intelligence Organisation, 1971. National Archives of Australia, Record B30030606.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: Turner NAA B30030606 entry inserted after Twining in Bibliography.',created:'2026-06-10T10:30:02.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → Twining, Nathan'},
   {id:'i_fordave_v282_3',type:'fordave',text:'v282 — Ch.9 [FNXX] + full footnote resequencing. Turner/NAA paragraph in Manufacturing Doubt has unresolved [FNXX]. Ch.9 body sequence disordered (1,2,9,10,3,4,5,11...).',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v283: [FNXX] resolved as note_2_5_6. Full resequencing 1-36. Four-count PASS. Pre-existing bugs fixed: orphaned OBSOLETE paragraph, ref_2_5_25 instrText, notes 35/36 destack.',created:'2026-06-10T10:30:03.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'PASTE TO FIND → An allied intelligence service reached the same conclusion independently'},
@@ -1265,16 +1267,16 @@ const SEED_ITEMS=[
   {id:'i_session0610d',type:'note',text:'Session 2026-06-10 (afternoon): v282→v283. Ch.9 full pass. Bibliography: Turner NAA + Washington Times. A15: Grusch + Burlison inserted, Luna pending. Ch.8 Rebelo updated. Afootnote audit: Ch.6/11/14/15/Conclusion PASS; Ch.10/12/13/16/17 FAIL queued v284.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_fn_reorder_v284',type:'fordave',text:'v285: Afootnote physical reorder — partial. Ch.17 notes 6/7 moved before Ch.18 heading (DONE v285). Ch.10 note_3_2_23 numId+link fixed, note_3_2_29 removed (DONE v285). Ch.16 notes 19/20 content fixed but physical order still wrong. Ch.12 notes 16-20 block still misplaced. Ch.13 notes 3-13 scrambled + 26-31 out of order. Also Ch.13 notes 27-31 contain identical Vallee content — v279 insertion corruption, correct citations: Fravor testimony, Bray/Moultrie testimony, CIA U-2/OXCART history, Knuth Entropy paper, Jacobsen Pentagon\'s Brain p.10.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v286: Ch.16 notes 19/20 swapped. Ch.12 notes 16-20 block moved to after note 15 (1-20 sequential). Ch.13 all 31 notes reordered sequentially. [FNXX] stray artifact in Ch.9 Turner paragraph stripped. All gate checks pass.',created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_burlison_queue',type:'reminder',text:'Burlison June 9 additional material pending decisions. (1) To hell with the safe way — A15 candidate + Ch.10 or Ch.17. (2) Transnational call to action — one sentence Ch.18 or Conclusion. (3) Matthew Sullivan deceased whistleblower — research check before use.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-10T15:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
-  {id:'i_hub_workflow_fix',type:'reminder',text:'Hub update protocol hardening needed. Failure mode: Claude rebuilds index.html from JSON losing functionality. Fix: always fetch live file from GitHub at session start. Never reconstruct from JSON. Add to PI v20.',done:true,priority:true,memFlag:true,tag:'hubui',deferred:false,answer:'DONE: Protocol documented in PI v20. GitHub fetch at session start, verify line count and dialogue-thread, surgical updates only, never reconstruct from JSON.',created:'2026-06-10T15:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
-  {id:'i_1781026224455',type:'question',text:'Find Australian declassified document page 7 discussing US Cover up. Little known, but Grusch recommended it during June debrief.',done:false,priority:false,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-09T17:30:24.455Z',dueDate:'',completedDate:''},
+  {id:'i_hub_workflow_fix',type:'reminder',text:'Hub update protocol hardening needed. Failure mode: Claude rebuilds index.html from JSON losing functionality. Fix: always fetch live file from GitHub at session start. Never reconstruct from JSON. Add to PI v20.',done:true,priority:true,memFlag:false,tag:'hubui',deferred:false,answer:'DONE: Protocol documented in PI v20. GitHub fetch at session start, verify line count and dialogue-thread, surgical updates only, never reconstruct from JSON.',created:'2026-06-10T15:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
+  {id:'i_1781026224455',type:'question',text:'Find Australian declassified document page 7 discussing US Cover up. Little known, but Grusch recommended it during June debrief.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'research',deferred:false,answer:null,created:'2026-06-09T17:30:24.455Z',dueDate:'',completedDate:''},
   {id:'i_1780836045602',type:'note',text:'Update ERA3 disclosure pressure — latest Capitol steps events and current activities.',done:true,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,created:'2026-06-07T12:40:45.602Z',dueDate:'2026-06-10',completedDate:''},
-  {id:'i_1780737182150',type:'question',text:'Christina Gomez podcast "The UFO Story Just Got Much Bigger." Elizondo: China admitted UAP program using AI. Senior officials concluded human DNA was altered. Eric Burlison: White House considering UAP whistleblower amnesty, 60-day window floated. Needs primary source verification before inclusion.',done:false,priority:true,memFlag:true,tag:'research',deferred:false,answer:null,created:'2026-06-06T09:13:02.150Z',dueDate:'',completedDate:''},
+  {id:'i_1780737182150',type:'question',text:'Christina Gomez podcast "The UFO Story Just Got Much Bigger." Elizondo: China admitted UAP program using AI. Senior officials concluded human DNA was altered. Eric Burlison: White House considering UAP whistleblower amnesty, 60-day window floated. Needs primary source verification before inclusion.',done:true,completedDate:'2026-06-10',priority:true,memFlag:false,tag:'research',deferred:false,answer:null,created:'2026-06-06T09:13:02.150Z',dueDate:'',completedDate:''},
   {id:'i_1780926907920',type:'reminder',text:'Update appendices with long lists (sightings, On the Record) to include hyperlinked names for ebook navigation. Brief description needed for each entry. Sequence with manual editing of applicable material.',done:false,priority:false,memFlag:true,tag:'todo',deferred:false,answer:null,created:'2026-06-08T13:55:07.920Z',dueDate:'',completedDate:''},
   {id:'i_1781004087718',type:'reminder',text:'Claude, please look at A2 to see how we created an index offset by the app headline style and recommend other candidates where this same type of index would work well for hyperlinks to the content in the appendices.',done:false,priority:false,memFlag:true,tag:'editing',deferred:false,answer:null,created:'2026-06-09T11:21:27.718Z',dueDate:'',completedDate:''},
-  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'Intro § Human-tech hypothesis — 2 new paras after note 11, near para 99'},
+  {id:'i_fordave_v279_1',type:'fordave',text:'v279: Review new intro paragraphs on human-tech hypothesis (notes 11–12, after para 99). Confirm reads naturally in context.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v291: Dave confirmed approved. Intro human-tech paragraphs read naturally in context. Closed.',created:'2026-06-09T18:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'Intro § Human-tech hypothesis — 2 new paras after note 11, near para 99'},
   {id:'i_fordave_v279_2',type:'fordave',text:'v279: Review new Ch. 4 subheading "Secret programs as explanation" + 2 paragraphs inserted after Mick West / Peings section.',done:true,priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v281: Ch. 4 footnote cascade complete. Old notes 28–32 → 16–20; old 16–27 → 21–32. All bookmarks, instrText, display text, and return links updated.',created:'2026-06-09T18:00:01.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Ch. 4 § Secret programs as explanation — subheading + 2 paras after Mick West / Peings'},
   {id:'i_fordave_v279_3',type:'fordave',text:'v279: Review Ch. 6 para 619 connective sentence appended to end of F-117 section. Confirm it bridges forward naturally.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'NEEDS DAVE INPUT: Para 619 reference does not map cleanly to Ch. 6 XML. Please identify the specific paragraph (quote last sentence or describe it). Closest candidate: XML para 954–961 (AARO / F-117 limitations section).',created:'2026-06-09T18:00:02.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 6 § End of F-117 section — new connective sentence at para 619'},
-  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:false,priority:false,memFlag:false,tag:'editing',deferred:false,answer:null,created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 13 § The human technology hypothesis — new subheading + 4 paras before ETH section'},
+  {id:'i_fordave_v279_4',type:'fordave',text:'v279: Review new Ch. 13 subsection "The human technology hypothesis" (heading + 4 paragraphs) inserted before the ETH section.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'editing',deferred:false,answer:'DONE v291: Dave confirmed approved. Ch.13 human technology hypothesis section reads as a whole. Closed.',created:'2026-06-09T18:00:03.000Z',dueDate:'',completedDate:'',itemUrl:'Ch. 13 § The human technology hypothesis — new subheading + 4 paras before ETH section'},
   {id:'i_fordave_v279_5',type:'fordave',text:'v279: Verify Jacobsen, Pentagon\'s Brain — find exact page number for the 10–20 year technology lead figure. Needed for notes 1_4_32 and 3_5_31 before final production.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE v281: Both FLAG placeholders replaced with "p. 10." — note_1_4_21 (Ch. 4) and note_3_5_31 (Ch. 13).',created:'2026-06-09T18:00:04.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Ch. 4 note ref_1_4_32 and Ch. 5 note ref_3_5_31 — both cite Jacobsen 10–20yr figure; page # unverified'},
   {id:'i_fordave_v279_6',type:'fordave',text:'PI v18 chapter titles out of date: manuscript has Ch. 3 = "Off the Books" and Ch. 4 = "What We Agreed to See". PI v18 still lists "Noise" and "What Counts". Update PI v18 before next session.',done:true,priority:true,memFlag:false,tag:'editing',deferred:false,answer:'DONE: PI v20 written this session — Ch.3 = Off the Books, Ch.4 = What We Agreed to See correctly listed in chapter table.',created:'2026-06-09T18:00:05.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:'Project_Instructions_v18.docx § Chapter titles table — update Ch. 3 and Ch. 4 entries'},
   {id:'i_session0609b',type:'note',text:'Session 2026-06-09 (afternoon): Human-tech hypothesis research + drafting. v278→v279.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-09T18:00:06.000Z',dueDate:'',completedDate:'2026-06-09'},
@@ -1644,11 +1646,15 @@ function rlist(){
     const exp=it._exp||false;
     const isEditing=editingId===it.id;
     const dlgCheck=(it.dialogue||[]);
-    // Flow item = Dave initiated (first entry from dave). Migrated items (Claude-first) stay as fordave.
+    // Flow item = Dave initiated (first entry from dave). Migrated items (Claude-first) are legacy fordave.
     const isFlowItem=it.type==='fordave'&&dlgCheck.length>0&&dlgCheck[0].from==='dave';
-    const isNeedsResponse=isFlowItem&&dlgCheck[dlgCheck.length-1].from==='claude'&&!it.done;
     const isLegacyFordave=it.type==='fordave'&&!isFlowItem;
-    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':isFlowItem?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
+    const lastDlgFrom=dlgCheck.length?dlgCheck[dlgCheck.length-1].from:null;
+    // isNeedsResponse = last dialogue entry is from Claude (amber — awaiting Dave)
+    const isNeedsResponse=!it.done&&lastDlgFrom==='claude'&&(isFlowItem||(isLegacyFordave&&dlgCheck.length>0));
+    // isAwaitingClaude = Dave has replied after Claude (blue — awaiting Claude follow-up)
+    const isAwaitingClaude=!it.done&&lastDlgFrom==='dave'&&dlgCheck.length>1&&isLegacyFordave;
+    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
     const preview=(it.text||'').length>120?(it.text||'').substring(0,120)+'\u2026':(it.text||'');
     const dueCls=isOverdue(it.dueDate)?' overdue':'';
     let bodyHtml='';
@@ -1703,8 +1709,7 @@ function rlist(){
           <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag">&#9872;</span>
           ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
           ${it.type==='fordave'
-            ?(isLegacyFordave?'<span class="fordave-badge">&#9873; For Dave</span>'
-              :(isNeedsResponse?'<span class="flow-badge for-dave">&#9873; For Dave</span>':'<span class="flow-badge for-claude">&#9655; For Claude</span>'))
+            ?(isNeedsResponse?'<span class="flow-badge for-dave">&#9873; For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude">&#9655; For Claude</span>':isLegacyFordave?'<span class="fordave-badge">&#9873; For Dave</span>':'<span class="flow-badge for-claude">&#9655; For Claude</span>')
             :`<span class="type-pill">${esc(it.type||'note')}</span>`}
         </div>
         <div class="idate-cols">
@@ -2016,6 +2021,7 @@ function renderGantt(){
   html+=`<div class="gantt-header-label">
     <span>Today</span>
     <button class="gantt-today-btn" onclick="ganttScrollToday()" title="Scroll to today">&#8857;</button>
+    <div class="gantt-col-resize-handle" id="gantt-col-resize" title="Drag to resize column" onmousedown="ganttColResizeStart(event)" ontouchstart="ganttColResizeTouchStart(event)"></div>
   </div>`;
   html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
   // week labels
@@ -2052,7 +2058,7 @@ function renderGantt(){
     html+=`<div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'}">`;
     // Label cell
     html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}">`;
-    html+=`<span class="gantt-drag-handle" title="Drag to reorder" data-drag-phase="${ph.id}" onmousedown="ganttDragStart(event,'${ph.id}')">&#8942;</span>`;
+    html+=`<span class="gantt-drag-handle" title="Drag to reorder" data-drag-phase="${ph.id}" onmousedown="ganttDragStart(event,'${ph.id}')" ontouchstart="ganttDragTouchStart(event,'${ph.id}')">&#8942;</span>`;
     html+=`<button class="gantt-expand-btn" onclick="toggleGanttPhase('${ph.id}')" style="--ph-color:${color}">${isOpen?'&#8722;':'+'}</button>`;
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
     if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
@@ -2645,6 +2651,97 @@ function ganttMovePhaseToTarget(fromId,toId,dropY){
   save();renderGantt();
 }
 
+/* ── GANTT COLUMN RESIZE ── */
+let _colResizing=false,_colResizeStartX=0,_colResizeStartW=0;
+function ganttGetLabelW(){
+  const val=getComputedStyle(document.documentElement).getPropertyValue('--gantt-label-w').trim();
+  return parseInt(val)||224;
+}
+function ganttSetLabelW(w){
+  const clamped=Math.max(80,Math.min(420,w));
+  document.documentElement.style.setProperty('--gantt-label-w',clamped+'px');
+  if(S)S._ganttLabelW=clamped;
+}
+function ganttColResizeStart(e){
+  e.preventDefault();
+  _colResizing=true;
+  _colResizeStartX=e.clientX;
+  _colResizeStartW=ganttGetLabelW();
+  document.body.classList.add('gantt-col-resizing');
+  document.addEventListener('mousemove',ganttColResizeMove);
+  document.addEventListener('mouseup',ganttColResizeEnd);
+}
+function ganttColResizeMove(e){
+  if(!_colResizing)return;
+  ganttSetLabelW(_colResizeStartW+(e.clientX-_colResizeStartX));
+}
+function ganttColResizeEnd(){
+  _colResizing=false;
+  document.body.classList.remove('gantt-col-resizing');
+  document.removeEventListener('mousemove',ganttColResizeMove);
+  document.removeEventListener('mouseup',ganttColResizeEnd);
+  save();
+}
+function ganttColResizeTouchStart(e){
+  if(!e.touches.length)return;
+  e.preventDefault();
+  _colResizing=true;
+  _colResizeStartX=e.touches[0].clientX;
+  _colResizeStartW=ganttGetLabelW();
+  document.addEventListener('touchmove',ganttColResizeTouchMove,{passive:false});
+  document.addEventListener('touchend',ganttColResizeTouchEnd);
+}
+function ganttColResizeTouchMove(e){
+  if(!_colResizing||!e.touches.length)return;
+  e.preventDefault();
+  ganttSetLabelW(_colResizeStartW+(e.touches[0].clientX-_colResizeStartX));
+}
+function ganttColResizeTouchEnd(){
+  _colResizing=false;
+  document.removeEventListener('touchmove',ganttColResizeTouchMove);
+  document.removeEventListener('touchend',ganttColResizeTouchEnd);
+  save();
+}
+
+/* ── GANTT PHASE DRAG — TOUCH SUPPORT (iPad) ── */
+function ganttDragTouchStart(e,pid){
+  if(!e.touches.length)return;
+  e.preventDefault();
+  _dragPh=pid;
+  _dragStartY=e.touches[0].clientY;
+  const phases=roadPhases();
+  _dragIdx=phases.findIndex(p=>p.id===pid);
+  const phRow=e.target.closest('.gantt-phase-row');
+  if(!phRow)return;
+  _dragGhost=phRow.cloneNode(true);
+  _dragGhost.style.cssText=`position:fixed;left:0;right:0;top:${phRow.getBoundingClientRect().top}px;z-index:200;opacity:.85;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);background:#fff;`;
+  document.body.appendChild(_dragGhost);
+  _dragRows=Array.from(document.querySelectorAll('.gantt-phase-row'));
+  document.addEventListener('touchmove',ganttDragTouchMove,{passive:false});
+  document.addEventListener('touchend',ganttDragTouchEnd);
+}
+function ganttDragTouchMove(e){
+  if(!_dragGhost||!e.touches.length)return;
+  e.preventDefault();
+  const dy=e.touches[0].clientY-_dragStartY;
+  _dragGhost.style.transform=`translateY(${dy}px)`;
+  _dragRows.forEach(r=>r.style.outline='');
+  const clientY=e.touches[0].clientY;
+  const target=_dragRows.find(r=>{const rect=r.getBoundingClientRect();return clientY>=rect.top&&clientY<=rect.bottom;});
+  if(target){const pid=target.querySelector('[data-drag-phase]')?.dataset?.dragPhase;if(pid&&pid!==_dragPh)target.style.outline='2px solid #C70025';}
+}
+function ganttDragTouchEnd(e){
+  document.removeEventListener('touchmove',ganttDragTouchMove);
+  document.removeEventListener('touchend',ganttDragTouchEnd);
+  if(_dragGhost){_dragGhost.remove();_dragGhost=null;}
+  if(_dragRows)_dragRows.forEach(r=>r.style.outline='');
+  if(!_dragPh){_dragRows=null;return;}
+  const clientY=e.changedTouches.length?e.changedTouches[0].clientY:_dragStartY;
+  const target=(_dragRows||[]).find(r=>{const rect=r.getBoundingClientRect();return clientY>=rect.top&&clientY<=rect.bottom;});
+  if(target){const toId=target.querySelector('[data-drag-phase]')?.dataset?.dragPhase;if(toId&&toId!==_dragPh)ganttMovePhaseToTarget(_dragPh,toId,clientY);}
+  _dragPh=null;_dragRows=null;
+}
+
 /* ── GANTT HOVER TOOLTIPS ── */
 let _ttTimer=null,_ttEl=null;
 function ttShow(e,ttName,dateStr){
@@ -2675,6 +2772,8 @@ function ttHide(){
 
 /* ── ROADMAP INIT ── */
 function initRoadmap(){
+  // Restore saved label column width
+  if(S._ganttLabelW)document.documentElement.style.setProperty('--gantt-label-w',S._ganttLabelW+'px');
   // Assign rainbow colors to phases that have no color or legacy color
   roadPhases().forEach((ph,idx)=>{
     if(!ph.color||ph.color==='#3a6b9e'||ph.color==='#3a7a5a'||ph.color==='#9e3a3a'||ph.color==='#6b3a9e'||ph.color==='#7a6a2a'||ph.color==='#2a6a7a'||ph.color==='#4a6b2a'||ph.color==='#6b4a2a'||ph.color==='#2a4a6b'){
