@@ -1280,7 +1280,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T06:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T07:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1697,6 +1697,26 @@ function iVis(it){
 }
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* ── NATURAL SORT — handles digit sequences AND written number words ── */
+const _NUM_WORDS={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20};
+function _tokenize(s){
+  let t=String(s).toLowerCase().replace(/[-_]/g,' ');
+  t=t.replace(/\btwenty[\s-](one|two|three|four|five|six|seven|eight|nine)\b/g,(_,b)=>20+_NUM_WORDS[b]);
+  t=t.replace(/\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty)\b/g,m=>_NUM_WORDS[m]??m);
+  return t.split(/(\d+)/).map((p,i)=>i%2===0?p:parseInt(p,10));
+}
+function naturalSort(a,b){
+  const ta=_tokenize(a),tb=_tokenize(b);
+  const len=Math.max(ta.length,tb.length);
+  for(let i=0;i<len;i++){
+    const av=ta[i]??'',bv=tb[i]??'';
+    if(typeof av==='number'&&typeof bv==='number'){if(av!==bv)return av-bv;}
+    else if(typeof av!==typeof bv){return typeof av==='number'?-1:1;}
+    else{const c=String(av).localeCompare(String(bv),undefined,{sensitivity:'base'});if(c!==0)return c;}
+  }
+  return 0;
+}
+
 function fmtDate(s){if(!s)return'\u2014';const d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
 function todayStr(){return new Date().toISOString().split('T')[0];}
 function isOverdue(due){if(!due)return false;return new Date(due+'T23:59:59')<new Date();}
@@ -1817,7 +1837,7 @@ function kwSaveStore(){try{localStorage.setItem(KW_SK,JSON.stringify(KW));}catch
 function kwRender(){
   const wrap=document.getElementById('kw-chips');
   if(!wrap)return;
-  wrap.innerHTML=KW.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).map(k=>
+  wrap.innerHTML=KW.sort(naturalSort).map(k=>
     `<span class="kw-chip">${esc(k)}<span class="kw-chip-x" onclick="kwRemove(${JSON.stringify(k)})" title="Remove">&#10005;</span></span>`
   ).join('');
   // Also sync to RF_KW so references tab shares the list
@@ -1837,7 +1857,7 @@ function kwStartEdit(){
   const ta=document.getElementById('kw-edit-ta');
   const editRow=document.getElementById('kw-edit-row');
   const addRow=document.getElementById('kw-add-row');
-  if(ta)ta.value=KW.sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).join(', ');
+  if(ta)ta.value=KW.sort(naturalSort).join(', ');
   if(editRow)editRow.style.display='flex';
   if(addRow)addRow.style.display='none';
 }
@@ -3382,7 +3402,7 @@ function rfLoad(){
   RF_SEED.forEach(s=>{if(s.kw&&!RF_KW.includes(s.kw))RF_KW.push(s.kw);});
 }
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
-function rfBuildKwSelects(){const sorted=[...RF_KW].sort((a,b)=>a.localeCompare(b));['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
+function rfBuildKwSelects(){const sorted=[...RF_KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
 function rfShowKwInput(){
   const row=document.getElementById('rf-kw-new-row');
   const btn=document.getElementById('rf-kw-add-btn');
@@ -3397,7 +3417,7 @@ function rfHideKwInput(){
 }
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a keyword first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),kw,url,desc});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
-function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();return ka!==kb?ka.localeCompare(kb):(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
+function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
 function rfCancelEdit(){rfEditId=null;rfRender();}
 function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);if(item){item.kw=kw;item.url=url;item.desc=desc;if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
@@ -3409,7 +3429,7 @@ function rfRender(){
   if(ct)ct.textContent=list.length+' reference'+(list.length===1?'':'s');
   if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  const kwS=[...RF_KW].sort((a,b)=>a.localeCompare(b));
+  const kwS=[...RF_KW].sort(naturalSort);
   tbody.innerHTML=list.map(r=>{
     const isE=rfEditId===r.id;
     const eRow=isE?`<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4"><div class="rf-edit-grid"><select id="rfe-kw-${r.id}" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">${kwS.map(k=>`<option value="${esc(k)}"${k===r.kw?' selected':''}>${esc(k)}</option>`).join('')}</select><input type="text" id="rfe-url-${r.id}" value="${esc(r.url)}" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-desc-${r.id}" value="${esc(r.desc)}" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /></div><div class="rf-edit-acts"><button class="rf-edit-save" onclick="rfSaveEdit('${r.id}')">Save</button><button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button></div></td></tr>`:'';
