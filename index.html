@@ -700,19 +700,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <div class="hd">
   <div class="hd-compact">
     <span class="hd-title"><em>Over-classified</em> &mdash; Hub</span>
-    <div class="hd-stats-inline">
-      <div class="hd-stat"><span class="hd-stat-val">152,492</span><span class="hd-stat-lbl">Words</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">110,235</span><span class="hd-stat-lbl">Prose</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">495</span><span class="hd-stat-lbl">Notes</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">330</span><span class="hd-stat-lbl">Sources</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">516</span><span class="hd-stat-lbl">Index</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">43</span><span class="hd-stat-lbl">Figures</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">42</span><span class="hd-stat-lbl">Sightings</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">446</span><span class="hd-stat-lbl">Subheads</span></div>
-      <div class="hd-stat"><span class="hd-stat-val">18</span><span class="hd-stat-lbl">Chapters</span></div>
-    </div>
+    <div class="hd-stats-inline" id="hd-task-counts"></div>
     <div class="hd-actions">
-      <div id="dash-status" style="display:inline-flex;gap:4px;align-items:center;padding:0"></div>
+      <div style="display:inline-flex;gap:0;align-items:center;padding:0" id="dash-status"></div>
+      <button id="dash-priority" onclick="tSt(fSt==='priority'?null:'priority')" style="margin-left:8px;background:rgba(255,255,255,.06);border:1px solid #333028;border-radius:3px;padding:2px 10px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:#c9a050;white-space:nowrap;height:24px;line-height:1;transition:all .15s">&#9733; Priority</button>
+      <button id="dash-reminder" onclick="tReminder()" style="margin-left:4px;background:rgba(255,255,255,.06);border:1px solid #333028;border-radius:3px;padding:2px 10px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:#9ab0c0;white-space:nowrap;height:24px;line-height:1;transition:all .15s">&#128276; Reminders</button>
       <span class="hd-copy-ok" id="copy-ok" style="display:none">&#10003; Copied</span>
       <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()">Copy to Claude</button>
     </div>
@@ -1246,17 +1238,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T01:59:06.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T02:11:38.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
 const SEED_ITEMS=[
   {id:'i_appendix_remap',type:'fordave',text:'Remap appendices — relabel and physically reorder all 15 appendices per the approved sequence. New order: A1 Sample Messages (unchanged), A2 Secrecy Framework (was A3), A3 Clearance Levels (was A6), A4 Accidents Measures Agreement (unchanged), A5 Condon Report (unchanged), A6 Observables (was A7), A7 Drones (was A8), A8 Propulsion (was A9), A9 Databases (was A10), A10 Public Opinion (was A11), A11 Sightings (was A2), A12 On the Record (was A13), A13 UAP Threats (was A14), A14 Table of Figures (was A12), A15 Quotations (unchanged). Scope of changes: (1) physically reorder appendix sections in document XML; (2) update all appendix labels and titles in body text, TOC, A12/A14 Table of Figures, index, and all cross-references; (3) rename all bookmarks using old appendix codes. SEQUENCE: this remap must be completed before the ebook hyperlink anchor work (i_appendix_hyperlinks) — hyperlink bookmarks must use the new codes from the start. Deferred until prose is locked.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:48:45.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → A1  Sample Messages and Members of Congress'},
-  {id:'i_remap_map_note',type:'note',text:'Appendix remap reference: Remap_appendices.docx is saved in the project files. This document contains the full old-to-new mapping table for all 15 appendices. Read it at session start before executing the remap.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},,
+  {id:'i_remap_map_note',type:'note',text:'Appendix remap reference: Remap_appendices.docx is saved in the project files. This document contains the full old-to-new mapping table for all 15 appendices. Read it at session start before executing the remap.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
     {id:'i_appendix_hyperlinks',type:'fordave',text:'Ebook hyperlink anchor work — add named bookmark anchors to long-list appendices. Scope: A1 Members of Congress section, A13 On the Record (40 profiles), A14 UAP Threats (10 incidents), A3 Secrecy Framework (~25 dated entries). Must follow appendix remap (i_appendix_remap). Deferred until prose locked.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:43:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_hyp_scope_note',type:'note',text:'Hyperlink scope — appendices receiving ebook anchor treatment: A1 (Members of Congress name list — Senate and House UAP Caucus), A3 (Secrecy Framework — ~25 dated statute/EO/program entries; requires structural edit first to promote inline bold entries to heading paragraphs), A13 (On the Record — 40 named profiles), A14 (UAP Threats — 10 named incidents). A2 Sightings already complete. No AppHeadLine on any — anchors only, nothing added to ebook TOC. Optionally add a mini name-index at top of each appendix linking to the anchors.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_hyp_style_note',type:'note',text:'Style reference: appendix_hyperlink_mockup.pdf is saved in the project files. This PDF shows the proposed visual treatment for the hyperlinked appendix entries. Do not recreate it.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
-  {id:'i_hyp_header_note',type:'note',text:'Visual treatment for hyperlinked appendices: apply the colored header table style (appendix label + title in accent-color band) at the top of each affected appendix section. Do NOT apply full per-entry table row treatment — it adds no value in print without hyperlinks and Vellum strips table styling in ebook anyway. Header band only.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},,
+  {id:'i_hyp_header_note',type:'note',text:'Visual treatment for hyperlinked appendices: apply the colored header table style (appendix label + title in accent-color band) at the top of each affected appendix section. Do NOT apply full per-entry table row treatment — it adds no value in print without hyperlinks and Vellum strips table styling in ebook anyway. Header band only.',done:false,priority:false,memFlag:false,tag:'editing',deferred:true,answer:null,dialogue:[],created:'2026-06-11T01:59:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_session0610g',type:'note',text:'Session 2026-06-10 (night): v286→v291. A15 Luna immunity inserted (statement 2 as pull quote, statement 1 as context). Ch.9 Smeared credibility tightened; Intimidation subheading added (Grusch Espionage Act, Sullivan, McCasland, Luna bridge). Ch.17 pull quote “To hell with the safe way” + playing dumb folded into close. A15 Burlison “To hell with the safe way” entry. Conclusion Burlison transnational paragraph. Ch.6 F-117 NDA closing sentence. Ch.13 Grusch plasma footnote (note_3_5_32). ERA3 diagram updated (June 9 entry; PURSUE revised to rolling/from May 2026). Hub reconciled. All June 9 flags closed.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-11T00:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_session0610f',type:'note',text:'Session 2026-06-10 (late evening): v285→v286. [FNXX] stray removed Ch.9 Turner para. Ch.16 notes 19/20 swapped (June 9 Capitol now before March 2024 NewsNation). Ch.12 notes 16-20 moved to after note 15 (1-20 sequential). Ch.13 all 31 notes reordered sequentially. JSON import: hub-UI items added, done items reconciled, Tier C phase added to roadmap. Memory: i_hub_workflow_fix removed.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,created:'2026-06-10T23:30:00.000Z',dueDate:'',completedDate:'2026-06-10',itemUrl:null},
   {id:'i_1781123164986',type:'fordave',text:'Update hub flow threading to change note/callout color after Dave replies. Once Dave has replied to a fordave item and directed Claude to act, it should display as a for-Claude item awaiting follow-up, not remain as a for-Dave item.',done:true,completedDate:'2026-06-10',priority:false,memFlag:false,tag:'hubui',deferred:false,answer:'DONE v292: Legacy fordave items with dialogue now track last speaker. After Dave replies (last entry from Dave), item shows blue For-Claude badge and background. After Claude responds (last entry from Claude), shows amber For-Dave.',dialogue:[{from:'dave',text:'We need to update the flow threading to change the color of the note and the callout after I\'ve responded to something. For example, in the note that starts Chapter 13, "Notes 27-31 Contain Identical Corrupted Content", I edited that note. Told Claude to fix it, but it still shows as a for Dave item. Once I have replied to Claude, shouldn\'t it show as a for Claude item that Claude will automatically follow up on?',ts:'2026-06-10T20:26:04.986Z'}],created:'2026-06-10T20:26:04.986Z',dueDate:'',completedDate:'',itemUrl:null},
@@ -1381,7 +1373,7 @@ const ROAD_SEED=[
 ];
 
 let S={items:[],road:[]};
-let fSt=null,fTag=null,fType=null,inputPriFlag=0,inputMemFlag=false,editingId=null;
+let fSt='open',fTag=null,fType=null,fReminder=false,inputPriFlag=0,inputMemFlag=false,editingId=null;
 // Entry form state
 let inputFlowOn=false;  // Flow toggle (false = local note by default)
 let inputIsReminder=false;
@@ -1450,7 +1442,7 @@ function showTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
   const fr=document.getElementById('filter-row');
   if(fr)fr.style.display=(t==='notes'?'flex':'none');
-  if(t==='notes'){fSt='open';}
+  if(t==='notes'){fSt='open';fReminder=false;}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
 }
 
@@ -1525,21 +1517,51 @@ function setBadge(id,count){
 }
 function rdash(){
   const{open:openCt,pri,hold,done,fordave,needsResp}=counts();
+  const deferred=(S.items||[]).filter(it=>it.deferred&&!it.done).length;
   updateTabBadges();
-  document.getElementById('dash-status').innerHTML=[
-    {k:'open',l:'Open',c:openCt,col:'#e06070'},{k:'priority',l:'Pri',c:pri,col:'#c9a050'},
-    {k:'hold',l:'Hold',c:hold,col:'#888888'},{k:'done',l:'Done',c:done,col:'#5a9a5a'},
-    {k:'fordave',l:'\u2691Dave',c:fordave,col:'#9a70c0'}
-  ].map(s=>`<button onclick="tSt('${s.k}')" style="background:${fSt===s.k?'rgba(199,0,37,.25)':'rgba(255,255,255,.06)'};border:1px solid ${fSt===s.k?'#c70025':'#333028'};border-radius:3px;padding:2px 8px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:${fSt===s.k?'#fff':s.col};white-space:nowrap;height:24px;line-height:1;transition:all .15s"><strong>${s.c}</strong> ${s.l}</button>`).join('');
+  // Header task counts
+  const tc=document.getElementById('hd-task-counts');
+  if(tc)tc.innerHTML=[
+    {l:'Done',c:done,col:'#5a9a5a'},{l:'Open',c:openCt,col:'#c9a050'},
+    {l:'Deferred',c:deferred,col:'#888888'},{l:'Priority',c:pri,col:'#e06070'}
+  ].map(s=>`<div class="hd-stat"><span class="hd-stat-val" style="color:${s.col}">${s.c}</span><span class="hd-stat-lbl">${s.l}</span></div>`).join('');
+  // Segmented status filter: All / Open / Deferred / Done
+  const statusEl=document.getElementById('dash-status');
+  if(statusEl){
+    const segs=[{k:null,l:'All'},{k:'open',l:'Open'},{k:'deferred',l:'Deferred'},{k:'done',l:'Done'}];
+    window._segKeys=segs.map(function(s){return s.k;});
+    statusEl.innerHTML=segs.map(function(s,i){
+      const act=fSt===s.k;
+      const isFirst=i===0,isLast=i===segs.length-1;
+      const rad=isFirst?'3px 0 0 3px':isLast?'0 3px 3px 0':'0';
+      const noRight=isLast?'':'border-right:none;';
+      const bg=act?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';
+      const bc=act?'#c70025':'#333028';
+      const col=act?'#fff':'#c0b898';
+      return '<button onclick="tSt(window._segKeys['+i+'])" style="border-radius:'+rad+';'+noRight+'background:'+bg+';border:1px solid '+bc+';padding:2px 10px;cursor:pointer;font-family:Source Code Pro,monospace;font-size:11px;color:'+col+';white-space:nowrap;height:24px;line-height:1;transition:all .15s">'+s.l+'</button>';
+    }).join('');
+  }
+  // Priority toggle styling
+  const priEl=document.getElementById('dash-priority');
+  if(priEl){const act=fSt==='priority';priEl.style.background=act?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';priEl.style.borderColor=act?'#c70025':'#333028';priEl.style.color=act?'#fff':'#c9a050';}
+  // Reminder toggle styling
+  const remEl=document.getElementById('dash-reminder');
+  if(remEl){remEl.style.background=fReminder?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';remEl.style.borderColor=fReminder?'#c70025':'#333028';remEl.style.color=fReminder?'#fff':'#9ab0c0';}
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
   const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
 }
-function tSt(k){fSt=fSt===k?null:k;render();}
+function tSt(k){fSt=k;render();}
+function tReminder(){fReminder=!fReminder;render();}
 function setTag(v){fTag=v||null;render();}
 function setType(v){fType=v||null;render();}
-function showAll(){fSt=null;fTag=null;fType=null;render();}
+function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;render();}
 function iVis(it){
-  if(fSt){if(fSt==='done'&&!it.done)return false;if(fSt==='open'&&(it.done||it.deferred))return false;if(fSt==='priority'&&(!it.priority||it.done))return false;if(fSt==='hold'&&(!it.deferred||it.done))return false;if(fSt==='fordave'&&(it.done||it.type!=='fordave'))return false;}
+  if(fSt==='done'&&!it.done)return false;
+  if(fSt==='open'&&(it.done||it.deferred))return false;
+  if(fSt==='deferred'&&(!it.deferred||it.done))return false;
+  if(fSt==='priority'&&(!it.priority||it.done))return false;
+  // fSt===null means All — no status filter applied
+  if(fReminder&&it.type!=='reminder')return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
   return true;
@@ -3055,7 +3077,7 @@ function rfRender(){
 }
 
 /* ── INIT ── */
-load();otLoad();rfLoad();fSt='open';render();renderOT();rfBuildKwSelects();rfRender();
+load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
