@@ -68,8 +68,9 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .hd-search-clear{position:absolute;right:8px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;line-height:1;padding:0}
 .hd-search-clear:hover{color:#fff}
 .hd-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.hd-reload{display:flex;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:5px;color:rgba(255,255,255,.85);font-size:16px;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;line-height:1}
+.hd-reload{display:none;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:5px;color:rgba(255,255,255,.85);font-size:16px;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;line-height:1}
 .hd-reload:hover{background:rgba(255,255,255,.28)}
+@media all and (display-mode:standalone){.hd-reload{display:flex}}
 .hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all .15s;box-shadow:0 2px 5px rgba(199,0,37,0.35),0 1px 2px rgba(0,0,0,0.15)}
 .hd-copy-btn:hover{background:#a50020;box-shadow:0 3px 8px rgba(199,0,37,0.45),0 1px 3px rgba(0,0,0,0.2)}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
@@ -1256,7 +1257,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T19:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T20:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2895,13 +2896,12 @@ function copyToClaude(){
     if(skip){ucToast();}else{document.getElementById('uc-overlay').classList.add('open');}
   };
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(json).then(afterCopy).catch(()=>clipFb(json,afterCopy));
+    navigator.clipboard.writeText(json).then(afterCopy).catch(()=>{clipFb(json);afterCopy();});
   } else {
-    clipFb(json,afterCopy);
+    clipFb(json);afterCopy();
   }
 }
-function clipFb(txt,cb){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok&&cb)cb();else clipFb2(txt);}catch(e){clipFb2(txt);}}
-function clipFb2(txt){window.prompt('Auto-copy failed — copy manually:',txt);}
+function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);document.execCommand('copy');document.body.removeChild(ta);}catch(e){}}
 function ucToast(){const t=document.getElementById('uc-toast');if(!t)return;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function ucClose(){
   const cb=document.getElementById('uc-remember-cb');
@@ -3163,6 +3163,8 @@ load();otLoad();rfLoad();render();renderOT();rfBuildKwSelects();rfRender();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();
+// iOS standalone fallback — navigator.standalone is more reliable than CSS display-mode on Apple devices
+if(navigator.standalone===true){const r=document.querySelector('.hd-reload');if(r)r.style.display='flex';}
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
