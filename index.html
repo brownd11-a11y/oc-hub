@@ -3310,7 +3310,26 @@ function otEditNoteToggle(cid,nid){
 }
 /* ── REFERENCES ── */
 let RF=[],RF_KW=[],rfEditId=null;
-function rfLoad(){try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}}
+const RF_SEED=[
+  {id:'rfs_01',kw:'June 9 Capitol',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',desc:'NewsNation full coverage of the June 9 2026 UAP Capitol steps press conference. Grusch, Luna, Burlison, Burchett, Moskowitz, Kean, Fox. Primary video source for all June 9 citations.'},
+  {id:'rfs_02',kw:'June 9 Capitol',url:'https://www.washingtontimes.com/news/2026/jun/9/',desc:'Washington Times June 9 2026 coverage — primary print citation for June 9 Capitol press conference (alongside YouTube x_tmeaNboWE).'},
+  {id:'rfs_03',kw:'Over-classified',url:'https://over-classified.com',desc:'Official book website — Vigilia Press. Over-Classified: The Government Has Known for Decades and Still Won\'t Say.'},
+  {id:'rfs_04',kw:'Over-classified',url:'https://vigiliapress.com',desc:'Vigilia Press imprint site.'},
+  {id:'rfs_05',kw:'Over-classified',url:'https://substack.com/@overclassified',desc:'Over-Classified Substack — Dave\'s author newsletter. Check current URL if redirect needed.'},
+  {id:'rfs_06',kw:'June 9 Capitol',url:'https://commons.wikimedia.org/wiki/File:US_congressional_hearing_on_UAPs_on_26_July_2023_with_Grusch_Graves_and_Fravor.png',desc:'Wikimedia Commons — 2023 House Oversight UAP hearing photo (Grusch, Graves, Fravor). AP/Nathan Howard. Closest royalty-free image to the June 9 event; June 9 itself not yet on Commons.'},
+  {id:'rfs_07',kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects',desc:'CIA FOIA Reading Room — UFO/UAP historical collection. Robertson Panel, Chadwell memos, 1952–1953 documents. Primary source for Ch.5 CIA section.'},
+  {id:'rfs_08',kw:'research',url:'https://aaro.mil/resources/historical-record-report/',desc:'AARO Historical Record Report Vol. 1 (Feb 2024). Primary government source for UAP program history.'},
+  {id:'rfs_09',kw:'research',url:'https://archives.gov/research/military/air-force/ufos',desc:'NARA — Project Blue Book records. 130,000 pages, 12,618 sightings, 701 officially unexplained.'},
+  {id:'rfs_10',kw:'research',url:'https://www.documentcloud.org/documents/25986231-twining-memo/',desc:'Twining memorandum September 23 1947 — declassified. "Something real and not visionary." Foundational primary source.'},
+];
+function rfLoad(){
+  try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}
+  try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}
+  // Inject seed references if not already present
+  RF_SEED.forEach(s=>{if(!RF.find(r=>r.id===s.id))RF.push({...s});});
+  // Ensure seed keywords exist
+  RF_SEED.forEach(s=>{if(s.kw&&!RF_KW.includes(s.kw))RF_KW.push(s.kw);});
+}
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...RF_KW].sort((a,b)=>a.localeCompare(b));['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All keywords</option>':'<option value="">\u2014 Select \u2014</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
 function rfShowKwInput(){
