@@ -66,6 +66,9 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .hd-search-clear{position:absolute;right:8px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;line-height:1;padding:0}
 .hd-search-clear:hover{color:#fff}
 .hd-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hd-reload{display:none;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:5px;color:rgba(255,255,255,.85);font-size:16px;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;line-height:1}
+.hd-reload:hover{background:rgba(255,255,255,.28)}
+@media all and (display-mode:standalone){.hd-reload{display:flex}}
 .hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all .15s;box-shadow:0 2px 5px rgba(199,0,37,0.35),0 1px 2px rgba(0,0,0,0.15)}
 .hd-copy-btn:hover{background:#a50020;box-shadow:0 3px 8px rgba(199,0,37,0.45),0 1px 3px rgba(0,0,0,0.2)}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
@@ -757,7 +760,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
       <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" style="display:none">&#215;</button>
     </div>
-    <div class="hd-actions"></div>
+    <div class="hd-actions"><button class="hd-reload" onclick="window.location.reload()" title="Reload hub">&#8635;</button></div>
   </div>
 </div>
 <!-- search moved to header -->
@@ -1188,7 +1191,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger drag inside the chart area. Single-finger drag moves phase bars.</li>
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Phase drag/reorder:</strong> Touch and hold the &#8942; handle, then drag. If unresponsive, use the numeric Position field in the Edit Phase panel instead.</li>
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported on iOS &mdash; bookmark names display as plain text labels for manual reference.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Sync:</strong> Tap <strong>Update Claude</strong> &rarr; JSON copies &rarr; open Claude in Safari &rarr; paste.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Sync:</strong> Tap <strong>Update Claude</strong> &rarr; JSON copies &rarr; open Claude in Safari &rarr; paste.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading (home screen app):</strong> Use the &#8635; button in the header. Pull-to-refresh from the top of the screen also works. Force-quit via app switcher is the nuclear option.</li>
     </ul>
   </div>
 
@@ -1198,7 +1202,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Best use:</strong> Capturing quick notes and questions on the go. Full editing on iPad or Mac.</li>
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Notes tab:</strong> Fully functional &mdash; entry form, type/tag selectors, priority and memory flags all work.</li>
       <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt:</strong> Readable, horizontal scroll with one finger. Editing easier on iPad or Mac.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported &mdash; displays as plain label.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported &mdash; displays as plain label.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading (home screen app):</strong> A &#8635; reload button appears in the top-right of the header when the hub is running as a home screen app &mdash; no browser chrome needed. Alternatively, pull down from the very top of the screen to trigger a reload, or force-quit from the app switcher and reopen.</li>
     </ul>
   </div>
 
@@ -1233,7 +1238,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T16:30:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T17:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
