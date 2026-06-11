@@ -65,7 +65,7 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 .hd-search-input{width:100%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:4px;color:#fff;font-family:'Source Code Pro',monospace;font-size:12px;padding:0 30px 0 10px;height:30px;outline:none;transition:border-color .15s}
 .hd-search-input::placeholder{color:rgba(255,255,255,.5);font-style:italic}
 .hd-search-input:focus{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.28)}
-.hd-search-clear{position:absolute;right:8px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;line-height:1;padding:0}
+.hd-search-clear{position:absolute;right:4px;background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:16px;line-height:1;padding:6px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center}
 .hd-search-clear:hover{color:#fff}
 .hd-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .hd-reload{display:none;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:5px;color:rgba(255,255,255,.85);font-size:16px;width:32px;height:32px;cursor:pointer;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0;line-height:1}
@@ -764,7 +764,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span class="hd-title"><em>Over&#8209;classified</em> Hub</span>
     <div class="hd-search-wrap">
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
-      <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" style="display:none">&#215;</button>
+      <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" ontouchend="event.preventDefault();hdSearchClear();" style="display:none">&#215;</button>
     </div>
     <div class="hd-actions"><button class="hd-reload" onclick="window.location.reload()" title="Reload hub">&#8635;</button></div>
   </div>
@@ -1244,8 +1244,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
   <div class="settings-card">
     <span class="settings-card-label">Sync preferences</span>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">If you checked &ldquo;Don&rsquo;t show this again&rdquo; on the Update Claude dialog and want to restore it, click below.</p>
-    <button style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓'">Restore Update Claude dialog</button>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time you click the button unless you've checked "Don't show this again." Click below to restore it.</p>
+    <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓ — modal will show next time'">Restore Update Claude dialog</button>
   </div>
 
   <div style="text-align:right;margin-top:16px">
@@ -1257,7 +1257,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T20:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T21:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
