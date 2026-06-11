@@ -1280,7 +1280,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T04:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T06:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2606,11 +2606,24 @@ function openGanttEdit(kind,id){
     html+=`<div class="gantt-panel-field"><div style="display:flex;gap:6px;flex-wrap:wrap">${['#E8A020','#E8622A','#D43540','#B03090','#6040C8','#2070C8','#1A9E78','#4A9E20'].map(c=>`<div onclick="gePickColor('${c}')" id="ge-col-${c.slice(1)}" style="width:28px;height:28px;background:${c};border-radius:4px;cursor:pointer;border:3px solid ${c===item.color?'#fff':'transparent'};transition:border .15s"></div>`).join('')}</div></div>`;
     html+=`<input type="hidden" id="ge-color" value="${esc(item.color||'')}">`;
   }
+    // Convert section — move this phase into another phase as a task or gate
+    const convertPhases=roadPhases().filter(p=>p.id!==id);
+    const convertPhOpts=convertPhases.map(p=>`<option value="${p.id}">${esc(p.num?'['+String(p.num).padStart(2,'0')+'] ':'')}${esc(p.label)}</option>`).join('');
+    html+=`<hr class="gantt-panel-divider">`;
+    html+=`<div class="gantt-panel-section">Convert to task or gate</div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Convert as</label><select class="gantt-panel-input" id="ge-convert-type" onchange="geToggleConvert()"><option value="">— keep as phase —</option><option value="step">Task</option><option value="gate">Gate</option></select></div>`;
+    html+=`<div id="ge-convert-phase-row" style="display:none"><div class="gantt-panel-field"><label class="gantt-panel-lbl">Move into phase</label><select class="gantt-panel-input" id="ge-convert-phase">${convertPhOpts}</select></div><p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-4px;margin-bottom:0">Child tasks of this phase will be removed on convert.</p></div>`;
+
   html+=`<hr class="gantt-panel-divider">`;
   html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')">Save &#10003;</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
   if(body)body.innerHTML=html;
   document.getElementById('gantt-overlay').classList.add('open');
   document.getElementById('gantt-slide-panel').classList.add('open');
+}
+function geToggleConvert(){
+  const v=document.getElementById('ge-convert-type')?.value;
+  const row=document.getElementById('ge-convert-phase-row');
+  if(row)row.style.display=v?'block':'none';
 }
 function gePickColor(c){
   document.getElementById('ge-color').value=c;
@@ -2641,6 +2654,29 @@ function ganttEditSave(kind,id){
   if(kind==='phase'){
     const col=document.getElementById('ge-color')?.value;
     if(col)item.color=col;
+    // Convert phase to task or gate
+    const convertType=document.getElementById('ge-convert-type')?.value;
+    const convertPhaseId=document.getElementById('ge-convert-phase')?.value;
+    if(convertType&&convertPhaseId){
+      S.road=S.road.filter(r=>r.phase!==id);
+      item.kind=convertType;
+      item.phase=convertPhaseId;
+      delete item.color;delete item.num;
+      if(convertType==='step'){
+        item.note=item.note||'';
+        item.targetStart=item.targetStart||'';
+        item.targetEnd=item.targetEnd||'';
+        item.completedDate='';
+        item.done=false;
+        item.isGate=false;
+      } else {
+        delete item.note;
+        item.date=item.date||'';
+        item.met=false;
+        item.metDate='';
+      }
+      renumberPhases();closeGanttPanel();save();renderGantt();return;
+    }
   }
   closeGanttPanel();save();renderGantt();
 }
