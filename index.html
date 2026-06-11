@@ -743,6 +743,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .dl-act-pill.pill-defer{border-color:var(--hold-fg);color:var(--hold-fg);background:var(--hold-bg)}
 .dl-act-pill.pill-defer:hover{background:#fde8cc}
 .dl-act-pill.pill-else{border-color:var(--accent);color:var(--accent)}
+.dl-act-pill-inline{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:20px;cursor:pointer;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.dl-act-pill-inline.pill-accept{border-color:var(--done-fg);color:var(--done-fg);background:var(--done-bg)}
+.dl-act-pill-inline.pill-accept:hover{background:#d4ead4}
+.dl-act-pill-inline.pill-defer{border-color:var(--hold-fg);color:var(--hold-fg);background:var(--hold-bg)}
+.dl-act-pill-inline.pill-defer:hover{background:#fde8cc}
+.dl-act-pill-inline.pill-else{border-color:var(--accent);color:var(--accent)}
+.dl-act-pill-inline.pill-else:hover{background:rgba(199,0,37,0.08)}
+.ihead-pills{display:flex;gap:4px;align-items:center;flex-shrink:0;margin-right:2px}
 .dl-compose{padding:6px 14px 10px;display:none}
 .dl-compose.open{display:block}
 .dl-compose-ta{width:100%;font-family:'Libre Baskerville',Georgia,serif;font-size:12px;line-height:1.45;border:1px solid var(--forclaude-border);border-radius:5px;padding:7px 10px;background:var(--input-bg);resize:none;min-height:44px;outline:none;box-sizing:border-box}
@@ -1280,7 +1288,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T07:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T08:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1960,6 +1968,11 @@ function rlist(){
             ?(isNeedsResponse?'<span class="flow-badge for-dave">&#9873; For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude">&#9655; For Claude</span>':isLegacyFordave?'<span class="fordave-badge">&#9873; For Dave</span>':'<span class="flow-badge for-claude">&#9655; For Claude</span>')
             :`<span class="type-pill">${esc(it.type||'note')}</span>`}
         </div>
+        ${isNeedsResponse&&!it.done?`<div class="ihead-pills">
+          <button class="dl-act-pill-inline pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')">&#10003; Accept</button>
+          <button class="dl-act-pill-inline pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')">&#9208; Defer</button>
+          <button class="dl-act-pill-inline pill-else" onclick="event.stopPropagation();xItem('${it.id}');setTimeout(()=>dlElseOpen('${it.id}'),120)">&#8617; Other</button>
+        </div>`:''}
         <div class="idate-cols">
           <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
           <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
