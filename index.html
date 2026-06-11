@@ -1280,7 +1280,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-12T03:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-12T04:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1469,16 +1469,20 @@ function load(){
         // Preserve any local items not in seed (user-added items)
         const seedIds=new Set(SEED_ITEMS.map(si=>si.id));
         localItems.forEach(li=>{if(!seedIds.has(li.id))mergedItems.push(li);});
-        // Road: seed wins for structure (label,color,note,num,phase,cmd), local wins for user-state (done,met,completedDate,metDate,open)
+        // Road: LOCAL ORDER wins. Seed updates labels/notes/colors on existing entries.
+        // New seed entries are inserted after their preceding seed neighbor; local-only entries kept in place.
         const localRoad=stored.road||[];
         const localRoadById={};
         localRoad.forEach(r=>{localRoadById[r.id]=r;});
-        const mergedRoad=ROAD_SEED.map(sr=>{
-          const lr=localRoadById[sr.id];
-          if(!lr) return {...sr};
-          // Structural fields always come from seed (renames, reorders, notes propagate)
-          // User-state fields always come from local (don't overwrite work done)
+        const seedRoadIds=new Set(ROAD_SEED.map(r=>r.id));
+        // Start from local order, updating structural fields from seed where entry exists
+        const mergedRoad=localRoad.map(lr=>{
+          const sr=ROAD_SEED.find(s=>s.id===lr.id);
+          if(!sr) return lr; // local-only entry, keep as-is
+          // Seed wins for: label,color,note,phase,cmd — NOT num (user controls phase order via drag)
+          // Local wins for: num,done,met,completedDate,metDate,open
           return {...sr,
+            num: lr.num!==undefined ? lr.num : sr.num,
             done: lr.done!==undefined ? lr.done : sr.done,
             met: lr.met!==undefined ? lr.met : sr.met,
             completedDate: lr.completedDate||sr.completedDate||'',
@@ -1486,8 +1490,18 @@ function load(){
             open: lr.open!==undefined ? lr.open : sr.open
           };
         });
-        const seedRoadIds=new Set(ROAD_SEED.map(r=>r.id));
-        localRoad.forEach(r=>{if(!seedRoadIds.has(r.id))mergedRoad.push(r);});
+        // Insert new seed entries (not in local) after their preceding seed neighbor
+        ROAD_SEED.forEach((sr,si)=>{
+          if(localRoadById[sr.id]) return; // already in local
+          // Find the last seed entry before this one that exists in mergedRoad
+          let insertAfter=-1;
+          for(let j=si-1;j>=0;j--){
+            const idx=mergedRoad.findIndex(r=>r.id===ROAD_SEED[j].id);
+            if(idx>=0){insertAfter=idx;break;}
+          }
+          if(insertAfter>=0) mergedRoad.splice(insertAfter+1,0,{...sr});
+          else mergedRoad.push({...sr});
+        });
         S={items:mergedItems,road:mergedRoad};
       } else {
         // localStorage is current session work — keep it
@@ -1499,23 +1513,29 @@ function load(){
         SEED_ITEMS.forEach(si=>{
           if(si.done){const st=S.items.find(i=>i.id===si.id);if(st&&!st.done){st.done=true;st.completedDate=si.completedDate||'';st.answer=si.answer||st.answer;}}
         });
-        // Road: merge seed road into local — add new seed entries, update structural fields on existing, preserve user-state
+        // Road: LOCAL ORDER wins. Update structural fields from seed, insert new seed entries positionally.
         const existingRoadById={};
         S.road.forEach(r=>{existingRoadById[r.id]=r;});
-        ROAD_SEED.forEach(sr=>{
-          const lr=existingRoadById[sr.id];
-          if(!lr){S.road.push({...sr});}
-          else{
-            // Update structural fields from seed in case of renames/reorders/note changes
-            const state={done:lr.done,met:lr.met,completedDate:lr.completedDate,metDate:lr.metDate,open:lr.open};
-            Object.assign(lr,sr,state);
-          }
+        // Update existing entries — seed wins for label/color/note/cmd, local wins for num/done/met/open
+        S.road.forEach(lr=>{
+          const sr=ROAD_SEED.find(s=>s.id===lr.id);
+          if(!sr) return;
+          const saved={num:lr.num,done:lr.done,met:lr.met,completedDate:lr.completedDate,metDate:lr.metDate,open:lr.open};
+          Object.assign(lr,sr,saved);
         });
-        // Remove road entries that were deleted from seed (no longer valid phases/steps)
-        const seedRoadIdSet=new Set(ROAD_SEED.map(r=>r.id));
-        // Only remove if it was a seed entry to begin with — keep user-added entries
-        // We can't reliably tell seed vs user-added without extra metadata, so keep all local entries
-        // (deletions from seed won't auto-remove from local — acceptable tradeoff)
+        // Insert new seed entries after their preceding seed neighbor
+        ROAD_SEED.forEach((sr,si)=>{
+          if(existingRoadById[sr.id]) return;
+          let insertAfter=-1;
+          for(let j=si-1;j>=0;j--){
+            const idx=S.road.findIndex(r=>r.id===ROAD_SEED[j].id);
+            if(idx>=0){insertAfter=idx;break;}
+          }
+          const entry={...sr};
+          if(insertAfter>=0) S.road.splice(insertAfter+1,0,entry);
+          else S.road.push(entry);
+          existingRoadById[sr.id]=entry;
+        });
       }
       // Migrations — always run
       S.items.forEach(it=>{if(it.dueDate===undefined)it.dueDate='';if(it.completedDate===undefined)it.completedDate='';});
