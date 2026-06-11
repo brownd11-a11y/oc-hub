@@ -41,16 +41,16 @@ body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_re
 body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
 body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
 /* Frosted overlay so content stays readable */
-body::before{content:'';position:fixed;inset:0;background:rgba(242,242,247,0.88);z-index:0;pointer-events:none}
+body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72);z-index:0;pointer-events:none}
 .hd,.tabs,.search-bar,.filter-row{position:relative;z-index:2}
 .panel{position:relative;z-index:1}
 
 
 /* ── COMPACT HEADER ROW ── */
-.hd{padding:0;position:relative;background:var(--cover-black);background-image:url('https://brownd11-a11y.github.io/oc-hub/banner.jpg');background-size:cover;background-position:center 35%}
-.hd::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.18) 0%,rgba(0,0,0,0.38) 100%);z-index:0}
+.hd{padding:0;position:relative;background:var(--cover-black);background-image:url('https://brownd11-a11y.github.io/oc-hub/banner.jpg');background-size:cover;background-position:center 55%}
+.hd::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,30,80,0.12) 0%,rgba(0,0,0,0.28) 100%);z-index:0}
 .hd::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.15);z-index:2}
-.hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:64px;margin-top:3px;position:relative;z-index:1}
+.hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:84px;margin-top:3px;position:relative;z-index:1}
 .hd-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ebe2;white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 .hd-title em{font-style:italic;color:#c8bfa8}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
@@ -69,6 +69,9 @@ body::before{content:'';position:fixed;inset:0;background:rgba(242,242,247,0.88)
 .hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:all .15s;box-shadow:0 2px 5px rgba(199,0,37,0.35),0 1px 2px rgba(0,0,0,0.15)}
 .hd-copy-btn:hover{background:#a50020;box-shadow:0 3px 8px rgba(199,0,37,0.45),0 1px 3px rgba(0,0,0,0.2)}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
+/* ── PERSISTENT COPY BAR ── */
+.copy-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #E5E5EA;display:flex;align-items:center;justify-content:flex-end;padding:5px 20px;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.copy-bar-ok{font-family:'Source Code Pro',monospace;font-size:11px;color:#2a7a2a;display:none}
 
 /* ── SEARCH BAR (between header and tabs) ── */
 .search-bar{display:flex;align-items:center;padding:6px 16px;background:#ffffff;border-top:none;border-bottom:1px solid #E5E5EA}
@@ -785,6 +788,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span class="hd-copy-ok" id="copy-ok-2" style="display:none;font-family:'Source Code Pro',monospace;font-size:11px;color:#8aba80">&#10003; Copied</span>
     <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()" style="height:32px;font-size:13px;letter-spacing:.04em;border-radius:4px">Copy to Claude</button>
   </div>
+</div>
+
+<!-- PERSISTENT COPY BAR -->
+<div class="copy-bar" id="copy-bar">
+  <span class="copy-bar-ok" id="copy-bar-ok">&#10003; Copied</span>
+  <button class="hd-copy-btn" onclick="copyToClaude()" style="height:32px;font-size:13px;letter-spacing:.04em;border-radius:4px">Copy to Claude</button>
 </div>
 
 <!-- SEARCH RESULTS OVERLAY -->
@@ -2895,7 +2904,7 @@ function copyToClaude(){
 }
 function clipFb(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;z-index:9999';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');document.body.removeChild(ta);if(ok)clipOk();else clipFb2(txt);}catch(e){clipFb2(txt);}}
 function clipFb2(txt){window.prompt('Auto-copy failed:',txt);clipOk();}
-function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;['copy-ok','copy-ok-2'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
+function clipOk(){const btn=document.getElementById('copy-btn');if(btn)btn.disabled=false;['copy-ok','copy-ok-2','copy-bar-ok'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(function(){el.style.display='none';},2500);}});}
 
 /* ── OUTREACH ── */
 let OT=[];
@@ -3458,5 +3467,8 @@ document.addEventListener('keydown',function(e){
   </div>
 </div>
 
+<div style="position:relative;z-index:2;text-align:center;padding:18px 20px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;color:rgba(0,0,0,0.35);border-top:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.70);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+  &copy; David R. Brown &nbsp;&middot;&nbsp; Hilton Head Island, South Carolina &nbsp;&middot;&nbsp; <em>Over&#8209;Classified</em> &nbsp;&middot;&nbsp; Vigilia Press &nbsp;&middot;&nbsp; info@vigiliapress.com
+</div>
 </body>
 </html>
