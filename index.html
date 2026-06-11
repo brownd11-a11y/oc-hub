@@ -38,16 +38,23 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 /* ── COMPACT HEADER ROW ── */
 .hd{background:var(--cover-black);padding:0;position:relative}
 .hd::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cover-red),var(--cover-steel));z-index:1}
-.hd-compact{display:flex;align-items:center;gap:0;padding:0 16px 0 20px;height:44px;margin-top:3px}
-.hd-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--cover-cream);white-space:nowrap;margin-right:16px;flex-shrink:0}
+.hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:52px;margin-top:3px}
+.hd-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--cover-cream);white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em}
 .hd-title em{font-style:italic;color:#c8bfa8}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
 .hd-stat{display:flex;align-items:baseline;gap:4px;padding:0 12px;border-right:1px solid #2a2820;white-space:nowrap;flex-shrink:0}
 .hd-stat:last-child{border-right:none}
 .hd-stat-val{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:500;color:#c9a050;line-height:1}
 .hd-stat-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840}
-.hd-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
-.hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 12px;height:28px;cursor:pointer;border-radius:3px;white-space:nowrap;transition:background .15s}
+/* Header search — sits between title and Copy button */
+.hd-search-wrap{flex:1;max-width:46%;margin:0 20px;position:relative;display:flex;align-items:center}
+.hd-search-input{width:100%;background:rgba(255,255,255,.08);border:1px solid #3a3828;border-radius:4px;color:var(--cover-cream);font-family:'Source Code Pro',monospace;font-size:12px;padding:0 30px 0 10px;height:30px;outline:none;transition:border-color .15s}
+.hd-search-input::placeholder{color:#6a5a40;font-style:italic}
+.hd-search-input:focus{border-color:#6a5a30;background:rgba(255,255,255,.12)}
+.hd-search-clear{position:absolute;right:8px;background:none;border:none;color:#6a5a40;cursor:pointer;font-size:14px;line-height:1;padding:0}
+.hd-search-clear:hover{color:var(--cover-cream)}
+.hd-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hd-copy-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--cover-red);color:#fff;border:none;padding:0 14px;height:30px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:background .15s}
 .hd-copy-btn:hover{background:#a50020}
 .hd-copy-ok{font-family:'Source Code Pro',monospace;font-size:10px;color:#8aba80;display:none}
 
@@ -64,7 +71,7 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 
 /* ── TAB ROW ── */
 .tabs{display:flex;background:#0e0d0b;padding:4px 16px 0;gap:4px;border-top:2px solid #b09050;align-items:flex-end;flex-wrap:nowrap;overflow:visible}
-.tab{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px 7px;border:2px solid #6a5a30;border-bottom:none;background:#1a1810;color:#8a7a50;cursor:pointer;border-radius:5px 5px 0 0;transition:all .15s;white-space:nowrap;position:relative;top:2px;text-align:center;flex-shrink:0}
+.tab{font-family:'Source Code Pro',monospace;font-size:15px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:9px 18px 9px;border:2px solid #6a5a30;border-bottom:none;background:#1a1810;color:#8a7a50;cursor:pointer;border-radius:5px 5px 0 0;transition:all .15s;white-space:nowrap;position:relative;top:2px;text-align:center;flex-shrink:0}
 .tab:hover{color:#d4c080;background:#252015;border-color:#b09050}
 .tab.active{color:#1a1208;background:#d4b860;border-color:#e8cc70;border-bottom:2px solid #d4b860;font-weight:700;top:0;padding-bottom:9px}
 .tab-spacer{flex:1}
@@ -98,12 +105,21 @@ body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);col
 .dash-lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#706858;margin-top:2px}
 .dash-btn.act-red .dash-lbl{color:#e06070}
 .dash-btn.act-gold .dash-lbl{color:var(--cover-cream)}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:4px 32px 8px}
-.dash-sel{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border:1px solid #333028;background:#252218;color:var(--cover-cream);padding:0 9px;cursor:pointer;outline:none;height:var(--ctrl-h);line-height:var(--ctrl-h);vertical-align:middle}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 20px 8px;background:#0e0d0b;border-bottom:1px solid #1e1e18}
+.dash-sel{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border:1px solid #333028;background:#252218;color:var(--cover-cream);padding:0 9px;cursor:pointer;outline:none;height:30px;line-height:30px;vertical-align:middle;border-radius:4px}
 .dash-sel:focus{border-color:var(--cover-steel)}
 .dash-sel option{background:var(--cover-black);color:var(--cover-cream)}
-.dash-showall{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#666050;background:none;border:1px solid #2a2820;padding:0 12px;cursor:pointer;transition:all .15s;height:var(--ctrl-h);line-height:var(--ctrl-h);vertical-align:middle}
+.dash-showall{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#666050;background:none;border:1px solid #2a2820;padding:0 12px;cursor:pointer;transition:all .15s;height:30px;line-height:30px;vertical-align:middle;border-radius:4px}
 .dash-showall:hover{color:var(--cover-cream);border-color:var(--cover-steel)}
+/* Filter chips: label + count badge */
+.fchip{display:inline-flex;align-items:center;gap:0;background:#1e1c15;border:1px solid #333028;border-radius:4px;cursor:pointer;transition:all .15s;height:30px;flex-shrink:0;overflow:hidden}
+.fchip:hover{border-color:#6a5a30}
+.fchip.act{border-color:#c70025;background:rgba(199,0,37,.22)}
+.fchip-lbl{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#b0a080;padding:0 10px;white-space:nowrap;transition:color .15s}
+.fchip.act .fchip-lbl{color:#fff}
+.fchip-ct{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;background:#2a2820;color:#c9a050;padding:0 8px;height:100%;display:flex;align-items:center;border-left:1px solid #333028;min-width:28px;justify-content:center;transition:all .15s}
+.fchip.act .fchip-ct{background:rgba(199,0,37,.35);color:#fff;border-left-color:rgba(199,0,37,.4)}
+.fchip-sep{width:1px;background:#2a2820;margin:0 4px;height:20px;flex-shrink:0}
 
 
 /* ── PANELS (Apple light) ── */
@@ -699,25 +715,18 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- COMPACT HEADER -->
 <div class="hd">
   <div class="hd-compact">
-    <span class="hd-title"><em>Over-classified</em> &mdash; Hub</span>
-    <div class="hd-stats-inline" id="hd-task-counts"></div>
+    <span class="hd-title"><em>Over&#8209;classified</em> Hub</span>
+    <div class="hd-search-wrap">
+      <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
+      <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" style="display:none">&#215;</button>
+    </div>
     <div class="hd-actions">
-      <div style="display:inline-flex;gap:0;align-items:center;padding:0" id="dash-status"></div>
-      <button id="dash-priority" onclick="tSt(fSt==='priority'?null:'priority')" style="margin-left:8px;background:rgba(255,255,255,.06);border:1px solid #333028;border-radius:3px;padding:2px 10px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:#c9a050;white-space:nowrap;height:24px;line-height:1;transition:all .15s">&#9733; Priority</button>
-      <button id="dash-reminder" onclick="tReminder()" style="margin-left:4px;background:rgba(255,255,255,.06);border:1px solid #333028;border-radius:3px;padding:2px 10px;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:11px;color:#9ab0c0;white-space:nowrap;height:24px;line-height:1;transition:all .15s">&#128276; Reminders</button>
       <span class="hd-copy-ok" id="copy-ok" style="display:none">&#10003; Copied</span>
       <button class="hd-copy-btn" id="copy-btn" onclick="copyToClaude()">Copy to Claude</button>
     </div>
   </div>
 </div>
-<!-- SEARCH BAR -->
-<div class="search-bar" id="search-bar">
-  <div class="search-input-wrap">
-    <span class="search-icon">&#9740;</span>
-    <input class="search-input" id="search-input" type="text" placeholder="Search all tabs&hellip;" autocomplete="off" oninput="searchUpdate()" onkeydown="searchKeydown(event)" />
-    <button class="search-clear" id="search-clear" onclick="searchClear()" title="Clear">&#215;</button>
-  </div>
-</div>
+<!-- search moved to header -->
 <!-- TABS + FILTER -->
 <div class="dark-band">
   <div class="tabs">
@@ -738,6 +747,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab" onclick="showTab('help',this)">Help &#9881;</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none">
+    <div id="fchip-all"     class="fchip act" onclick="tSt(null)"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
+    <div id="fchip-open"    class="fchip"     onclick="tSt('open')"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
+    <div id="fchip-deferred" class="fchip"   onclick="tSt('deferred')"><span class="fchip-lbl">Deferred</span><span class="fchip-ct" id="fc-deferred">—</span></div>
+    <div id="fchip-done"    class="fchip"     onclick="tSt('done')"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
+    <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
+    <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
+    <div class="fchip-sep"></div>
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
       <option value="">All Tags</option>
       <option value="editing">Editing</option>
@@ -753,7 +769,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="note">Project Notes</option>
       <option value="fordave">&#9655; For Claude / Dave</option>
     </select>
-    <button class="dash-showall" onclick="showAll()">Show All</button>
   </div>
 </div>
 
@@ -1238,7 +1253,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
-const SEED_VERSION='2026-06-11T02:11:38.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-11T02:22:55.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v292'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1517,41 +1532,40 @@ function setBadge(id,count){
 }
 function rdash(){
   const{open:openCt,pri,hold,done,fordave,needsResp}=counts();
-  const deferred=(S.items||[]).filter(it=>it.deferred&&!it.done).length;
+  const all=(S.items||[]).length;
+  const deferred=(S.items||[]).filter(function(it){return it.deferred&&!it.done;}).length;
+  const remCt=(S.items||[]).filter(function(it){return it.dueDate&&!it.done;}).length;
   updateTabBadges();
-  // Header task counts
-  const tc=document.getElementById('hd-task-counts');
-  if(tc)tc.innerHTML=[
-    {l:'Done',c:done,col:'#5a9a5a'},{l:'Open',c:openCt,col:'#c9a050'},
-    {l:'Deferred',c:deferred,col:'#888888'},{l:'Priority',c:pri,col:'#e06070'}
-  ].map(s=>`<div class="hd-stat"><span class="hd-stat-val" style="color:${s.col}">${s.c}</span><span class="hd-stat-lbl">${s.l}</span></div>`).join('');
-  // Segmented status filter: All / Open / Deferred / Done
-  const statusEl=document.getElementById('dash-status');
-  if(statusEl){
-    const segs=[{k:null,l:'All'},{k:'open',l:'Open'},{k:'deferred',l:'Deferred'},{k:'done',l:'Done'}];
-    window._segKeys=segs.map(function(s){return s.k;});
-    statusEl.innerHTML=segs.map(function(s,i){
-      const act=fSt===s.k;
-      const isFirst=i===0,isLast=i===segs.length-1;
-      const rad=isFirst?'3px 0 0 3px':isLast?'0 3px 3px 0':'0';
-      const noRight=isLast?'':'border-right:none;';
-      const bg=act?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';
-      const bc=act?'#c70025':'#333028';
-      const col=act?'#fff':'#c0b898';
-      return '<button onclick="tSt(window._segKeys['+i+'])" style="border-radius:'+rad+';'+noRight+'background:'+bg+';border:1px solid '+bc+';padding:2px 10px;cursor:pointer;font-family:Source Code Pro,monospace;font-size:11px;color:'+col+';white-space:nowrap;height:24px;line-height:1;transition:all .15s">'+s.l+'</button>';
-    }).join('');
+  // Update chip counts and active states
+  function setChip(id,countId,count,active){
+    var el=document.getElementById(id);var ct=document.getElementById(countId);
+    if(el){if(active)el.classList.add('act');else el.classList.remove('act');}
+    if(ct)ct.textContent=count;
   }
-  // Priority toggle styling
-  const priEl=document.getElementById('dash-priority');
-  if(priEl){const act=fSt==='priority';priEl.style.background=act?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';priEl.style.borderColor=act?'#c70025':'#333028';priEl.style.color=act?'#fff':'#c9a050';}
-  // Reminder toggle styling
-  const remEl=document.getElementById('dash-reminder');
-  if(remEl){remEl.style.background=fReminder?'rgba(199,0,37,.35)':'rgba(255,255,255,.06)';remEl.style.borderColor=fReminder?'#c70025':'#333028';remEl.style.color=fReminder?'#fff':'#9ab0c0';}
+  setChip('fchip-all','fc-all',all,fSt===null&&!fReminder);
+  setChip('fchip-open','fc-open',openCt,fSt==='open');
+  setChip('fchip-deferred','fc-deferred',deferred,fSt==='deferred');
+  setChip('fchip-done','fc-done',done,fSt==='done');
+  setChip('fchip-priority','fc-priority',pri,fSt==='priority');
+  setChip('fchip-reminder','fc-reminder',remCt,fReminder);
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
   const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
 }
 function tSt(k){fSt=k;render();}
-function tReminder(){fReminder=!fReminder;render();}
+function tReminder(){fReminder=!fReminder;if(fReminder&&fSt==='open')fSt=null;render();}
+function hdSearchUpdate(v){
+  var sci=document.getElementById('search-input');
+  if(sci)sci.value=v;
+  searchUpdate();
+  var clr=document.getElementById('hd-search-clear');
+  if(clr)clr.style.display=v?'block':'none';
+}
+function hdSearchClear(){
+  var inp=document.getElementById('hd-search-input');if(inp)inp.value='';
+  var sci=document.getElementById('search-input');if(sci)sci.value='';
+  var clr=document.getElementById('hd-search-clear');if(clr)clr.style.display='none';
+  searchClear();
+}
 function setTag(v){fTag=v||null;render();}
 function setType(v){fType=v||null;render();}
 function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;render();}
@@ -1561,7 +1575,7 @@ function iVis(it){
   if(fSt==='deferred'&&(!it.deferred||it.done))return false;
   if(fSt==='priority'&&(!it.priority||it.done))return false;
   // fSt===null means All — no status filter applied
-  if(fReminder&&it.type!=='reminder')return false;
+  if(fReminder&&!it.dueDate)return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
   return true;
