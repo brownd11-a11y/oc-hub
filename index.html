@@ -2127,7 +2127,7 @@ function rlist(){
     list.innerHTML=Object.keys(grps).sort().map(k=>{
       const col=!!_notesGrpCollapsed[k];
       return '<div class="notes-grp-section">'
-        +'<div class="notes-grp-header" onclick="notesToggleGroup(''+k+'')">'
+        +'<div class="notes-grp-header" onclick="notesToggleGroup(\''+k+'\')">'
         +'<span class="notes-grp-label">'+_notesGroupLabel(k)+'</span>'
         +'<span class="notes-grp-count">'+grps[k].length+'</span>'
         +'<span class="notes-grp-arrow" id="ngrp-arrow-'+k+'" style="transition:transform 0.2s;transform:'+(col?'rotate(-90deg)':'rotate(0deg)')+'">&#9662;</span>'
@@ -3635,32 +3635,62 @@ function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
 function rfCancelEdit(){rfEditId=null;rfRender();}
 function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);const lp=(document.getElementById('rfe-lp-'+id)||{}).value||'';if(item){item.kw=kw;item.url=url;item.desc=desc;item.lastPost=lp.trim();if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
 function rfDelete(id){if(!confirm('Delete?'))return;RF=RF.filter(r=>r.id!==id);rfSave();rfRender();}
+function rfEditRow(r,kwS){
+  if(rfEditId!==r.id)return '';
+  var opts=kwS.map(function(k){return '<option value="'+esc(k)+'"'+(k===r.kw?' selected':'')+'>'+esc(k)+'</option>';}).join('');
+  return '<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4">'
+    +'<div class="rf-edit-grid">'
+    +'<select id="rfe-kw-'+r.id+'" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">'+opts+'</select>'
+    +'<input type="text" id="rfe-url-'+r.id+'" value="'+esc(r.url||'')+'" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
+    +'<input type="text" id="rfe-desc-'+r.id+'" value="'+esc(r.desc||'')+'" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
+    +'<input type="text" id="rfe-lp-'+r.id+'" value="'+esc(r.lastPost||'')+'" placeholder="Last post date" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
+    +'</div>'
+    +'<div class="rf-edit-acts">'
+    +'<button class="rf-edit-save" onclick="rfSaveEdit(this.dataset.id)" data-id="'+r.id+'">Save</button>'
+    +'<button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button>'
+    +'</div></td></tr>';
+}
 function rfRender(){
-  const container=document.getElementById('rf-cat-container');
+  var container=document.getElementById('rf-cat-container');
   if(!container)return;
-  const ct=document.getElementById('rf-count');
-  const fk=(document.getElementById('rf-filter-kw')||{}).value||'';
+  var ct=document.getElementById('rf-count');
+  var fk=(document.getElementById('rf-filter-kw')||{}).value||'';
   rfBuildKwSelects();
-  let list=rfSorted(RF);if(fk)list=list.filter(r=>r.kw===fk);
+  var list=rfSorted(RF);if(fk)list=list.filter(function(r){return r.kw===fk;});
   if(ct)ct.textContent=list.length+' resource'+(list.length===1?'':'s');
-  const groups={};Object.keys(RF_CATS).forEach(c=>{groups[c]=[];});
-  list.forEach(r=>{const c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
-  const kwS=[...RF_KW].sort(naturalSort);
-  let html='';
-  Object.keys(RF_CATS).forEach(cat=>{
-    const items=groups[cat]||[];if(!items.length)return;
-    const col=!!RF_CAT_COLLAPSED[cat];
-    const info=RF_CATS[cat];
-    html+='<div class="rf-cat-section"><div class="rf-cat-header" onclick="rfToggleCat(''+cat+'')"><span class="rf-cat-icon">'+info.icon+'</span><span class="rf-cat-label">'+info.label+'</span><span class="rf-cat-count">'+items.length+'</span><span class="rf-cat-arrow" id="rf-arrow-'+cat+'" style="transition:transform 0.25s;transform:'+(col?'rotate(-90deg)':'rotate(0deg)')+'">&#9662;</span></div>';
-    html+='<div class="rf-cat-body" id="rf-cat-'+cat+'" style="overflow:hidden;transition:max-height 0.35s ease,opacity 0.25s ease;max-height:'+(col?'0':'4000px')+';opacity:'+(col?'0':'1')+'"><table class="rf-table" style="margin-bottom:0"><tbody>';
-    items.forEach(r=>{
-      const isE=rfEditId===r.id;
-      const trunc=u=>u&&u.length>38?u.substring(0,38)+'…':u||'';
-      const lc=r.lastChecked?'<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: '+r.lastChecked+'</span>':'';
-      const lp=r.lastPost?'<span style="font-size:10px;color:var(--accent);display:block">Posted: '+r.lastPost+'</span>':'';
-      const stamps=(lc||lp)?'<div style="margin-top:3px">'+lc+lp+'</div>':'';
-      const eRow=isE?'<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4"><div class="rf-edit-grid"><select id="rfe-kw-'+r.id+'" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">'+kwS.map(k=>'<option value="'+esc(k)+'"'+(k===r.kw?' selected':'')+'>'+esc(k)+'</option>').join('')+'</select><input type="text" id="rfe-url-'+r.id+'" value="'+esc(r.url||'')+'" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-desc-'+r.id+'" value="'+esc(r.desc||'')+'" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-lp-'+r.id+'" value="'+esc(r.lastPost||'')+'" placeholder="Last post date (e.g. 2026-06-12)" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /></div><div class="rf-edit-acts"><button class="rf-edit-save" onclick="rfSaveEdit(''+r.id+'')">Save</button><button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button></div></td></tr>':'';
-      html+='<tr><td><span class="rf-kw-pill">'+esc(r.kw)+'</span></td><td>'+(r.url?'<a class="rf-url-link" href="'+esc(r.url)+'" target="_blank">'+esc(trunc(r.url))+'</a>':'—')+'</td><td class="rf-desc">'+esc(r.desc)+stamps+'</td><td style="white-space:nowrap"><button class="rf-act-btn" onclick="rfToggleEdit(''+r.id+'')">'+(isE?'Cancel':'Edit')+'</button> <button class="rf-act-btn danger" onclick="rfDelete(''+r.id+'')">&#10005;</button></td></tr>'+eRow;
+  var groups={};Object.keys(RF_CATS).forEach(function(c){groups[c]=[];});
+  list.forEach(function(r){var c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
+  var kwS=[...RF_KW].sort(naturalSort);
+  var html='';
+  Object.keys(RF_CATS).forEach(function(cat){
+    var items=groups[cat]||[];if(!items.length)return;
+    var col=!!RF_CAT_COLLAPSED[cat];
+    var info=RF_CATS[cat];
+    html+='<div class="rf-cat-section">';
+    html+='<div class="rf-cat-header" onclick="rfToggleCat(this.dataset.cat)" data-cat="'+cat+'">';
+    html+='<span class="rf-cat-icon">'+info.icon+'</span>';
+    html+='<span class="rf-cat-label">'+info.label+'</span>';
+    html+='<span class="rf-cat-count">'+items.length+'</span>';
+    var arrowT=col?'rotate(-90deg)':'rotate(0deg)';
+    html+='<span class="rf-cat-arrow" id="rf-arrow-'+cat+'" style="transition:transform 0.25s;transform:'+arrowT+'">&#9662;</span>';
+    html+='</div>';
+    html+='<div class="rf-cat-body" id="rf-cat-'+cat+'" style="overflow:hidden;transition:max-height 0.35s ease,opacity 0.25s ease;max-height:'+(col?'0':'4000px')+';opacity:'+(col?'0':'1')+'">';
+    html+='<table class="rf-table" style="margin-bottom:0"><tbody>';
+    items.forEach(function(r){
+      var trunc=r.url&&r.url.length>38?r.url.substring(0,38)+'…':r.url||'';
+      var lc=r.lastChecked?'<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: '+r.lastChecked+'</span>':'';
+      var lp=r.lastPost?'<span style="font-size:10px;color:var(--accent);display:block">Posted: '+r.lastPost+'</span>':'';
+      var stamps=(lc||lp)?'<div style="margin-top:3px">'+lc+lp+'</div>':'';
+      var editLbl=rfEditId===r.id?'Cancel':'Edit';
+      html+='<tr>';
+      html+='<td><span class="rf-kw-pill">'+esc(r.kw)+'</span></td>';
+      html+='<td>'+(r.url?'<a class="rf-url-link" href="'+esc(r.url)+'" target="_blank">'+esc(trunc)+'</a>':'—')+'</td>';
+      html+='<td class="rf-desc">'+esc(r.desc)+stamps+'</td>';
+      html+='<td style="white-space:nowrap">';
+      html+='<button class="rf-act-btn" onclick="rfToggleEdit(this.dataset.id)" data-id="'+r.id+'">'+editLbl+'</button> ';
+      html+='<button class="rf-act-btn danger" onclick="rfDelete(this.dataset.id)" data-id="'+r.id+'">&#10005;</button>';
+      html+='</td></tr>';
+      html+=rfEditRow(r,kwS);
     });
     html+='</tbody></table></div></div>';
   });
