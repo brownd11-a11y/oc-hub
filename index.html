@@ -532,12 +532,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-filter-sel{font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:4px 8px;outline:none;cursor:pointer;
   height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
 .rf-filter-sel:focus{border-color:var(--accent)}
-.notes-grp-section{margin-bottom:6px}
-.notes-grp-header{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;user-select:none;transition:background 0.15s;margin-bottom:2px}
-.notes-grp-header:hover{background:var(--separator)}
-.notes-grp-label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-primary);flex:1}
-.notes-grp-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:var(--separator);padding:2px 7px;border-radius:10px}
-.notes-grp-arrow{font-size:13px;color:var(--label-secondary)}
 .rf-cat-section{margin-bottom:8px;border:1px solid var(--separator);border-radius:8px;overflow:hidden}
 .rf-cat-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;background:var(--card-bg);user-select:none;transition:background 0.15s}
 .rf-cat-header:hover{background:var(--separator)}
@@ -546,6 +540,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-cat-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:var(--separator);padding:2px 7px;border-radius:10px}
 .rf-cat-arrow{font-size:14px;color:var(--label-secondary);flex-shrink:0;line-height:1}
 .rf-cat-body{background:var(--bg)}
+.notes-grp-section{margin-bottom:6px}
+.notes-grp-header{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;user-select:none;transition:background 0.15s;margin-bottom:2px}
+.notes-grp-header:hover{background:var(--separator)}
+.notes-grp-label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-primary);flex:1}
+.notes-grp-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:var(--separator);padding:2px 7px;border-radius:10px}
+.notes-grp-arrow{font-size:13px;color:var(--label-secondary)}
 .rf-table{width:100%;border-collapse:collapse;font-size:13px}
 .rf-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 7px 10px;border-bottom:1.5px solid var(--label-primary)}
 .rf-table td{padding:8px 10px;border-bottom:1px solid var(--separator);vertical-align:middle}
@@ -854,8 +854,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="type">Type</option>
         <option value="tag">Tag</option>
       </select>
-      <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" title="Collapse all groups" style="font-size:11px;padding:3px 8px;display:none">Collapse All</button>
-      <button class="iabtn" id="notes-expand-all-btn" onclick="notesExpandAll()" title="Expand all groups" style="font-size:11px;padding:3px 8px;display:none">Expand All</button>
+      <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:3px 8px;display:none">Collapse All</button>
+      <button class="iabtn" id="notes-expand-all-btn" onclick="notesExpandAll()" style="font-size:11px;padding:3px 8px;display:none">Expand All</button>
     </div>
   </div>
 </div>
@@ -1140,10 +1140,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div></div>
 <!-- REFERENCES -->
 <div class="panel" id="panel-refs"><div class="rf-wrap">
-  <!-- Add new resource -->
   <div class="rf-add inp-card" style="margin-bottom:16px">
     <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px">
-      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px">
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
         <label class="settings-lbl">Category</label>
         <select class="inp-sel" id="rf-cat-sel">
           <option value="primary">Primary Sources</option>
@@ -1155,82 +1154,72 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <option value="book">Book Resources</option>
         </select>
       </div>
-      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px">
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
         <label class="settings-lbl">Keyword</label>
         <div style="display:flex;gap:6px;align-items:center">
           <select class="inp-sel" id="rf-kw-sel" style="flex:1"></select>
-          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new tag" id="rf-kw-add-btn">＋</button>
+          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new tag" id="rf-kw-add-btn">&#xFF0B;</button>
         </div>
         <div id="rf-kw-new-row" style="display:none;margin-top:4px">
           <div style="display:flex;gap:6px">
-            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New tag…" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
-            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()" title="Save tag">＋</button>
-            <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">✕</button>
+            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New tag&hellip;" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
+            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()">&#xFF0B;</button>
+            <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">&#10005;</button>
           </div>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px">
         <label class="settings-lbl">URL</label>
-        <input type="text" class="inp-sel" id="rf-url" placeholder="https://…" style="width:100%;box-sizing:border-box" />
+        <input type="text" class="inp-sel" id="rf-url" placeholder="https://&hellip;" style="width:100%;box-sizing:border-box" />
       </div>
       <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
         <label class="settings-lbl">Description</label>
-        <input type="text" class="inp-sel" id="rf-desc-in" placeholder="Brief description…" style="width:100%;box-sizing:border-box" />
+        <input type="text" class="inp-sel" id="rf-desc-in" placeholder="Brief description&hellip;" style="width:100%;box-sizing:border-box" />
       </div>
       <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
     </div>
   </div>
-
-  <!-- Toolbar: filter + refresh + expand/collapse controls -->
   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
     <span class="rf-filter-lbl">Filter:</span>
     <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All Tags</option></select>
     <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
     <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-      <button class="iabtn" onclick="rfExpandAll()" title="Expand all categories" style="font-size:11px;padding:4px 10px">Expand All</button>
-      <button class="iabtn" onclick="rfCollapseAll()" title="Collapse all categories" style="font-size:11px;padding:4px 10px">Collapse All</button>
-      <button class="dl-send-btn" id="rf-refresh-btn" onclick="rfRefresh()" style="height:32px;font-size:12px;padding:0 14px" title="Check last-post dates for news/current-events sources">↻ Refresh</button>
+      <button class="iabtn" onclick="rfExpandAll()" style="font-size:11px;padding:4px 10px">Expand All</button>
+      <button class="iabtn" onclick="rfCollapseAll()" style="font-size:11px;padding:4px 10px">Collapse All</button>
+      <button class="dl-send-btn" id="rf-refresh-btn" onclick="rfRefresh()" style="height:32px;font-size:12px;padding:0 14px" title="Update Last Checked for news/current-events sources">&#8635; Refresh</button>
     </div>
   </div>
   <div id="rf-refresh-ct" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-bottom:10px"></div>
-
-  <!-- Category containers (populated by rfRender) -->
   <div id="rf-cat-container"></div>
-  <div id="rf-empty" class="rf-empty" style="display:none">No resources match current filter.</div>
+  <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
 </div></div>
 <!-- HELP -->
 <div class="panel" id="panel-help"><div class="ref-section">
   <h2>Help &amp; Settings</h2>
   <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
 
-  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Resources — Refresh Keywords</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.6;margin-top:10px;margin-bottom:12px">When you click ↻ Refresh in the Resources tab, only sources tagged with the checked keywords below will have their "Last Checked" timestamp updated. Default: <em>news</em> and <em>current-events</em>.</p>
-  <div id="refresh-kw-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"></div>
+  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Resources &mdash; Refresh Keywords</h3>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.6;margin:10px 0 12px">When you click &#8635; Refresh in Resources, only sources tagged with checked keywords have their Last Checked timestamp updated. Default: <em>news</em> and <em>current-events</em>.</p>
+  <div id="refresh-kw-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px"></div>
   <script>
   (function(){
-    function renderRefreshKw(){
-      const container=document.getElementById('refresh-kw-checkboxes');
-      if(!container)return;
-      const allKw=['news','current-events','analysis','research','Over-classified'];
-      container.innerHTML=allKw.map(kw=>{
-        const checked=RF_REFRESH_KW.includes(kw);
-        return `<label style="display:flex;align-items:center;gap:6px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);cursor:pointer;background:var(--card-bg);padding:5px 10px;border-radius:6px;border:1px solid var(--separator)">
-          <input type="checkbox" ${checked?'checked':''} onchange="toggleRefreshKw('${kw}',this.checked)" style="cursor:pointer" />
-          ${kw}
-        </label>`;
+    var allKw=['news','current-events','analysis','research','Over-classified'];
+    function renderRKw(){
+      var c=document.getElementById('refresh-kw-checkboxes');if(!c)return;
+      c.innerHTML=allKw.map(function(kw){
+        var chk=RF_REFRESH_KW.includes(kw)?'checked':'';
+        return '<label style="display:flex;align-items:center;gap:6px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);cursor:pointer;background:var(--card-bg);padding:5px 10px;border-radius:6px;border:1px solid var(--separator)"><input type="checkbox" '+chk+' onchange="toggleRefreshKw(''+kw+'',this.checked)" /> '+kw+'</label>';
       }).join('');
     }
     window.toggleRefreshKw=function(kw,on){
       if(on){if(!RF_REFRESH_KW.includes(kw))RF_REFRESH_KW.push(kw);}
-      else{RF_REFRESH_KW=RF_REFRESH_KW.filter(k=>k!==kw);}
+      else{RF_REFRESH_KW=RF_REFRESH_KW.filter(function(k){return k!==kw;});}
       try{localStorage.setItem(RF_REFRESH_KW_SK,JSON.stringify(RF_REFRESH_KW));}catch(e){}
     };
-    // Delay render until DOM ready
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderRefreshKw);}
-    else{setTimeout(renderRefreshKw,200);}
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderRKw);}
+    else{setTimeout(renderRKw,300);}
   })();
   </script>
-
   <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">About</h3>
   <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The <em>Over&#8209;Classified</em> Project Hub is a two-way interface between Dave and Claude. It is not general project management software &mdash; it is purpose-built for a human-AI writing collaboration. Notes can be standalone captures, dialogue threads with Claude, or stepping stones to the Roadmap. Claude reads the JSON export at each session to pick up exactly where you left off, regardless of how much time has passed or how many changes have accumulated.</p>
 
@@ -1357,21 +1346,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v3',RF_KW_SK='oc_refs_kw_v3';
-const RF_CATS={
-  primary:   {label:'Primary Sources & Documents', icon:'📄'},
-  substack:  {label:'Substacks & Long-Form',        icon:'✍️'},
-  social:    {label:'News & Social Feeds',           icon:'📡'},
-  analysis:  {label:'Analysis & Research',           icon:'🔬'},
-  podcast:   {label:'Podcasts & Video',              icon:'🎙️'},
-  documentary:{label:'Documentaries',               icon:'🎬'},
-  book:      {label:'Over-Classified Resources',    icon:'📚'},
-};
+const RF_CATS={primary:{label:'Primary Sources & Documents',icon:'📄'},substack:{label:'Substacks & Long-Form',icon:'✍️'},social:{label:'News & Social Feeds',icon:'📡'},analysis:{label:'Analysis & Research',icon:'🔬'},podcast:{label:'Podcasts & Video',icon:'🎙️'},documentary:{label:'Documentaries',icon:'🎬'},book:{label:'Over-Classified Resources',icon:'📚'}};
 const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
-let RF_REFRESH_KW=['news','current-events']; // default keywords to check on Refresh
-let RF_CAT_COLLAPSED={}; // which categories are collapsed
-
-const SEED_VERSION='2026-06-12T18:00:00.000Z'; // bump this each time seed data is updated
+let RF_REFRESH_KW=['news','current-events'];
+let RF_CAT_COLLAPSED={};
+const SEED_VERSION='2026-06-12T19:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION='v295'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -1848,53 +1828,28 @@ function isOverdue(due){if(!due)return false;return new Date(due+'T23:59:59')<ne
 
 
 /* ── NOTES GROUPING ── */
-let _notesGroup=''; // '' | 'status' | 'type' | 'tag'
-let _notesGrpCollapsed={}; // which group keys are collapsed
-function setNotesGroup(v){
-  _notesGroup=v;
-  _notesGrpCollapsed={};
-  ['notes-collapse-all-btn','notes-expand-all-btn'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.style.display=v?'':'none';
-  });
-  render();
-}
+let _notesGroup='';
+let _notesGrpCollapsed={};
+function setNotesGroup(v){_notesGroup=v;_notesGrpCollapsed={};['notes-collapse-all-btn','notes-expand-all-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=v?'':'none';});render();}
 function notesToggleGroup(key){
   _notesGrpCollapsed[key]=!_notesGrpCollapsed[key];
   const body=document.getElementById('ngrp-body-'+key);
   const arrow=document.getElementById('ngrp-arrow-'+key);
-  if(body){
-    if(_notesGrpCollapsed[key]){body.style.maxHeight='0';body.style.opacity='0';}
-    else{body.style.maxHeight=body.scrollHeight+'px';body.style.opacity='1';}
-  }
+  if(body){body.style.maxHeight=_notesGrpCollapsed[key]?'0':body.scrollHeight+500+'px';body.style.opacity=_notesGrpCollapsed[key]?'0':'1';}
   if(arrow)arrow.style.transform=_notesGrpCollapsed[key]?'rotate(-90deg)':'rotate(0deg)';
 }
-function notesCollapseAll(){
-  const visible=(S.items||[]).filter(iVis);
-  const keys=[...new Set(visible.map(it=>_notesGroupKey(it)))];
-  keys.forEach(k=>{_notesGrpCollapsed[k]=true;});
-  render();
-}
-function notesExpandAll(){
-  _notesGrpCollapsed={};
-  render();
-}
+function notesCollapseAll(){const visible=(S.items||[]).filter(iVis);[...new Set(visible.map(it=>_notesGroupKey(it)))].forEach(k=>{_notesGrpCollapsed[k]=true;});render();}
+function notesExpandAll(){_notesGrpCollapsed={};render();}
 function _notesGroupKey(it){
-  if(_notesGroup==='status') return it.status||'open';
-  if(_notesGroup==='type'){
-    if(it.dialogue&&it.dialogue.length) return 'flow';
-    if(it.reminder) return 'reminder';
-    if(it.type) return it.type;
-    return 'note';
-  }
-  if(_notesGroup==='tag') return it.tag||'untagged';
+  if(_notesGroup==='status')return it.status||'open';
+  if(_notesGroup==='type'){if(it.dialogue&&it.dialogue.length)return 'flow';if(it.reminder)return 'reminder';return it.type||'note';}
+  if(_notesGroup==='tag')return it.tag||'untagged';
   return '';
 }
 function _notesGroupLabel(key){
-  const map={open:'Open',done:'Done',deferred:'Deferred',flow:'For Claude / Dave',reminder:'Reminders',note:'Project Notes',question:'Questions',untagged:'Untagged'};
-  return map[key]||key;
+  const m={open:'Open',done:'Done',deferred:'Deferred',flow:'For Claude → Dave',reminder:'Reminders',note:'Project Notes',question:'Questions',fordave:'For Dave',untagged:'Untagged'};
+  return m[key]||key;
 }
-
 function render(){rdash();rlist();}
 
 
@@ -2070,8 +2025,8 @@ function rlist(){
   const visible=(S.items||[]).filter(iVis);
   document.getElementById('list-count').textContent=visible.length+' item'+(visible.length===1?'':'s');
   if(!visible.length){list.innerHTML='<div class="empty-state">No items match the current filter</div>';return;}
-  if(!_notesGroup){
-    list.innerHTML=visible.map(it=>{
+
+  function renderItem(it){
     const exp=it._exp||false;
     const isEditing=editingId===it.id;
     const dlgCheck=(it.dialogue||[]);
@@ -2161,123 +2116,24 @@ function rlist(){
         </div>
         <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>${bodyHtml}</div>`;
-  }).join('');
-  }else{
-    // Grouped rendering
-    const groups={};
-    visible.forEach(it=>{
-      const k=_notesGroupKey(it);
-      if(!groups[k])groups[k]=[];
-      groups[k].push(it);
-    });
-    const itemHtml=(it)=>{
-      const exp=it._exp||false;
-      const isEditing=editingId===it.id;
-      const dlgCheck=(it.dialogue||[]);
-      return const exp=it._exp||false;
-    const isEditing=editingId===it.id;
-    const dlgCheck=(it.dialogue||[]);
-    // Flow item = Dave initiated (first entry from dave). Migrated items (Claude-first) are legacy fordave.
-    const isFlowItem=it.type==='fordave'&&dlgCheck.length>0&&dlgCheck[0].from==='dave';
-    const isLegacyFordave=it.type==='fordave'&&!isFlowItem;
-    const lastDlgFrom=dlgCheck.length?dlgCheck[dlgCheck.length-1].from:null;
-    // isNeedsResponse = last dialogue entry is from Claude (amber — awaiting Dave)
-    const isNeedsResponse=!it.done&&lastDlgFrom==='claude'&&(isFlowItem||(isLegacyFordave&&dlgCheck.length>0));
-    // isAwaitingClaude = Dave has replied after Claude (blue — awaiting Claude follow-up)
-    const isAwaitingClaude=!it.done&&lastDlgFrom==='dave'&&dlgCheck.length>1&&isLegacyFordave;
-    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
-    const dlgForPreview=(it.dialogue||[]);
-    const lastClaudeMsg=dlgForPreview.length&&dlgForPreview[dlgForPreview.length-1].from==='claude'&&!it.done ? dlgForPreview[dlgForPreview.length-1].text : null;
-    const previewRaw=lastClaudeMsg||(it.text||'');
-    const previewPrefix=lastClaudeMsg?'Claude: ':'';
-    const preview=previewPrefix+(previewRaw.length>120?previewRaw.substring(0,120)+'\u2026':previewRaw);
-    const dueCls=isOverdue(it.dueDate)?' overdue':'';
-    let bodyHtml='';
-    if(isEditing){
-      bodyHtml=`<div class="ibody" style="display:block"><div class="edit-wrap">
-        <label class="edit-wrap-label">Text</label>
-        <textarea class="edit-ta" id="etx_${it.id}" rows="3">${esc(it.text)}</textarea>
-        <div class="edit-meta-row">
-          <select class="edit-sel" id="ety_${it.id}"><option value="question"${it.type==='question'?' selected':''}>Question</option><option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option><option value="note"${it.type==='note'?' selected':''}>Project Note</option><option value="fordave"${it.type==='fordave'?' selected':''}>⚑ For Dave</option></select>
-          <select class="edit-sel" id="etg_${it.id}"><option value=""${!it.tag?' selected':''}>&#8212; Tag &#8212;</option><option value="editing"${it.tag==='editing'?' selected':''}>Editing</option><option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option><option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option><option value="research"${it.tag==='research'?' selected':''}>Research</option></select>
-          <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority':'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority'}</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
-          <div><label class="edit-wrap-label">Due date</label><input type="date" class="edit-sel" id="edu_${it.id}" value="${esc(it.dueDate||'')}" style="width:130px" /></div>
-          <div style="flex:1"><label class="edit-wrap-label">Answer / note</label><textarea class="edit-ta" id="ean_${it.id}" rows="2" style="min-height:40px">${esc(it.answer||'')}</textarea></div>
-        </div>
-        <div style="margin-top:6px"><label class="edit-wrap-label">🔗 Link / Bookmark</label><input type="text" class="edit-ta" id="eurl_${it.id}" value="${esc(it.itemUrl||'')}" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" style="min-height:0;padding:5px 8px;font-size:11px;font-family:'Source Code Pro',monospace" /></div>
-        <div class="edit-actions"><button class="edit-save" onclick="saveEdit('${it.id}')">Save</button><button class="edit-cancel" onclick="cancelEdit()">Cancel</button></div>
-      </div></div>`;
-    } else {
-      // Build dialogue thread HTML
-      const dlg=(it.dialogue||[]);
-      const dlgHtml=dlg.length?`<div class="dialogue-thread">${
-        [...dlg].reverse().map(d=>`<div class="dl-entry from-${d.from}">
-          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':'Claude'}</span><span class="dl-ts">${fmtDate(d.ts.slice(0,10))}</span></div>
-          <div class="dl-text">${esc(d.text)}</div>
-        </div>`).join('')
-      }</div>`:'';
-      const needsReply=dlg.length&&dlg[dlg.length-1].from==='claude'&&!it.done;
-      const dlgReplyHtml=needsReply?`<div class="dl-actions" id="dlact-${it.id}">
-        <button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
-        <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
-        <button class="dl-act-pill pill-else" onclick="event.stopPropagation();dlElseOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Something else&hellip;</button>
-      </div>
-      <div class="dl-compose" id="dlcomp-${it.id}">
-        <textarea class="dl-compose-ta" id="dlcta-${it.id}" rows="2" placeholder="Your response…" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-        <div class="dl-compose-row">
-          <button class="dl-send-btn" onclick="event.stopPropagation();dlSend('${it.id}')">Send</button>
-          <span class="dl-cancel-link" onclick="event.stopPropagation();dlElseClose('${it.id}')">Cancel</span>
-        </div>
-      </div>`:'';
-      const legacyAnswer=(!it.dialogue&&it.answer)?`<div class="ianswer">${esc(it.answer)}</div>`:'';
-      bodyHtml=`<div class="ibody">${legacyAnswer}${dlgHtml}${dlgReplyHtml}${renderItemLink(it)}<div class="iactions">
-        <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
-        <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
-        <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
-        <button class="iabtn" onclick="mtrOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Roadmap</button>
-        <button class="iabtn danger" onclick="delItem('${it.id}')">Delete</button>
-      </div></div>`;
-    }
-    return`<div class="${cls}" id="it_${it.id}">
-      <div class="ihead" onclick="xItem('${it.id}')">
-        <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':it.deferred?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>':''}</div>
-        <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
-        <div class="imeta">
-          <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-          <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
-          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
-          ${it.type==='fordave'
-            ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
-            :`<span class="type-pill">${esc(it.type||'note')}</span>`}
-        </div>
-        ${isNeedsResponse&&!it.done?`<div class="ihead-pills">
-          <button class="dl-act-pill-inline pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
-          <button class="dl-act-pill-inline pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
-          <button class="dl-act-pill-inline pill-else" onclick="event.stopPropagation();xItem('${it.id}');setTimeout(()=>dlElseOpen('${it.id}'),120)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Other</button>
-        </div>`:''}
-        <div class="idate-cols">
-          <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
-          <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
-        </div>
-        <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
-      </div>${bodyHtml}</div>`;;
-    };
-    const grpKeys=Object.keys(groups).sort();
-    list.innerHTML=grpKeys.map(k=>{
-      const collapsed=!!_notesGrpCollapsed[k];
-      const items=groups[k];
-      return `<div class="notes-grp-section">
-        <div class="notes-grp-header" onclick="notesToggleGroup('${k}')">
-          <span class="notes-grp-label">${_notesGroupLabel(k)}</span>
-          <span class="notes-grp-count">${items.length}</span>
-          <span class="notes-grp-arrow" id="ngrp-arrow-${k}" style="transition:transform 0.2s;transform:${collapsed?'rotate(-90deg)':'rotate(0deg)'}">▾</span>
-        </div>
-        <div id="ngrp-body-${k}" style="overflow:hidden;transition:max-height 0.3s ease,opacity 0.25s ease;max-height:${collapsed?'0':'8000px'};opacity:${collapsed?'0':'1'}">
-          ${items.map(it=>itemHtml(it)).join('')}
-        </div>
-      </div>`;
+  
+  }
+  if(!_notesGroup){
+    list.innerHTML=visible.map(renderItem).join('');
+  } else {
+    const grps={};
+    visible.forEach(it=>{const k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
+    list.innerHTML=Object.keys(grps).sort().map(k=>{
+      const col=!!_notesGrpCollapsed[k];
+      return '<div class="notes-grp-section">'
+        +'<div class="notes-grp-header" onclick="notesToggleGroup(''+k+'')">'
+        +'<span class="notes-grp-label">'+_notesGroupLabel(k)+'</span>'
+        +'<span class="notes-grp-count">'+grps[k].length+'</span>'
+        +'<span class="notes-grp-arrow" id="ngrp-arrow-'+k+'" style="transition:transform 0.2s;transform:'+(col?'rotate(-90deg)':'rotate(0deg)')+'">&#9662;</span>'
+        +'</div>'
+        +'<div id="ngrp-body-'+k+'" style="overflow:hidden;transition:max-height 0.3s ease,opacity 0.25s ease;max-height:'+(col?'0':'8000px')+';opacity:'+(col?'0':'1')+'">'
+        +grps[k].map(renderItem).join('')
+        +'</div></div>';
     }).join('');
   }
 }
@@ -3695,41 +3551,33 @@ function otEditNoteToggle(cid,nid){
 /* ── REFERENCES ── */
 let RF=[],RF_KW=[],rfEditId=null;
 const RF_SEED=[
-  /* ── BOOK / OVER-CLASSIFIED ── */
   {id:'rfs_03',cat:'book',kw:'Over-classified',url:'https://over-classified.com',desc:'Official book website — Vigilia Press.',lastChecked:'',lastPost:''},
   {id:'rfs_04',cat:'book',kw:'Over-classified',url:'https://vigiliapress.com',desc:'Vigilia Press imprint site.',lastChecked:'',lastPost:''},
   {id:'rfs_05',cat:'book',kw:'Over-classified',url:'https://substack.com/@overclassified',desc:'Over-Classified Substack — Dave\'s author newsletter.',lastChecked:'',lastPost:''},
-  /* ── JUNE 9 CAPITOL ── */
-  {id:'rfs_01',cat:'primary',kw:'news',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',desc:'NewsNation full coverage — June 9 2026 UAP Capitol press conference. Grusch, Luna, Burlison, Burchett, Moskowitz, Kean, Fox.',lastChecked:'',lastPost:''},
-  {id:'rfs_02',cat:'primary',kw:'news',url:'https://www.washingtontimes.com/news/2026/jun/9/',desc:'Washington Times June 9 2026 — primary print citation for Capitol press conference.',lastChecked:'',lastPost:''},
-  /* ── PRIMARY SOURCES & DOCUMENTS ── */
-  {id:'rfs_07',cat:'primary',kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects',desc:'CIA FOIA Reading Room — UFO/UAP historical collection. Robertson Panel, Chadwell memos, 1952–1953.',lastChecked:'',lastPost:''},
-  {id:'rfs_08',cat:'primary',kw:'research',url:'https://aaro.mil/resources/historical-record-report/',desc:'AARO Historical Record Report Vol. 1 (Feb 2024). Primary government source for UAP program history.',lastChecked:'',lastPost:''},
-  {id:'rfs_09',cat:'primary',kw:'research',url:'https://archives.gov/research/military/air-force/ufos',desc:'NARA — Project Blue Book records. 130,000 pages, 12,618 sightings, 701 officially unexplained.',lastChecked:'',lastPost:''},
-  {id:'rfs_10',cat:'primary',kw:'research',url:'https://www.documentcloud.org/documents/25986231-twining-memo/',desc:'Twining memorandum Sept 23 1947 — declassified. "Something real and not visionary."',lastChecked:'',lastPost:''},
-  {id:'rfs_bv',cat:'primary',kw:'research',url:'https://www.theblackvault.com',desc:'The Black Vault — John Greenewald Jr. FOIA document archive. Primary UAP declassified document repository.',lastChecked:'',lastPost:''},
-  /* ── SUBSTACKS & LONG-FORM ── */
-  {id:'rfs_mellon',cat:'substack',kw:'current-events',url:'https://christopherkmellon.substack.com',desc:'Christopher Mellon — Substack. Former Dep. Asst. SecDef for Intelligence. Policy essays, congressional testimony, declassification advocacy.',lastChecked:'',lastPost:''},
-  {id:'rfs_dolan',cat:'substack',kw:'research',url:'https://richarddolanmembers.com',desc:'Richard Dolan — historian and author. UAP history, analysis, members site. Also active on YouTube.',lastChecked:'',lastPost:''},
-  /* ── SOCIAL MEDIA / NEWS FEEDS ── */
-  {id:'rfs_coulthart',cat:'social',kw:'news',url:'https://x.com/rosscoulthart',desc:'Ross Coulthart (@rosscoulthart) — NewsNation investigative journalist. Breaking UAP news, whistleblower contact, Reality Check podcast host.',lastChecked:'',lastPost:''},
-  {id:'rfs_elizondo',cat:'social',kw:'current-events',url:'https://x.com/Luis_Elizondo',desc:'Luis Elizondo (@Luis_Elizondo) — Former AATIP director. Primary figure in Ch.9–Ch.12. Monitor for public statements.',lastChecked:'',lastPost:''},
-  {id:'rfs_mellon_x',cat:'social',kw:'current-events',url:'https://x.com/ChristopherKMellon',desc:'Christopher Mellon on X — breaking policy updates, congressional advocacy.',lastChecked:'',lastPost:''},
-  {id:'rfs_mvr',cat:'social',kw:'news',url:'https://x.com/MvonRen',desc:'Marik von Rennenkampff (@MvonRen) — analytical UAP journalist. Video and document breakdown. Breaking footage coverage.',lastChecked:'',lastPost:''},
-  {id:'rfs_faytuks',cat:'social',kw:'news',url:'https://x.com/FaytuksNetwork',desc:'Faytuks Network (@FaytuksNetwork) — fast-breaking UAP news aggregator. Covers Pentagon releases, congressional activity.',lastChecked:'',lastPost:''},
-  {id:'rfs_oma',cat:'social',kw:'analysis',url:'https://x.com/OMApproach',desc:'Open Minded Approach (@OMApproach) — video and footage analysis. Methodical breakdown of released UAP media.',lastChecked:'',lastPost:''},
-  {id:'rfs_grusch_x',cat:'social',kw:'news',url:'https://x.com/DavidGrusch',desc:'David Grusch on X — whistleblower. Primary figure in Ch.9. Monitor for public statements post-June 9.',lastChecked:'',lastPost:''},
-  /* ── ANALYSIS & RESEARCH ── */
-  {id:'rfs_loeb',cat:'analysis',kw:'research',url:'https://galileoproject.cfa.harvard.edu',desc:'Avi Loeb — Galileo Project at Harvard. Scientific search for UAP physical evidence. Peer-reviewed credibility anchor.',lastChecked:'',lastPost:''},
-  {id:'rfs_loeb_sub',cat:'analysis',kw:'analysis',url:'https://avi-loeb.medium.com',desc:'Avi Loeb on Medium — regular essays on UAP science, Galileo Project findings, scientific methodology.',lastChecked:'',lastPost:''},
-  {id:'rfs_scu',cat:'analysis',kw:'research',url:'https://www.scientificcoalition.org',desc:'Scientific Coalition for UAP Studies (SCU) — peer-reviewed UAP analysis. Hosting Mellon at July 2026 Toronto conference.',lastChecked:'',lastPost:''},
-  /* ── PODCASTS & VIDEO ── */
-  {id:'rfs_rc',cat:'podcast',kw:'news',url:'https://open.spotify.com/show/rosscoulthart-realitycheck',desc:'Reality Check with Ross Coulthart — NewsNation podcast. Breaking UAP reporting, whistleblower interviews.',lastChecked:'',lastPost:''},
-  /* ── DOCUMENTARIES ── */
-  {id:'rfs_aod',cat:'documentary',kw:'analysis',url:'https://www.amazon.com/Age-Disclosure/dp/B0BLPZQM1V',desc:'The Age of Disclosure (2025) — dir. Dan Farah. 34 current/former government officials on UAP. Prime Video.',lastChecked:'',lastPost:''},
-  {id:'rfs_moc',cat:'documentary',kw:'analysis',url:'https://www.momentofcontactfilm.com',desc:'Moment of Contact (2022) — dir. James Fox. Varginha Brazil 1996 UAP incident investigation.',lastChecked:'',lastPost:''},
-  {id:'rfs_sd',cat:'documentary',kw:'current-events',url:'https://www.amazon.com/Sleeping-Dog/dp/B0DX8R9KPK',desc:'Sleeping Dog (2026) — dir. Michael Lazovsky. Jeremy Corbell/George Knapp. Released May 8 2026. Prime Video.',lastChecked:'',lastPost:''},
-  {id:'rfs_dd',cat:'documentary',kw:'current-events',url:'https://www.disclosuredaymovie.com',desc:'Disclosure Day (2026 film) — track reviews and public response as disclosure narrative builds.',lastChecked:'',lastPost:''},
+  {id:'rfs_01',cat:'primary',kw:'news',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',desc:'NewsNation full coverage — June 9 2026 UAP Capitol press conference.',lastChecked:'',lastPost:''},
+  {id:'rfs_02',cat:'primary',kw:'news',url:'https://www.washingtontimes.com/news/2026/jun/9/',desc:'Washington Times June 9 2026 — primary print citation.',lastChecked:'',lastPost:''},
+  {id:'rfs_07',cat:'primary',kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects',desc:'CIA FOIA Reading Room — UAP historical collection. Robertson Panel, Chadwell memos.',lastChecked:'',lastPost:''},
+  {id:'rfs_08',cat:'primary',kw:'research',url:'https://aaro.mil/resources/historical-record-report/',desc:'AARO Historical Record Report Vol. 1 (Feb 2024). Primary government UAP program history.',lastChecked:'',lastPost:''},
+  {id:'rfs_09',cat:'primary',kw:'research',url:'https://archives.gov/research/military/air-force/ufos',desc:'NARA — Project Blue Book. 130,000 pages, 12,618 sightings, 701 unexplained.',lastChecked:'',lastPost:''},
+  {id:'rfs_10',cat:'primary',kw:'research',url:'https://www.documentcloud.org/documents/25986231-twining-memo/',desc:'Twining memorandum Sept 23 1947. "Something real and not visionary."',lastChecked:'',lastPost:''},
+  {id:'rfs_bv',cat:'primary',kw:'research',url:'https://www.theblackvault.com',desc:'The Black Vault — John Greenewald Jr. FOIA document archive.',lastChecked:'',lastPost:''},
+  {id:'rfs_mellon',cat:'substack',kw:'current-events',url:'https://christopherkmellon.substack.com',desc:'Christopher Mellon — Substack. Former Dep. Asst. SecDef for Intelligence. Policy essays, declassification advocacy.',lastChecked:'',lastPost:''},
+  {id:'rfs_dolan',cat:'substack',kw:'research',url:'https://richarddolanmembers.com',desc:'Richard Dolan — UAP historian and author. Analysis, members site.',lastChecked:'',lastPost:''},
+  {id:'rfs_coulthart',cat:'social',kw:'news',url:'https://x.com/rosscoulthart',desc:'Ross Coulthart (@rosscoulthart) — NewsNation investigative journalist. Breaking UAP news, Reality Check podcast.',lastChecked:'',lastPost:''},
+  {id:'rfs_elizondo',cat:'social',kw:'current-events',url:'https://x.com/Luis_Elizondo',desc:'Luis Elizondo (@Luis_Elizondo) — Former AATIP director. Primary figure Ch.9–12. Monitor for public statements.',lastChecked:'',lastPost:''},
+  {id:'rfs_mellon_x',cat:'social',kw:'current-events',url:'https://x.com/ChristopherKMellon',desc:'Christopher Mellon on X — breaking policy updates.',lastChecked:'',lastPost:''},
+  {id:'rfs_grusch_x',cat:'social',kw:'news',url:'https://x.com/DavidGrusch',desc:'David Grusch on X — whistleblower. Primary figure Ch.9. Monitor post-June 9.',lastChecked:'',lastPost:''},
+  {id:'rfs_mvr',cat:'social',kw:'news',url:'https://x.com/MvonRen',desc:'Marik von Rennenkampff (@MvonRen) — analytical UAP journalist. Video and document breakdown.',lastChecked:'',lastPost:''},
+  {id:'rfs_faytuks',cat:'social',kw:'news',url:'https://x.com/FaytuksNetwork',desc:'Faytuks Network — fast-breaking UAP news aggregator. Pentagon releases, congressional activity.',lastChecked:'',lastPost:''},
+  {id:'rfs_oma',cat:'social',kw:'analysis',url:'https://x.com/OMApproach',desc:'Open Minded Approach — methodical video and footage analysis of released UAP media.',lastChecked:'',lastPost:''},
+  {id:'rfs_loeb',cat:'analysis',kw:'research',url:'https://galileoproject.cfa.harvard.edu',desc:'Avi Loeb — Galileo Project at Harvard. Scientific UAP evidence search.',lastChecked:'',lastPost:''},
+  {id:'rfs_loeb_sub',cat:'analysis',kw:'analysis',url:'https://avi-loeb.medium.com',desc:'Avi Loeb on Medium — essays on UAP science and Galileo Project findings.',lastChecked:'',lastPost:''},
+  {id:'rfs_scu',cat:'analysis',kw:'research',url:'https://www.scientificcoalition.org',desc:'Scientific Coalition for UAP Studies (SCU) — peer-reviewed analysis. July 2026 Toronto conference.',lastChecked:'',lastPost:''},
+  {id:'rfs_rc',cat:'podcast',kw:'news',url:'https://podcasts.apple.com/us/podcast/reality-check-with-ross-coulthart/id1709764750',desc:'Reality Check with Ross Coulthart — NewsNation podcast. Breaking UAP reporting.',lastChecked:'',lastPost:''},
+  {id:'rfs_aod',cat:'documentary',kw:'analysis',url:'https://www.amazon.com/Age-Disclosure/dp/B0BLPZQM1V',desc:'The Age of Disclosure (2025) — dir. Dan Farah. 34 current/former govt officials. Prime Video.',lastChecked:'',lastPost:''},
+  {id:'rfs_moc',cat:'documentary',kw:'analysis',url:'https://www.momentofcontactfilm.com',desc:'Moment of Contact (2022) — dir. James Fox. Varginha Brazil 1996 UAP incident.',lastChecked:'',lastPost:''},
+  {id:'rfs_sd',cat:'documentary',kw:'current-events',url:'https://www.amazon.com/dp/B0DX8R9KPK',desc:'Sleeping Dog (2026) — dir. Michael Lazovsky. Jeremy Corbell/George Knapp. Released May 2026.',lastChecked:'',lastPost:''},
+  {id:'rfs_dd',cat:'documentary',kw:'current-events',url:'https://x.com/search?q=DisclosureDay+film',desc:'Disclosure Day (2026 film) — track reviews as disclosure narrative builds.',lastChecked:'',lastPost:''},
   {id:'rfs_fox_vi',cat:'documentary',kw:'current-events',url:'https://x.com/jamesfoxufo',desc:'James Fox — Virginia incident documentary (in production 2026). Follow @jamesfoxufo for updates.',lastChecked:'',lastPost:''},
 ];
 function rfLoad(){
@@ -3737,47 +3585,33 @@ function rfLoad(){
   try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}
   try{const rk=localStorage.getItem(RF_REFRESH_KW_SK);if(rk)RF_REFRESH_KW=JSON.parse(rk);}catch(e){}
   try{const rc=localStorage.getItem(RF_COLLAPSED_SK);if(rc)RF_CAT_COLLAPSED=JSON.parse(rc);}catch(e){}
-  // Inject/update seed references — merge lastChecked/lastPost from stored if present
   RF_SEED.forEach(s=>{
-    const existing=RF.find(r=>r.id===s.id);
-    if(!existing){RF.push({...s});}
-    else{
-      // Update cat/desc/url from seed but preserve lastChecked/lastPost
-      existing.cat=s.cat;existing.url=s.url;existing.desc=s.desc;
-      if(!existing.lastChecked)existing.lastChecked='';
-      if(!existing.lastPost)existing.lastPost='';
-    }
+    const ex=RF.find(r=>r.id===s.id);
+    if(!ex){RF.push({...s});}
+    else{ex.cat=s.cat;ex.url=s.url;ex.desc=s.desc;if(!ex.lastChecked)ex.lastChecked='';if(!ex.lastPost)ex.lastPost='';}
   });
-  // Ensure seed keywords exist
   RF_SEED.forEach(s=>{if(s.kw&&!RF_KW.includes(s.kw))RF_KW.push(s.kw);});
 }
 function rfSaveCollapsed(){try{localStorage.setItem(RF_COLLAPSED_SK,JSON.stringify(RF_CAT_COLLAPSED));}catch(e){}}
 function rfToggleCat(cat){
-  RF_CAT_COLLAPSED[cat]=!RF_CAT_COLLAPSED[cat];
-  rfSaveCollapsed();
+  RF_CAT_COLLAPSED[cat]=!RF_CAT_COLLAPSED[cat];rfSaveCollapsed();
   const body=document.getElementById('rf-cat-'+cat);
   const arrow=document.getElementById('rf-arrow-'+cat);
-  if(body){
-    if(RF_CAT_COLLAPSED[cat]){body.style.maxHeight='0';body.style.opacity='0';}
-    else{body.style.maxHeight=body.scrollHeight+'px';body.style.opacity='1';}
-  }
-  if(arrow){arrow.style.transform=RF_CAT_COLLAPSED[cat]?'rotate(-90deg)':'rotate(0deg)';}
+  if(body){body.style.maxHeight=RF_CAT_COLLAPSED[cat]?'0':body.scrollHeight+500+'px';body.style.opacity=RF_CAT_COLLAPSED[cat]?'0':'1';}
+  if(arrow)arrow.style.transform=RF_CAT_COLLAPSED[cat]?'rotate(-90deg)':'rotate(0deg)';
 }
 function rfExpandAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});rfSaveCollapsed();rfRender();}
 function rfCollapseAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});rfSaveCollapsed();rfRender();}
 async function rfRefresh(){
   const btn=document.getElementById('rf-refresh-btn');
   if(btn){btn.textContent='Checking…';btn.disabled=true;}
-  // Flag which entries need checking
-  const toCheck=RF.filter(r=>RF_REFRESH_KW.includes(r.kw));
-  // Update last-checked timestamp on flagged entries
   const now=new Date().toISOString().slice(0,16).replace('T',' ');
-  toCheck.forEach(r=>{r.lastChecked=now;});
+  RF.filter(r=>RF_REFRESH_KW.includes(r.kw)).forEach(r=>{r.lastChecked=now;});
   rfSave();rfRender();
   if(btn){btn.textContent='↻ Refresh';btn.disabled=false;}
-  // Show count
   const ct=document.getElementById('rf-refresh-ct');
-  if(ct)ct.textContent='Last refreshed: '+now+' ('+toCheck.length+' sources checked)';
+  const n=RF.filter(r=>RF_REFRESH_KW.includes(r.kw)).length;
+  if(ct)ct.textContent='Last refreshed: '+now+' — '+n+' sources flagged for check';
 }
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
@@ -3798,53 +3632,36 @@ function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim(
 function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
 function rfCancelEdit(){rfEditId=null;rfRender();}
-function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);const lp=(document.getElementById('rfe-lp-'+id)||{}).value||'';if(item){item.kw=kw;item.url=url;item.desc=desc;item.lastPost=(lp||'').trim();if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
+function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);const lp=(document.getElementById('rfe-lp-'+id)||{}).value||'';if(item){item.kw=kw;item.url=url;item.desc=desc;item.lastPost=lp.trim();if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
 function rfDelete(id){if(!confirm('Delete?'))return;RF=RF.filter(r=>r.id!==id);rfSave();rfRender();}
 function rfRender(){
   const container=document.getElementById('rf-cat-container');
-  const ct=document.getElementById('rf-count');
   if(!container)return;
+  const ct=document.getElementById('rf-count');
   const fk=(document.getElementById('rf-filter-kw')||{}).value||'';
   rfBuildKwSelects();
   let list=rfSorted(RF);if(fk)list=list.filter(r=>r.kw===fk);
   if(ct)ct.textContent=list.length+' resource'+(list.length===1?'':'s');
-
-  // Group by category
-  const groups={};
-  Object.keys(RF_CATS).forEach(c=>{groups[c]=[];});
-  list.forEach(r=>{const c=r.cat||'primary';if(groups[c])groups[c].push(r);else{if(!groups['primary'])groups['primary']=[];groups['primary'].push(r);}});
-
+  const groups={};Object.keys(RF_CATS).forEach(c=>{groups[c]=[];});
+  list.forEach(r=>{const c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
   const kwS=[...RF_KW].sort(naturalSort);
   let html='';
   Object.keys(RF_CATS).forEach(cat=>{
-    const items=groups[cat]||[];
-    if(!items.length)return;
-    const collapsed=!!RF_CAT_COLLAPSED[cat];
+    const items=groups[cat]||[];if(!items.length)return;
+    const col=!!RF_CAT_COLLAPSED[cat];
     const info=RF_CATS[cat];
-    html+=`<div class="rf-cat-section">
-  <div class="rf-cat-header" onclick="rfToggleCat('${cat}')">
-    <span class="rf-cat-icon">${info.icon}</span>
-    <span class="rf-cat-label">${info.label}</span>
-    <span class="rf-cat-count">${items.length}</span>
-    <span class="rf-cat-arrow" id="rf-arrow-${cat}" style="transition:transform 0.25s;transform:${collapsed?'rotate(-90deg)':'rotate(0deg)'}">▾</span>
-  </div>
-  <div class="rf-cat-body" id="rf-cat-${cat}" style="overflow:hidden;transition:max-height 0.3s ease,opacity 0.25s ease;max-height:${collapsed?'0':'4000px'};opacity:${collapsed?'0':'1'}">
-    <table class="rf-table" style="margin-bottom:0"><tbody>`;
+    html+='<div class="rf-cat-section"><div class="rf-cat-header" onclick="rfToggleCat(''+cat+'')"><span class="rf-cat-icon">'+info.icon+'</span><span class="rf-cat-label">'+info.label+'</span><span class="rf-cat-count">'+items.length+'</span><span class="rf-cat-arrow" id="rf-arrow-'+cat+'" style="transition:transform 0.25s;transform:'+(col?'rotate(-90deg)':'rotate(0deg)')+'">&#9662;</span></div>';
+    html+='<div class="rf-cat-body" id="rf-cat-'+cat+'" style="overflow:hidden;transition:max-height 0.35s ease,opacity 0.25s ease;max-height:'+(col?'0':'4000px')+';opacity:'+(col?'0':'1')+'"><table class="rf-table" style="margin-bottom:0"><tbody>';
     items.forEach(r=>{
       const isE=rfEditId===r.id;
-      const trunc=u=>u&&u.length>38?u.substring(0,38)+'\u2026':u||'';
-      const lc=r.lastChecked?`<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: ${r.lastChecked}</span>`:'';
-      const lp=r.lastPost?`<span style="font-size:10px;color:var(--accent);display:block">Posted: ${r.lastPost}</span>`:'';
-      const stamps=(lc||lp)?`<div style="margin-top:3px">${lc}${lp}</div>`:'';
-      const eRow=isE?`<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4"><div class="rf-edit-grid">
-        <select id="rfe-kw-${r.id}" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">${kwS.map(k=>`<option value="${esc(k)}"${k===r.kw?' selected':''}>${esc(k)}</option>`).join('')}</select>
-        <input type="text" id="rfe-url-${r.id}" value="${esc(r.url)}" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />
-        <input type="text" id="rfe-desc-${r.id}" value="${esc(r.desc)}" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />
-        <input type="text" id="rfe-lp-${r.id}" value="${esc(r.lastPost||'')}" placeholder="Last post date (e.g. 2026-06-12)" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />
-        </div><div class="rf-edit-acts"><button class="rf-edit-save" onclick="rfSaveEdit('${r.id}')">Save</button><button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button></div></td></tr>`:'';;
-      html+=`<tr><td><span class="rf-kw-pill">${esc(r.kw)}</span></td><td>${r.url?`<a class="rf-url-link" href="${esc(r.url)}" target="_blank">${esc(trunc(r.url))}</a>`:'—'}</td><td class="rf-desc">${esc(r.desc)}${stamps}</td><td style="white-space:nowrap"><button class="rf-act-btn" onclick="rfToggleEdit('${r.id}')">${isE?'Cancel':'Edit'}</button> <button class="rf-act-btn danger" onclick="rfDelete('${r.id}')">&#10005;</button></td></tr>${eRow}`;
+      const trunc=u=>u&&u.length>38?u.substring(0,38)+'…':u||'';
+      const lc=r.lastChecked?'<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: '+r.lastChecked+'</span>':'';
+      const lp=r.lastPost?'<span style="font-size:10px;color:var(--accent);display:block">Posted: '+r.lastPost+'</span>':'';
+      const stamps=(lc||lp)?'<div style="margin-top:3px">'+lc+lp+'</div>':'';
+      const eRow=isE?'<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4"><div class="rf-edit-grid"><select id="rfe-kw-'+r.id+'" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">'+kwS.map(k=>'<option value="'+esc(k)+'"'+(k===r.kw?' selected':'')+'>'+esc(k)+'</option>').join('')+'</select><input type="text" id="rfe-url-'+r.id+'" value="'+esc(r.url||'')+'" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-desc-'+r.id+'" value="'+esc(r.desc||'')+'" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /><input type="text" id="rfe-lp-'+r.id+'" value="'+esc(r.lastPost||'')+'" placeholder="Last post date (e.g. 2026-06-12)" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" /></div><div class="rf-edit-acts"><button class="rf-edit-save" onclick="rfSaveEdit(''+r.id+'')">Save</button><button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button></div></td></tr>':'';
+      html+='<tr><td><span class="rf-kw-pill">'+esc(r.kw)+'</span></td><td>'+(r.url?'<a class="rf-url-link" href="'+esc(r.url)+'" target="_blank">'+esc(trunc(r.url))+'</a>':'—')+'</td><td class="rf-desc">'+esc(r.desc)+stamps+'</td><td style="white-space:nowrap"><button class="rf-act-btn" onclick="rfToggleEdit(''+r.id+'')">'+(isE?'Cancel':'Edit')+'</button> <button class="rf-act-btn danger" onclick="rfDelete(''+r.id+'')">&#10005;</button></td></tr>'+eRow;
     });
-    html+=`</tbody></table></div></div>`;
+    html+='</tbody></table></div></div>';
   });
   container.innerHTML=html||'<div class="rf-empty">No resources match current filter.</div>';
 }
@@ -4191,4 +4008,4 @@ document.addEventListener('keydown',function(e){
 </div>
 <div class="uc-toast" id="uc-toast">JSON copied &mdash; paste into Claude ✓</div>
 </body>
-</html>
+</html>}
