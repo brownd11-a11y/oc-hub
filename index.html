@@ -275,7 +275,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
 .gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:auto}
-.gantt-scroll-inner{position:relative}
+.gantt-scroll-inner{position:relative;width:max-content;min-width:100%}
 
 /* Sticky label column — width controlled by --gantt-label-w (resizable) */
 :root{--gantt-label-w:224px}
@@ -957,13 +957,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div class="gantt-leg"><div style="width:2px;height:14px;background:#C70025;opacity:.6;display:inline-block;vertical-align:middle"></div>&nbsp;Today</div>
     </div>
     <div class="gantt-toolbar">
-      <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
-      <button class="gantt-today-btn" onclick="ganttScrollToday()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Today</button>
-      <button class="gantt-today-btn" id="gscale-btn" onclick="cycleGanttScale()" title="Cycle scale">Scale: <span id="gscale-label">Wks</span></button>
-      <div class="gantt-toolbar-sep"></div>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
+      <span class="gantt-toolbar-title" id="gantt-summary-lbl" style="margin-left:auto;margin-right:0">Gantt</span>
     </div>
     <!-- Integrated Gantt -->
     <div class="gantt-scroll-outer" id="gantt-scroll-outer">
@@ -1360,7 +1357,7 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-13T10:30:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-13T12:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION = 'v302u2'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2455,18 +2452,15 @@ function renderGantt(){
       const px=Math.round(frac*ganttTotalPx);
       if(frac>=-0.01&&frac<=1.01){
         const ds=tc.toISOString().slice(0,10);
-        // Two-line labels: line1 = context, line2 = primary tick
+        // Two-line labels: line1 = context (year or month+year), line2 = primary tick value
         let line1,line2;
         if(tickDays===30){
-          // Months view: line1=year, line2=month abbr
           line1=tc.toLocaleDateString('en-US',{year:'numeric'});
           line2=tc.toLocaleDateString('en-US',{month:'short'});
         } else if(tickDays===7){
-          // Weeks view: line1=month+year, line2=day number
           line1=tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
           line2=String(tc.getDate());
         } else {
-          // Days view: line1=month+year, line2=day number
           line1=tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
           line2=String(tc.getDate());
         }
@@ -2483,14 +2477,18 @@ function renderGantt(){
   // ── Sticky header row ──
   html+=`<div class="gantt-header-row">`;
   html+=`<div class="gantt-header-label">
-    <span>Today</span>
-    <button class="gantt-today-btn" onclick="ganttScrollToday()" title="Scroll to today">&#8857;</button>
+    <button class="gantt-today-btn" onclick="ganttScrollToday()" title="Scroll to today">Today</button>
+    <button class="gantt-today-btn" id="gscale-btn" onclick="cycleGanttScale()" title="Cycle scale">Scale: <span id="gscale-label">${{weeks:'Wks',days:'Days',months:'Mos'}[_ganttScale]||'Wks'}</span></button>
     <div class="gantt-col-resize-handle" id="gantt-col-resize" title="Drag to resize column" onmousedown="ganttColResizeStart(event)" ontouchstart="ganttColResizeTouchStart(event)"></div>
   </div>`;
   html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
-  // week labels — two lines
+  // week labels — two lines; suppress repeated line1 context labels
+  let lastLine1='';
   weeks.forEach(w=>{
-    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.px}px"><span class="gantt-tick-l1">${w.line1}</span><span class="gantt-tick-l2">${w.line2}</span></div>`;
+    const showL1=w.line1!==lastLine1;
+    if(showL1)lastLine1=w.line1;
+    const l1html=showL1?`<span class="gantt-tick-l1">${w.line1}</span>`:`<span class="gantt-tick-l1" style="visibility:hidden">${w.line1}</span>`;
+    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.px}px">${l1html}<span class="gantt-tick-l2">${w.line2}</span></div>`;
   });
   // today line in header
   if(todayPx!==null)html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPx}px;width:2px;background:#C70025;opacity:.5;pointer-events:none;z-index:3"></div>`;
