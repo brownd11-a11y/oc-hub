@@ -274,7 +274,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
-.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:auto}
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
 .gantt-scroll-inner{position:relative}
 
 /* Sticky label column — width controlled by --gantt-label-w (resizable) */
@@ -300,22 +300,21 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Phase row ── */
 .gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
-.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
 /* phase label cell colored border */
 .gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
 .gantt-drag-handle{font-size:18px;color:#bbb;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;transition:color .15s}.gantt-drag-handle:hover{color:#555}.gantt-drag-handle:active{cursor:grabbing;color:#333}
-.gantt-task-drag-handle{font-size:14px;color:#ccc;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;margin-left:2px;transition:color .15s}.gantt-task-drag-handle:hover{color:#666}.gantt-task-drag-handle:active{cursor:grabbing;color:#333}
 .gantt-col-resize-handle{position:absolute;right:0;top:0;bottom:0;width:10px;cursor:col-resize;z-index:25;display:flex;align-items:center;justify-content:center;touch-action:none;background:rgba(100,160,220,.15);border-left:2px solid rgba(100,160,220,.5)}.gantt-col-resize-handle:hover,.gantt-col-resize-handle:active{background:rgba(100,160,220,.3);border-left-color:#4a90d0}.gantt-col-resize-handle svg{pointer-events:none}.gantt-col-resizing{cursor:col-resize!important;user-select:none!important}
 .gantt-col-rail{position:fixed;width:10px;z-index:200;pointer-events:auto;cursor:col-resize;touch-action:none;background:rgba(100,160,220,.15);border-left:2px solid rgba(100,160,220,.5);display:none;box-sizing:border-box}
 .gantt-col-rail:hover,.gantt-col-rail:active{background:rgba(100,160,220,.3);border-left-color:#4a90d0}
 .gantt-expand-btn{width:20px;height:20px;border:1.5px solid var(--ph-color,#3a6b9e);border-radius:3px;background:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;color:var(--ph-color,#3a6b9e);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
 .gantt-expand-btn:hover{background:var(--ph-color,#3a6b9e);color:#fff}
-.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:17px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
 .gantt-phase-pct{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--ph-color,#3a6b9e);flex-shrink:0}
-.gantt-phase-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
+.gantt-phase-track{flex:1;position:relative;background:transparent}
 
 /* Phase bar */
-.gantt-ph-bar{position:absolute;top:10%;transform:none;height:80%;border-radius:4px;overflow:hidden;min-width:6px;border:1.5px solid transparent}
+.gantt-ph-bar{position:absolute;top:50%;transform:translateY(-50%);height:26px;border-radius:4px;overflow:hidden;min-width:6px;border:1.5px solid transparent}
 .gantt-ph-bar-bg{position:absolute;inset:0}
 .gantt-ph-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
 
@@ -327,17 +326,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
-.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 16px;border-right:1px solid #D1D5DB;background:var(--page-bg);border-left:4px solid var(--task-ph-color,#ccc)}
+.gantt-task-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
-.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:15px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-task-name.done{text-decoration:line-through;color:var(--done-fg);opacity:.7}
 .gantt-task-pct{font-family:'Source Code Pro',monospace;font-size:9px;color:#9CA3AF;flex-shrink:0}
-.gantt-task-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
+.gantt-task-track{flex:1;position:relative;background:transparent}
 
 /* Task bar */
-.gantt-task-bar{position:absolute;top:10%;transform:none;height:80%;border-radius:3px;overflow:hidden;min-width:4px}
+.gantt-task-bar{position:absolute;top:50%;transform:translateY(-50%);height:10px;border-radius:3px;overflow:hidden;min-width:4px}
 .gantt-task-bar-bg{position:absolute;inset:0;opacity:.35}
 .gantt-task-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
 
@@ -345,11 +344,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
 .gantt-gate-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
 .gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gantt-gate-task-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
+.gantt-gate-task-track{flex:1;position:relative;background:transparent}
 
 /* Add task row */
 .gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:var(--page-bg);position:relative;z-index:2}
-.gantt-add-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-add-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
 .gantt-add-task-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#9CA3AF;background:none;border:1px dashed #D1D5DB;padding:2px 10px;cursor:pointer;width:100%;text-align:left;transition:all .15s}
 .gantt-add-task-btn:hover{border-color:var(--accent);color:var(--accent)}
 .gantt-add-task-track{flex:1;background:var(--page-bg)}
@@ -1352,12 +1351,12 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-13T02:25:49.671Z'; // bump this each time seed data is updated
-const MASTER_VERSION = 'v302'; // current manuscript version — update each session
+const SEED_VERSION='2026-06-12T19:00:00.000Z'; // bump this each time seed data is updated
+const MASTER_VERSION = 'v302u2'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
 const SEED_ITEMS=[
-  {id:'i_life1952_research',type:'note',text:'RESEARCH NOTE — Life magazine April 7, 1952: "Have We Visitors from Space?" by H. B. Darrach Jr. and Robert Ginna. Cover article (same issue as Marilyn Monroe cover) with interior headline: "The Air Force is now ready to concede that many saucer and fireball sightings still defy explanation; here LIFE offers some scientific evidence that there is a real case for interplanetary saucers." Air Force reportedly collaborated on and may have prompted the article — notable because after the 1952 Washington DC UFO flap that summer, the Air Force reversed to a policy of denial and debunking. The article discussed 10 previously unpublished sightings and concluded that no conventional explanation fit. Context: Charles Lear (audio blog on Podcast UFO) cited Archives for the Unexplained (afunet.se) as holding LIFE articles from 1947–1966. Primary sources: (1) NICAP transcript at nicap.org/life52.htm; (2) Project 1947 transcript at project1947.com/shg/articles/lifemag52.html; (3) Wikipedia article "Have We Visitors From Space?" with full sourcing. Potentially citable in Ch.4 (What We Agreed to See) or Ch.9 (Manufacturing Doubt) re: press/Air Force collaboration pre-debunking era. SOURCE VIA: Podcast UFO / Charles Lear audio blog, referenced Archives for the Unexplained (afunet.se).',done:false,priority:false,memFlag:false,tag:'research',deferred:false,answer:null,dialogue:[{from:'claude',text:'Research note added 2026-06-12. Dave heard Charles Lear on Podcast UFO reading a blog about LIFE magazine UAP coverage. The 1952 article is a significant primary source: Air Force actively collaborated pre-Washington-flap, then reversed to debunking. Good candidate for Ch.4 or Ch.9.',ts:'2026-06-12T00:00:00.000Z'}],created:'2026-06-12T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'https://en.wikipedia.org/wiki/Have_We_Visitors_From_Space%3F'},
+  {id:'i_life1952_research',type:'note',text:'RESEARCH NOTE — Life magazine April 7, 1952: "Have We Visitors from Space?" by H. B. Darrach Jr. and Robert Ginna. Same issue as Marilyn Monroe cover. Interior headline: "The Air Force is now ready to concede that many saucer and fireball sightings still defy explanation; here LIFE offers some scientific evidence that there is a real case for interplanetary saucers." Air Force collaborated and may have prompted the article. After the 1952 Washington DC UFO flap that summer, the Air Force reversed to denial/debunking — this issue stands as the last time a mainstream outlet made such a claim with apparent official sanction. SOURCE: Heard on Podcast UFO — Charles Lear audio blog on LIFE magazine and UFOs. — ARTICLE LINKS: (1) AFU collection of LIFE UAP articles 1947–1966 (direct download index): https://files.afu.se/Downloads/?dir=Magazines/0 - Articles/United States/Life (2) NICAP full transcript: http://www.nicap.org/life52.htm (3) Project 1947 transcript: http://www.project1947.com/shg/articles/lifemag52.html (4) Wikipedia "Have We Visitors From Space?": https://en.wikipedia.org/wiki/Have_We_Visitors_From_Space%3F — LEAR BLOG (Podcast UFO): Blog has not yet received a standalone permalink — currently live on Podcast UFO homepage (podcastufo.com). Title appears to be "LIFE Magazine and UFOs" or similar. Check podcastufo.com/blog/ for the permalink once published. — PUBLIC DOMAIN IMAGE CANDIDATES (all USAF govt photos = PD): (A) Wikimedia Commons F-94B Starfire category: https://commons.wikimedia.org/wiki/Category:F-94B_Starfire — includes "61st Fighter-Interceptor Squadron Lockheed F-94B-1-LO Starfire 50-889 1952.jpg" (dated 1952, exact aircraft type scrambled from New Castle AFB) and "F-94B 319th FIS over Korea c1952.jpg" (in-flight, atmospheric). (B) Project Blue Book 1952 UFO report frequency chart: public domain via Wikimedia Commons — cited by Smithsonian. Potentially citable in Ch.4 (What We Agreed to See) or Ch.9 (Manufacturing Doubt) re: press/AF collaboration pre-debunking era.',done:false,priority:false,memFlag:false,tag:'research',deferred:false,answer:null,dialogue:[{from:'claude',text:'Updated 2026-06-12 with article links, AFU download URL, image candidates, and Lear blog status. Lear blog on Podcast UFO does not yet have a standalone permalink — it is the current homepage feature. AFU direct link confirmed from Spreaker transcript of blog. F-94B Starfire USAF photos on Wikimedia Commons confirmed public domain. NICAP and Project 1947 both carry full article transcripts.',ts:'2026-06-12T00:00:00.000Z'}],created:'2026-06-12T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'https://files.afu.se/Downloads/?dir=Magazines/0%20-%20Articles/United%20States/Life'},
   {id:'i_1781290579787',type:'fordave',text:'Research CLAW (Claude Law?) — assess whether it replicates hub functionality and what features/opportunities it offers vs current setup.',done:false,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Look into Law, CLAW and see whether or not that replicates the functionality of this project, what features/opportunities, whether others come closer to what I need.',ts:'2026-06-12T18:56:19.787Z'}],created:'2026-06-12T18:56:19.787Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_session0612b',type:'note',text:'Session 2026-06-12 (continued): Ch.7 Mitchell section rewritten — heading renamed Astronauts on the record, samadhi passage added, overview effect, IONS founding, post-mission UAP views, blue lights cross-ref to Bean/Apollo 12, Cooper/Nelson coexistence, closing credibility question. Footnote audit: 33/33/33/33 PASS, display 1-33 sequential, all forward and return links verified, physical order confirmed. v301→v302.',done:true,priority:false,memFlag:false,tag:'publishing',deferred:false,answer:null,dialogue:null,created:'2026-06-12T20:00:00.000Z',dueDate:'',completedDate:'2026-06-12',itemUrl:null},
   {id:'i_ch7_roswell_flag',type:'fordave',text:'Ch.7 Astronauts on the record: Mitchell grew up near Roswell (Artesia, NM, ~75 miles away) and later said publicly he believed the 1947 crash was real and covered up — kept separate from his Apollo experience. Decision: add one parenthetical sentence to paragraph 2, or leave out entirely?',done:false,priority:false,memFlag:true,tag:'Ch.7',deferred:false,answer:null,dialogue:[{from:'claude',text:'Flagged for decision. Mitchell-Roswell connection is documented and factually interesting but may be scope creep for this section. One parenthetical sentence could work at end of paragraph 2. Awaiting Dave direction.',ts:'2026-06-12T20:00:00.000Z'}],created:'2026-06-12T20:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'PASTE TO FIND → He was consistent about the source of that view'},
@@ -1479,13 +1478,7 @@ const ROAD_SEED=[
     {id:'rph_pubpitch_s4',kind:'step',phase:'rph_pubpitch',label:'Publisher response window',note:'Allow 60 days from submission. Follow up at 30 days if no acknowledgment.',cmd:null,targetStart:'2026-06-30',targetEnd:'2026-08-29',completedDate:'',done:false,metDate:''},
     {id:'r_1781190004916',kind:'step',phase:'rph_pubpitch',label:'Agent Pitch',note:'Determine if any interested agents and then decide whether to self-publish',cmd:null,targetStart:'2026-07-11',targetEnd:'2026-08-29',completedDate:'',done:false,isGate:true,metDate:''},
     {id:'rph_pubpitch_g2',kind:'gate',phase:'rph_pubpitch',label:'Response window closes — proceed to self-publish if no compelling offer',date:'2026-08-29',met:false,completedDate:'',metDate:''},
-    {id:'rph_vercel',kind:'phase',label:'Move Hub to Vercel',color:'#2070C8',open:true,num:12,note:'Fix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required.',completedDate:'',metDate:''},
-    {id:'rph_vercel_s1',kind:'step',phase:'rph_vercel',label:'Step 1 — Create Vercel account & import oc-hub repo',note:'Go to vercel.com → Sign Up → Continue with GitHub → Import the brownd11-a11y/oc-hub repository. No settings to change — Vercel detects it is a static site automatically. Click Deploy. Copy/paste block: vercel.com/new',url:'https://vercel.com/new',cmd:null,targetStart:'2026-06-12',targetEnd:'2026-06-13',completedDate:'',done:false,isGate:false,metDate:''},
-    {id:'rph_vercel_s2',kind:'step',phase:'rph_vercel',label:'Step 2 — Assign hub.over-classified.com in Vercel',note:'In your new Vercel project → Settings → Domains → Add: hub.over-classified.com. Vercel will show you a CNAME value to copy (looks like: cname.vercel-dns.com). Leave this tab open.',cmd:null,targetStart:'2026-06-13',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:false,metDate:''},
-    {id:'rph_vercel_s3',kind:'step',phase:'rph_vercel',label:'Step 3 — Add CNAME at your DNS registrar',note:'Log in to wherever you bought over-classified.com → DNS settings → Add record: Type=CNAME, Name=hub, Value=paste what Vercel gave you in Step 2. Save. Takes up to 1 hour to propagate. Hub will then be live at hub.over-classified.com.',cmd:null,targetStart:'2026-06-14',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:false,metDate:''},
-    {id:'rph_vercel_s4',kind:'step',phase:'rph_vercel',label:'Step 4 — Remove custom domain from GitHub Pages',note:'Go to github.com → brownd11-a11y/oc-hub → Settings → Pages → Custom domain → clear the field and Save. This stops GitHub from intercepting over-classified.com traffic. Hub push workflow is unchanged — Claude still pushes index.html to the same GitHub repo; Vercel redeploys automatically on every push.',url:'https://github.com/brownd11-a11y/oc-hub/settings/pages',cmd:null,targetStart:'2026-06-14',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:true,metDate:''},
-    {id:'rph_vercel_g1',kind:'gate',phase:'rph_vercel',label:'hub.over-classified.com live · over-classified.com clean',date:'2026-06-14',met:false,completedDate:'',metDate:''},
-    {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#E8622A',open:false,num:13,completedDate:'',metDate:''},
+    {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#E8622A',open:false,num:12,completedDate:'',metDate:''},
     {id:'r_1780868347381',kind:'step',phase:'r_1780841436950',label:'Establish overall plan outline',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false,metDate:''},
     {id:'r_website_desc_update',kind:'step',phase:'r_1780841436950',label:'Update over-classified.com book description',note:'Reflect June 9 Capitol press conference, Turner/NAA document, Aldo Rebelo/Varginha confirmation, PURSUE release milestone, and current disclosure momentum. Must be live before publisher pitch submissions go out.',cmd:null,targetStart:'',targetEnd:'2026-06-22',completedDate:'',done:false,metDate:''},
     {id:'r_1780868403899',kind:'step',phase:'r_1780841436950',label:'Develop channel plan',note:'Social media, messaging, methods',cmd:null,targetStart:'',targetEnd:'2026-07-03',completedDate:'',done:false,metDate:''},
@@ -2506,14 +2499,15 @@ function renderGantt(){
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
     if(prog.total>0)html+=`<span class="gantt-phase-pct" style="color:${isAllDone?'var(--done-fg)':color}">${isAllDone?'✓':prog.pct+'%'}</span>`;
     html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('phase','${ph.id}')" title="Edit phase"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
+    html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();clonePhase('${ph.id}')" title="Clone phase"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>`;
     html+=`</div>`;
     // Track cell
-    html+=`<div class="gantt-phase-track">`;
+    html+=`<div class="gantt-phase-track" style="position:relative">`;
     // Week dotted lines
     weeks.forEach(w=>{
-      html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`;
+      html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`;
     });
-    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
     // Phase bar
     if(range.start&&range.end){
       const lp=xpx(range.start),rp=xpx(range.end);
@@ -2522,7 +2516,7 @@ function renderGantt(){
         const fillPct=prog.pct;
         const fillColor=isAllDone?'#1D6B2A':color;
         const phBarDate=range.end?(isAllDone?'Done':'Target: '+fmtDate(range.end)):'';
-        html+=`<div class="gantt-ph-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+        html+=`<div class="gantt-ph-bar" style="left:${lp}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
         html+=`<div class="gantt-ph-bar-bg" style="background:${color};opacity:.18"></div>`;
         html+=`<div class="gantt-ph-bar-fill" style="background:${fillColor};opacity:.85;width:${fillPct}%"></div>`;
         html+=`</div>`;
@@ -2540,9 +2534,9 @@ function renderGantt(){
         const isStandalone=g.standalone===true;
         if(isStandalone){
           // Larger diamond for standalone gates
-          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         } else {
-          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         }
       });
       // Also show inherited gates from tasks that have isGate=true
@@ -2550,7 +2544,7 @@ function renderGantt(){
         const gp=xpx(s.targetEnd);
         if(gp===null)return;
         const tip=esc(s.label)+(s.targetEnd?' · Target: '+fmtDate(s.targetEnd):'');
-        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
+        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
       });
     }
     html+=`</div>`; // end track
@@ -2570,34 +2564,36 @@ function renderGantt(){
           html+=`<div style="width:10px;height:10px;border:2px solid ${color};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${s._gateId}')"></div>`;
           html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
           html+=`</div>`;
-          html+=`<div class="gantt-gate-task-track">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+          html+=`<div class="gantt-gate-task-track" style="position:relative">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
           const gp=xpx(s.targetEnd||s.targetStart||'');
-          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
+          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
           html+=`</div></div>`;
         } else {
           // Regular task row
           const doneCls=s.done?' checked':'';
           const nameCls=s.done?' done':'';
           html+=`<div class="gantt-task-row">`;
-          html+=`<div class="gantt-task-label-cell" style="--task-ph-color:${color};background:${s.done?'var(--done-bg)':hexTint(color,0.03)}">`;
+          html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
           html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`;
           html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
           html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
           if(s.done)html+=`<span class="gantt-task-pct" style="color:var(--done-fg)">✓</span>`;
           html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('step','${s.id}')" title="Edit task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
-          html+=`<span class="gantt-task-drag-handle" title="Drag to reorder" data-drag-step="${s.id}" onmousedown="taskDragStart(event,'${s.id}')" ontouchstart="taskDragTouchStart(event,'${s.id}')">&#8942;</span>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();cloneStep('${s.id}')" title="Clone task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();moveStep('${s.id}',-1)" title="Move up">&#9650;</button>`;
+          html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();moveStep('${s.id}',1)" title="Move down">&#9660;</button>`;
           html+=`</div>`;
-          html+=`<div class="gantt-task-track">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+          html+=`<div class="gantt-task-track" style="position:relative">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
           if(s.targetStart&&s.targetEnd){
             const lp=xpx(s.targetStart),rp=xpx(s.targetEnd);
             if(lp!==null&&rp!==null){
               const bw=Math.max(2,rp-lp);
               const tBarDate=s.done&&s.completedDate?'Done: '+fmtDate(s.completedDate):'Target: '+fmtDate(s.targetEnd);
-              html+=`<div class="gantt-task-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+              html+=`<div class="gantt-task-bar" style="left:${lp}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
               html+=`<div class="gantt-task-bar-bg" style="background:${color}"></div>`;
               html+=`<div class="gantt-task-bar-fill" style="background:${color};width:${s.done?'100':'50'}%"></div>`;
               html+=`</div>`;
@@ -2605,7 +2601,7 @@ function renderGantt(){
           } else if(s.targetEnd){
             const ep=xpx(s.targetEnd);
             if(ep!==null){
-              html+=`<div style="position:absolute;top:50%;left:${ep+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
+              html+=`<div style="position:absolute;top:50%;left:${ep}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
             }
           }
           html+=`</div></div>`;
@@ -2624,16 +2620,16 @@ function renderGantt(){
         html+=`<span class="gantt-gate-task-name" title="${esc(g.label)}">${esc(g.label)}</span>`;
         html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
         html+=`</div>`;
-        html+=`<div class="gantt-gate-task-track">`;
-        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+        html+=`<div class="gantt-gate-task-track" style="position:relative">`;
+        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
+        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
         const gp=xpx(g.met&&g.metDate?g.metDate:disp);
         if(gp!==null){
           const gTip=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
-          html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
+          html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
           const lbl=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
           if(lbl){
-            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+GANTT_LABEL_W+10}px`;
+            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+10}px`;
             html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:${g.met?'var(--done-fg)':color};white-space:nowrap;pointer-events:none;z-index:5">${esc(lbl)}</div>`;
           }
         }
@@ -2674,11 +2670,9 @@ function ganttScrollToday(){
   if(!outer||!inner||!ganttTimelinePadMin||!ganttTimelineSpan)return;
   const todayPct=xpct(todayStr());
   if(todayPct===null)return;
-  const labelW=ganttGetLabelW();
-  const timelineWidth=inner.offsetWidth-labelW;
-  const todayPx=(todayPct/100)*timelineWidth;
-  // Place today 150px to the right of the label column
-  const scrollTo=Math.max(0,todayPx-150);
+  // timeline starts after label col (224px)
+  const timelineWidth=inner.offsetWidth-224;
+  const scrollTo=Math.max(0,(todayPct/100)*timelineWidth - outer.clientWidth/2 + 112);
   outer.scrollLeft=scrollTo;
 }
 
@@ -2776,7 +2770,6 @@ function openGanttEdit(kind,id){
     html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Met date</label><input class="gantt-panel-input mono" id="ge-gate-metdate" type="date" value="${item.metDate||''}" /></div>`;
   } else {
     html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Note</label><textarea class="gantt-panel-input" id="ge-note" rows="2">${esc(item.note||'')}</textarea></div>`;
-    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">URL <span style="font-weight:400;opacity:.6">(optional)</span></label><input class="gantt-panel-input mono" id="ge-url" type="url" value="${esc(item.url||'')}" placeholder="https://…" /></div>`;
   }
   if(kind==='step'){
     html+=`<hr class="gantt-panel-divider">`;
@@ -2802,7 +2795,7 @@ function openGanttEdit(kind,id){
     html+=`<div id="ge-convert-phase-row" style="display:none"><div class="gantt-panel-field"><label class="gantt-panel-lbl">Move into phase</label><select class="gantt-panel-input" id="ge-convert-phase">${convertPhOpts}</select></div><p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-4px;margin-bottom:0">Child tasks of this phase will be removed on convert.</p></div>`;
 
   html+=`<hr class="gantt-panel-divider">`;
-  html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#2070C8" onclick="ganttEditClone('${kind}','${id}')" title="Clone"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
+  html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
   if(body)body.innerHTML=html;
   document.getElementById('gantt-overlay').classList.add('open');
   document.getElementById('gantt-slide-panel').classList.add('open');
@@ -2830,8 +2823,6 @@ function ganttEditSave(kind,id){
     item.metDate=document.getElementById('ge-gate-metdate')?.value||'';
   } else {
     item.note=document.getElementById('ge-note')?.value||'';
-    const u=(document.getElementById('ge-url')?.value||'').trim();
-    if(u)item.url=u; else delete item.url;
   }
   if(kind==='step'){
     item.targetStart=document.getElementById('ge-start')?.value||'';
@@ -2887,7 +2878,6 @@ function buildPanelForm(kind,phaseId){
   let html='';
   html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Label</label><input class="gantt-panel-input" id="gp-label" type="text" placeholder="Label…" /></div>`;
   html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Note</label><textarea class="gantt-panel-input" id="gp-note" rows="2" placeholder="Note (optional)…"></textarea></div>`;
-  html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">URL <span style="font-weight:400;opacity:.6">(optional)</span></label><input class="gantt-panel-input mono" id="gp-url" type="url" placeholder="https://…" /></div>`;
 
   if(kind==='step'||kind==='gate'||kind==='standalone-gate'){
     html+=`<hr class="gantt-panel-divider">`;
@@ -2940,8 +2930,7 @@ function ganttPanelAdd(){
   if(kind==='phase'){
     const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
     const colIdx=phases.length;
-    const url=(document.getElementById('gp-url')?.value||'').trim();
-    S.road.push({id,kind:'phase',num:maxNum+1,label,note,url:url||undefined,color:rainbowColor(colIdx),open:true});
+    S.road.push({id,kind:'phase',num:maxNum+1,label,color:rainbowColor(colIdx),open:true});
     renumberPhases();
   } else {
     const phSel=document.getElementById('gp-phase');
@@ -2963,8 +2952,7 @@ function ganttPanelAdd(){
     }
     if(kind==='step'){
       const isGate=document.getElementById('gp-is-gate')?.checked||false;
-      const url=(document.getElementById('gp-url')?.value||'').trim();
-      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,url:url||undefined,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false,isGate});
+      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false,isGate});
     } else if(kind==='standalone-gate'){
       const gateDate=document.getElementById('gp-gate-date')?.value||'';
       S.road.splice(idx,0,{id,kind:'gate',phase:phaseId,label,date:gateDate,met:false,standalone:true});
@@ -2977,141 +2965,30 @@ function ganttPanelAdd(){
 }
 
 /* ── CLONE / MOVE ── */
-function ganttEditClone(kind,id){
-  closeGanttPanel();
-  if(kind==='phase')clonePhase(id);
-  else if(kind==='step')cloneStep(id);
-}
-
 function clonePhase(pid){
   const ph=S.road.find(r=>r.id===pid);if(!ph)return;
-  // Build placement options: before each phase, or at end
-  const phases=roadPhases();
-  const opts=phases.map(p=>`<option value="before:${p.id}"${p.id===pid?' disabled':''}>Before: ${p.num?'['+String(p.num).padStart(2,'0')+'] ':''}${p.label}</option>`).join('');
-  const html=`
-    <div style="padding:16px;font-family:-apple-system,sans-serif">
-      <div style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:12px">Clone Phase — Place Copy</div>
-      <div style="font-size:13px;color:#333;margin-bottom:10px">Cloning: <strong>${ph.label}</strong></div>
-      <select id="clone-placement" style="width:100%;font-size:13px;padding:7px 9px;border:1px solid #ccc;border-radius:3px;margin-bottom:14px">
-        ${opts}
-        <option value="end">At end (after all phases)</option>
-      </select>
-      <div style="display:flex;gap:8px">
-        <button onclick="doClonePhase('${pid}')" style="flex:1;background:#2E5FA3;color:#fff;border:none;padding:9px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Clone Here</button>
-        <button onclick="closePlacementDialog()" style="flex:0 0 auto;background:#999;color:#fff;border:none;padding:9px 14px;font-family:'Source Code Pro',monospace;font-size:10px;cursor:pointer">Cancel</button>
-      </div>
-    </div>`;
-  showPlacementDialog(html);
-}
-
-function cloneStep(sid){
-  const s=S.road.find(r=>r.id===sid);if(!s)return;
-  // Options: before any task in same phase, or at end of phase, or in a different phase
-  const phases=roadPhases();
-  let opts='';
-  phases.forEach(ph=>{
-    const steps=roadSteps(ph.id);
-    steps.forEach(t=>{
-      opts+=`<option value="before:${t.id}"${t.id===sid?' disabled':''}>Before "${t.label.slice(0,40)}" [${ph.label.slice(0,20)}]</option>`;
-    });
-    opts+=`<option value="endof:${ph.id}">End of phase: ${ph.label.slice(0,35)}</option>`;
-  });
-  const html=`
-    <div style="padding:16px;font-family:-apple-system,sans-serif">
-      <div style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:12px">Clone Task — Place Copy</div>
-      <div style="font-size:13px;color:#333;margin-bottom:10px">Cloning: <strong>${s.label.slice(0,50)}</strong></div>
-      <select id="clone-placement" style="width:100%;font-size:13px;padding:7px 9px;border:1px solid #ccc;border-radius:3px;margin-bottom:14px">
-        ${opts}
-      </select>
-      <div style="display:flex;gap:8px">
-        <button onclick="doCloneStep('${sid}')" style="flex:1;background:#2E5FA3;color:#fff;border:none;padding:9px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Clone Here</button>
-        <button onclick="closePlacementDialog()" style="flex:0 0 auto;background:#999;color:#fff;border:none;padding:9px 14px;font-family:'Source Code Pro',monospace;font-size:10px;cursor:pointer">Cancel</button>
-      </div>
-    </div>`;
-  showPlacementDialog(html);
-}
-
-function showPlacementDialog(html){
-  let dlg=document.getElementById('clone-placement-dlg');
-  if(!dlg){
-    dlg=document.createElement('div');
-    dlg.id='clone-placement-dlg';
-    dlg.style.cssText='position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)';
-    document.body.appendChild(dlg);
-  }
-  dlg.innerHTML=`<div style="background:#fff;border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.25);width:90%;max-width:440px">${html}</div>`;
-  dlg.style.display='flex';
-}
-
-function closePlacementDialog(){
-  const dlg=document.getElementById('clone-placement-dlg');
-  if(dlg)dlg.style.display='none';
-}
-
-function doClonePhase(pid){
-  const placement=document.getElementById('clone-placement')?.value;
-  if(!placement){closePlacementDialog();return;}
-  closePlacementDialog();
-  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
   const phIdx=S.road.findIndex(r=>r.id===pid);
-  // Collect original block
   const block=[];
   block.push(ph);
   for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
-  // Build clones with new IDs
   const idMap={};
-  const ts=Date.now();
-  const clones=block.map((r,idx)=>{
-    const newId='r_'+ts+'_'+Math.random().toString(36).slice(2,6);
+  const clones=block.map(r=>{
+    const newId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
     idMap[r.id]=newId;
     const clone={...r,id:newId};
-    if(clone.kind==='phase'){clone.label='Copy of '+clone.label;}
+    if(clone.kind==='phase'){clone.num=(ph.num||0)+1;}
     if(clone.phase)clone.phase=idMap[clone.phase]||clone.phase;
     return clone;
   });
-  // Find insertion point
-  let insertAt;
-  if(placement==='end'){
-    insertAt=S.road.length;
-  } else if(placement.startsWith('before:')){
-    const targetId=placement.slice(7);
-    insertAt=S.road.findIndex(r=>r.id===targetId);
-    if(insertAt<0)insertAt=S.road.length;
-  } else {
-    insertAt=S.road.length;
-  }
-  S.road.splice(insertAt,0,...clones);
-  renumberPhases();save();renderGantt();
+  S.road.splice(phIdx+block.length,0,...clones);
+  renumberPhases();
+  save();renderGantt();
 }
-
-function doCloneStep(sid){
-  const placement=document.getElementById('clone-placement')?.value;
-  if(!placement){closePlacementDialog();return;}
-  closePlacementDialog();
+function cloneStep(sid){
   const s=S.road.find(r=>r.id===sid);if(!s)return;
-  const clone={...s,id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),done:false,completedDate:'',label:'Copy of '+s.label};
-  let insertAt;
-  if(placement.startsWith('before:')){
-    const targetId=placement.slice(7);
-    insertAt=S.road.findIndex(r=>r.id===targetId);
-    if(insertAt<0)insertAt=S.road.length;
-    // Adopt the phase of the target task
-    const target=S.road[insertAt];
-    if(target)clone.phase=target.phase;
-  } else if(placement.startsWith('endof:')){
-    const phaseId=placement.slice(6);
-    clone.phase=phaseId;
-    // Insert after last item belonging to that phase
-    let last=-1;
-    for(let i=0;i<S.road.length;i++){
-      const r=S.road[i];
-      if(r.id===phaseId||r.phase===phaseId)last=i;
-    }
-    insertAt=last>=0?last+1:S.road.length;
-  } else {
-    insertAt=S.road.length;
-  }
-  S.road.splice(insertAt,0,clone);
+  const si=S.road.findIndex(r=>r.id===sid);
+  const clone={...s,id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),done:false,completedDate:''};
+  S.road.splice(si+1,0,clone);
   save();renderGantt();
 }
 function movePhase(id,dir){
@@ -3148,106 +3025,6 @@ function moveStep(id,dir){
   const bi=S.road.findIndex(r=>r.id===steps[targetSi].id);
   [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
   save();renderGantt();
-}
-
-/* ── TASK DRAG REORDER ── */
-let _taskDragId=null,_taskDragGhost=null,_taskDragRows=null,_taskDragStartY=0;
-
-function taskDragStart(e,sid){
-  if(e.touches&&e.touches.length>1)return; // allow pinch zoom
-  e.preventDefault();
-  e.stopPropagation();
-  _taskDragId=sid;
-  _taskDragStartY=e.clientY;
-  const row=e.target.closest('.gantt-task-row');
-  if(!row)return;
-  _taskDragGhost=row.cloneNode(true);
-  const rect=row.getBoundingClientRect();
-  _taskDragGhost.style.cssText=`position:fixed;left:${rect.left}px;right:0;top:${rect.top}px;z-index:200;opacity:.8;pointer-events:none;box-shadow:0 2px 12px rgba(0,0,0,.2);background:#fff;`;
-  document.body.appendChild(_taskDragGhost);
-  _taskDragRows=Array.from(document.querySelectorAll('.gantt-task-row'));
-  document.addEventListener('mousemove',taskDragMove);
-  document.addEventListener('mouseup',taskDragEnd);
-}
-function taskDragMove(e){
-  if(!_taskDragGhost)return;
-  const dy=e.clientY-_taskDragStartY;
-  _taskDragGhost.style.transform=`translateY(${dy}px)`;
-  _taskDragRows.forEach(r=>r.style.outline='');
-  const target=_taskDragRows.find(r=>{const rc=r.getBoundingClientRect();return e.clientY>=rc.top&&e.clientY<=rc.bottom;});
-  const toId=target?.querySelector('[data-drag-step]')?.dataset?.dragStep;
-  if(toId&&toId!==_taskDragId)target.style.outline='2px solid #C70025';
-}
-function taskDragEnd(e){
-  document.removeEventListener('mousemove',taskDragMove);
-  document.removeEventListener('mouseup',taskDragEnd);
-  if(!_taskDragGhost){_taskDragId=null;return;}
-  _taskDragGhost.remove();_taskDragGhost=null;
-  _taskDragRows.forEach(r=>r.style.outline='');
-  const target=_taskDragRows.find(r=>{const rc=r.getBoundingClientRect();return e.clientY>=rc.top&&e.clientY<=rc.bottom;});
-  const toId=target?.querySelector('[data-drag-step]')?.dataset?.dragStep;
-  if(toId&&toId!==_taskDragId){
-    const s=S.road.find(r=>r.id===_taskDragId);
-    const t=S.road.find(r=>r.id===toId);
-    if(s&&t&&s.phase===t.phase){
-      const ai=S.road.findIndex(r=>r.id===_taskDragId);
-      const bi=S.road.findIndex(r=>r.id===toId);
-      [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
-      save();renderGantt();
-    }
-  }
-  _taskDragId=null;_taskDragRows=null;
-}
-function taskDragTouchStart(e,sid){
-  if(e.touches.length>1)return; // allow pinch zoom
-  e.preventDefault();
-  e.stopPropagation();
-  _taskDragId=sid;
-  _taskDragStartY=e.touches[0].clientY;
-  const row=e.target.closest('.gantt-task-row');
-  if(!row)return;
-  _taskDragGhost=row.cloneNode(true);
-  const rect=row.getBoundingClientRect();
-  _taskDragGhost.style.cssText=`position:fixed;left:${rect.left}px;right:0;top:${rect.top}px;z-index:200;opacity:.8;pointer-events:none;box-shadow:0 2px 12px rgba(0,0,0,.2);background:#fff;`;
-  document.body.appendChild(_taskDragGhost);
-  _taskDragRows=Array.from(document.querySelectorAll('.gantt-task-row'));
-  document.addEventListener('touchmove',taskDragTouchMove,{passive:false});
-  document.addEventListener('touchend',taskDragTouchEnd);
-}
-function taskDragTouchMove(e){
-  if(!_taskDragGhost||!e.touches.length)return;
-  if(e.touches.length>1){taskDragTouchEnd(e);return;} // release on pinch
-  e.preventDefault();
-  const dy=e.touches[0].clientY-_taskDragStartY;
-  _taskDragGhost.style.transform=`translateY(${dy}px)`;
-  _taskDragRows.forEach(r=>r.style.outline='');
-  const cy=e.touches[0].clientY;
-  const target=_taskDragRows.find(r=>{const rc=r.getBoundingClientRect();return cy>=rc.top&&cy<=rc.bottom;});
-  const toId=target?.querySelector('[data-drag-step]')?.dataset?.dragStep;
-  if(toId&&toId!==_taskDragId)target.style.outline='2px solid #C70025';
-}
-function taskDragTouchEnd(e){
-  document.removeEventListener('touchmove',taskDragTouchMove);
-  document.removeEventListener('touchend',taskDragTouchEnd);
-  if(!_taskDragGhost){_taskDragId=null;return;}
-  _taskDragGhost.remove();_taskDragGhost=null;
-  if(_taskDragRows)_taskDragRows.forEach(r=>r.style.outline='');
-  const cy=e.changedTouches?.[0]?.clientY;
-  if(cy&&_taskDragRows){
-    const target=_taskDragRows.find(r=>{const rc=r.getBoundingClientRect();return cy>=rc.top&&cy<=rc.bottom;});
-    const toId=target?.querySelector('[data-drag-step]')?.dataset?.dragStep;
-    if(toId&&toId!==_taskDragId){
-      const s=S.road.find(r=>r.id===_taskDragId);
-      const t=S.road.find(r=>r.id===toId);
-      if(s&&t&&s.phase===t.phase){
-        const ai=S.road.findIndex(r=>r.id===_taskDragId);
-        const bi=S.road.findIndex(r=>r.id===toId);
-        [S.road[ai],S.road[bi]]=[S.road[bi],S.road[ai]];
-        save();renderGantt();
-      }
-    }
-  }
-  _taskDragId=null;_taskDragRows=null;
 }
 
 
@@ -3418,7 +3195,6 @@ function ganttColResizeTouchEnd(){
 /* ── GANTT PHASE DRAG — TOUCH SUPPORT (iPad) ── */
 function ganttDragTouchStart(e,pid){
   if(!e.touches.length)return;
-  if(e.touches.length>1)return; // allow pinch zoom
   e.preventDefault();
   _dragPh=pid;
   _dragStartY=e.touches[0].clientY;
@@ -3435,7 +3211,6 @@ function ganttDragTouchStart(e,pid){
 }
 function ganttDragTouchMove(e){
   if(!_dragGhost||!e.touches.length)return;
-  if(e.touches.length>1){ganttDragTouchEnd(e);return;} // release on pinch
   e.preventDefault();
   const dy=e.touches[0].clientY-_dragStartY;
   _dragGhost.style.transform=`translateY(${dy}px)`;
