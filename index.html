@@ -267,14 +267,19 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .road-tab-wrap{padding:0 0 40px}
 
 /* Collapse-level strip */
-.road-collapse-strip{display:flex;align-items:center;gap:0;padding:10px 32px;background:#f0ece0;border-bottom:1px solid #d8d3c5}
-.road-collapse-strip span{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-right:10px}
-.rcl-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 14px;cursor:pointer;transition:all .15s;border-right:none}
-.rcl-btn:last-child{border-right:1px solid var(--separator)}
-.rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
+.road-collapse-strip{display:none} /* replaced by gantt-ctrl-bar */
+/* ── Unified Gantt control bars ── */
+.gantt-ctrl-bar{display:flex;align-items:center;gap:6px;padding:6px 8px 6px 8px;background:var(--page-bg);border-bottom:1px solid var(--separator);flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gantt-ctrl-bar.add-bar{border-bottom:1px solid var(--separator)}
+.gpill{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:none;color:#2A6DBE;padding:3px 12px;cursor:pointer;transition:all .15s;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.gpill:hover{background:rgba(42,109,190,.08)}
+.gpill.active{background:rgba(42,109,190,.15);border-color:#2A6DBE}
+.gpill.active-solid{background:#2A6DBE;color:#fff;border-color:#2A6DBE}
+.gpill-sep{width:1px;height:18px;background:var(--separator);flex-shrink:0;margin:0 2px}
+.gantt-toolbar-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-left:auto;white-space:nowrap}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
-.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:manipulation}
 .gantt-scroll-inner{position:relative;display:inline-block;min-width:100%;vertical-align:top}
 
 /* Sticky label column — width controlled by --gantt-label-w (resizable) */
@@ -285,9 +290,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-header-row{display:flex;align-items:stretch;height:46px;border-bottom:2px solid #C7CBD6;position:sticky;top:0;z-index:15;background:#F0F2F7}
 .gantt-header-label{width:var(--gantt-label-w);flex-shrink:0;position:sticky;left:0;z-index:25;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-start;padding:0 8px 0 8px;gap:6px}
 .gantt-header-timeline{flex:1;position:relative;overflow:hidden;z-index:10}
-.gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(42,109,190,.45);background:#F0F2F7;color:#2A6DBE;padding:2px 8px;cursor:pointer;transition:all .15s;border-radius:2px;white-space:nowrap}
-.gantt-today-btn:hover{background:rgba(42,109,190,.12)}
-.gantt-today-btn.active{background:#2A6DBE;color:#fff;border-color:#2A6DBE}
+.gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:#F0F2F7;color:#2A6DBE;padding:3px 12px;cursor:pointer;transition:all .15s;border-radius:99px;white-space:nowrap}
+.gantt-today-btn:hover{background:rgba(42,109,190,.08)}
+.gantt-today-btn.active{background:rgba(42,109,190,.15);color:#2A6DBE;border-color:#2A6DBE}
 .gantt-week-lbl{position:absolute;font-family:'Source Code Pro',monospace;font-size:8px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:4px;z-index:2;pointer-events:none;display:flex;flex-direction:column;align-items:center;line-height:1.3}
 .gantt-tick-l1{font-size:8px;opacity:.7}
 .gantt-tick-l2{font-size:10px;font-weight:700}
@@ -395,13 +400,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-panel-toggle input:checked~.gantt-panel-toggle-thumb{left:21px}
 
 /* Open panel button */
-.gantt-open-panel-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(42,109,190,.45);background:none;color:#2A6DBE;padding:2px 10px;cursor:pointer;transition:all .15s;border-radius:2px}
-.gantt-open-panel-btn:hover{background:rgba(42,109,190,.1)}
-.gantt-toolbar{display:flex;align-items:center;gap:8px;padding:6px 32px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:wrap}
-/* Toolbar strip above chart */
-.gantt-toolbar{display:flex;align-items:center;gap:8px;padding:8px 32px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:wrap}
-.gantt-toolbar-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-right:auto}
-.gantt-toolbar-sep{width:1px;height:16px;background:var(--separator);margin:0 4px}
+.gantt-open-panel-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:none;color:#2A6DBE;padding:3px 12px;cursor:pointer;transition:all .15s;border-radius:99px;white-space:nowrap}
+.gantt-open-panel-btn:hover{background:rgba(42,109,190,.08)}
+.gantt-toolbar{display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:nowrap;overflow-x:auto}
+.gantt-toolbar-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-left:auto;white-space:nowrap}
+.gantt-toolbar-sep{width:1px;height:16px;background:var(--separator);margin:0 2px}
 
 /* ── REFERENCE / STYLE / DIST / PASSES / OUTREACH ── */
 .ref-section{padding:20px 32px}
@@ -938,28 +941,22 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- ROADMAP PANEL -->
 <div class="panel active" id="panel-roadmap">
   <div class="road-tab-wrap">
-    <div class="road-collapse-strip">
-      <span>View:</span>
-      <button class="rcl-btn" id="rcl-0" onclick="setRoadLevel(0)">Hidden</button>
-      <button class="rcl-btn" id="rcl-1" onclick="setRoadLevel(1)">Phases + Gates</button>
-      <button class="rcl-btn active" id="rcl-2" onclick="setRoadLevel(2)">Full</button>
-      <div class="road-open-filter">
-        <button class="road-open-filter-btn" id="road-open-btn" onclick="toggleRoadOpenFilter()" class="road-open-filter-btn active">Open Only</button>
-      </div>
+    <!-- Row 1: navigation + view controls -->
+    <div class="gantt-ctrl-bar" id="gantt-ctrl-bar">
+      <button class="gpill active-solid" onclick="ganttScrollToday()">Today</button>
+      <button class="gpill" id="gscale-btn" onclick="cycleGanttScale()">Scale: <span id="gscale-label">Wks</span></button>
+      <div class="gpill-sep"></div>
+      <button class="gpill active" id="rcl-1" onclick="setRoadLevel(1)">Phases</button>
+      <button class="gpill" id="rcl-2" onclick="setRoadLevel(2)">All</button>
+      <div class="gpill-sep"></div>
+      <button class="gpill active" id="road-open-btn" onclick="toggleRoadOpenFilter()">Open</button>
     </div>
-    <div class="gantt-legend-bar">
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,rgba(56,100,160,.5),rgba(56,100,160,.15))"></div>Phase bar</div>
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:rgba(56,100,160,.9)"></div>Progress fill</div>
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
-      <div class="gantt-leg"><div class="gantt-leg-diamond"></div>&nbsp;Gate (open)</div>
-      <div class="gantt-leg"><div class="gantt-leg-diamond filled"></div>&nbsp;Gate (met)</div>
-      <div class="gantt-leg"><div style="width:2px;height:14px;background:#C70025;opacity:.6;display:inline-block;vertical-align:middle"></div>&nbsp;Today</div>
-    </div>
+    <!-- Row 2: add buttons + summary -->
     <div class="gantt-toolbar">
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
-      <span class="gantt-toolbar-title" id="gantt-summary-lbl" style="margin-left:auto;margin-right:0">Gantt</span>
+      <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
     </div>
     <!-- Integrated Gantt -->
     <div class="gantt-scroll-outer" id="gantt-scroll-outer">
@@ -1356,7 +1353,7 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-13T13:30:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-13T15:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION = 'v302u2'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2476,8 +2473,6 @@ function renderGantt(){
   // ── Sticky header row ──
   html+=`<div class="gantt-header-row">`;
   html+=`<div class="gantt-header-label">
-    <button class="gantt-today-btn" onclick="ganttScrollToday()" title="Scroll to today">Today</button>
-    <button class="gantt-today-btn" id="gscale-btn" onclick="cycleGanttScale()" title="Cycle scale">Scale: <span id="gscale-label">${{weeks:'Wks',days:'Days',months:'Mos'}[_ganttScale]||'Wks'}</span></button>
     <div class="gantt-col-resize-handle" id="gantt-col-resize" title="Drag to resize column" onmousedown="ganttColResizeStart(event)" ontouchstart="ganttColResizeTouchStart(event)"></div>
   </div>`;
   html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
@@ -2703,18 +2698,13 @@ function ganttScrollToday(){
 /* ── GANTT COLLAPSE LEVELS ── */
 function setRoadLevel(level){
   roadLevel=level;
-  [0,1,2].forEach(l=>{
+  // Update pill active states — only rcl-1 and rcl-2 exist now
+  [1,2].forEach(l=>{
     const btn=document.getElementById('rcl-'+l);
-    if(btn)btn.className='rcl-btn'+(l===level?' active':'');
+    if(btn)btn.className='gpill'+(l===level?' active':'');
   });
-  // For level 0, collapse all phases
-  if(level===0){
-    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
-  } else if(level===1){
-    S.road.forEach(r=>{if(r.kind==='phase')r.open=false;});
-  } else {
-    S.road.forEach(r=>{if(r.kind==='phase')r.open=true;});
-  }
+  // level 1 = phases+gates only (collapse tasks); level 2 = full
+  S.road.forEach(r=>{if(r.kind==='phase')r.open=(level>=2);});
   renderGantt();
 }
 
@@ -2747,7 +2737,7 @@ function setGanttScale(scale){
 function toggleRoadOpenFilter(){
   roadOpenFilter=!roadOpenFilter;
   const btn=document.getElementById('road-open-btn');
-  if(btn)btn.className='road-open-filter-btn'+(roadOpenFilter?' active':'');
+  if(btn)btn.className='gpill'+(roadOpenFilter?' active':'');
   renderGantt();
 }
 
