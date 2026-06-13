@@ -327,7 +327,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
-.gantt-swipe-wrap{position:relative}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease;will-change:transform;overflow:hidden}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;right:0;top:0;bottom:0;width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
+.gantt-swipe-wrap{position:relative}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;right:0;top:0;bottom:0;width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
 .gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
@@ -946,6 +946,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div class="gantt-toolbar">
       <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
       <button class="gantt-today-btn" onclick="ganttScrollToday()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Today</button>
+      <button class="gantt-today-btn gantt-scale-btn active" id="gscale-weeks" onclick="setGanttScale('weeks')">Wks</button>
+      <button class="gantt-today-btn gantt-scale-btn" id="gscale-days" onclick="setGanttScale('days')">Days</button>
+      <button class="gantt-today-btn gantt-scale-btn" id="gscale-months" onclick="setGanttScale('months')">Mos</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
@@ -2395,7 +2398,7 @@ function gateInheritDate(pid){
 
 /* ── GANTT RENDER ── */
 let ganttTimelineLeft=0,ganttTimelineSpan=1,ganttTimelinePadMin=null,ganttTotalPx=0;
-const GANTT_PX_PER_DAY=28; // pixels per day — controls timeline zoom
+let GANTT_PX_PER_DAY=28; // pixels per day — controls timeline zoom
 const GANTT_LABEL_W=224;   // must match CSS width:224px on label cells
 
 function xpx(ds){
@@ -2696,6 +2699,18 @@ function setRoadLevel(level){
     S.road.forEach(r=>{if(r.kind==='phase')r.open=true;});
   }
   renderGantt();
+}
+
+function setGanttScale(scale){
+  if(scale==='days')GANTT_PX_PER_DAY=56;
+  else if(scale==='weeks')GANTT_PX_PER_DAY=28;
+  else if(scale==='months')GANTT_PX_PER_DAY=8;
+  ['days','weeks','months'].forEach(s=>{
+    const btn=document.getElementById('gscale-'+s);
+    if(btn)btn.classList.toggle('active',s===scale);
+  });
+  renderGantt();
+  setTimeout(()=>ganttScrollToday(),50);
 }
 
 function toggleRoadOpenFilter(){
