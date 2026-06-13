@@ -657,6 +657,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .settings-note{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:6px;line-height:1.6}
 .settings-card{background:var(--card-bg);border:1px solid var(--separator);border-radius:10px;padding:18px 20px;margin-top:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .settings-card+.settings-card{margin-top:12px}
+/* ── HELP SUB-TABS ── */
+.help-stab{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:8px 16px 8px;border:1px solid #E5E5EA;border-bottom:none;background:#F2F2F7;color:#8E8E93;cursor:pointer;border-radius:6px 6px 0 0;transition:all .18s;white-space:nowrap;position:relative;top:1px;flex-shrink:0}
+.help-stab:hover{color:#3D5A99;background:#ffffff;border-color:#C6C6C8}
+.help-stab.active{color:#ffffff;background:#3D5A99;border-color:#3D5A99;border-bottom:2px solid #ffffff;font-weight:700;top:0}
+.help-spanel{display:none;padding:0}
+.help-spanel.active{display:block}
 .settings-card-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:14px;display:block}
 .device-guide{background:#222018;border:1px solid #3a3630;border-radius:6px;padding:14px 16px;margin-bottom:16px}
 .device-guide h4{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#c9a050;margin-bottom:10px}
@@ -1196,154 +1202,266 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
 </div></div>
 <!-- HELP -->
-<div class="panel" id="panel-help"><div class="ref-section">
-  <h2>Help &amp; Settings</h2>
-  <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:4px">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
+<div class="panel" id="panel-help">
 
-  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Resources &mdash; Refresh Keywords</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.6;margin:10px 0 12px">When you click &#8635; Refresh in Resources, only sources tagged with checked keywords have their Last Checked timestamp updated. Default: <em>news</em> and <em>current-events</em>.</p>
-  <div id="refresh-kw-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px"></div>
-  <script>
-  (function(){
-    var allKw=['news','current-events','analysis','research','Over-classified'];
-    function renderRKw(){
-      var c=document.getElementById('refresh-kw-checkboxes');if(!c)return;
-      c.innerHTML=allKw.map(function(kw){
-        var chk=RF_REFRESH_KW.includes(kw)?'checked':'';
-        return '<label style="display:flex;align-items:center;gap:6px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);cursor:pointer;background:var(--card-bg);padding:5px 10px;border-radius:6px;border:1px solid var(--separator)"><input type="checkbox" '+chk+' onchange="toggleRefreshKw(''+kw+'',this.checked)" /> '+kw+'</label>';
-      }).join('');
-    }
-    window.toggleRefreshKw=function(kw,on){
-      if(on){if(!RF_REFRESH_KW.includes(kw))RF_REFRESH_KW.push(kw);}
-      else{RF_REFRESH_KW=RF_REFRESH_KW.filter(function(k){return k!==kw;});}
-      try{localStorage.setItem(RF_REFRESH_KW_SK,JSON.stringify(RF_REFRESH_KW));}catch(e){}
-    };
-    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderRKw);}
-    else{setTimeout(renderRKw,300);}
-  })();
-  </script>
-  <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">About</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The <em>Over&#8209;Classified</em> Project Hub is a two-way interface between Dave and Claude. It is not general project management software &mdash; it is purpose-built for a human-AI writing collaboration. Notes can be standalone captures, dialogue threads with Claude, or stepping stones to the Roadmap. Claude reads the JSON export at each session to pick up exactly where you left off, regardless of how much time has passed or how many changes have accumulated.</p>
-
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How to Use</h3>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Notes tab</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">The main working surface. Items can be <strong>Project Notes</strong>, <strong>Questions</strong>, <strong>Reminders</strong>, or <strong>For Dave / For Claude</strong> dialogue threads. Use the filter bar to narrow by status, tag, or type. Each item can carry a link, bookmark, or paste-to-find reference. Any note can be promoted to the Roadmap: expand it and click <strong>&rarr; Roadmap</strong>.</p>
+  <!-- Help sub-tab strip -->
+  <div style="display:flex;background:#ffffff;padding:4px 16px 0;gap:4px;border-bottom:1px solid #E5E5EA;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch">
+    <button class="help-stab active" onclick="showHelpTab('h-roadmap',this)">Roadmap</button>
+    <button class="help-stab" onclick="showHelpTab('h-notes',this)">Notes</button>
+    <button class="help-stab" onclick="showHelpTab('h-resources',this)">Resources</button>
+    <button class="help-stab" onclick="showHelpTab('h-outreach',this)">Outreach</button>
+    <button class="help-stab" onclick="showHelpTab('h-reference',this)">Reference</button>
+    <button class="help-stab" onclick="showHelpTab('h-settings',this)">Settings</button>
   </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Entry form controls</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Flow toggle</strong> &mdash; off by default (saves as Note). Turn on (green) to direct the entry to Claude as the opening message in a dialogue thread.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Status toggle</strong> &mdash; Open (green) or Deferred (amber). Deferred items appear under the Hold filter.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>&#128276; Reminder toggle</strong> &mdash; reveals a due date and time field inline.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Priority cycle</strong> &mdash; Low (gray) &rarr; Medium (amber) &rarr; High (red). High items show a red left border.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Tag selector</strong> &mdash; remembers your last choice for the session.</li>
+  <!-- ROADMAP help -->
+  <div class="help-spanel active" id="h-roadmap"><div class="ref-section">
+    <h2>Roadmap</h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The Roadmap is a Gantt-style view of your project timeline. It organizes work into <strong>phases</strong>, each containing <strong>tasks</strong> and optional <strong>gates</strong> (decision or approval checkpoints).</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe (Mac) or two-finger drag (iPad). The timeline scrolls horizontally; phases stack vertically.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Open / collapse a phase:</strong> Tap the phase header to expand or hide its tasks.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gate diamonds:</strong> Click or tap a gate diamond to mark it met (filled) or unmet (outline).</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Open filter:</strong> Use the filter row above the Gantt to show all phases, open only, or completed.</li>
     </ul>
-  </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Flow &mdash; Dave &#8596; Claude dialogue</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6"><span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> = awaiting Claude. <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> = awaiting Dave. When Claude&rsquo;s reply is the latest entry, a reply field appears inline. Thread data is included in the JSON export.</p>
-  </div>
-
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Roadmap / Outreach / Reference tabs</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6"><strong>Roadmap</strong> &mdash; Gantt view of phases, tasks, and gates. Drag &#8942; handle to reorder. Click gate diamond to mark met. <strong>Swipe left</strong> on any phase or task to reveal a Delete button (tap to confirm). <strong>Swipe right</strong> to duplicate instantly &mdash; the copy opens in edit mode so you can rename immediately. On Mac, <strong>right-click</strong> any phase or task for a context menu with Duplicate, Edit, and Delete. To move a phase or task to a different position, open Edit and use the <strong>Move</strong> section at the bottom of the panel. <strong>Outreach</strong> &mdash; contact management for blurb and pitch outreach. <strong>Reference &#9656;</strong> &mdash; quick-access deck for pass commands, style rules, ISBNs, and distribution details.</p>
-  </div>
-
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Keeping in Sync</h3>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">You never need to worry about how much has changed since the last sync &mdash; Claude reads the full JSON export and reconciles everything at once. Your session work is always in localStorage on the device you used; it does not disappear. GitHub Pages is the canonical hub; localStorage is a per-device buffer. Claude never reconstructs the hub from JSON &mdash; it fetches the live file and applies surgical updates.</p>
-  <div style="margin-top:12px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Standard sync</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6">Click <strong>Update Claude</strong> &rarr; JSON copies to clipboard &rarr; open Claude in your project &rarr; paste. Claude pushes the updated hub directly to GitHub Pages. Refresh on any device.</p>
-  </div>
-
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">By Device</h3>
-
-  <div style="margin-top:14px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#63743; Mac (Safari / Chrome)</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Clicking a bookmark opens Word and jumps to it. Requires the folder path in Settings.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Roadmap drag:</strong> Click and drag the &#8942; handle to reorder phases.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe.</li>
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a phase or task</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap <strong>+ Add Phase</strong> at the bottom of the Roadmap to create a new phase. Fill in a name, start date, and end date.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Inside a phase, tap <strong>+ Add Task</strong> to add a task. Tasks inherit the phase date range by default but can have their own dates.</li>
     </ul>
-  </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#8965; iPad Pro (Safari)</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger drag. Single-finger drag moves phase bars.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Phase drag:</strong> Touch and hold &#8942; then drag. If unresponsive, use the Position field in Edit Phase.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported on iOS &mdash; displays as plain label.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> Use the &#8635; button in the header. Pull down from top of screen also works. Force-quit via app switcher is the last resort.</li>
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit a phase or task</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap the <strong>pencil icon</strong> on any phase or task to open its edit panel. Change name, dates, status, or notes.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Mark complete by checking <strong>Done</strong> in the edit panel, or by swiping right and tapping Done.</li>
     </ul>
-  </div>
 
-  <div style="margin-top:16px">
-    <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#9743; iPhone</h4>
-    <ul style="list-style:none;padding:0;margin:0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Best use:</strong> Capturing quick notes on the go. Full editing on iPad or Mac.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Notes tab:</strong> Fully functional &mdash; entry form, type/tag selectors, priority and flags all work.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> &#8635; button in header. Pull-to-refresh from top. Force-quit as last resort.</li>
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Reorder, duplicate, and delete</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reorder (Mac):</strong> Click and drag the &#8942; handle. <strong>Reorder (iPad):</strong> Touch and hold &#8942; then drag. If unresponsive, open Edit and use the <strong>Move</strong> field at the bottom.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Duplicate:</strong> Swipe right on any phase or task &mdash; the copy opens in edit mode so you can rename immediately. On Mac, right-click for the context menu.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Delete:</strong> Swipe left to reveal the Delete button, then tap to confirm. On Mac, right-click for the context menu.</li>
     </ul>
-  </div>
+  </div></div>
 
-  <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Settings &amp; Preferences</h3>
+  <!-- NOTES help -->
+  <div class="help-spanel" id="h-notes"><div class="ref-section">
+    <h2>Notes</h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The Notes tab is the main working surface. Items can be standalone captures, reminders, questions, or two-way dialogue threads with Claude. Everything here is included in the JSON export Claude reads at the start of each session.</p>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Claude project</span>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-project-input">Project name</label>
-      <input class="settings-input" id="settings-project-input" type="text" placeholder="e.g. Over-classified" autocomplete="off" />
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Filter bar:</strong> Narrow by status (Open / Hold / Done), item type, tag, or priority. Defaults to Open on every tab switch.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Search:</strong> The search bar above the tabs searches across all note text in real time.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Expand an item:</strong> Tap any card to expand it and see full text, link, dialogue thread, and actions.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Badge counts:</strong> The Notes tab badge shows open items awaiting your attention (amber = awaiting Dave).</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a note</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Type in the entry field at the top of the tab and tap <strong>Add</strong> (or press Enter / Return).</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>To Claude toggle:</strong> Turn on (blue) to send the note directly to Claude as the opening message of a dialogue thread. Off by default &mdash; saves as a plain note.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Status toggle:</strong> Open (green) or Deferred / Hold (amber). Deferred items appear under the Hold filter.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>&#128276; Reminder toggle:</strong> Reveals a due date and time field inline.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Priority:</strong> Cycles Low (gray) &rarr; Medium (amber) &rarr; High (red). High items show a red left border on their card.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Tag selector:</strong> Choose from your tag list. Remembers your last choice for the session.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit a note</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Expand a card and tap <strong>Edit</strong> to change its text, tag, priority, status, or link.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Mark done by tapping the <strong>checkmark</strong> on the card, or open the item and tap <strong>Mark Done</strong>.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Move a note to Roadmap</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Expand any note and tap <strong>&rarr; Roadmap</strong> to promote it to a Roadmap phase or task. The note remains in Notes as a reference.</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Dialogue threads</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px"><span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> = awaiting Claude. <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> = awaiting Dave. When Claude&rsquo;s reply is the latest entry, a reply field appears inline so you can continue the thread. All thread data is included in the JSON export.</p>
+  </div></div>
+
+  <!-- RESOURCES help -->
+  <div class="help-spanel" id="h-resources"><div class="ref-section">
+    <h2>Resources</h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Resources is a curated link library organized by category &mdash; primary sources, substacks, news feeds, analysis, podcasts, documentaries, and project references. Use it to track sources you return to regularly.</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Sources are grouped by category. Tap a category header to collapse or expand it.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>The <strong>Last Checked</strong> column shows when a source was last reviewed. Click <strong>&#8635; Refresh</strong> to update timestamps for sources matching the active keywords (configured in Settings).</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Click any source name to open its URL directly.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a source</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap <strong>+ Add Source</strong> at the top of the Resources tab. Choose a category, enter a name, URL, description, and optional keyword tags.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Keywords control which sources are updated when you click &#8635; Refresh. Configure active refresh keywords in <strong>Help &rarr; Settings</strong>.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit or remove a source</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Tap the <strong>pencil icon</strong> on any source row to edit it. Tap the <strong>trash icon</strong> to delete (deletion is immediate).</p>
+  </div></div>
+
+  <!-- OUTREACH help -->
+  <div class="help-spanel" id="h-outreach"><div class="ref-section">
+    <h2>Outreach</h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Outreach tracks contacts for blurb requests, pitch submissions, and other external outreach. Confirmed, closed, and rejected contacts are hidden by default &mdash; use the filter to show them.</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Contacts appear as cards showing name, role, status, and last action date. Tap to expand full notes and history.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Use the status filter to view Active, Pending, Confirmed, Closed, or Rejected contacts.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a contact</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Tap <strong>+ Add Contact</strong>. Enter name, role, outreach type (blurb / pitch / other), status, and any notes. A contact can carry a URL (author website, publisher page, etc.).</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit status</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Expand a contact and tap <strong>Edit</strong> to update status, add follow-up notes, or record a response date. Moving a contact to Confirmed or Closed hides it from the default view.</p>
+  </div></div>
+
+  <!-- REFERENCE help -->
+  <div class="help-spanel" id="h-reference"><div class="ref-section">
+    <h2>Reference</h2>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Reference is a read-only quick-access deck. It does not store items you create &mdash; it contains fixed reference material Claude and Dave use during working sessions.</p>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">What&rsquo;s in here</h3>
+    <ul style="list-style:none;padding:0;margin:10px 0 0">
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Passes</strong> &mdash; full command table for Tier A, B, and C manuscript passes. Paste commands directly into Claude.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Style &amp; Chapter Map</strong> &mdash; chapter titles, part assignments, style rules, and prohibited patterns.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>ISBNs &amp; Pricing</strong> &mdash; Vigilia Press ISBN registry, format assignments, and pricing records.</li>
+      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Distribution</strong> &mdash; platform summary for KDP, IngramSpark, and Draft2Digital.</li>
+    </ul>
+
+    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How to navigate</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Hover over or tap <strong>Reference &#9656;</strong> in the main tab bar to open the flyout menu. Select a section. The content loads inline below the tab bar.</p>
+  </div></div>
+
+  <!-- SETTINGS help -->
+  <div class="help-spanel" id="h-settings"><div class="ref-section">
+    <h2>Settings</h2>
+
+    <h3 style="margin-top:20px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How this workflow works</h3>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The hub is a single HTML file stored in a private GitHub repository. GitHub Pages serves it as a live website accessible from any browser on any device. There is no server, no database, and no account login &mdash; the file itself is the application.</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Your notes, roadmap, and outreach data live in two places simultaneously: in <strong>localStorage</strong> on the device where you made changes, and in the <strong>GitHub file</strong> after a sync. localStorage is a per-device buffer &mdash; it does not automatically travel to other devices. The GitHub file is the single source of truth.</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">When you tap <strong>Update Claude</strong>, the hub copies a JSON snapshot of your current data to the clipboard. You paste that into Claude. Claude reads the snapshot, fetches the live file directly from GitHub, applies your changes surgically, and pushes the updated file back to GitHub. Refreshing the hub on any device after that gives you the latest version.</p>
+    <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:10px;padding:16px 20px;margin-top:16px">
+      <p style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px">Collision prevention</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.6">Because the GitHub file uses last-write-wins, avoid running two Claude sessions that both push to GitHub at the same time. Claude always fetches the live file before making changes &mdash; but if two sessions push simultaneously, one will overwrite the other. One session writing at a time is the safe pattern.</p>
     </div>
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:4px;line-height:1.6">Used in the Update Claude modal. Always paste into this project &mdash; not a new chat.</p>
-  </div>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Word file location <span style="font-style:italic;font-weight:400">(Mac only)</span></span>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-folder-input">Folder path</label>
-      <input class="settings-input" id="settings-folder-input" type="text" placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+    <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">By device</h3>
+    <div style="margin-top:14px">
+      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#63743; Mac (Safari / Chrome)</h4>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Clicking a bookmark opens Word and jumps to it. Requires the folder path set below.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Roadmap drag:</strong> Click and drag the &#8942; handle to reorder phases.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe.</li>
+      </ul>
     </div>
-    <div class="settings-field">
-      <label class="settings-lbl" for="settings-filename-input">Filename override <span style="font-style:italic;font-weight:400;text-transform:none">(leave blank for auto)</span></label>
-      <input class="settings-input" id="settings-filename-input" type="text" placeholder="Overclassified_293.docx" />
+    <div style="margin-top:16px">
+      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#8965; iPad Pro (Safari)</h4>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger drag. Single-finger drag moves phase bars.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Phase drag:</strong> Touch and hold &#8942; then drag. If unresponsive, use the Position field in Edit Phase.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported on iOS &mdash; displays as plain label.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> Use the &#8635; button in the header. Pull down from top of screen also works.</li>
+      </ul>
     </div>
-    <div id="settings-path-preview" class="settings-preview"></div>
-    <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px;line-height:1.6">Stored locally on this device only &mdash; never in the JSON export.</p>
-  </div>
+    <div style="margin-top:16px">
+      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#9743; iPhone</h4>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Best use:</strong> Capturing quick notes on the go. Full editing on iPad or Mac.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Notes tab:</strong> Fully functional &mdash; entry form, type/tag selectors, priority and flags all work.</li>
+        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> &#8635; button in header. Pull-to-refresh from top. Force-quit as last resort.</li>
+      </ul>
+    </div>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Sync preferences</span>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time unless you checked &ldquo;Don&rsquo;t show this again.&rdquo; Click below to restore it.</p>
-    <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored ✓ — modal will show next time'">Restore Update Claude dialog</button>
-  </div>
+    <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Preferences</h3>
 
-  <div class="settings-card">
-    <span class="settings-card-label">Tags</span>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, References, and outreach. Add by chapter, part, topic, or anything you reference repeatedly. Add by chapter, part, topic, or anything you reference repeatedly.</p>
-    <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
-    <div id="kw-edit-row" style="display:none;flex-direction:column;gap:6px">
-      <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter tags separated by commas…" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="dl-send-btn" onclick="kwSave()">Save keywords</button>
-        <span class="dl-cancel-link" onclick="kwCancelEdit()">Cancel</span>
+    <div class="settings-card">
+      <span class="settings-card-label">Claude project</span>
+      <div class="settings-field">
+        <label class="settings-lbl" for="settings-project-input">Project name</label>
+        <input class="settings-input" id="settings-project-input" type="text" placeholder="e.g. Over-classified" autocomplete="off" />
+      </div>
+      <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:4px;line-height:1.6">Used in the Update Claude modal. Always paste into this project &mdash; not a new chat.</p>
+    </div>
+
+    <div class="settings-card">
+      <span class="settings-card-label">Word file location <span style="font-style:italic;font-weight:400">(Mac only)</span></span>
+      <div class="settings-field">
+        <label class="settings-lbl" for="settings-folder-input">Folder path</label>
+        <input class="settings-input" id="settings-folder-input" type="text" placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
+      </div>
+      <div class="settings-field">
+        <label class="settings-lbl" for="settings-filename-input">Filename override <span style="font-style:italic;font-weight:400;text-transform:none">(leave blank for auto)</span></label>
+        <input class="settings-input" id="settings-filename-input" type="text" placeholder="Overclassified_293.docx" />
+      </div>
+      <div id="settings-path-preview" class="settings-preview"></div>
+      <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px;line-height:1.6">Stored locally on this device only &mdash; never in the JSON export.</p>
+    </div>
+
+    <div class="settings-card">
+      <span class="settings-card-label">Resources &mdash; Refresh keywords</span>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">When you click &#8635; Refresh in Resources, only sources tagged with checked keywords have their Last Checked timestamp updated.</p>
+      <div id="refresh-kw-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px"></div>
+      <script>
+      (function(){
+        var allKw=['news','current-events','analysis','research','Over-classified'];
+        function renderRKw(){
+          var c=document.getElementById('refresh-kw-checkboxes');if(!c)return;
+          c.innerHTML=allKw.map(function(kw){
+            var chk=RF_REFRESH_KW.includes(kw)?'checked':'';
+            return '<label style="display:flex;align-items:center;gap:6px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:var(--label-primary);cursor:pointer;background:var(--page-bg);padding:5px 10px;border-radius:6px;border:1px solid var(--separator)"><input type="checkbox" '+chk+' onchange="toggleRefreshKw(\''+kw+'\',this.checked)" /> '+kw+'</label>';
+          }).join('');
+        }
+        window.toggleRefreshKw=function(kw,on){
+          if(on){if(!RF_REFRESH_KW.includes(kw))RF_REFRESH_KW.push(kw);}
+          else{RF_REFRESH_KW=RF_REFRESH_KW.filter(function(k){return k!==kw;});}
+          try{localStorage.setItem(RF_REFRESH_KW_SK,JSON.stringify(RF_REFRESH_KW));}catch(e){}
+        };
+        if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderRKw);}
+        else{setTimeout(renderRKw,300);}
+      })();
+      </script>
+    </div>
+
+    <div class="settings-card">
+      <span class="settings-card-label">Tags</span>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, Resources, and Outreach. Add by chapter, part, topic, or anything you reference repeatedly.</p>
+      <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
+      <div id="kw-edit-row" style="display:none;flex-direction:column;gap:6px">
+        <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter tags separated by commas&hellip;" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="dl-send-btn" onclick="kwSave()">Save keywords</button>
+          <span class="dl-cancel-link" onclick="kwCancelEdit()">Cancel</span>
+        </div>
+      </div>
+      <div id="kw-add-row" style="display:flex;gap:6px;align-items:center;margin-top:4px">
+        <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a tag&hellip;" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
+        <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add tag">&#xFF0B;</button>
+        <button class="iabtn" onclick="kwStartEdit()" style="height:34px;white-space:nowrap">Edit all&hellip;</button>
       </div>
     </div>
-    <div id="kw-add-row" style="display:flex;gap:6px;align-items:center;margin-top:4px">
-      <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a tag…" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
-      <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add tag">＋</button>
-      <button class="iabtn" onclick="kwStartEdit()" style="height:34px;white-space:nowrap">Edit all…</button>
+
+    <div class="settings-card">
+      <span class="settings-card-label">Sync preferences</span>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time unless you checked &ldquo;Don&rsquo;t show this again.&rdquo; Click below to restore it.</p>
+      <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored \u2713 \u2014 modal will show next time'">Restore Update Claude dialog</button>
     </div>
-  </div>
 
-  <div style="text-align:right;margin-top:16px">
-    <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
-  </div>
+    <div style="text-align:right;margin-top:16px">
+      <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
+    </div>
 
-</div></div>
+    <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:28px;text-align:center">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
+  </div></div>
+
+</div>
 
 
 <script>
@@ -1722,6 +1840,14 @@ function showDeckTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
   const fr=document.getElementById('filter-row');
   if(fr)fr.style.display='none';
+}
+
+function showHelpTab(t,btn){
+  document.querySelectorAll('.help-stab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.help-spanel').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  const el=document.getElementById(t);
+  if(el)el.classList.add('active');
 }
 
 function toggleSection(id){
