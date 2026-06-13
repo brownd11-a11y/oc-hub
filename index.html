@@ -300,7 +300,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Phase row ── */
 .gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
-.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB}
+.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB;background:var(--page-bg)}
 /* phase label cell colored border */
 .gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
 .gantt-drag-handle{font-size:18px;color:#bbb;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;transition:color .15s}.gantt-drag-handle:hover{color:#555}.gantt-drag-handle:active{cursor:grabbing;color:#333}
@@ -310,9 +310,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-col-rail:hover,.gantt-col-rail:active{background:rgba(100,160,220,.3);border-left-color:#4a90d0}
 .gantt-expand-btn{width:20px;height:20px;border:1.5px solid var(--ph-color,#3a6b9e);border-radius:3px;background:none;cursor:pointer;font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;color:var(--ph-color,#3a6b9e);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
 .gantt-expand-btn:hover{background:var(--ph-color,#3a6b9e);color:#fff}
-.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:15px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
+.gantt-phase-name{flex:1;min-width:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:17px;font-weight:700;color:#111827;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.3}
 .gantt-phase-pct{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--ph-color,#3a6b9e);flex-shrink:0}
-.gantt-phase-track{flex:1;position:relative;background:transparent}
+.gantt-phase-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
 
 /* Phase bar */
 .gantt-ph-bar{position:absolute;top:10%;transform:none;height:80%;border-radius:4px;overflow:hidden;min-width:6px;border:1.5px solid transparent}
@@ -331,10 +331,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
-.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:15px;color:#374151;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-task-name.done{text-decoration:line-through;color:var(--done-fg);opacity:.7}
 .gantt-task-pct{font-family:'Source Code Pro',monospace;font-size:9px;color:#9CA3AF;flex-shrink:0}
-.gantt-task-track{flex:1;position:relative;background:transparent}
+.gantt-task-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
 
 /* Task bar */
 .gantt-task-bar{position:absolute;top:10%;transform:none;height:80%;border-radius:3px;overflow:hidden;min-width:4px}
@@ -345,7 +345,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
 .gantt-gate-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
 .gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gantt-gate-task-track{flex:1;position:relative;background:transparent}
+.gantt-gate-task-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none}
 
 /* Add task row */
 .gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:var(--page-bg);position:relative;z-index:2}
@@ -2502,12 +2502,12 @@ function renderGantt(){
     html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('phase','${ph.id}')" title="Edit phase"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
     html+=`</div>`;
     // Track cell
-    html+=`<div class="gantt-phase-track" style="position:relative">`;
+    html+=`<div class="gantt-phase-track">`;
     // Week dotted lines
     weeks.forEach(w=>{
-      html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`;
+      html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`;
     });
-    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
     // Phase bar
     if(range.start&&range.end){
       const lp=xpx(range.start),rp=xpx(range.end);
@@ -2516,7 +2516,7 @@ function renderGantt(){
         const fillPct=prog.pct;
         const fillColor=isAllDone?'#1D6B2A':color;
         const phBarDate=range.end?(isAllDone?'Done':'Target: '+fmtDate(range.end)):'';
-        html+=`<div class="gantt-ph-bar" style="left:${lp}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+        html+=`<div class="gantt-ph-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
         html+=`<div class="gantt-ph-bar-bg" style="background:${color};opacity:.18"></div>`;
         html+=`<div class="gantt-ph-bar-fill" style="background:${fillColor};opacity:.85;width:${fillPct}%"></div>`;
         html+=`</div>`;
@@ -2534,9 +2534,9 @@ function renderGantt(){
         const isStandalone=g.standalone===true;
         if(isStandalone){
           // Larger diamond for standalone gates
-          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         } else {
-          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         }
       });
       // Also show inherited gates from tasks that have isGate=true
@@ -2544,7 +2544,7 @@ function renderGantt(){
         const gp=xpx(s.targetEnd);
         if(gp===null)return;
         const tip=esc(s.label)+(s.targetEnd?' · Target: '+fmtDate(s.targetEnd):'');
-        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
+        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
       });
     }
     html+=`</div>`; // end track
@@ -2564,11 +2564,11 @@ function renderGantt(){
           html+=`<div style="width:10px;height:10px;border:2px solid ${color};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${s._gateId}')"></div>`;
           html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
           html+=`</div>`;
-          html+=`<div class="gantt-gate-task-track" style="position:relative">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+          html+=`<div class="gantt-gate-task-track">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
           const gp=xpx(s.targetEnd||s.targetStart||'');
-          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
+          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
           html+=`</div></div>`;
         } else {
           // Regular task row
@@ -2583,15 +2583,15 @@ function renderGantt(){
           html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('step','${s.id}')" title="Edit task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
           html+=`<span class="gantt-task-drag-handle" title="Drag to reorder" data-drag-step="${s.id}" onmousedown="taskDragStart(event,'${s.id}')" ontouchstart="taskDragTouchStart(event,'${s.id}')">&#8942;</span>`;
           html+=`</div>`;
-          html+=`<div class="gantt-task-track" style="position:relative">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+          html+=`<div class="gantt-task-track">`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
           if(s.targetStart&&s.targetEnd){
             const lp=xpx(s.targetStart),rp=xpx(s.targetEnd);
             if(lp!==null&&rp!==null){
               const bw=Math.max(2,rp-lp);
               const tBarDate=s.done&&s.completedDate?'Done: '+fmtDate(s.completedDate):'Target: '+fmtDate(s.targetEnd);
-              html+=`<div class="gantt-task-bar" style="left:${lp}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+              html+=`<div class="gantt-task-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
               html+=`<div class="gantt-task-bar-bg" style="background:${color}"></div>`;
               html+=`<div class="gantt-task-bar-fill" style="background:${color};width:${s.done?'100':'50'}%"></div>`;
               html+=`</div>`;
@@ -2599,7 +2599,7 @@ function renderGantt(){
           } else if(s.targetEnd){
             const ep=xpx(s.targetEnd);
             if(ep!==null){
-              html+=`<div style="position:absolute;top:50%;left:${ep}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
+              html+=`<div style="position:absolute;top:50%;left:${ep+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
             }
           }
           html+=`</div></div>`;
@@ -2618,16 +2618,16 @@ function renderGantt(){
         html+=`<span class="gantt-gate-task-name" title="${esc(g.label)}">${esc(g.label)}</span>`;
         html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
         html+=`</div>`;
-        html+=`<div class="gantt-gate-task-track" style="position:relative">`;
-        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.pct}%;height:100%"></div>`);
-        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx}px"></div>`;
+        html+=`<div class="gantt-gate-task-track">`;
+        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
+        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
         const gp=xpx(g.met&&g.metDate?g.metDate:disp);
         if(gp!==null){
           const gTip=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
-          html+=`<div style="position:absolute;top:50%;left:${gp}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
+          html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
           const lbl=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
           if(lbl){
-            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+10}px`;
+            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+GANTT_LABEL_W+10}px`;
             html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:${g.met?'var(--done-fg)':color};white-space:nowrap;pointer-events:none;z-index:5">${esc(lbl)}</div>`;
           }
         }
