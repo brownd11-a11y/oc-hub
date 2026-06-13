@@ -326,6 +326,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
+.gantt-swipe-wrap{position:relative;overflow:hidden}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease;will-change:transform}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;right:0;top:0;bottom:0;width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
 .gantt-task-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
@@ -1248,7 +1249,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
   <div style="margin-top:16px">
     <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Roadmap / Outreach / Reference tabs</h4>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6"><strong>Roadmap</strong> &mdash; Gantt view of phases, tasks, and gates. Drag &#8942; handle to reorder. Click gate diamond to mark met. <strong>Outreach</strong> &mdash; contact management for blurb and pitch outreach. <strong>Reference &#9656;</strong> &mdash; quick-access deck for pass commands, style rules, ISBNs, and distribution details.</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6"><strong>Roadmap</strong> &mdash; Gantt view of phases, tasks, and gates. Drag &#8942; handle to reorder. Click gate diamond to mark met. <strong>Swipe left</strong> on any phase or task to reveal a Delete button (tap to confirm). <strong>Swipe right</strong> to duplicate instantly &mdash; the copy opens in edit mode so you can rename immediately. On Mac, <strong>right-click</strong> any phase or task for a context menu with Duplicate, Edit, and Delete. To move a phase or task to a different position, open Edit and use the <strong>Move</strong> section at the bottom of the panel. <strong>Outreach</strong> &mdash; contact management for blurb and pitch outreach. <strong>Reference &#9656;</strong> &mdash; quick-access deck for pass commands, style rules, ISBNs, and distribution details.</p>
   </div>
 
   <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Keeping in Sync</h3>
@@ -2491,7 +2492,7 @@ function renderGantt(){
     }
 
     // Phase row
-    html+=`<div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'}">`;
+    html+=`<div class="gantt-swipe-wrap" data-swipe-id="${ph.id}" data-swipe-kind="phase" oncontextmenu="ganttContextMenu(event,'phase','${ph.id}')">`;html+=`<div class="gantt-swipe-reveal-r">DUPLICATE &rsaquo;</div><div class="gantt-swipe-reveal-l">&lsaquo; DELETE</div>`;html+=`<div class="gantt-swipe-inner"><div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'};width:100%">`;
     // Label cell
     html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}">`;
     html+=`<span class="gantt-drag-handle" title="Drag to reorder" data-drag-phase="${ph.id}" onmousedown="ganttDragStart(event,'${ph.id}')" ontouchstart="ganttDragTouchStart(event,'${ph.id}')">&#8942;</span>`;
@@ -2548,7 +2549,7 @@ function renderGantt(){
       });
     }
     html+=`</div>`; // end track
-    html+=`</div>`; // end phase-row
+    html+=`</div></div></div>`; // end phase-row + swipe-inner + swipe-wrap
 
     // Task rows (shown when expanded)
     if(isOpen){
@@ -2574,7 +2575,7 @@ function renderGantt(){
           // Regular task row
           const doneCls=s.done?' checked':'';
           const nameCls=s.done?' done':'';
-          html+=`<div class="gantt-task-row">`;
+          html+=`<div class="gantt-swipe-wrap" data-swipe-id="${s.id}" data-swipe-kind="step" oncontextmenu="ganttContextMenu(event,'step','${s.id}')">`;html+=`<div class="gantt-swipe-reveal-r">DUPLICATE &rsaquo;</div><div class="gantt-swipe-reveal-l">&lsaquo; DELETE</div>`;html+=`<div class="gantt-swipe-inner"><div class="gantt-task-row" style="width:100%">`;
           html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
           html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`;
           html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
@@ -2604,7 +2605,7 @@ function renderGantt(){
               html+=`<div style="position:absolute;top:50%;left:${ep}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
             }
           }
-          html+=`</div></div>`;
+          html+=`</div></div></div></div>`; // end task-row + swipe-inner + swipe-wrap
         }
       });
 
@@ -2655,6 +2656,7 @@ function renderGantt(){
   const ds=S.road.filter(r=>r.kind==='step'&&r.done).length;
   const lbl=document.getElementById('gantt-summary-lbl');
   if(lbl)lbl.textContent=`Production Roadmap · ${ds}/${ts} tasks complete`;
+  initSwipeListeners();
 }
 
 /* hex tint helper */
@@ -2795,6 +2797,27 @@ function openGanttEdit(kind,id){
     html+=`<div id="ge-convert-phase-row" style="display:none"><div class="gantt-panel-field"><label class="gantt-panel-lbl">Move into phase</label><select class="gantt-panel-input" id="ge-convert-phase">${convertPhOpts}</select></div><p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-4px;margin-bottom:0">Child tasks of this phase will be removed on convert.</p></div>`;
 
   html+=`<hr class="gantt-panel-divider">`;
+  // ── MOVE SECTION ──
+  if(kind==='phase'){
+    const phases=roadPhases().filter(p=>p.id!==id);
+    const phOpts=`<option value="">— keep position —</option>`+phases.map(p=>`<option value="${p.id}">${p.num?'['+String(p.num).padStart(2,'0')+'] ':''}${esc(p.label)}</option>`).join('');
+    html+=`<div class="gantt-panel-section">Move Phase</div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Insert before phase</label><select class="gantt-panel-input" id="ge-move-before">${phOpts}</select></div>`;
+    html+=`<p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-6px">Select a phase to move this phase before it. Leave blank to keep current position.</p>`;
+    html+=`<hr class="gantt-panel-divider">`;
+  }
+  if(kind==='step'){
+    const allPhases=roadPhases();
+    const curPhase=item.phase;
+    const phOpts=allPhases.map(p=>`<option value="${p.id}"${p.id===curPhase?' selected':''}>${p.num?'['+String(p.num).padStart(2,'0')+'] ':''}${esc(p.label)}</option>`).join('');
+    // Build position options for current phase
+    const curSteps=roadSteps(curPhase).filter(s=>s.id!==id);
+    const posOpts=`<option value="__keep__">— keep position —</option>`+curSteps.map(s=>`<option value="before:${s.id}">Before: ${esc(s.label.slice(0,45))}</option>`).join('')+`<option value="__end__">End of phase</option>`;
+    html+=`<div class="gantt-panel-section">Move Task</div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Phase</label><select class="gantt-panel-input" id="ge-move-phase" onchange="geMovePhaseChanged('${id}')">${phOpts}</select></div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Position</label><select class="gantt-panel-input" id="ge-move-pos">${posOpts}</select></div>`;
+    html+=`<hr class="gantt-panel-divider">`;
+  }
   html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
   if(body)body.innerHTML=html;
   document.getElementById('gantt-overlay').classList.add('open');
@@ -2858,6 +2881,44 @@ function ganttEditSave(kind,id){
       renumberPhases();closeGanttPanel();save();renderGantt();return;
     }
   }
+  // ── MOVE ──
+  if(kind==='phase'){
+    const moveBefore=document.getElementById('ge-move-before')?.value||'';
+    if(moveBefore){
+      // Remove phase block from current position
+      const phIdx=S.road.findIndex(r=>r.id===id);
+      const block=[S.road[phIdx]];
+      for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
+      S.road.splice(phIdx,block.length);
+      // Re-find target after removal
+      const tIdx=S.road.findIndex(r=>r.id===moveBefore);
+      if(tIdx>=0)S.road.splice(tIdx,0,...block);
+      else S.road.push(...block);
+      renumberPhases();
+    }
+  }
+  if(kind==='step'){
+    const movePhase=document.getElementById('ge-move-phase')?.value||'';
+    const movePos=document.getElementById('ge-move-pos')?.value||'__keep__';
+    const needsMove=movePhase&&(movePhase!==item.phase||movePos!=='__keep__');
+    if(needsMove){
+      // Remove from current position
+      const si=S.road.findIndex(r=>r.id===id);
+      if(si>=0)S.road.splice(si,1);
+      item.phase=movePhase;
+      if(movePos==='__keep__'||movePos==='__end__'){
+        // Place at end of target phase
+        let last=S.road.findIndex(r=>r.id===movePhase);
+        for(let i=last+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;last=i;}
+        S.road.splice(last+1,0,item);
+      } else if(movePos.startsWith('before:')){
+        const tId=movePos.slice(7);
+        const tIdx=S.road.findIndex(r=>r.id===tId);
+        if(tIdx>=0)S.road.splice(tIdx,0,item);
+        else S.road.push(item);
+      }
+    }
+  }
   closeGanttPanel();save();renderGantt();
 }
 function ganttEditDelete(id){
@@ -2869,6 +2930,167 @@ function ganttEditDelete(id){
     S.road=S.road.filter(r=>r.id!==id);
   }
   renumberPhases();closeGanttPanel();save();renderGantt();
+}
+
+/* ── MOVE PHASE: dependent dropdown update ── */
+function geMovePhaseChanged(stepId){
+  const sel=document.getElementById('ge-move-phase');
+  const posSel=document.getElementById('ge-move-pos');
+  if(!sel||!posSel)return;
+  const newPhaseId=sel.value;
+  const steps=roadSteps(newPhaseId).filter(s=>s.id!==stepId);
+  posSel.innerHTML='<option value="__keep__">— keep position —</option>'+
+    steps.map(s=>`<option value="before:${s.id}">Before: ${esc(s.label.slice(0,45))}</option>`).join('')+
+    '<option value="__end__">End of phase</option>';
+}
+
+/* ── DUPLICATE (swipe right or right-click) ── */
+function duplicatePhase(pid){
+  const ph=S.road.find(r=>r.id===pid);if(!ph)return;
+  const phIdx=S.road.findIndex(r=>r.id===pid);
+  const block=[ph];
+  for(let i=phIdx+1;i<S.road.length;i++){if(S.road[i].kind==='phase')break;block.push(S.road[i]);}
+  const idMap={};const ts=Date.now();
+  const clones=block.map(r=>{
+    const newId='r_'+ts+'_'+Math.random().toString(36).slice(2,6);
+    idMap[r.id]=newId;
+    const clone={...r,id:newId};
+    if(clone.kind==='phase')clone.label='Copy of '+clone.label;
+    if(clone.phase)clone.phase=idMap[clone.phase]||clone.phase;
+    return clone;
+  });
+  S.road.splice(phIdx+block.length,0,...clones);
+  renumberPhases();save();renderGantt();
+  // Open edit panel on the new phase label so user can rename immediately
+  setTimeout(()=>{openGanttEdit('phase',clones[0].id);setTimeout(()=>{const inp=document.getElementById('ge-label');if(inp){inp.focus();inp.select();}},60);},80);
+}
+
+function duplicateStep(sid){
+  const s=S.road.find(r=>r.id===sid);if(!s)return;
+  const si=S.road.findIndex(r=>r.id===sid);
+  const clone={...s,id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),done:false,completedDate:'',label:'Copy of '+s.label};
+  S.road.splice(si+1,0,clone);
+  save();renderGantt();
+  setTimeout(()=>{openGanttEdit('step',clone.id);setTimeout(()=>{const inp=document.getElementById('ge-label');if(inp){inp.focus();inp.select();}},60);},80);
+}
+
+/* ── CONTEXT MENU (right-click on Mac) ── */
+let _ctxMenu=null;
+function ganttContextMenu(e,kind,id){
+  e.preventDefault();
+  e.stopPropagation();
+  removeContextMenu();
+  const menu=document.createElement('div');
+  menu.id='gantt-ctx-menu';
+  menu.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.18);z-index:500;min-width:160px;overflow:hidden;font-family:'Source Code Pro',monospace;font-size:11px`;
+  const dupLabel=kind==='phase'?'Duplicate Phase':'Duplicate Task';
+  const delLabel=kind==='phase'?'Delete Phase…':'Delete Task…';
+  menu.innerHTML=`<div onclick="ganttCtxDuplicate('${kind}','${id}')" style="padding:10px 16px;cursor:pointer;color:var(--label-primary);border-bottom:1px solid var(--separator)" onmouseover="this.style.background='var(--page-bg)'" onmouseout="this.style.background=''">${dupLabel}</div>`+
+    `<div onclick="ganttCtxEdit('${kind}','${id}')" style="padding:10px 16px;cursor:pointer;color:var(--label-primary);border-bottom:1px solid var(--separator)" onmouseover="this.style.background='var(--page-bg)'" onmouseout="this.style.background=''">Edit…</div>`+
+    `<div onclick="ganttCtxDelete('${kind}','${id}')" style="padding:10px 16px;cursor:pointer;color:#D43540" onmouseover="this.style.background='var(--page-bg)'" onmouseout="this.style.background=''">${delLabel}</div>`;
+  document.body.appendChild(menu);
+  _ctxMenu=menu;
+  setTimeout(()=>document.addEventListener('click',removeContextMenu,{once:true}),10);
+}
+function removeContextMenu(){
+  if(_ctxMenu){_ctxMenu.remove();_ctxMenu=null;}
+}
+function ganttCtxDuplicate(kind,id){
+  removeContextMenu();
+  if(kind==='phase')duplicatePhase(id);else duplicateStep(id);
+}
+function ganttCtxEdit(kind,id){
+  removeContextMenu();
+  openGanttEdit(kind,id);
+}
+function ganttCtxDelete(kind,id){
+  removeContextMenu();
+  ganttEditDelete(id);
+}
+
+/* ── SWIPE TO DELETE / DUPLICATE ── */
+let _sw=null; // active swipe state
+const SW_THRESHOLD=80; // px to commit
+
+function swipeStart(e,wrap){
+  if(e.touches.length!==1)return;
+  const t=e.touches[0];
+  _sw={wrap,startX:t.clientX,startY:t.clientY,dx:0,committed:false,dir:null};
+}
+function swipeMove(e){
+  if(!_sw||e.touches.length!==1)return;
+  const t=e.touches[0];
+  const dx=t.clientX-_sw.startX;
+  const dy=t.clientY-_sw.startY;
+  // If more vertical than horizontal, cancel swipe and let scroll happen
+  if(_sw.dir===null){
+    if(Math.abs(dy)>Math.abs(dx)+8){_sw=null;return;}
+    if(Math.abs(dx)>8)_sw.dir=dx>0?'r':'l';
+    else return;
+  }
+  e.preventDefault();
+  _sw.dx=dx;
+  const inner=_sw.wrap.querySelector('.gantt-swipe-inner');
+  const revL=_sw.wrap.querySelector('.gantt-swipe-reveal-l');
+  const revR=_sw.wrap.querySelector('.gantt-swipe-reveal-r');
+  if(!inner)return;
+  const clamped=Math.max(-SW_THRESHOLD*1.5,Math.min(SW_THRESHOLD*1.5,dx));
+  inner.style.transition='none';
+  inner.style.transform=`translateX(${clamped}px)`;
+  if(revL)revL.style.opacity=dx<-20?Math.min(1,(Math.abs(dx)-20)/40)+'':'0';
+  if(revR)revR.style.opacity=dx>20?Math.min(1,(dx-20)/40)+'':'0';
+}
+function swipeEnd(e){
+  if(!_sw)return;
+  const {wrap,dx}=_sw;
+  const inner=wrap.querySelector('.gantt-swipe-inner');
+  const revL=wrap.querySelector('.gantt-swipe-reveal-l');
+  const revR=wrap.querySelector('.gantt-swipe-reveal-r');
+  const kind=wrap.dataset.swipeKind;
+  const id=wrap.dataset.swipeId;
+  // Reset visuals
+  if(inner){inner.style.transition='';inner.style.transform='';}
+  if(revL)revL.style.opacity='0';
+  if(revR)revR.style.opacity='0';
+  if(dx<=-SW_THRESHOLD){
+    // Left swipe — show delete confirmation button
+    swipeShowDelete(wrap,kind,id);
+  } else if(dx>=SW_THRESHOLD){
+    // Right swipe — duplicate
+    if(kind==='phase')duplicatePhase(id);else duplicateStep(id);
+  }
+  _sw=null;
+}
+function swipeShowDelete(wrap,kind,id){
+  // Show a tap-to-confirm Delete button revealed behind the row
+  const existing=wrap.querySelector('.gantt-swipe-delete-btn');
+  if(existing){existing.remove();return;}
+  const btn=document.createElement('div');
+  btn.className='gantt-swipe-delete-btn';
+  btn.textContent='DELETE';
+  btn.onclick=(e)=>{e.stopPropagation();btn.remove();ganttEditDelete(id);};
+  wrap.appendChild(btn);
+  // Auto-dismiss after 3s
+  setTimeout(()=>{if(btn.parentNode)btn.remove();},3000);
+  // Also dismiss on next tap anywhere else
+  setTimeout(()=>document.addEventListener('click',()=>{if(btn.parentNode)btn.remove();},{once:true}),50);
+}
+
+/* Attach swipe listeners after each renderGantt — use event delegation on scroll outer */
+function initSwipeListeners(){
+  const outer=document.getElementById('gantt-scroll-outer');
+  if(!outer||outer._swipeListening)return;
+  outer._swipeListening=true;
+  outer.addEventListener('touchstart',e=>{
+    const wrap=e.target.closest('.gantt-swipe-wrap');
+    if(wrap)swipeStart(e,wrap);
+  },{passive:true});
+  outer.addEventListener('touchmove',e=>{
+    if(_sw)swipeMove(e);
+  },{passive:false});
+  outer.addEventListener('touchend',e=>{
+    if(_sw)swipeEnd(e);
+  },{passive:true});
 }
 
 function buildPanelForm(kind,phaseId){
