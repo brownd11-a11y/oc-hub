@@ -327,7 +327,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
-.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
+.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 16px;border-right:1px solid #D1D5DB;background:var(--page-bg);border-left:4px solid var(--task-ph-color,#ccc)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
@@ -1479,7 +1479,13 @@ const ROAD_SEED=[
     {id:'rph_pubpitch_s4',kind:'step',phase:'rph_pubpitch',label:'Publisher response window',note:'Allow 60 days from submission. Follow up at 30 days if no acknowledgment.',cmd:null,targetStart:'2026-06-30',targetEnd:'2026-08-29',completedDate:'',done:false,metDate:''},
     {id:'r_1781190004916',kind:'step',phase:'rph_pubpitch',label:'Agent Pitch',note:'Determine if any interested agents and then decide whether to self-publish',cmd:null,targetStart:'2026-07-11',targetEnd:'2026-08-29',completedDate:'',done:false,isGate:true,metDate:''},
     {id:'rph_pubpitch_g2',kind:'gate',phase:'rph_pubpitch',label:'Response window closes — proceed to self-publish if no compelling offer',date:'2026-08-29',met:false,completedDate:'',metDate:''},
-    {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#E8622A',open:false,num:12,completedDate:'',metDate:''},
+    {id:'rph_vercel',kind:'phase',label:'Move Hub to Vercel',color:'#2070C8',open:true,num:12,note:'Fix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required.',completedDate:'',metDate:''},
+    {id:'rph_vercel_s1',kind:'step',phase:'rph_vercel',label:'Step 1 — Create Vercel account & import oc-hub repo',note:'Go to vercel.com → Sign Up → Continue with GitHub → Import the brownd11-a11y/oc-hub repository. No settings to change — Vercel detects it is a static site automatically. Click Deploy. Copy/paste block: vercel.com/new',url:'https://vercel.com/new',cmd:null,targetStart:'2026-06-12',targetEnd:'2026-06-13',completedDate:'',done:false,isGate:false,metDate:''},
+    {id:'rph_vercel_s2',kind:'step',phase:'rph_vercel',label:'Step 2 — Assign hub.over-classified.com in Vercel',note:'In your new Vercel project → Settings → Domains → Add: hub.over-classified.com. Vercel will show you a CNAME value to copy (looks like: cname.vercel-dns.com). Leave this tab open.',cmd:null,targetStart:'2026-06-13',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:false,metDate:''},
+    {id:'rph_vercel_s3',kind:'step',phase:'rph_vercel',label:'Step 3 — Add CNAME at your DNS registrar',note:'Log in to wherever you bought over-classified.com → DNS settings → Add record: Type=CNAME, Name=hub, Value=paste what Vercel gave you in Step 2. Save. Takes up to 1 hour to propagate. Hub will then be live at hub.over-classified.com.',cmd:null,targetStart:'2026-06-14',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:false,metDate:''},
+    {id:'rph_vercel_s4',kind:'step',phase:'rph_vercel',label:'Step 4 — Remove custom domain from GitHub Pages',note:'Go to github.com → brownd11-a11y/oc-hub → Settings → Pages → Custom domain → clear the field and Save. This stops GitHub from intercepting over-classified.com traffic. Hub push workflow is unchanged — Claude still pushes index.html to the same GitHub repo; Vercel redeploys automatically on every push.',url:'https://github.com/brownd11-a11y/oc-hub/settings/pages',cmd:null,targetStart:'2026-06-14',targetEnd:'2026-06-14',completedDate:'',done:false,isGate:true,metDate:''},
+    {id:'rph_vercel_g1',kind:'gate',phase:'rph_vercel',label:'hub.over-classified.com live · over-classified.com clean',date:'2026-06-14',met:false,completedDate:'',metDate:''},
+    {id:'r_1780841436950',kind:'phase',label:'Marketing Plan',color:'#E8622A',open:false,num:13,completedDate:'',metDate:''},
     {id:'r_1780868347381',kind:'step',phase:'r_1780841436950',label:'Establish overall plan outline',note:'',cmd:null,targetStart:'',targetEnd:'2026-06-25',completedDate:'',done:false,metDate:''},
     {id:'r_website_desc_update',kind:'step',phase:'r_1780841436950',label:'Update over-classified.com book description',note:'Reflect June 9 Capitol press conference, Turner/NAA document, Aldo Rebelo/Varginha confirmation, PURSUE release milestone, and current disclosure momentum. Must be live before publisher pitch submissions go out.',cmd:null,targetStart:'',targetEnd:'2026-06-22',completedDate:'',done:false,metDate:''},
     {id:'r_1780868403899',kind:'step',phase:'r_1780841436950',label:'Develop channel plan',note:'Social media, messaging, methods',cmd:null,targetStart:'',targetEnd:'2026-07-03',completedDate:'',done:false,metDate:''},
@@ -2575,7 +2581,7 @@ function renderGantt(){
           const doneCls=s.done?' checked':'';
           const nameCls=s.done?' done':'';
           html+=`<div class="gantt-task-row">`;
-          html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
+          html+=`<div class="gantt-task-label-cell" style="--task-ph-color:${color};background:${s.done?'var(--done-bg)':hexTint(color,0.03)}">`;
           html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`;
           html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
           html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
@@ -2770,6 +2776,7 @@ function openGanttEdit(kind,id){
     html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Met date</label><input class="gantt-panel-input mono" id="ge-gate-metdate" type="date" value="${item.metDate||''}" /></div>`;
   } else {
     html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Note</label><textarea class="gantt-panel-input" id="ge-note" rows="2">${esc(item.note||'')}</textarea></div>`;
+    html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">URL <span style="font-weight:400;opacity:.6">(optional)</span></label><input class="gantt-panel-input mono" id="ge-url" type="url" value="${esc(item.url||'')}" placeholder="https://…" /></div>`;
   }
   if(kind==='step'){
     html+=`<hr class="gantt-panel-divider">`;
@@ -2823,6 +2830,8 @@ function ganttEditSave(kind,id){
     item.metDate=document.getElementById('ge-gate-metdate')?.value||'';
   } else {
     item.note=document.getElementById('ge-note')?.value||'';
+    const u=(document.getElementById('ge-url')?.value||'').trim();
+    if(u)item.url=u; else delete item.url;
   }
   if(kind==='step'){
     item.targetStart=document.getElementById('ge-start')?.value||'';
@@ -2878,6 +2887,7 @@ function buildPanelForm(kind,phaseId){
   let html='';
   html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Label</label><input class="gantt-panel-input" id="gp-label" type="text" placeholder="Label…" /></div>`;
   html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">Note</label><textarea class="gantt-panel-input" id="gp-note" rows="2" placeholder="Note (optional)…"></textarea></div>`;
+  html+=`<div class="gantt-panel-field"><label class="gantt-panel-lbl">URL <span style="font-weight:400;opacity:.6">(optional)</span></label><input class="gantt-panel-input mono" id="gp-url" type="url" placeholder="https://…" /></div>`;
 
   if(kind==='step'||kind==='gate'||kind==='standalone-gate'){
     html+=`<hr class="gantt-panel-divider">`;
@@ -2930,7 +2940,8 @@ function ganttPanelAdd(){
   if(kind==='phase'){
     const maxNum=phases.reduce((m,p)=>Math.max(m,p.num||0),0);
     const colIdx=phases.length;
-    S.road.push({id,kind:'phase',num:maxNum+1,label,color:rainbowColor(colIdx),open:true});
+    const url=(document.getElementById('gp-url')?.value||'').trim();
+    S.road.push({id,kind:'phase',num:maxNum+1,label,note,url:url||undefined,color:rainbowColor(colIdx),open:true});
     renumberPhases();
   } else {
     const phSel=document.getElementById('gp-phase');
@@ -2952,7 +2963,8 @@ function ganttPanelAdd(){
     }
     if(kind==='step'){
       const isGate=document.getElementById('gp-is-gate')?.checked||false;
-      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false,isGate});
+      const url=(document.getElementById('gp-url')?.value||'').trim();
+      S.road.splice(idx,0,{id,kind:'step',phase:phaseId,label,note,url:url||undefined,cmd:null,targetStart:start,targetEnd:end,completedDate:'',done:false,isGate});
     } else if(kind==='standalone-gate'){
       const gateDate=document.getElementById('gp-gate-date')?.value||'';
       S.road.splice(idx,0,{id,kind:'gate',phase:phaseId,label,date:gateDate,met:false,standalone:true});
