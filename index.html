@@ -1353,7 +1353,7 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-13T15:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-13T17:00:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION = 'v302u2'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2130,7 +2130,21 @@ function rlist(){
 }
 
 function xItem(id){const it=S.items.find(i=>i.id===id);if(!it)return;it._exp=!it._exp;rlist();}
-function togDone(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.done=!it.done;if(it.done)it.completedDate=todayStr();else it.completedDate='';save();render();}
+function togDone(id){
+  const it=S.items.find(i=>i.id===id);if(!it)return;
+  it.done=!it.done;
+  if(it.done){
+    it.completedDate=todayStr();
+    // If linked to a roadmap item, mark it done too
+    if(it.linkedRoadId){
+      const ritem=S.road.find(r=>r.id===it.linkedRoadId);
+      if(ritem&&ritem.kind==='step'){ritem.done=true;ritem.completedDate=todayStr();}
+    }
+  } else {
+    it.completedDate='';
+  }
+  save();render();
+}
 function togDefer(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.deferred=!it.deferred;save();render();}
 function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
 function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
@@ -2382,7 +2396,11 @@ function phaseProgress(pid){
 }
 function phaseRange(pid){
   const steps=roadSteps(pid);
-  const ends=steps.map(s=>s.targetEnd).filter(Boolean).sort();
+  const gates=roadGates(pid);
+  // Collect all end dates: task targetEnds + standalone gate dates
+  const ends=steps.map(s=>s.targetEnd).filter(Boolean)
+    .concat(gates.map(g=>g.date).filter(Boolean))
+    .sort();
   if(!ends.length)return{start:null,end:null};
   const starts=steps.map(s=>s.targetStart).filter(Boolean).sort();
   const left=starts.length?starts[0]:ends[0];
@@ -2675,6 +2693,7 @@ function renderGantt(){
   const lbl=document.getElementById('gantt-summary-lbl');
   if(lbl)lbl.textContent=`Production Roadmap · ${ds}/${ts} tasks complete`;
   initSwipeListeners();
+  setTimeout(updateTodayBtnState,60);
 }
 
 /* hex tint helper */
@@ -2689,10 +2708,8 @@ function ganttScrollToday(){
   if(!outer||!ganttTimelinePadMin||!ganttTimelineSpan)return;
   const tp=xpx(todayStr());
   if(tp===null)return;
-  // tp = px position of today within the timeline (0 = left edge of timeline = right edge of label col).
-  // scrollLeft = tp positions today exactly at the label right edge.
-  // Subtract 4px so today line sits just inside the visible timeline.
   outer.scrollLeft=Math.max(0,tp-4);
+  setTimeout(updateTodayBtnState,50);
 }
 
 /* ── GANTT COLLAPSE LEVELS ── */
@@ -2857,6 +2874,11 @@ function openGanttEdit(kind,id){
     html+=`<hr class="gantt-panel-divider">`;
   }
   html+=`<div style="display:flex;gap:6px"><button class="gantt-panel-add-btn" style="flex:1" onclick="ganttEditSave('${kind}','${id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save</button><button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#b03030" onclick="ganttEditDelete('${id}')">Delete</button></div>`;
+  if(kind==='step'||kind==='phase'){
+    html+=`<hr class="gantt-panel-divider">`;
+    html+=`<button class="gantt-panel-add-btn" style="background:#2A6DBE;width:100%;margin-top:0" onclick="ganttAddAsNote('${id}')">&#43; Add as project note</button>`;
+    html+=`<p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:4px">Creates a note in the Notes panel. You can optionally link it so completing the note also completes this item.</p>`;
+  }
   if(body)body.innerHTML=html;
   document.getElementById('gantt-overlay').classList.add('open');
   document.getElementById('gantt-slide-panel').classList.add('open');
@@ -2968,6 +2990,82 @@ function ganttEditDelete(id){
     S.road=S.road.filter(r=>r.id!==id);
   }
   renumberPhases();closeGanttPanel();save();renderGantt();
+}
+
+/* ── ADD ROADMAP ITEM AS PROJECT NOTE ── */
+function ganttAddAsNote(roadId){
+  const item=S.road.find(r=>r.id===roadId);if(!item)return;
+  const body=document.getElementById('gantt-panel-body');
+  if(!body)return;
+  const defaultText=(item.label||'')+(item.note?'\n\n'+item.note:'');
+  body.innerHTML=`
+    <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px">New project note</div>
+    <div class="gantt-panel-field">
+      <label class="gantt-panel-lbl">Note text</label>
+      <textarea class="gantt-panel-input" id="gan-text" rows="4" style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.5">${esc(defaultText)}</textarea>
+    </div>
+    <div class="gantt-panel-field">
+      <label class="gantt-panel-lbl">Type</label>
+      <select class="gantt-panel-input mono" id="gan-type">
+        <option value="note">Note</option>
+        <option value="fordave">Flow (directed to Claude)</option>
+        <option value="reminder">Reminder</option>
+      </select>
+    </div>
+    <div class="gantt-panel-field">
+      <label class="gantt-panel-lbl">Tag</label>
+      <select class="gantt-panel-input mono" id="gan-tag">
+        <option value="">— none —</option>
+        ${(S.items.reduce((acc,i)=>{if(i.tag&&!acc.includes(i.tag))acc.push(i.tag);return acc;},[]).map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join(''))}
+      </select>
+    </div>
+    <hr class="gantt-panel-divider">
+    <div class="gantt-panel-toggle-row">
+      <span class="gantt-panel-toggle-lbl">Link to roadmap item</span>
+      <label class="gantt-panel-toggle">
+        <input type="checkbox" id="gan-link" checked>
+        <div class="gantt-panel-toggle-track"></div>
+        <div class="gantt-panel-toggle-thumb"></div>
+      </label>
+    </div>
+    <p style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);margin-top:-4px">When linked, completing this note will also mark the roadmap item done.</p>
+    <div style="display:flex;gap:6px;margin-top:12px">
+      <button class="gantt-panel-add-btn" style="flex:1" onclick="ganttAddAsNoteSave('${roadId}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Add Note
+      </button>
+      <button class="gantt-panel-add-btn" style="flex:0 0 auto;background:#888" onclick="openGanttEdit('${item.kind}','${roadId}')">Cancel</button>
+    </div>`;
+}
+function ganttAddAsNoteSave(roadId){
+  const text=(document.getElementById('gan-text')?.value||'').trim();
+  if(!text){alert('Note text required');return;}
+  const type=document.getElementById('gan-type')?.value||'note';
+  const tag=document.getElementById('gan-tag')?.value||null;
+  const linked=document.getElementById('gan-link')?.checked||false;
+  const newId='i_'+Date.now();
+  const isFlow=type==='fordave';
+  S.items.unshift({
+    id:newId,
+    type,
+    text,
+    done:false,
+    priority:false,
+    memFlag:isFlow,
+    tag,
+    deferred:false,
+    answer:null,
+    dialogue:isFlow?[{from:'dave',text,ts:new Date().toISOString()}]:null,
+    created:new Date().toISOString(),
+    dueDate:'',
+    completedDate:'',
+    itemUrl:linked?'roadmap:'+roadId:null,
+    linkedRoadId:linked?roadId:null
+  });
+  save();
+  closeGanttPanel();
+  render();
+  // Switch to Notes tab so user sees it
+  showTab('notes');
 }
 
 /* ── MOVE PHASE: dependent dropdown update ── */
@@ -3622,6 +3720,17 @@ function ttHide(){
 }
 
 /* ── ROADMAP INIT ── */
+function updateTodayBtnState(){
+  const outer=document.getElementById('gantt-scroll-outer');
+  const btn=document.querySelector('.gantt-ctrl-bar .gpill[onclick="ganttScrollToday()"]');
+  if(!btn||!outer||!ganttTimelinePadMin||!ganttTimelineSpan)return;
+  const tp=xpx(todayStr());
+  if(tp===null)return;
+  const expected=Math.max(0,tp-4);
+  const atToday=Math.abs(outer.scrollLeft-expected)<20;
+  btn.classList.toggle('active-solid',atToday);
+  btn.style.opacity=atToday?'1':'0.5';
+}
 function initRoadmap(){
   // Restore saved label column width
   if(S._ganttLabelW)document.documentElement.style.setProperty('--gantt-label-w',S._ganttLabelW+'px');
@@ -3629,7 +3738,12 @@ function initRoadmap(){
   setTimeout(ganttPositionRail,50);
   // Reposition on scroll and window resize
   const outer=document.getElementById('gantt-scroll-outer');
-  if(outer&&!outer._railListening){outer._railListening=true;outer.addEventListener('scroll',ganttPositionRail);window.addEventListener('resize',ganttPositionRail);}
+  if(outer&&!outer._railListening){
+    outer._railListening=true;
+    outer.addEventListener('scroll',ganttPositionRail);
+    outer.addEventListener('scroll',updateTodayBtnState);
+    window.addEventListener('resize',ganttPositionRail);
+  }
   // Assign rainbow colors to phases that have no color or legacy color
   roadPhases().forEach((ph,idx)=>{
     if(!ph.color||ph.color==='#3a6b9e'||ph.color==='#3a7a5a'||ph.color==='#9e3a3a'||ph.color==='#6b3a9e'||ph.color==='#7a6a2a'||ph.color==='#2a6a7a'||ph.color==='#4a6b2a'||ph.color==='#6b4a2a'||ph.color==='#2a4a6b'){
