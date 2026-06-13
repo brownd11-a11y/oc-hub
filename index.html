@@ -3017,14 +3017,20 @@ const SW_THRESHOLD=80; // px to commit
 function swipeStart(e,wrap){
   if(e.touches.length!==1)return;
   const t=e.touches[0];
-  _sw={wrap,startX:t.clientX,startY:t.clientY,dx:0,committed:false,dir:null};
+  // Only activate swipe if touch starts within the label column area.
+  // This prevents normal Gantt horizontal scroll from triggering swipe actions.
+  const wrapRect=wrap.getBoundingClientRect();
+  const labelW=ganttGetLabelW();
+  const touchOffsetX=t.clientX-wrapRect.left;
+  if(touchOffsetX>labelW+20)return; // touch is in timeline area — ignore, let scroll work
+  _sw={wrap,startX:t.clientX,startY:t.clientY,dx:0,dir:null};
 }
 function swipeMove(e){
   if(!_sw||e.touches.length!==1)return;
   const t=e.touches[0];
   const dx=t.clientX-_sw.startX;
   const dy=t.clientY-_sw.startY;
-  // If more vertical than horizontal, cancel swipe and let scroll happen
+  // Cancel if more vertical than horizontal — let normal scroll happen
   if(_sw.dir===null){
     if(Math.abs(dy)>Math.abs(dx)+8){_sw=null;return;}
     if(Math.abs(dx)>8)_sw.dir=dx>0?'r':'l';
@@ -3055,26 +3061,31 @@ function swipeEnd(e){
   if(revL)revL.style.opacity='0';
   if(revR)revR.style.opacity='0';
   if(dx<=-SW_THRESHOLD){
-    // Left swipe — show delete confirmation button
-    swipeShowDelete(wrap,kind,id);
+    swipeShowAction(wrap,kind,id,'delete');
   } else if(dx>=SW_THRESHOLD){
-    // Right swipe — duplicate
-    if(kind==='phase')duplicatePhase(id);else duplicateStep(id);
+    swipeShowAction(wrap,kind,id,'duplicate');
   }
   _sw=null;
 }
-function swipeShowDelete(wrap,kind,id){
-  // Show a tap-to-confirm Delete button revealed behind the row
-  const existing=wrap.querySelector('.gantt-swipe-delete-btn');
-  if(existing){existing.remove();return;}
+function swipeShowAction(wrap,kind,id,action){
+  // Remove any existing action button on this or other rows
+  document.querySelectorAll('.gantt-swipe-delete-btn').forEach(b=>b.remove());
   const btn=document.createElement('div');
   btn.className='gantt-swipe-delete-btn';
-  btn.textContent='DELETE';
-  btn.onclick=(e)=>{e.stopPropagation();btn.remove();ganttEditDelete(id);};
+  btn.style.background=action==='duplicate'?'#2070C8':'#D43540';
+  btn.textContent=action==='duplicate'?'DUPLICATE':'DELETE';
+  btn.onclick=(e)=>{
+    e.stopPropagation();
+    btn.remove();
+    if(action==='duplicate'){
+      if(kind==='phase')duplicatePhase(id);else duplicateStep(id);
+    } else {
+      ganttEditDelete(id);
+    }
+  };
   wrap.appendChild(btn);
   // Auto-dismiss after 3s
   setTimeout(()=>{if(btn.parentNode)btn.remove();},3000);
-  // Also dismiss on next tap anywhere else
   setTimeout(()=>document.addEventListener('click',()=>{if(btn.parentNode)btn.remove();},{once:true}),50);
 }
 
