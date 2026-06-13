@@ -274,7 +274,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rcl-btn.active{background:var(--label-primary);color:var(--card-bg);border-color:var(--label-primary)}
 
 /* ── Outer scroll wrapper: full width, sticky label col ── */
-.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+.gantt-scroll-outer{width:100%;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 260px);position:relative;border-bottom:1px solid #D1D5DB;-webkit-overflow-scrolling:touch;touch-action:auto}
 .gantt-scroll-inner{position:relative}
 
 /* Sticky label column — width controlled by --gantt-label-w (resizable) */
@@ -327,7 +327,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
-.gantt-task-label-cell{width:224px;min-width:224px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
+.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
@@ -349,7 +349,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* Add task row */
 .gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:var(--page-bg);position:relative;z-index:2}
-.gantt-add-task-label{width:224px;min-width:224px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-add-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
 .gantt-add-task-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#9CA3AF;background:none;border:1px dashed #D1D5DB;padding:2px 10px;cursor:pointer;width:100%;text-align:left;transition:all .15s}
 .gantt-add-task-btn:hover{border-color:var(--accent);color:var(--accent)}
 .gantt-add-task-track{flex:1;background:var(--page-bg)}
@@ -2670,9 +2670,11 @@ function ganttScrollToday(){
   if(!outer||!inner||!ganttTimelinePadMin||!ganttTimelineSpan)return;
   const todayPct=xpct(todayStr());
   if(todayPct===null)return;
-  // timeline starts after label col (224px)
-  const timelineWidth=inner.offsetWidth-224;
-  const scrollTo=Math.max(0,(todayPct/100)*timelineWidth - outer.clientWidth/2 + 112);
+  const labelW=ganttGetLabelW();
+  const timelineWidth=inner.offsetWidth-labelW;
+  const todayPx=(todayPct/100)*timelineWidth;
+  // Place today 150px to the right of the label column
+  const scrollTo=Math.max(0,todayPx-150);
   outer.scrollLeft=scrollTo;
 }
 
