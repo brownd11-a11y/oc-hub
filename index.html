@@ -296,7 +296,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* Week lines (dotted only, no bands) */
 .gantt-week-line{position:absolute;top:0;bottom:0;width:1px;border-left:1px dashed #D1D5DB;z-index:1;pointer-events:none}
-.gantt-today-line-v{position:absolute;top:0;bottom:0;width:2px;background:#C70025;opacity:.55;z-index:5;pointer-events:none}
+.gantt-today-line-v{position:absolute;top:0;bottom:0;height:100%;width:2px;background:#C70025;opacity:.55;z-index:5;pointer-events:none}
 
 /* ── Phase row ── */
 .gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
@@ -943,6 +943,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <button class="road-open-filter-btn" id="road-open-btn" onclick="toggleRoadOpenFilter()" class="road-open-filter-btn active">Open Only</button>
       </div>
     </div>
+    <div class="gantt-legend-bar">
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,rgba(56,100,160,.5),rgba(56,100,160,.15))"></div>Phase bar</div>
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:rgba(56,100,160,.9)"></div>Progress fill</div>
+      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
+      <div class="gantt-leg"><div class="gantt-leg-diamond"></div>&nbsp;Gate (open)</div>
+      <div class="gantt-leg"><div class="gantt-leg-diamond filled"></div>&nbsp;Gate (met)</div>
+      <div class="gantt-leg"><div style="width:2px;height:14px;background:#C70025;opacity:.6;display:inline-block;vertical-align:middle"></div>&nbsp;Today</div>
+    </div>
     <div class="gantt-toolbar">
       <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
       <button class="gantt-today-btn" onclick="ganttScrollToday()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Today</button>
@@ -952,14 +960,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
-    </div>
-    <div class="gantt-legend-bar">
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:linear-gradient(90deg,rgba(56,100,160,.5),rgba(56,100,160,.15))"></div>Phase bar</div>
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:rgba(56,100,160,.9)"></div>Progress fill</div>
-      <div class="gantt-leg"><div class="gantt-leg-swatch" style="background:var(--done-fg)"></div>Complete</div>
-      <div class="gantt-leg"><div class="gantt-leg-diamond"></div>&nbsp;Gate (open)</div>
-      <div class="gantt-leg"><div class="gantt-leg-diamond filled"></div>&nbsp;Gate (met)</div>
-      <div class="gantt-leg"><div style="width:2px;height:14px;background:#C70025;opacity:.6;display:inline-block;vertical-align:middle"></div>&nbsp;Today</div>
     </div>
     <!-- Integrated Gantt -->
     <div class="gantt-scroll-outer" id="gantt-scroll-outer">
@@ -2398,7 +2398,7 @@ function gateInheritDate(pid){
 
 /* ── GANTT RENDER ── */
 let ganttTimelineLeft=0,ganttTimelineSpan=1,ganttTimelinePadMin=null,ganttTotalPx=0;
-let GANTT_PX_PER_DAY=28; // pixels per day — controls timeline zoom
+let GANTT_PX_PER_DAY=4; // pixels per day — weeks default
 const GANTT_LABEL_W=224;   // must match CSS width:224px on label cells
 
 function xpx(ds){
@@ -2440,18 +2440,26 @@ function renderGantt(){
 
   // Week boundaries (Mondays)
   const weeks=[];
-  const wc=new Date(padMin);
-  const dow=wc.getDay();
-  wc.setDate(wc.getDate()+(dow===0?1:(8-dow)%7||7));
-  let wi=0;
-  while(wc<=padMax){
-    const frac=(wc-padMin)/span;
-    const px=Math.round(frac*ganttTotalPx);
-    if(frac>=-0.01&&frac<=1.01){
-      const ds=wc.toISOString().slice(0,10);
-      weeks.push({px,label:wc.toLocaleDateString('en-US',{month:'short',day:'numeric'}),isToday:ds===today});
+  {
+    const tickDays=GANTT_PX_PER_DAY>=10?1:GANTT_PX_PER_DAY>=2?7:30;
+    const tc=new Date(padMin);
+    if(tickDays===7){const dow=tc.getDay();tc.setDate(tc.getDate()+(dow===0?1:(8-dow)%7||7));}
+    else if(tickDays===30){tc.setDate(1);tc.setMonth(tc.getMonth()+1);}
+    while(tc<=padMax){
+      const frac=(tc-padMin)/span;
+      const px=Math.round(frac*ganttTotalPx);
+      if(frac>=-0.01&&frac<=1.01){
+        const ds=tc.toISOString().slice(0,10);
+        const label=tickDays===1
+          ?tc.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})
+          :tickDays===7
+            ?tc.toLocaleDateString('en-US',{month:'short',day:'numeric'})
+            :tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+        weeks.push({px,label,isToday:ds===today});
+      }
+      if(tickDays===30)tc.setMonth(tc.getMonth()+1);
+      else tc.setDate(tc.getDate()+tickDays);
     }
-    wc.setDate(wc.getDate()+7);wi++;
   }
   const todayPx=xpx(today);
 
@@ -2671,16 +2679,11 @@ function hexTint(hex,alpha){
 /* scroll to today */
 function ganttScrollToday(){
   const outer=document.getElementById('gantt-scroll-outer');
-  const inner=document.getElementById('gantt-scroll-inner');
-  if(!outer||!inner||!ganttTimelinePadMin||!ganttTimelineSpan)return;
-  const todayPct=xpct(todayStr());
-  if(todayPct===null)return;
-  const labelW=ganttGetLabelW();
-  const timelineWidth=inner.offsetWidth-labelW;
-  const todayPx=(todayPct/100)*timelineWidth;
-  // Place today 150px to the right of the label column
-  const scrollTo=Math.max(0,todayPx-150);
-  outer.scrollLeft=scrollTo;
+  if(!outer||!ganttTimelinePadMin||!ganttTimelineSpan)return;
+  const tp=xpx(todayStr());
+  if(tp===null)return;
+  // Scroll so today line sits exactly 4px past the label column right edge
+  outer.scrollLeft=Math.max(0,tp+ganttGetLabelW()-4);
 }
 
 /* ── GANTT COLLAPSE LEVELS ── */
@@ -2702,15 +2705,15 @@ function setRoadLevel(level){
 }
 
 function setGanttScale(scale){
-  if(scale==='days')GANTT_PX_PER_DAY=56;
-  else if(scale==='weeks')GANTT_PX_PER_DAY=28;
-  else if(scale==='months')GANTT_PX_PER_DAY=8;
+  if(scale==='days')GANTT_PX_PER_DAY=14;
+  else if(scale==='weeks')GANTT_PX_PER_DAY=4;
+  else if(scale==='months')GANTT_PX_PER_DAY=1.2;
   ['days','weeks','months'].forEach(s=>{
     const btn=document.getElementById('gscale-'+s);
     if(btn)btn.classList.toggle('active',s===scale);
   });
   renderGantt();
-  setTimeout(()=>ganttScrollToday(),50);
+  setTimeout(()=>ganttScrollToday(),80);
 }
 
 function toggleRoadOpenFilter(){
