@@ -282,14 +282,18 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-label-col{position:sticky;left:0;z-index:20;background:var(--page-bg);flex-shrink:0;width:var(--gantt-label-w);min-width:80px}
 
 /* Header row */
-.gantt-header-row{display:flex;align-items:stretch;height:36px;border-bottom:2px solid #C7CBD6;position:sticky;top:0;z-index:15;background:#F0F2F7}
+.gantt-header-row{display:flex;align-items:stretch;height:46px;border-bottom:2px solid #C7CBD6;position:sticky;top:0;z-index:15;background:#F0F2F7}
 .gantt-header-label{width:var(--gantt-label-w);flex-shrink:0;position:sticky;left:0;z-index:21;background:#F0F2F7;border-right:1px solid #C7CBD6;display:flex;align-items:center;justify-content:flex-start;padding:0 22px 0 10px;gap:8px;position:relative}
 .gantt-header-label span{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:#C70025;letter-spacing:.06em;text-transform:uppercase}
-.gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(199,0,37,.4);background:none;color:#C70025;padding:2px 8px;cursor:pointer;transition:all .15s}
-.gantt-today-btn:hover{background:rgba(199,0,37,.1)}
+.gantt-today-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(42,109,190,.45);background:none;color:#2A6DBE;padding:2px 10px;cursor:pointer;transition:all .15s;border-radius:2px}
+.gantt-today-btn:hover{background:rgba(42,109,190,.1)}
+.gantt-today-btn.active{background:#2A6DBE;color:#fff;border-color:#2A6DBE}
 .gantt-header-timeline{flex:1;position:relative;overflow:hidden}
-.gantt-week-lbl{position:absolute;font-family:'Source Code Pro',monospace;font-size:9px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:10px;z-index:2;pointer-events:none}
+.gantt-week-lbl{position:absolute;font-family:'Source Code Pro',monospace;font-size:8px;font-weight:500;color:#6B7280;white-space:nowrap;transform:translateX(-50%);top:4px;z-index:2;pointer-events:none;display:flex;flex-direction:column;align-items:center;line-height:1.3}
+.gantt-tick-l1{font-size:8px;opacity:.7}
+.gantt-tick-l2{font-size:10px;font-weight:700}
 .gantt-week-lbl.today-week{color:#C70025;font-weight:700}
+.gantt-week-lbl.today-week .gantt-tick-l2{color:#C70025}
 
 /* Timeline content area */
 .gantt-timeline-area{flex:1;position:relative}
@@ -327,7 +331,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
 .gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
-.gantt-swipe-wrap{position:relative}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;right:0;top:0;bottom:0;width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
+.gantt-swipe-wrap{position:relative}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;left:0;top:0;bottom:0;width:auto;min-width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
 .gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
@@ -392,12 +396,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-panel-toggle input:checked~.gantt-panel-toggle-thumb{left:21px}
 
 /* Open panel button */
-.gantt-open-panel-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;cursor:pointer;transition:all .15s}
-.gantt-open-panel-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
-
+.gantt-open-panel-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(42,109,190,.45);background:none;color:#2A6DBE;padding:2px 10px;cursor:pointer;transition:all .15s;border-radius:2px}
+.gantt-open-panel-btn:hover{background:rgba(42,109,190,.1)}
+.gantt-toolbar{display:flex;align-items:center;gap:8px;padding:6px 32px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:wrap}
 /* Toolbar strip above chart */
 .gantt-toolbar{display:flex;align-items:center;gap:8px;padding:8px 32px;border-bottom:1px solid var(--separator);background:var(--page-bg);flex-wrap:wrap}
 .gantt-toolbar-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-right:auto}
+.gantt-toolbar-sep{width:1px;height:16px;background:var(--separator);margin:0 4px}
 
 /* ── REFERENCE / STYLE / DIST / PASSES / OUTREACH ── */
 .ref-section{padding:20px 32px}
@@ -954,9 +959,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div class="gantt-toolbar">
       <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
       <button class="gantt-today-btn" onclick="ganttScrollToday()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Today</button>
-      <button class="gantt-today-btn gantt-scale-btn active" id="gscale-weeks" onclick="setGanttScale('weeks')">Wks</button>
-      <button class="gantt-today-btn gantt-scale-btn" id="gscale-days" onclick="setGanttScale('days')">Days</button>
-      <button class="gantt-today-btn gantt-scale-btn" id="gscale-months" onclick="setGanttScale('months')">Mos</button>
+      <button class="gantt-today-btn" id="gscale-btn" onclick="cycleGanttScale()" title="Cycle scale">Scale: <span id="gscale-label">Wks</span></button>
+      <div class="gantt-toolbar-sep"></div>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
       <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
@@ -1356,7 +1360,7 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-12T19:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-13T10:30:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION = 'v302u2'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
@@ -2415,6 +2419,7 @@ function xpct(ds){
 }
 
 function renderGantt(){
+  const labelW=ganttGetLabelW(); // live value — respects column resize
   const phases=roadPhases();
   const today=todayStr();
 
@@ -2450,12 +2455,22 @@ function renderGantt(){
       const px=Math.round(frac*ganttTotalPx);
       if(frac>=-0.01&&frac<=1.01){
         const ds=tc.toISOString().slice(0,10);
-        const label=tickDays===1
-          ?tc.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})
-          :tickDays===7
-            ?tc.toLocaleDateString('en-US',{month:'short',day:'numeric'})
-            :tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
-        weeks.push({px,label,isToday:ds===today});
+        // Two-line labels: line1 = context, line2 = primary tick
+        let line1,line2;
+        if(tickDays===30){
+          // Months view: line1=year, line2=month abbr
+          line1=tc.toLocaleDateString('en-US',{year:'numeric'});
+          line2=tc.toLocaleDateString('en-US',{month:'short'});
+        } else if(tickDays===7){
+          // Weeks view: line1=month+year, line2=day number
+          line1=tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+          line2=String(tc.getDate());
+        } else {
+          // Days view: line1=month+year, line2=day number
+          line1=tc.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+          line2=String(tc.getDate());
+        }
+        weeks.push({px,line1,line2,isToday:ds===today});
       }
       if(tickDays===30)tc.setMonth(tc.getMonth()+1);
       else tc.setDate(tc.getDate()+tickDays);
@@ -2473,9 +2488,9 @@ function renderGantt(){
     <div class="gantt-col-resize-handle" id="gantt-col-resize" title="Drag to resize column" onmousedown="ganttColResizeStart(event)" ontouchstart="ganttColResizeTouchStart(event)"></div>
   </div>`;
   html+=`<div class="gantt-header-timeline" id="gantt-header-timeline" style="position:relative">`;
-  // week labels
+  // week labels — two lines
   weeks.forEach(w=>{
-    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.px}px">${w.label}</div>`;
+    html+=`<div class="gantt-week-lbl${w.isToday?' today-week':''}" style="left:${w.px}px"><span class="gantt-tick-l1">${w.line1}</span><span class="gantt-tick-l2">${w.line2}</span></div>`;
   });
   // today line in header
   if(todayPx!==null)html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPx}px;width:2px;background:#C70025;opacity:.5;pointer-events:none;z-index:3"></div>`;
@@ -2517,9 +2532,9 @@ function renderGantt(){
     html+=`<div class="gantt-phase-track">`;
     // Week dotted lines
     weeks.forEach(w=>{
-      html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`;
+      html+=`<div class="gantt-week-line" style="left:${w.px+labelW}px;height:100%"></div>`;
     });
-    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+    if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+labelW}px"></div>`;
     // Phase bar
     if(range.start&&range.end){
       const lp=xpx(range.start),rp=xpx(range.end);
@@ -2528,7 +2543,7 @@ function renderGantt(){
         const fillPct=prog.pct;
         const fillColor=isAllDone?'#1D6B2A':color;
         const phBarDate=range.end?(isAllDone?'Done':'Target: '+fmtDate(range.end)):'';
-        html+=`<div class="gantt-ph-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+        html+=`<div class="gantt-ph-bar" style="left:${lp+labelW}px;width:${bw}px;border-color:${color}55" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
         html+=`<div class="gantt-ph-bar-bg" style="background:${color};opacity:.18"></div>`;
         html+=`<div class="gantt-ph-bar-fill" style="background:${fillColor};opacity:.85;width:${fillPct}%"></div>`;
         html+=`</div>`;
@@ -2546,9 +2561,9 @@ function renderGantt(){
         const isStandalone=g.standalone===true;
         if(isStandalone){
           // Larger diamond for standalone gates
-          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-standalone-gate${g.met?' met':''}" style="left:${gp+labelW}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         } else {
-          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
+          html+=`<div class="gantt-gate-diamond${g.met?' met':''}" style="left:${gp+labelW}px;--ph-color:${color};border-color:${color};${g.met?'background:'+color:''}" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(g.met&&g.metDate?'Met: '+fmtDate(g.metDate):disp?'Target: '+fmtDate(disp):'')}')" onmousemove="ttMove(event)" onmouseleave="ttHide()" title="${tip}"></div>`;
         }
       });
       // Also show inherited gates from tasks that have isGate=true
@@ -2556,7 +2571,7 @@ function renderGantt(){
         const gp=xpx(s.targetEnd);
         if(gp===null)return;
         const tip=esc(s.label)+(s.targetEnd?' · Target: '+fmtDate(s.targetEnd):'');
-        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp+GANTT_LABEL_W}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
+        html+=`<div class="gantt-gate-diamond${s.done?' met':''}" style="left:${gp+labelW}px;--ph-color:${color};border-color:${color};${s.done?'background:'+color:''};opacity:.75" title="${tip}" onclick="toggleStep('${s.id}')"></div>`;
       });
     }
     html+=`</div>`; // end track
@@ -2577,10 +2592,10 @@ function renderGantt(){
           html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
           html+=`</div>`;
           html+=`<div class="gantt-gate-task-track">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+labelW}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+labelW}px"></div>`;
           const gp=xpx(s.targetEnd||s.targetStart||'');
-          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
+          if(gp!==null)html+=`<div style="position:absolute;top:50%;left:${gp+labelW}px;transform:translateY(-50%) translateX(-6px) rotate(45deg);width:12px;height:12px;border:2px solid ${color};background:${s.done?color:'#fff'};z-index:4"></div>`;
           html+=`</div></div>`;
         } else {
           // Regular task row
@@ -2598,14 +2613,14 @@ function renderGantt(){
           html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();moveStep('${s.id}',1)" title="Move down">&#9660;</button>`;
           html+=`</div>`;
           html+=`<div class="gantt-task-track">`;
-          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+          weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+labelW}px;height:100%"></div>`);
+          if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+labelW}px"></div>`;
           if(s.targetStart&&s.targetEnd){
             const lp=xpx(s.targetStart),rp=xpx(s.targetEnd);
             if(lp!==null&&rp!==null){
               const bw=Math.max(2,rp-lp);
               const tBarDate=s.done&&s.completedDate?'Done: '+fmtDate(s.completedDate):'Target: '+fmtDate(s.targetEnd);
-              html+=`<div class="gantt-task-bar" style="left:${lp+GANTT_LABEL_W}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
+              html+=`<div class="gantt-task-bar" style="left:${lp+labelW}px;width:${bw}px" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(tBarDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
               html+=`<div class="gantt-task-bar-bg" style="background:${color}"></div>`;
               html+=`<div class="gantt-task-bar-fill" style="background:${color};width:${s.done?'100':'50'}%"></div>`;
               html+=`</div>`;
@@ -2613,7 +2628,7 @@ function renderGantt(){
           } else if(s.targetEnd){
             const ep=xpx(s.targetEnd);
             if(ep!==null){
-              html+=`<div style="position:absolute;top:50%;left:${ep+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
+              html+=`<div style="position:absolute;top:50%;left:${ep+labelW}px;transform:translateY(-50%) translateX(-4px);width:8px;height:8px;background:${color};border-radius:50%;z-index:4"></div>`;
             }
           }
           html+=`</div></div></div></div>`; // end task-row + swipe-inner + swipe-wrap
@@ -2633,15 +2648,15 @@ function renderGantt(){
         html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
         html+=`</div>`;
         html+=`<div class="gantt-gate-task-track">`;
-        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+GANTT_LABEL_W}px;height:100%"></div>`);
-        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+GANTT_LABEL_W}px"></div>`;
+        weeks.forEach(w=>html+=`<div class="gantt-week-line" style="left:${w.px+labelW}px;height:100%"></div>`);
+        if(todayPx!==null)html+=`<div class="gantt-today-line-v" style="left:${todayPx+labelW}px"></div>`;
         const gp=xpx(g.met&&g.metDate?g.metDate:disp);
         if(gp!==null){
           const gTip=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
-          html+=`<div style="position:absolute;top:50%;left:${gp+GANTT_LABEL_W}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
+          html+=`<div style="position:absolute;top:50%;left:${gp+labelW}px;transform:translateY(-50%) translateX(-7px) rotate(45deg);width:14px;height:14px;border:2.5px solid ${color};${g.met?'background:'+color:''};z-index:4;cursor:pointer" onclick="toggleGate('${g.id}')" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(gTip)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()"></div>`;
           const lbl=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?fmtDate(disp):'');
           if(lbl){
-            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+GANTT_LABEL_W+10}px`;
+            const anchor=gp>ganttTotalPx*0.65?`right:${ganttTotalPx-gp}px;text-align:right`:`left:${gp+labelW+10}px`;
             html+=`<div style="position:absolute;top:50%;transform:translateY(-50%);${anchor};font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;color:${g.met?'var(--done-fg)':color};white-space:nowrap;pointer-events:none;z-index:5">${esc(lbl)}</div>`;
           }
         }
@@ -2659,7 +2674,7 @@ function renderGantt(){
   // Write to DOM
   const inner=document.getElementById('gantt-scroll-inner');
   if(!inner)return;
-  inner.style.minWidth=(GANTT_LABEL_W+ganttTotalPx+40)+'px';
+  inner.style.minWidth=(labelW+ganttTotalPx+40)+'px';
   inner.innerHTML=html;
 
   // Update summary
@@ -2682,8 +2697,9 @@ function ganttScrollToday(){
   if(!outer||!ganttTimelinePadMin||!ganttTimelineSpan)return;
   const tp=xpx(todayStr());
   if(tp===null)return;
-  // Scroll so today line sits exactly 4px past the label column right edge
-  outer.scrollLeft=Math.max(0,tp+ganttGetLabelW()-4);
+  // tp is timeline-relative px. The scroll container scrolls the whole inner.
+  // Label column is sticky so doesn't scroll. To put today ~80px into visible timeline: scrollLeft = tp - 80
+  outer.scrollLeft=Math.max(0,tp-80);
 }
 
 /* ── GANTT COLLAPSE LEVELS ── */
@@ -2704,14 +2720,28 @@ function setRoadLevel(level){
   renderGantt();
 }
 
+let _ganttScale='weeks';
+function cycleGanttScale(){
+  const order=['weeks','days','months'];
+  const labels={weeks:'Wks',days:'Days',months:'Mos'};
+  const idx=order.indexOf(_ganttScale);
+  _ganttScale=order[(idx+1)%order.length];
+  if(_ganttScale==='days')GANTT_PX_PER_DAY=14;
+  else if(_ganttScale==='weeks')GANTT_PX_PER_DAY=4;
+  else GANTT_PX_PER_DAY=1.2;
+  const lbl=document.getElementById('gscale-label');
+  if(lbl)lbl.textContent=labels[_ganttScale];
+  renderGantt();
+  setTimeout(()=>ganttScrollToday(),80);
+}
 function setGanttScale(scale){
+  _ganttScale=scale;
   if(scale==='days')GANTT_PX_PER_DAY=14;
   else if(scale==='weeks')GANTT_PX_PER_DAY=4;
   else if(scale==='months')GANTT_PX_PER_DAY=1.2;
-  ['days','weeks','months'].forEach(s=>{
-    const btn=document.getElementById('gscale-'+s);
-    if(btn)btn.classList.toggle('active',s===scale);
-  });
+  const labels={weeks:'Wks',days:'Days',months:'Mos'};
+  const lbl=document.getElementById('gscale-label');
+  if(lbl)lbl.textContent=labels[scale]||scale;
   renderGantt();
   setTimeout(()=>ganttScrollToday(),80);
 }
@@ -3054,7 +3084,7 @@ function swipeMove(e){
     if(Math.abs(dx)>8)_sw.dir=dx>0?'r':'l';
     else return;
   }
-  e.preventDefault();
+  // Note: no e.preventDefault() — listener is passive to allow normal scroll
   _sw.dx=dx;
   const inner=_sw.wrap.querySelector('.gantt-swipe-inner');
   const revL=_sw.wrap.querySelector('.gantt-swipe-reveal-l');
@@ -3091,7 +3121,11 @@ function swipeShowAction(wrap,kind,id,action){
   const btn=document.createElement('div');
   btn.className='gantt-swipe-delete-btn';
   btn.style.background=action==='duplicate'?'#2070C8':'#D43540';
-  btn.textContent=action==='duplicate'?'DUPLICATE':'DELETE';
+  // Place on LEFT edge of label column so it's always visible
+  btn.style.left='0';
+  btn.style.right='auto';
+  btn.style.width=ganttGetLabelW()+'px';
+  btn.textContent=action==='duplicate'?'TAP TO DUPLICATE':'TAP TO DELETE';
   btn.onclick=(e)=>{
     e.stopPropagation();
     btn.remove();
@@ -3117,8 +3151,9 @@ function initSwipeListeners(){
     if(wrap)swipeStart(e,wrap);
   },{passive:true});
   outer.addEventListener('touchmove',e=>{
-    if(_sw)swipeMove(e);
-  },{passive:false});
+    // Only intercept when an active swipe is in progress (label zone only)
+    if(_sw){swipeMove(e);}
+  },{passive:true}); // passive:true so scroll is never blocked by JS
   outer.addEventListener('touchend',e=>{
     if(_sw)swipeEnd(e);
   },{passive:true});
