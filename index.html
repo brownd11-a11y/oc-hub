@@ -5013,6 +5013,26 @@ function threadOverlayRenderBody() {
     }).join('');
   }
 }
+function threadOverlayRenderActions() {
+  const bar = document.getElementById('tov-actions'); if (!bar) return;
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  const s = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer';
+  const sd = s + ';border-color:#c00;color:#c00';
+  bar.innerHTML =
+    `<button style="${s}" onclick="tovAct('done')">` + (it.done ? 'Mark open' : 'Mark done') + `</button>` +
+    `<button style="${s}" onclick="tovAct('defer')">` + (it.deferred ? 'Undefer' : 'Defer') + `</button>` +
+    `<button style="${s}" onclick="tovAct('edit')">Edit</button>` +
+    `<button style="${s}" onclick="tovAct('mtr')">&#8594; Roadmap</button>` +
+    `<button style="${sd}" onclick="tovAct('del')">Delete</button>`;
+}
+function tovAct(action) {
+  const id = threadOverlayItemId; if (!id) return;
+  if (action === 'done')  { togDone(id);  threadOverlayRenderActions(); }
+  else if (action === 'defer') { togDefer(id); threadOverlayRenderActions(); }
+  else if (action === 'edit')  { threadOverlayClose(); startEdit(id); }
+  else if (action === 'mtr')   { threadOverlayClose(); mtrOpen(id); }
+  else if (action === 'del')   { threadOverlayClose(); delItem(id); }
+}
 function threadOverlayOpen(itemId) {
   const it = S.items.find(i => i.id === itemId); if (!it) return;
   threadOverlayItemId = itemId;
@@ -5023,6 +5043,7 @@ function threadOverlayOpen(itemId) {
   if (ta) { ta.value = ''; ta.style.height = 'auto'; }
   // Default mode: dave for fordave items, note for everything else
   threadOverlaySetMode(it.type === 'fordave' ? 'dave' : 'note');
+  threadOverlayRenderActions();
   threadOverlayRenderBody();
   ov.style.display = 'flex';
   setTimeout(() => { if (ta) ta.focus(); }, 80);
@@ -5517,13 +5538,16 @@ function ingestLeads(newLeads) {
 
 <!-- FULL-SCREEN THREAD OVERLAY -->
 <div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);flex-direction:column">
-  <!-- Top bar: item title + close -->
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0;gap:14px">
-    <div style="flex:1;min-width:0">
-      <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px">Item</div>
-      <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word"></div>
+  <!-- Top bar: item title + close + actions -->
+  <div style="border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 10px;gap:14px">
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px">Item</div>
+        <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word"></div>
+      </div>
+      <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
     </div>
-    <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
+    <div id="tov-actions" style="display:flex;gap:6px;align-items:center;padding:0 18px 12px;flex-wrap:wrap"></div>
   </div>
   <!-- Reply / note form -->
   <div style="padding:12px 18px 14px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
