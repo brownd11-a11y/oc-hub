@@ -829,9 +829,18 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .inp-controls-row{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--separator);padding-top:9px}
 
 /* ── DIALOGUE THREAD ── */
-.item.flow-item:not(.done){background:var(--forclaude-bg);border-left-color:var(--forclaude-border)}
-.item.needs-response:not(.done){background:var(--fordave-bg);border-left-color:var(--fordave-border)}
-.flow-badge{display:inline-flex;align-items:center;gap:3px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.item.flow-item:not(.done){background:#ddeeff;border-left-color:var(--forclaude-border)}
+.item.flow-item:not(.done) .ihead{background:#ddeeff}
+.item.flow-item:not(.done) .ihead:hover{background:#cce4ff}
+.item.needs-response:not(.done){background:#fff3cc;border-left-color:var(--fordave-border)}
+.item.needs-response:not(.done) .ihead{background:#fff3cc}
+.item.needs-response:not(.done) .ihead:hover{background:#ffe9a0}
+.item.fordave:not(.done){background:#fff3cc;border-left-color:var(--fordave-border)}
+.item.fordave:not(.done) .ihead{background:#fff3cc}
+.item.fordave:not(.done) .ihead:hover{background:#ffe9a0}
+.idlg-ct{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;letter-spacing:.04em;background:var(--separator);color:var(--label-secondary);padding:1px 5px;border-radius:8px;line-height:1.6;flex-shrink:0}
+.item.flow-item:not(.done) .idlg-ct{background:rgba(32,112,200,0.18);color:#1a4a90}
+.item.needs-response:not(.done) .idlg-ct,.item.fordave:not(.done) .idlg-ct{background:rgba(212,160,32,0.25);color:#7a5000}
 .flow-badge.for-claude{background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);border:1px solid var(--forclaude-border)}
 .flow-badge.for-dave{background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);border:1px solid var(--fordave-border)}
 .dialogue-thread{padding:10px 14px;border-top:1px solid var(--separator);display:flex;flex-direction:column;gap:8px}
@@ -2625,6 +2634,7 @@ function rlist(){
         <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
         <div class="imeta">
           <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          ${dlgCheck.length>0?`<span class="idlg-ct" title="${dlgCheck.length} thread entr${dlgCheck.length===1?'y':'ies'}">${dlgCheck.length}</span>`:''}
           <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
           ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
           ${it.type==='fordave'
