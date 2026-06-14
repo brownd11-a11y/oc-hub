@@ -1096,7 +1096,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <input id="input-url" type="text" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" />
         </div>
       </div>
-      <button class="inp-add" onclick="addItem()" title="Add">+</button>
+      <button class="inp-add" onclick="addItem()" title="Add item (Cmd/Ctrl+Enter)">+</button>
     </div>
     <!-- Reminder due date row (hidden until reminder toggled on) -->
     <div class="rem-due-row" id="rem-due-row" style="display:none">
@@ -1516,14 +1516,23 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <h3 class="help-h3">Filters</h3>
         <ul class="help-ul">
           <li>Filter by <strong>status</strong> (Open, Deferred, Done, Priority) using the chips at the top.</li>
-          <li>Filter by <strong>tag</strong> or <strong>type</strong> using the dropdowns on the right.</li>
+          <li>Filter by <strong>tag</strong> or <strong>type</strong> using the dropdowns on the right. Each type shows its open item count.</li>
           <li><strong>Reset</strong> clears all filters and returns to the default Open view.</li>
         </ul>
-        <h3 class="help-h3">To Claude threads</h3>
+        <h3 class="help-h3">Item overlay</h3>
         <ul class="help-ul">
-          <li>Toggle <em>To Claude</em> before adding a note to create a dialogue thread.</li>
-          <li>Click a thread item to open the full-screen thread view with reply form.</li>
-          <li>Press <strong>Escape</strong> or click <em>Close</em> to exit the thread overlay.</li>
+          <li>Click any item to open the full-screen overlay showing the item text, action buttons, and thread.</li>
+          <li>Use <strong>Dave reply</strong> / <strong>Plain note</strong> toggle to set the entry type before sending.</li>
+          <li>Thread entries are banded: <strong style="color:#7a5a00">yellow = Dave</strong>, <strong style="color:#2040a0">blue = Claude</strong>, white = plain note. Newest first.</li>
+          <li>Press <strong>Escape</strong> or click <em>Close</em> to exit the overlay.</li>
+        </ul>
+        <h3 class="help-h3">Keyboard shortcuts</h3>
+        <ul class="help-ul">
+          <li><strong>Cmd/Ctrl+Enter</strong> — Save new item (when typing in the note input field).</li>
+          <li><strong>Cmd/Ctrl+Enter</strong> — Send reply or note (when typing in the overlay reply field).</li>
+          <li><strong>E</strong> — Edit the current item (overlay must be open, or last item clicked).</li>
+          <li><strong>D</strong> — Toggle done on the current item (overlay open or last clicked).</li>
+          <li><strong>Escape</strong> — Close the overlay or dismiss search results.</li>
         </ul>
       </div></div>
 
@@ -2758,9 +2767,30 @@ function cyclePriority(){
   else if(inputPriLevel===1){btn.className='pri-cycle med';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Medium';}
   else{btn.className='pri-cycle high';btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> High';}
 }
-function addItem(){
+const addItem=function(){
   const ta=document.getElementById('input-ta');
   const txt=(ta.value||'').trim();if(!txt)return;
+  // Roadmap type — add to S.road instead of S.items
+  const typeEl=document.getElementById('input-type');
+  if(typeEl&&typeEl.value==='roadmap'){
+    const label=txt.split('\n')[0].substring(0,80);
+    const phaseId=document.getElementById('rmst-phase-sel')?.value||null;
+    const newId='r_'+Date.now();
+    const rmStartVal=(document.getElementById('rmst-start')?.value||'').trim();
+    const rmEndVal=(document.getElementById('rmst-end')?.value||'').trim();
+    const roadItem={id:newId,kind:rmSubtype,label,note:txt.length>80?txt:'',
+      phase:(rmSubtype==='step'||rmSubtype==='gate')?(phaseId||null):undefined,
+      color:rmSubtype==='phase'?'#2070C8':undefined,open:rmSubtype==='phase'?true:undefined,
+      num:rmSubtype==='phase'?((S.road||[]).filter(r=>r.kind==='phase').length+1):undefined,
+      targetStart:rmStartVal,targetEnd:rmEndVal,completedDate:'',metDate:'',done:false};
+    if(!S.road)S.road=[];S.road.push(roadItem);
+    ta.value='';
+    const _dsi=document.getElementById('rmst-start');if(_dsi)_dsi.value='';
+    const _dei=document.getElementById('rmst-end');if(_dei)_dei.value='';
+    typeEl.value='note';
+    document.getElementById('roadmap-subtype-row').style.display='none';
+    save();render();return;
+  }
   // Determine type
   let type=document.getElementById('input-type').value||'note';
   if(inputIsReminder)type='reminder';
@@ -5036,6 +5066,7 @@ function tovAct(action) {
 function threadOverlayOpen(itemId) {
   const it = S.items.find(i => i.id === itemId); if (!it) return;
   threadOverlayItemId = itemId;
+  _lastItemId = itemId;
   const ov = document.getElementById('thread-overlay');
   const title = document.getElementById('thread-overlay-title');
   const ta = document.getElementById('thread-reply-ta');
@@ -5268,43 +5299,6 @@ function renderRoadmapNotes(container) {
     + 'font-size:11px;color:var(--label-secondary);text-align:center">No roadmap items match current filter.</div>';
 }
 
-/* ── ROADMAP TYPE — ADDITEM EXTENSION ── */
-const _origAddItem = addItem;
-// Patch addItem to handle roadmap type
-function addItem() {
-  const typeEl = document.getElementById('input-type');
-  if (typeEl && typeEl.value === 'roadmap') {
-    const ta = document.getElementById('input-ta');
-    const txt = (ta.value || '').trim(); if (!txt) return;
-    const label = txt.split('\n')[0].substring(0, 80);
-    const phaseId = document.getElementById('rmst-phase-sel')?.value || null;
-    const newId = 'r_' + Date.now();
-    const rmStartVal = (document.getElementById('rmst-start')?.value||'').trim();
-    const rmEndVal   = (document.getElementById('rmst-end')?.value||'').trim();
-    const roadItem = {
-      id: newId,
-      kind: rmSubtype,
-      label,
-      note: txt.length > 80 ? txt : '',
-      phase: (rmSubtype === 'step' || rmSubtype === 'gate') ? (phaseId || null) : undefined,
-      color: rmSubtype === 'phase' ? '#2070C8' : undefined,
-      open: rmSubtype === 'phase' ? true : undefined,
-      num: rmSubtype === 'phase' ? ((S.road||[]).filter(r=>r.kind==='phase').length + 1) : undefined,
-      targetStart: rmStartVal, targetEnd: rmEndVal, completedDate: '', metDate: '',
-      done: false
-    };
-    if (!S.road) S.road = [];
-    S.road.push(roadItem);
-    ta.value = '';
-    const _dsi = document.getElementById('rmst-start'); if(_dsi) _dsi.value='';
-    const _dei = document.getElementById('rmst-end');   if(_dei) _dei.value='';
-    typeEl.value = 'note';
-    document.getElementById('roadmap-subtype-row').style.display = 'none';
-    save(); render();
-    return;
-  }
-  _origAddItem();
-}
 
 
 function itemHeadClick(id) {
@@ -5313,14 +5307,28 @@ function itemHeadClick(id) {
 }
 
 /* ── ESCAPE TO CLOSE THREAD OVERLAY ── */
+let _lastItemId = null; // tracks last overlay-opened item for keyboard shortcuts
 document.addEventListener('keydown', function(e) {
+  // Don't fire shortcuts when typing in any input/textarea
+  const tag = (document.activeElement||{}).tagName;
+  const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
   if (e.key === 'Escape') {
     const ov = document.getElementById('thread-overlay');
-    if (ov && ov.style.display === 'flex') { threadOverlayClose(); }
+    if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
   }
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.activeElement === document.getElementById('thread-reply-ta')) {
     e.preventDefault();
     threadOverlaySend();
+    return;
+  }
+  if (!inInput) {
+    const targetId = threadOverlayItemId || _lastItemId;
+    if (e.key === 'e' || e.key === 'E') {
+      if (targetId) { e.preventDefault(); threadOverlayClose(); startEdit(targetId); }
+    }
+    if (e.key === 'd' || e.key === 'D') {
+      if (targetId) { e.preventDefault(); togDone(targetId); if (threadOverlayItemId) threadOverlayRenderActions(); }
+    }
   }
 });
 
