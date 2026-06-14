@@ -122,9 +122,9 @@ body::before{display:none}
 .help-sidebar{background:rgba(255,255,255,0.80) !important}
 .help-fn-card{background:rgba(255,255,255,0.78) !important}
 .help-device-row{background:rgba(255,255,255,0.78) !important}
-.rm-phase-header{background:rgba(255,255,255,0.80) !important}
-.rm-item-row{background:rgba(255,255,255,0.70) !important}
-.rm-detail-panel{background:rgba(255,255,255,0.88) !important}
+.rm-phase-header{background:rgba(255,255,255,0.92) !important}
+.rm-item-row{background:rgba(255,255,255,0.88) !important}
+.rm-detail-panel{background:rgba(255,255,255,0.95) !important}
 .gantt-row-label{background:rgba(255,255,255,0.75) !important}
 .phase-label-cell{background:rgba(255,255,255,0.80) !important}
 .gantt-header-label{background:rgba(255,255,255,0.82) !important}
@@ -905,8 +905,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .tov-ts{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)}
 .tov-text{font-family:'Libre Baskerville',Georgia,serif;font-size:14px;color:var(--label-primary);white-space:pre-wrap}
 /* Roadmap notes view */
-.rm-phase-header{padding:10px 14px 6px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;border-left:4px solid var(--accent);margin:8px 0 2px;background:var(--input-bg);border-radius:0 6px 6px 0}
-.rm-item-row{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 22px;border-bottom:1px solid var(--separator);font-family:'Libre Baskerville',Georgia,serif;font-size:13px;color:var(--label-primary)}
+.rm-phase-header{padding:10px 14px 6px;background:rgba(255,255,255,0.92);font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;border-left:4px solid var(--accent);margin:8px 0 2px;background:var(--input-bg);border-radius:0 6px 6px 0}
+.rm-item-row{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 22px;border-bottom:1px solid var(--separator);background:rgba(255,255,255,0.88);font-family:'Libre Baskerville',Georgia,serif;font-size:13px;color:var(--label-primary)}
 .rm-item-row.is-gate{font-style:italic;color:var(--label-secondary)}
 .rm-item-row.done{text-decoration:line-through;opacity:.5}
 .rm-kind-badge{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0}
@@ -2093,6 +2093,9 @@ async function loadFromGitHub() {
 
   // Write-through cache to localStorage
   save();
+  // Reset roadmap notes init so new phases get auto-collapsed
+  if (typeof _rmInitialized !== 'undefined') _rmInitialized = false;
+  if (typeof _rmCollapsed !== 'undefined') _rmCollapsed = {};
   render();
   // Reinitialize outreach and refs if present in loaded data
   try { if(typeof renderOT==='function') renderOT(); } catch(e){}
@@ -5011,6 +5014,27 @@ function populateRmPhaseSel() {
 function renderRoadmapNotes(container) {
   const rmCtrl = document.getElementById('rm-collapse-controls');
   if (rmCtrl) rmCtrl.style.display = 'flex';
+
+  // Sync any road items that don't yet have a mirror rm_ item in S.items
+  const existingRmIds = new Set((S.items||[]).filter(i=>i.type==='roadmap').map(i=>i.rmId));
+  const phaseLabels = {};
+  (S.road||[]).forEach(r=>{ if(r.kind==='phase') phaseLabels[r.id]=r.label||''; });
+  (S.road||[]).forEach(r => {
+    if (existingRmIds.has(r.id)) return;
+    const phLabel = r.phase ? (phaseLabels[r.phase]||'') : '';
+    const text = r.label + (phLabel ? ' ['+phLabel+']' : '');
+    const mirror = {
+      id: 'rm_'+r.id, type:'roadmap', rmKind:r.kind, rmId:r.id,
+      rmPhaseId: r.phase||null, rmColor: r.color||null,
+      text, done:!!(r.done||r.completedDate),
+      priority:false, memFlag:false, tag:null, deferred:false,
+      answer:null, dialogue:null,
+      created:new Date().toISOString(), dueDate:r.targetEnd||'',
+      completedDate:r.completedDate||'', itemUrl:null
+    };
+    S.items.push(mirror);
+    existingRmIds.add(r.id);
+  });
 
   const allRm = (S.items || []).filter(it => it.type === 'roadmap');
 
