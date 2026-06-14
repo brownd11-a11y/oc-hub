@@ -966,6 +966,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   .help-nav{padding:5px 10px;font-size:10px;flex-shrink:0}
   .help-content{padding:16px}
 }
+
+/* ── GMAIL LEADS PANEL ── */
+.leads-panel{background:rgba(255,255,255,0.93);border:1px solid var(--separator);border-radius:10px;margin-bottom:18px;overflow:hidden}
+.leads-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(242,242,247,0.80);border-bottom:1px solid var(--separator)}
+.leads-title{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--label-primary);flex-shrink:0}
+.leads-subtitle{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);flex:1}
+.leads-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--accent);flex-shrink:0}
+.leads-list{display:flex;flex-direction:column}
+.leads-empty{padding:14px 16px;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);letter-spacing:.06em;text-align:center}
+.lead-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--separator);cursor:pointer;transition:background .15s;text-decoration:none}
+.lead-row:hover{background:rgba(0,0,0,0.03)}
+.lead-row:last-child{border-bottom:none}
+.lead-badge{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:4px;flex-shrink:0}
+.lead-badge.new{background:rgba(52,120,246,0.12);color:#3478f6}
+.lead-badge.read{background:rgba(0,0,0,0.06);color:var(--label-secondary)}
+.lead-from{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-primary);font-weight:600;flex-shrink:0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lead-subject{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lead-date{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);flex-shrink:0}
+.lead-to{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1246,7 +1265,20 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- OUTREACH -->
 <div class="panel" id="panel-outreach"><div class="ot-wrap">
-  <div style="padding:0 0 10px 0"><button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button></div>
+
+  <!-- GMAIL LEADS PANEL -->
+  <div class="leads-panel" id="leads-panel">
+    <div class="leads-header">
+      <span class="leads-title">&#9993; Inbox Leads</span>
+      <span class="leads-subtitle" id="leads-subtitle">info@over-classified.com &middot; info@vigiliapress.com</span>
+      <span class="leads-count" id="leads-count"></span>
+    </div>
+    <div id="leads-list" class="leads-list">
+      <div class="leads-empty">No leads loaded. Paste lead data from Claude to populate.</div>
+    </div>
+  </div>
+
+  <div style="padding:10px 0 10px 0"><button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button></div>
   <div class="ot-add">
     <div class="ot-add-title">Add Contact</div>
     <div class="ot-form">
@@ -1526,10 +1558,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <p class="help-p">Settings lets you customize how the hub behaves for your project. Changes are saved to localStorage immediately and pushed to GitHub when you sync with Claude.</p>
 
         <h3 class="help-h3">How sync works</h3>
-        <p class="help-p">The hub is a single HTML file in a private GitHub repository. Data lives in two places: <strong>localStorage</strong> on the current device, and the <strong>GitHub file</strong> after a sync. Tap <strong>Update Claude</strong> to copy a JSON snapshot to the clipboard, paste into Claude, and Claude pushes the updated file back to GitHub. Refreshing on any device gives you the latest version.</p>
+        <p class="help-p">The hub now uses a <strong>separate data.json file</strong> on GitHub as the single source of truth. Every time the hub loads on any device, it fetches the latest data.json from GitHub — so iPad, Mac, and any other device are always in sync automatically, with no manual intervention.</p>
+        <p class="help-p">localStorage on your device acts as an instant-load cache. On startup the hub renders from localStorage immediately (no delay), then silently checks GitHub in the background. If GitHub has newer data, the UI updates automatically.</p>
+        <h3 class="help-h3">The Update Claude workflow</h3>
+        <p class="help-p">Press <strong>Update Claude</strong> to copy a JSON snapshot of your current data to the clipboard. Paste it into a Claude session — no additional prompt needed. Claude reads the snapshot, applies your changes, and pushes an updated data.json back to GitHub. The next time you load the hub on any device, it gets the new data automatically.</p>
+        <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 18px;margin:14px 0">
+          <p style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">What Claude pushes</p>
+          <p class="help-p" style="margin:0;font-size:13px">Claude pushes <strong>data.json only</strong> (~20KB) for data changes. The app file (index.html, ~300KB) is only updated when interface changes are made. This keeps pushes fast and separates your data from the app code.</p>
+        </div>
         <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 18px;margin:14px 0">
           <p style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">Collision prevention</p>
-          <p class="help-p" style="margin:0;font-size:13px">Avoid running two Claude sessions that both push to GitHub at the same time. One session writing at a time is the safe pattern.</p>
+          <p class="help-p" style="margin:0;font-size:13px">Avoid running two Claude sessions that both push to GitHub simultaneously. One session writing at a time is the safe pattern.</p>
         </div>
 
         <h3 class="help-h3">Project settings</h3>
@@ -4481,6 +4520,11 @@ const RF_SEED=[
   {id:'rfs_03',cat:'book',kw:'Over-classified',url:'https://over-classified.com',desc:'Official book website — Vigilia Press.',lastChecked:'',lastPost:''},
   {id:'rfs_04',cat:'book',kw:'Over-classified',url:'https://vigiliapress.com',desc:'Vigilia Press imprint site.',lastChecked:'',lastPost:''},
   {id:'rfs_05',cat:'book',kw:'Over-classified',url:'https://substack.com/@overclassified',desc:'Over-Classified Substack — Dave\'s author newsletter.',lastChecked:'',lastPost:''},
+  {id:'rfs_fb',cat:'book',kw:'Over-classified',url:'https://www.facebook.com/overclassifiedbook',desc:'Over-Classified on Facebook — author page for book updates and outreach.',lastChecked:'',lastPost:''},
+  {id:'rfs_li',cat:'book',kw:'Over-classified',url:'https://www.linkedin.com/in/davidrbrown',desc:'Dave Brown on LinkedIn — professional profile for publisher and media outreach.',lastChecked:'',lastPost:''},
+  {id:'rfs_x',cat:'book',kw:'Over-classified',url:'https://x.com/overclassified',desc:'Over-Classified on X — author account for UAP disclosure commentary and book promotion.',lastChecked:'',lastPost:''},
+  {id:'rfs_threads',cat:'book',kw:'Over-classified',url:'https://www.threads.net/@overclassified',desc:'Over-Classified on Threads — author account.',lastChecked:'',lastPost:''},
+  {id:'rfs_insta',cat:'book',kw:'Over-classified',url:'https://www.instagram.com/overclassifiedbook',desc:'Over-Classified on Instagram — visual content and book promotion.',lastChecked:'',lastPost:''},
   {id:'rfs_01',cat:'primary',kw:'news',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',desc:'NewsNation full coverage — June 9 2026 UAP Capitol press conference.',lastChecked:'',lastPost:''},
   {id:'rfs_02',cat:'primary',kw:'news',url:'https://www.washingtontimes.com/news/2026/jun/9/',desc:'Washington Times June 9 2026 — primary print citation.',lastChecked:'',lastPost:''},
   {id:'rfs_07',cat:'primary',kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects',desc:'CIA FOIA Reading Room — UAP historical collection. Robertson Panel, Chadwell memos.',lastChecked:'',lastPost:''},
@@ -5251,6 +5295,46 @@ function openHelp(section) {
       const btn = document.querySelector('.help-nav[onclick*="' + section + '"]');
       showHelpTab(section, btn);
     }, 50);
+  }
+}
+
+/* ── GMAIL LEADS ── */
+function renderLeads(leads) {
+  if (!leads || !leads.length) return;
+  const list = document.getElementById('leads-list');
+  const count = document.getElementById('leads-count');
+  if (!list) return;
+  const newCount = leads.filter(l => l.status === 'new').length;
+  if (count) count.textContent = newCount ? newCount + ' new' : leads.length + ' total';
+  list.innerHTML = leads.map(l => {
+    const dateStr = l.date ? l.date.slice(0,10) : '';
+    const toShort = (l.to||'').replace('info@','@').replace('over-classified.com','oc').replace('vigiliapress.com','vp');
+    return '<a class="lead-row" href="' + (l.gmailUrl||'https://mail.google.com') + '" target="_blank">'
+      + '<span class="lead-badge ' + (l.status||'read') + '">' + (l.status||'read') + '</span>'
+      + '<span class="lead-from">' + esc(l.from||'') + '</span>'
+      + '<span class="lead-subject">' + esc(l.subject||'') + '</span>'
+      + '<span class="lead-to">' + esc(toShort) + '</span>'
+      + '<span class="lead-date">' + dateStr + '</span>'
+      + '</a>';
+  }).join('');
+}
+
+function ingestLeads(newLeads) {
+  // Called when leads JSON is pasted via Update Claude flow
+  if (!newLeads || !newLeads.length) return;
+  if (!S.leads) S.leads = [];
+  const existing = new Set(S.leads.map(l => l.id));
+  newLeads.forEach(l => { if (!existing.has(l.id)) S.leads.push(l); });
+  save();
+  renderLeads(S.leads);
+}
+
+// Render leads on outreach tab show
+const _origShowTab = showTab;
+function showTab(t, btn) {
+  _origShowTab(t, btn);
+  if (t === 'outreach' && S.leads && S.leads.length) {
+    setTimeout(() => renderLeads(S.leads), 50);
   }
 }
 </script>
