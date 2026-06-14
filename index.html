@@ -920,6 +920,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .tov-entry.from-dave{background:#fffbf0;border-left:3px solid #d4a020}
 .tov-entry.from-claude{background:#f0f4ff;border-left:3px solid #4060c8}
 .tov-entry.from-note{background:var(--card-bg);border-left:3px solid var(--separator)}
+.tov-entry.tov-original{border-left-width:4px;opacity:.9}
 .tov-meta{display:flex;gap:10px;align-items:center;margin-bottom:6px}
 .tov-from{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .tov-from.dave{color:#7a5a00}
@@ -929,6 +930,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .tov-mode-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tov-ts{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)}
 .tov-text{font-family:'Libre Baskerville',Georgia,serif;font-size:14px;color:var(--label-primary);white-space:pre-wrap}
+.tov-text.collapsed{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.tov-more-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:none;border:none;cursor:pointer;padding:4px 0 0;display:block}
 /* Roadmap notes view */
 .rm-phase-header{padding:10px 14px 6px;background:rgba(255,255,255,0.92);font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;border-left:4px solid var(--accent);margin:8px 0 2px;background:var(--input-bg);border-radius:0 6px 6px 0}
 .rm-item-row{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 22px;border-bottom:1px solid var(--separator);background:rgba(255,255,255,0.88);font-family:'Libre Baskerville',Georgia,serif;font-size:13px;color:var(--label-primary)}
@@ -2183,6 +2186,8 @@ function showTab(t,btn){
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRender();}
   if(t==='outreach'&&S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}
+  // Persist active tab across reloads
+  try{localStorage.setItem('oc_active_tab',t);}catch(e){}
 }
 
 function toggleDeck(e){
@@ -4798,9 +4803,22 @@ function rfRender(){
 load();otLoad();rfLoad();kwLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
 // Async GitHub fetch — silently updates if newer data found
 loadFromGitHub();
+// Collapse all roadmap phases on initial load (display default, not persisted)
+(S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=false; });
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();
+// Restore last active tab from previous session
+(function(){
+  try{
+    const saved = localStorage.getItem('oc_active_tab');
+    const valid = ['roadmap','notes','refs','outreach','help'];
+    if(saved && valid.includes(saved) && saved !== 'roadmap'){
+      const btn = document.querySelector('[onclick*="showTab(\''+saved+'\'"]') || document.getElementById('tab-'+saved);
+      showTab(saved, btn);
+    }
+  }catch(e){}
+})();
 
 /* ══════════════════════════════════════════════════════
    UNIVERSAL SEARCH
@@ -5073,30 +5091,49 @@ function threadOverlayRenderBody() {
   if (!body) return;
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   const dlg = (it.dialogue || []);
-  if (!dlg.length) {
-    body.innerHTML = '<div style="padding:24px 0;font-family:\'Source Code Pro\',monospace;font-size:11px;color:var(--label-secondary);text-align:center;letter-spacing:.06em">No entries yet — add the first reply or note above.</div>';
-  } else {
-    const fmtTs = function(ts) {
-      if (!ts) return '';
-      const d = new Date(ts);
-      if (isNaN(d)) return ts.slice(0,10);
-      return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' ' +
-             d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-    };
-    const fromLabel = function(f) {
-      if (f === 'dave') return 'Dave';
-      if (f === 'claude') return 'Claude';
-      return 'Note';
-    };
-    body.innerHTML = [...dlg].reverse().map(d => {
-      const fr = d.from || 'note';
-      return `<div class="tov-entry from-${fr}">
-        <div class="tov-meta"><span class="tov-from ${fr}">${fromLabel(fr)}</span><span class="tov-ts">${fmtTs(d.ts||'')}</span></div>
-        <div class="tov-text">${esc(d.text)}</div>
-      </div>`;
-    }).join('');
-  }
+  const COLLAPSE_CHARS = 320;
+
+  const fmtTs = function(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    if (isNaN(d)) return ts.slice(0,10);
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' ' +
+           d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+  };
+  const fromLabel = function(f) {
+    if (f === 'dave') return 'Dave';
+    if (f === 'claude') return 'Claude';
+    return 'Note';
+  };
+  const entryHtml = function(text, from, ts, id, isOriginal) {
+    const long = text && text.length > COLLAPSE_CHARS;
+    const cls = ['tov-entry', 'from-'+(from||'note'), isOriginal ? 'tov-original' : ''].filter(Boolean).join(' ');
+    const label = isOriginal ? 'Original' : fromLabel(from);
+    const labelCls = isOriginal ? 'note' : (from||'note');
+    return '<div class="'+cls+'" id="'+id+'">'
+      + '<div class="tov-meta"><span class="tov-from '+labelCls+'">'+label+'</span>'
+      + (ts ? '<span class="tov-ts">'+fmtTs(ts)+'</span>' : '')
+      + '</div>'
+      + '<div class="tov-text'+(long?' collapsed':'')+'" id="'+id+'-text">'+esc(text||'')+'</div>'
+      + (long ? '<button class="tov-more-btn" onclick="tovToggleEntry(&apos;'+id+'&apos;)">&#x25BC; More</button>' : '')
+      + '</div>';
+  };
+
+  // Replies newest-first at top; original item text as seed at bottom
+  const replyEntries = dlg.map((d,i) => entryHtml(d.text, d.from||'note', d.ts, 'tov-dlg-'+i, false));
+  replyEntries.reverse();
+  const originalEntry = entryHtml(it.text||'', 'dave', it.created||'', 'tov-original-entry', true);
+  body.innerHTML = replyEntries.join('') + originalEntry;
 }
+/* ── PER-ENTRY EXPAND/COLLAPSE IN THREAD ── */
+function tovToggleEntry(id) {
+  const textEl = document.getElementById(id + '-text');
+  const btn = document.querySelector('[onclick*="'+id+'"]');
+  if (!textEl || !btn) return;
+  const collapsed = textEl.classList.toggle('collapsed');
+  btn.textContent = collapsed ? '▼ More' : '▲ Less';
+}
+
 let _tovTitleExpanded = false;
 function tovToggleTitleExpand() {
   _tovTitleExpanded = !_tovTitleExpanded;
