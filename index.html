@@ -42,10 +42,31 @@ body.tab-passes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_
 body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_refs.jpg')}
 body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
 body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
-/* Frosted overlay so content stays readable */
-body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72);z-index:0;pointer-events:none}
+/* ── PHOTO BLEED-THROUGH — Safari-safe rgba only, no backdrop-filter ──
+   Background photo at full strength. UI elements use semi-transparent
+   white backgrounds. No backdrop-filter anywhere — it breaks Safari
+   stacking contexts when nested inside positioned elements.
+*/
+body::before{display:none}
 .hd,.tabs,.search-bar,.filter-row{position:relative;z-index:2}
-.panel{position:relative;z-index:1}
+.tabs{background:rgba(255,255,255,0.82) !important}
+.filter-row{background:rgba(255,255,255,0.78) !important}
+.list-bar{background:rgba(255,255,255,0.75) !important}
+.ihead{background:rgba(255,255,255,0.82) !important;border:1px solid rgba(200,200,210,0.60) !important}
+.icard{background:rgba(255,255,255,0.75) !important}
+.settings-card{background:rgba(255,255,255,0.80) !important}
+.help-sidebar{background:rgba(255,255,255,0.80) !important}
+.help-fn-card{background:rgba(255,255,255,0.78) !important}
+.help-device-row{background:rgba(255,255,255,0.78) !important}
+.rm-phase-header{background:rgba(255,255,255,0.80) !important}
+.rm-item-row{background:rgba(255,255,255,0.70) !important}
+.rm-detail-panel{background:rgba(255,255,255,0.88) !important}
+.gantt-row-label{background:rgba(255,255,255,0.75) !important}
+.phase-label-cell{background:rgba(255,255,255,0.80) !important}
+.gantt-header-label{background:rgba(255,255,255,0.82) !important}
+#thread-overlay{background:rgba(248,248,252,0.96) !important}
+.help-content{background:transparent}
+
 
 
 /* ── COMPACT HEADER ROW ── */
@@ -160,7 +181,7 @@ body::before{content:'';position:fixed;inset:0;background:rgba(248,248,252,0.72)
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;background:var(--page-bg)}
+.panel{display:none;background:rgba(255,255,255,0.14);position:relative;z-index:1}
 .panel.active{display:block}
 
 /* ── NOTES INPUT (Apple light) ── */
@@ -806,6 +827,81 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .mtr-cancel-btn{background:none;border:1.5px solid var(--separator);border-radius:5px;padding:10px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);transition:all .15s}
 .mtr-source-preview{background:var(--input-bg);border-radius:5px;padding:8px 10px;font-size:12px;color:var(--label-secondary);line-height:1.45;font-style:italic;border:1px solid var(--separator)}
 
+
+/* Roadmap type pill */
+.type-pill.roadmap{background:rgba(30,120,80,0.12);color:#1a6040;border:1px solid rgba(30,120,80,0.25);}
+/* Thread overlay dialogue entries */
+.tov-entry{border-radius:8px;padding:12px 14px;line-height:1.6}
+.tov-entry.from-dave{background:#fffbf0;border-left:3px solid #d4a020}
+.tov-entry.from-claude{background:#f0f4ff;border-left:3px solid #4060c8}
+.tov-meta{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.tov-from{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.tov-from.dave{color:#7a5a00}
+.tov-from.claude{color:#2040a0}
+.tov-ts{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)}
+.tov-text{font-family:'Libre Baskerville',Georgia,serif;font-size:14px;color:var(--label-primary);white-space:pre-wrap}
+/* Roadmap notes view */
+.rm-phase-header{padding:10px 14px 6px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.10em;text-transform:uppercase;font-weight:700;border-left:4px solid var(--accent);margin:8px 0 2px;background:var(--input-bg);border-radius:0 6px 6px 0}
+.rm-item-row{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 22px;border-bottom:1px solid var(--separator);font-family:'Libre Baskerville',Georgia,serif;font-size:13px;color:var(--label-primary)}
+.rm-item-row.is-gate{font-style:italic;color:var(--label-secondary)}
+.rm-item-row.done{text-decoration:line-through;opacity:.5}
+.rm-kind-badge{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0}
+.rm-kind-badge.phase{background:rgba(199,0,37,.1);color:#c70025}
+.rm-kind-badge.step{background:rgba(30,100,200,.08);color:#1a50b0}
+.rm-kind-badge.gate{background:rgba(100,50,180,.08);color:#5030a0}
+
+/* Roadmap detail panel */
+.rm-detail-panel{background:var(--input-bg);border:1px solid var(--separator);border-top:none;border-radius:0 0 6px 6px;padding:10px 14px 10px;margin:0 0 6px 0}
+.rm-detail-meta{margin-bottom:8px;display:flex;flex-direction:column;gap:3px}
+.rm-detail-meta-row{display:flex;gap:10px;align-items:baseline;font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-primary)}
+.rm-detail-lbl{color:var(--label-secondary);letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;width:70px}
+.rm-detail-section-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin:8px 0 3px}
+.rm-detail-note{font-family:'Libre Baskerville',Georgia,serif;font-size:13px;color:var(--label-primary);line-height:1.55;margin-bottom:4px;white-space:pre-wrap}
+.rm-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid var(--separator)}
+.rm-phase-header.done{text-decoration:line-through;opacity:.6}
+.rm-item-row{cursor:pointer}
+.rm-item-row:hover{background:var(--input-bg)}
+.rm-phase-header:hover{opacity:.88}
+
+/* ── HELP REDESIGN ── */
+.help-layout{display:flex;height:100%;overflow:hidden}
+.help-sidebar{width:160px;flex-shrink:0;background:var(--card-bg);border-right:1px solid var(--separator);padding:16px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.help-sidebar-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px;padding:0 8px}
+.help-sidebar-sep{height:1px;background:var(--separator);margin:8px 0}
+.help-nav{background:none;border:none;border-radius:7px;padding:8px 10px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.04em;color:var(--label-primary);cursor:pointer;text-align:left;width:100%;transition:background .15s}
+.help-nav:hover{background:var(--input-bg)}
+.help-nav.active{background:var(--accent);color:#fff;font-weight:600}
+.help-content{flex:1;overflow-y:auto;padding:24px 28px}
+.help-spanel{display:none}
+.help-spanel.active{display:block}
+.help-h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--label-primary);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--separator)}
+.help-h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--separator)}
+.help-p{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-bottom:10px}
+.help-ul{list-style:none;padding:0;margin:0 0 10px}
+.help-ul li{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5}
+.help-ul li:last-child{border-bottom:none}
+.help-ul li::before{content:"›";position:absolute;left:0;color:var(--label-secondary)}
+/* Function grid */
+.help-fn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:12px 0 20px}
+.help-fn-card{background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 16px;cursor:pointer;transition:box-shadow .15s,transform .1s}
+.help-fn-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.12);transform:translateY(-1px)}
+.help-fn-name{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px}
+.help-fn-desc{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-primary);line-height:1.55}
+/* Device list */
+.help-device-list{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.help-device-row{display:flex;align-items:flex-start;gap:12px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);padding:8px 12px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px;line-height:1.5}
+.help-device-icon{flex-shrink:0;font-size:16px;width:24px;text-align:center}
+/* Info icon button */
+.info-btn{background:none;border:none;cursor:pointer;padding:0 12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);transition:color .15s;flex-shrink:0;font-size:15px;line-height:1;height:100%;letter-spacing:0}
+.info-btn:hover{color:#fff}
+/* Mobile: sidebar collapses to top strip */
+@media(max-width:600px){
+  .help-layout{flex-direction:column}
+  .help-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:8px;gap:4px;border-right:none;border-bottom:1px solid var(--separator)}
+  .help-sidebar-label,.help-sidebar-sep{display:none}
+  .help-nav{padding:5px 10px;font-size:10px;flex-shrink:0}
+  .help-content{padding:16px}
+}
 </style>
 </head>
 <body>
@@ -838,9 +934,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <div class="tab-spacer"></div>
+    <button class="info-btn" onclick="openHelp(null)" title="Help &amp; About — click for more information">&#9432;</button>
     <span class="tab-action-ok" id="copy-tab-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied</span>
     <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
-    <button class="tab" onclick="showTab('help',this)" style="margin-left:4px">Help &#9881;</button>
+    <button class="tab" onclick="showTab('help',this)" id="tab-help" style="margin-left:4px">Help &#9881;</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none">
     <div id="fchip-all"     class="fchip act" onclick="tSt(null)"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
@@ -859,6 +956,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <option value="reminder">Reminders</option>
       <option value="note">Project Notes</option>
       <option value="fordave"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude / Dave</option>
+      <option value="roadmap">&#128506; Roadmap</option>
     </select>
     <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
     <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
@@ -897,7 +995,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div style="display:flex;gap:10px;align-items:flex-start">
       <!-- Action toggles: Flow, Reminder, Priority — compose-time decisions -->
       <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;padding-top:1px">
-        <button class="flow-toggle off" id="flow-toggle" onclick="toggleFlow()" title="Flow = directed to Claude for dialogue. Toggle on to start a thread.">&#9675; Note only</button>
+        <button class="flow-toggle off" id="flow-toggle" onclick="toggleFlow()" title="Toggle on to send this note to Claude as the start of a dialogue thread.">&#9675; To Claude</button>
         <button class="rem-toggle" id="rem-toggle" onclick="toggleReminder()">&#128276; Reminder</button>
         <button class="pri-cycle" id="pri-cycle" onclick="cyclePriority()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Low</button>
       </div>
@@ -922,21 +1020,36 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <!-- Row 2: classification metadata — divider marks the boundary -->
     <div class="inp-controls-row">
-      <select class="inp-sel" id="input-type">
+      <select class="inp-sel" id="input-type" onchange="onInputTypeChange(this.value)">
         <option value="question">Question</option>
         <option value="note" selected>Project Note</option>
+        <option value="roadmap">&#128506; Roadmap</option>
       </select>
       <select class="inp-sel" id="input-tag" onchange="lastTag=this.value">
         <option value="">&mdash; Tag &mdash;</option>
       </select>
       <button class="status-toggle open" id="status-toggle" onclick="toggleStatus()" title="Open / Deferred">Open</button>
     </div>
+    <!-- Roadmap subtype row — shown when input-type = roadmap -->
+    <div class="inp-controls-row" id="roadmap-subtype-row" style="display:none">
+      <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);flex-shrink:0">Add as</span>
+      <button class="mtr-type-btn active" id="rmst-phase" onclick="setRmSubtype('phase')">Phase</button>
+      <button class="mtr-type-btn" id="rmst-step" onclick="setRmSubtype('step')">Step / Task</button>
+      <button class="mtr-type-btn" id="rmst-gate" onclick="setRmSubtype('gate')">Stage Gate</button>
+      <select class="inp-sel" id="rmst-phase-sel" style="flex:1;display:none">
+        <option value="">— Assign to phase —</option>
+      </select>
+    </div>
   </div></div>
   <div class="list-wrap">
         <div class="list-bar">
       <span class="list-ct" id="list-count"></span>
-      <button class="list-bar-btn" onclick="collapseAll()">Collapse All</button>
-      <button class="list-bar-btn" onclick="expandAll()">Expand All</button>
+      <button class="list-bar-btn" onclick="collapseAll()" title="Collapse all items">&#9650; Collapse</button>
+      <button class="list-bar-btn" onclick="expandAll()" title="Expand all items">&#9660; Expand</button>
+      <span id="rm-collapse-controls" style="display:none;margin-left:8px;display:none;gap:6px;align-items:center">
+        <button class="list-bar-btn" id="rm-collapse-btn" onclick="rmCollapsePhases()" title="Collapse to phases only">&#9650; Phases only</button>
+        <button class="list-bar-btn" id="rm-expand-btn" onclick="rmExpandPhases()" title="Expand all phases">&#9660; Expand all</button>
+      </span>
     </div>
     <div id="list"></div>
   </div>
@@ -1203,264 +1316,214 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div></div>
 <!-- HELP -->
 <div class="panel" id="panel-help">
+  <div class="help-layout">
 
-  <!-- Help sub-tab strip -->
-  <div style="display:flex;background:#ffffff;padding:4px 16px 0;gap:4px;border-bottom:1px solid #E5E5EA;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch">
-    <button class="help-stab active" onclick="showHelpTab('h-roadmap',this)">Roadmap</button>
-    <button class="help-stab" onclick="showHelpTab('h-notes',this)">Notes</button>
-    <button class="help-stab" onclick="showHelpTab('h-resources',this)">Resources</button>
-    <button class="help-stab" onclick="showHelpTab('h-outreach',this)">Outreach</button>
-    <button class="help-stab" onclick="showHelpTab('h-reference',this)">Reference</button>
-    <button class="help-stab" onclick="showHelpTab('h-settings',this)">Settings</button>
-  </div>
-
-  <!-- ROADMAP help -->
-  <div class="help-spanel active" id="h-roadmap"><div class="ref-section">
-    <h2>Roadmap</h2>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The Roadmap is a Gantt-style view of your project timeline. It organizes work into <strong>phases</strong>, each containing <strong>tasks</strong> and optional <strong>gates</strong> (decision or approval checkpoints).</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe (Mac) or two-finger drag (iPad). The timeline scrolls horizontally; phases stack vertically.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Open / collapse a phase:</strong> Tap the phase header to expand or hide its tasks.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gate diamonds:</strong> Click or tap a gate diamond to mark it met (filled) or unmet (outline).</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Open filter:</strong> Use the filter row above the Gantt to show all phases, open only, or completed.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a phase or task</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap <strong>+ Add Phase</strong> at the bottom of the Roadmap to create a new phase. Fill in a name, start date, and end date.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Inside a phase, tap <strong>+ Add Task</strong> to add a task. Tasks inherit the phase date range by default but can have their own dates.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit a phase or task</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap the <strong>pencil icon</strong> on any phase or task to open its edit panel. Change name, dates, status, or notes.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Mark complete by checking <strong>Done</strong> in the edit panel, or by swiping right and tapping Done.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Reorder, duplicate, and delete</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reorder (Mac):</strong> Click and drag the &#8942; handle. <strong>Reorder (iPad):</strong> Touch and hold &#8942; then drag. If unresponsive, open Edit and use the <strong>Move</strong> field at the bottom.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Duplicate:</strong> Swipe right on any phase or task &mdash; the copy opens in edit mode so you can rename immediately. On Mac, right-click for the context menu.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Delete:</strong> Swipe left to reveal the Delete button, then tap to confirm. On Mac, right-click for the context menu.</li>
-    </ul>
-  </div></div>
-
-  <!-- NOTES help -->
-  <div class="help-spanel" id="h-notes"><div class="ref-section">
-    <h2>Notes</h2>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The Notes tab is the main working surface. Items can be standalone captures, reminders, questions, or two-way dialogue threads with Claude. Everything here is included in the JSON export Claude reads at the start of each session.</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Filter bar:</strong> Narrow by status (Open / Hold / Done), item type, tag, or priority. Defaults to Open on every tab switch.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Search:</strong> The search bar above the tabs searches across all note text in real time.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Expand an item:</strong> Tap any card to expand it and see full text, link, dialogue thread, and actions.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Badge counts:</strong> The Notes tab badge shows open items awaiting your attention (amber = awaiting Dave).</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a note</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Type in the entry field at the top of the tab and tap <strong>Add</strong> (or press Enter / Return).</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>To Claude toggle:</strong> Turn on (blue) to send the note directly to Claude as the opening message of a dialogue thread. Off by default &mdash; saves as a plain note.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Status toggle:</strong> Open (green) or Deferred / Hold (amber). Deferred items appear under the Hold filter.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>&#128276; Reminder toggle:</strong> Reveals a due date and time field inline.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Priority:</strong> Cycles Low (gray) &rarr; Medium (amber) &rarr; High (red). High items show a red left border on their card.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Tag selector:</strong> Choose from your tag list. Remembers your last choice for the session.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit a note</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Expand a card and tap <strong>Edit</strong> to change its text, tag, priority, status, or link.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Mark done by tapping the <strong>checkmark</strong> on the card, or open the item and tap <strong>Mark Done</strong>.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Move a note to Roadmap</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Expand any note and tap <strong>&rarr; Roadmap</strong> to promote it to a Roadmap phase or task. The note remains in Notes as a reference.</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Dialogue threads</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px"><span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--forclaude-badge-bg);color:var(--forclaude-badge-fg);padding:1px 6px;border-radius:2px">blue</span> = awaiting Claude. <span style="font-family:'Source Code Pro',monospace;font-size:10px;background:var(--fordave-badge-bg);color:var(--fordave-badge-fg);padding:1px 6px;border-radius:2px">amber</span> = awaiting Dave. When Claude&rsquo;s reply is the latest entry, a reply field appears inline so you can continue the thread. All thread data is included in the JSON export.</p>
-  </div></div>
-
-  <!-- RESOURCES help -->
-  <div class="help-spanel" id="h-resources"><div class="ref-section">
-    <h2>Resources</h2>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Resources is a curated link library organized by category &mdash; primary sources, substacks, news feeds, analysis, podcasts, documentaries, and project references. Use it to track sources you return to regularly.</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Sources are grouped by category. Tap a category header to collapse or expand it.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>The <strong>Last Checked</strong> column shows when a source was last reviewed. Click <strong>&#8635; Refresh</strong> to update timestamps for sources matching the active keywords (configured in Settings).</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Click any source name to open its URL directly.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a source</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Tap <strong>+ Add Source</strong> at the top of the Resources tab. Choose a category, enter a name, URL, description, and optional keyword tags.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Keywords control which sources are updated when you click &#8635; Refresh. Configure active refresh keywords in <strong>Help &rarr; Settings</strong>.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit or remove a source</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Tap the <strong>pencil icon</strong> on any source row to edit it. Tap the <strong>trash icon</strong> to delete (deletion is immediate).</p>
-  </div></div>
-
-  <!-- OUTREACH help -->
-  <div class="help-spanel" id="h-outreach"><div class="ref-section">
-    <h2>Outreach</h2>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Outreach tracks contacts for blurb requests, pitch submissions, and other external outreach. Confirmed, closed, and rejected contacts are hidden by default &mdash; use the filter to show them.</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Navigating the screen</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Contacts appear as cards showing name, role, status, and last action date. Tap to expand full notes and history.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span>Use the status filter to view Active, Pending, Confirmed, Closed, or Rejected contacts.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Add a contact</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Tap <strong>+ Add Contact</strong>. Enter name, role, outreach type (blurb / pitch / other), status, and any notes. A contact can carry a URL (author website, publisher page, etc.).</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Edit status</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Expand a contact and tap <strong>Edit</strong> to update status, add follow-up notes, or record a response date. Moving a contact to Confirmed or Closed hides it from the default view.</p>
-  </div></div>
-
-  <!-- REFERENCE help -->
-  <div class="help-spanel" id="h-reference"><div class="ref-section">
-    <h2>Reference</h2>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Reference is a read-only quick-access deck. It does not store items you create &mdash; it contains fixed reference material Claude and Dave use during working sessions.</p>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">What&rsquo;s in here</h3>
-    <ul style="list-style:none;padding:0;margin:10px 0 0">
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Passes</strong> &mdash; full command table for Tier A, B, and C manuscript passes. Paste commands directly into Claude.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Style &amp; Chapter Map</strong> &mdash; chapter titles, part assignments, style rules, and prohibited patterns.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>ISBNs &amp; Pricing</strong> &mdash; Vigilia Press ISBN registry, format assignments, and pricing records.</li>
-      <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Distribution</strong> &mdash; platform summary for KDP, IngramSpark, and Draft2Digital.</li>
-    </ul>
-
-    <h3 style="margin-top:28px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How to navigate</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin-top:10px">Hover over or tap <strong>Reference &#9656;</strong> in the main tab bar to open the flyout menu. Select a section. The content loads inline below the tab bar.</p>
-  </div></div>
-
-  <!-- SETTINGS help -->
-  <div class="help-spanel" id="h-settings"><div class="ref-section">
-    <h2>Settings</h2>
-
-    <h3 style="margin-top:20px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">How this workflow works</h3>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">The hub is a single HTML file stored in a private GitHub repository. GitHub Pages serves it as a live website accessible from any browser on any device. There is no server, no database, and no account login &mdash; the file itself is the application.</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">Your notes, roadmap, and outreach data live in two places simultaneously: in <strong>localStorage</strong> on the device where you made changes, and in the <strong>GitHub file</strong> after a sync. localStorage is a per-device buffer &mdash; it does not automatically travel to other devices. The GitHub file is the single source of truth.</p>
-    <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-top:10px">When you tap <strong>Update Claude</strong>, the hub copies a JSON snapshot of your current data to the clipboard. You paste that into Claude. Claude reads the snapshot, fetches the live file directly from GitHub, applies your changes surgically, and pushes the updated file back to GitHub. Refreshing the hub on any device after that gives you the latest version.</p>
-    <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:10px;padding:16px 20px;margin-top:16px">
-      <p style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px">Collision prevention</p>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.6">Because the GitHub file uses last-write-wins, avoid running two Claude sessions that both push to GitHub at the same time. Claude always fetches the live file before making changes &mdash; but if two sessions push simultaneously, one will overwrite the other. One session writing at a time is the safe pattern.</p>
+    <!-- LEFT SIDEBAR NAV -->
+    <div class="help-sidebar">
+      <div class="help-sidebar-label">Help &amp; Settings</div>
+      <button class="help-nav active" onclick="showHelpTab('h-about',this)">&#9432; About</button>
+      <button class="help-nav" onclick="showHelpTab('h-roadmap',this)">Roadmap</button>
+      <button class="help-nav" onclick="showHelpTab('h-notes',this)">Notes</button>
+      <button class="help-nav" onclick="showHelpTab('h-resources',this)">Resources</button>
+      <button class="help-nav" onclick="showHelpTab('h-outreach',this)">Outreach</button>
+      <button class="help-nav" onclick="showHelpTab('h-reference',this)">Reference</button>
+      <div class="help-sidebar-sep"></div>
+      <button class="help-nav" onclick="showHelpTab('h-settings',this)">&#9881; Settings</button>
     </div>
 
-    <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">By device</h3>
-    <div style="margin-top:14px">
-      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#63743; Mac (Safari / Chrome)</h4>
-      <ul style="list-style:none;padding:0;margin:0">
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Clicking a bookmark opens Word and jumps to it. Requires the folder path set below.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Roadmap drag:</strong> Click and drag the &#8942; handle to reorder phases.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger trackpad swipe.</li>
-      </ul>
-    </div>
-    <div style="margin-top:16px">
-      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#8965; iPad Pro (Safari)</h4>
-      <ul style="list-style:none;padding:0;margin:0">
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Gantt scroll:</strong> Two-finger drag. Single-finger drag moves phase bars.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Phase drag:</strong> Touch and hold &#8942; then drag. If unresponsive, use the Position field in Edit Phase.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Word links:</strong> Not supported on iOS &mdash; displays as plain label.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> Use the &#8635; button in the header. Pull down from top of screen also works.</li>
-      </ul>
-    </div>
-    <div style="margin-top:16px">
-      <h4 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">&#9743; iPhone</h4>
-      <ul style="list-style:none;padding:0;margin:0">
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Best use:</strong> Capturing quick notes on the go. Full editing on iPad or Mac.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Notes tab:</strong> Fully functional &mdash; entry form, type/tag selectors, priority and flags all work.</li>
-        <li style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:4px 0 4px 14px;position:relative;line-height:1.5"><span style="position:absolute;left:0;color:var(--label-secondary)">&rsaquo;</span><strong>Reloading:</strong> &#8635; button in header. Pull-to-refresh from top. Force-quit as last resort.</li>
-      </ul>
-    </div>
+    <!-- CONTENT AREA -->
+    <div class="help-content">
 
-    <h3 style="margin-top:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding-bottom:8px;border-bottom:1px solid var(--separator)">Preferences</h3>
+      <!-- ABOUT -->
+      <div class="help-spanel active" id="h-about">
+        <h2 class="help-h2">About This App</h2>
+        <p class="help-p">This app is designed to make project management an effective tool for working side by side with Claude. It gives you a structured, persistent workspace where notes, roadmap phases, research, outreach contacts, and reference materials all live in one place — synchronized with Claude at the start and end of every session.</p>
+        <p class="help-p">It runs entirely in your browser as a single HTML5 file. There is no server, no login, and no subscription. Your data lives in localStorage on your device and in a GitHub repository that Claude reads and writes directly.</p>
 
-    <div class="settings-card">
-      <span class="settings-card-label">Claude project</span>
-      <div class="settings-field">
-        <label class="settings-lbl" for="settings-project-input">Project name</label>
-        <input class="settings-input" id="settings-project-input" type="text" placeholder="e.g. Over-classified" autocomplete="off" />
-      </div>
-      <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:4px;line-height:1.6">Used in the Update Claude modal. Always paste into this project &mdash; not a new chat.</p>
-    </div>
-
-    <div class="settings-card">
-      <span class="settings-card-label">Word file location <span style="font-style:italic;font-weight:400">(Mac only)</span></span>
-      <div class="settings-field">
-        <label class="settings-lbl" for="settings-folder-input">Folder path</label>
-        <input class="settings-input" id="settings-folder-input" type="text" placeholder="/Users/Home/Desktop/Book and Materials/Over-classified-Vigilia" />
-      </div>
-      <div class="settings-field">
-        <label class="settings-lbl" for="settings-filename-input">Filename override <span style="font-style:italic;font-weight:400;text-transform:none">(leave blank for auto)</span></label>
-        <input class="settings-input" id="settings-filename-input" type="text" placeholder="Overclassified_293.docx" />
-      </div>
-      <div id="settings-path-preview" class="settings-preview"></div>
-      <p style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-top:8px;line-height:1.6">Stored locally on this device only &mdash; never in the JSON export.</p>
-    </div>
-
-    <div class="settings-card">
-      <span class="settings-card-label">Resources &mdash; Refresh keywords</span>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">When you click &#8635; Refresh in Resources, only sources tagged with checked keywords have their Last Checked timestamp updated.</p>
-      <div id="refresh-kw-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px"></div>
-      <script>
-      (function(){
-        var allKw=['news','current-events','analysis','research','Over-classified'];
-        function renderRKw(){
-          var c=document.getElementById('refresh-kw-checkboxes');if(!c)return;
-          c.innerHTML=allKw.map(function(kw){
-            var chk=RF_REFRESH_KW.includes(kw)?'checked':'';
-            return '<label style="display:flex;align-items:center;gap:6px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:var(--label-primary);cursor:pointer;background:var(--page-bg);padding:5px 10px;border-radius:6px;border:1px solid var(--separator)"><input type="checkbox" '+chk+' onchange="toggleRefreshKw(\''+kw+'\',this.checked)" /> '+kw+'</label>';
-          }).join('');
-        }
-        window.toggleRefreshKw=function(kw,on){
-          if(on){if(!RF_REFRESH_KW.includes(kw))RF_REFRESH_KW.push(kw);}
-          else{RF_REFRESH_KW=RF_REFRESH_KW.filter(function(k){return k!==kw;});}
-          try{localStorage.setItem(RF_REFRESH_KW_SK,JSON.stringify(RF_REFRESH_KW));}catch(e){}
-        };
-        if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',renderRKw);}
-        else{setTimeout(renderRKw,300);}
-      })();
-      </script>
-    </div>
-
-    <div class="settings-card">
-      <span class="settings-card-label">Tags</span>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, Resources, and Outreach. Add by chapter, part, topic, or anything you reference repeatedly.</p>
-      <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
-      <div id="kw-edit-row" style="display:none;flex-direction:column;gap:6px">
-        <textarea class="settings-input" id="kw-edit-ta" rows="3" placeholder="Enter tags separated by commas&hellip;" style="font-family:'Libre Baskerville',Georgia,serif;font-size:12px;resize:vertical"></textarea>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button class="dl-send-btn" onclick="kwSave()">Save keywords</button>
-          <span class="dl-cancel-link" onclick="kwCancelEdit()">Cancel</span>
+        <h3 class="help-h3">Functions</h3>
+        <p class="help-p" style="margin-bottom:12px">Click a tab above to get more information on how to use each function.</p>
+        <div class="help-fn-grid">
+          <div class="help-fn-card" onclick="showHelpTab('h-roadmap',document.querySelector('.help-nav:nth-child(3)'))">
+            <div class="help-fn-name">Roadmap</div>
+            <div class="help-fn-desc">Gantt-style project timeline. Organize work into phases, tasks, and stage gates with target dates. Drag to reorder, click to edit, track completion.</div>
+          </div>
+          <div class="help-fn-card" onclick="showHelpTab('h-notes',document.querySelector('.help-nav:nth-child(4)'))">
+            <div class="help-fn-name">Notes</div>
+            <div class="help-fn-desc">Project notes, questions, reminders, and dialogue threads. Filter by type, tag, or status. Flow items to Claude as conversation starters.</div>
+          </div>
+          <div class="help-fn-card" onclick="showHelpTab('h-resources',document.querySelector('.help-nav:nth-child(5)'))">
+            <div class="help-fn-name">Resources</div>
+            <div class="help-fn-desc">Links, documents, and reference materials organized by tag. Attach URLs, descriptions, and source notes for quick retrieval.</div>
+          </div>
+          <div class="help-fn-card" onclick="showHelpTab('h-outreach',document.querySelector('.help-nav:nth-child(6)'))">
+            <div class="help-fn-name">Outreach</div>
+            <div class="help-fn-desc">Contact management for blurb requests, press outreach, agent queries, and publisher submissions. Track status, notes, and follow-up dates.</div>
+          </div>
+          <div class="help-fn-card" onclick="showHelpTab('h-reference',document.querySelector('.help-nav:nth-child(7)'))">
+            <div class="help-fn-name">Reference</div>
+            <div class="help-fn-desc">Quick-access panels for production passes, style guide, ISBNs, pricing, and distribution details. Read-only reference material.</div>
+          </div>
+          <div class="help-fn-card" onclick="showHelpTab('h-settings',document.querySelector('.help-nav:nth-child(9)'))">
+            <div class="help-fn-name">Settings</div>
+            <div class="help-fn-desc">Customize project name, tags, note types, and sync preferences. Configure how the hub behaves across devices and sessions.</div>
+          </div>
         </div>
+
+        <h3 class="help-h3">Devices &amp; Requirements</h3>
+        <p class="help-p">This is an open-platform HTML5 application with JavaScript. <strong>JavaScript must be enabled</strong> in your browser for the app to function. It has been specifically tested on:</p>
+        <div class="help-device-list">
+          <div class="help-device-row"><span class="help-device-icon">&#63743;</span><span><strong>Mac</strong> — Safari 17+, Chrome 120+</span></div>
+          <div class="help-device-row"><span class="help-device-icon">&#8239;&#x1F4F1;</span><span><strong>iPad</strong> — Safari (iPadOS 16+). Touch drag for roadmap phase reordering supported.</span></div>
+          <div class="help-device-row"><span class="help-device-icon">&#8239;&#x1F4F1;</span><span><strong>iPhone</strong> — Safari (iOS 16+). Full read/write; some Gantt interactions easier on larger screens.</span></div>
+          <div class="help-device-row"><span class="help-device-icon">&#128421;</span><span><strong>Windows / Linux</strong> — Chrome or Firefox. Not primary test platforms; known to work.</span></div>
+        </div>
+        <p class="help-p" style="margin-top:10px;font-size:13px;color:var(--label-secondary)">Local storage is per-browser per-device. Use <strong>Update Claude</strong> to sync across devices via GitHub.</p>
       </div>
-      <div id="kw-add-row" style="display:flex;gap:6px;align-items:center;margin-top:4px">
-        <input type="text" class="inp-sel" id="kw-quick-inp" placeholder="Add a tag&hellip;" style="flex:1" onkeydown="if(event.key==='Enter'){kwQuickAdd();event.preventDefault();}" />
-        <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="kwQuickAdd()" title="Add tag">&#xFF0B;</button>
-        <button class="iabtn" onclick="kwStartEdit()" style="height:34px;white-space:nowrap">Edit all&hellip;</button>
-      </div>
-    </div>
 
-    <div class="settings-card">
-      <span class="settings-card-label">Sync preferences</span>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55">The Update Claude modal shows each time unless you checked &ldquo;Don&rsquo;t show this again.&rdquo; Click below to restore it.</p>
-      <button id="uc-restore-btn" style="margin-top:12px;font-family:'Source Code Pro',monospace;font-size:11px;padding:8px 16px;background:var(--page-bg);border:1px solid var(--separator);border-radius:8px;color:var(--label-secondary);cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--separator)'" onclick="localStorage.removeItem('oc_uc_skip_modal');this.textContent='Restored \u2713 \u2014 modal will show next time'">Restore Update Claude dialog</button>
-    </div>
+      <!-- ROADMAP -->
+      <div class="help-spanel" id="h-roadmap"><div class="ref-section">
+        <h2 class="help-h2">Roadmap</h2>
+        <p class="help-p">The Roadmap is a Gantt-style view of your project timeline. It organizes work into <strong>phases</strong>, each containing <strong>tasks</strong> and optional <strong>gates</strong> (decision or approval checkpoints).</p>
+        <h3 class="help-h3">Navigating the screen</h3>
+        <ul class="help-ul">
+          <li><strong>Gantt scroll:</strong> Two-finger trackpad swipe (Mac) or two-finger drag (iPad).</li>
+          <li><strong>Open / collapse a phase:</strong> Tap the phase header to expand or hide its tasks.</li>
+          <li><strong>Gate diamonds:</strong> Click a gate diamond to mark it met (filled) or unmet (outline).</li>
+          <li><strong>Column resize:</strong> Drag the handle at the right edge of the phase label column.</li>
+        </ul>
+        <h3 class="help-h3">Adding and editing</h3>
+        <ul class="help-ul">
+          <li>Use the <strong>+ Phase</strong> and <strong>+ Task</strong> buttons to add items.</li>
+          <li>Click any task bar or phase label to edit dates, notes, and completion status.</li>
+          <li>Drag phases up or down to reorder (iPad: touch-drag supported).</li>
+        </ul>
+      </div></div>
 
-    <div style="text-align:right;margin-top:16px">
-      <button class="settings-save-btn" id="settings-save-btn" onclick="settingsSave()">Save Settings</button>
-    </div>
+      <!-- NOTES -->
+      <div class="help-spanel" id="h-notes"><div class="ref-section">
+        <h2 class="help-h2">Notes</h2>
+        <p class="help-p">Notes is your project journal — a filterable list of items in several types.</p>
+        <h3 class="help-h3">Item types</h3>
+        <ul class="help-ul">
+          <li><strong>Project Note</strong> — general observations, decisions, or reference entries.</li>
+          <li><strong>Question</strong> — open questions awaiting answers or research.</li>
+          <li><strong>Reminder</strong> — date-linked to-do items. Appear in the Reminders filter.</li>
+          <li><strong>For Claude / Dave</strong> — dialogue threads. Toggle <em>To Claude</em> when adding to start a thread.</li>
+          <li><strong>Roadmap</strong> — mirror of all roadmap phases, tasks, and gates. Filterable and expandable inline.</li>
+        </ul>
+        <h3 class="help-h3">Filters</h3>
+        <ul class="help-ul">
+          <li>Filter by <strong>status</strong> (Open, Deferred, Done, Priority) using the chips at the top.</li>
+          <li>Filter by <strong>tag</strong> or <strong>type</strong> using the dropdowns on the right.</li>
+          <li><strong>Reset</strong> clears all filters and returns to the default Open view.</li>
+        </ul>
+        <h3 class="help-h3">To Claude threads</h3>
+        <ul class="help-ul">
+          <li>Toggle <em>To Claude</em> before adding a note to create a dialogue thread.</li>
+          <li>Click a thread item to open the full-screen thread view with reply form.</li>
+          <li>Press <strong>Escape</strong> or click <em>Close</em> to exit the thread overlay.</li>
+        </ul>
+      </div></div>
 
-    <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:28px;text-align:center">Hub v6 &middot; brownd11-a11y.github.io/oc-hub</p>
-  </div></div>
+      <!-- RESOURCES -->
+      <div class="help-spanel" id="h-resources"><div class="ref-section">
+        <h2 class="help-h2">Resources</h2>
+        <p class="help-p">Resources stores links, documents, and reference materials relevant to your project. Each entry can have a URL, description, tag, and source note.</p>
+        <h3 class="help-h3">Adding resources</h3>
+        <ul class="help-ul">
+          <li>Use the <strong>+ Resource</strong> form at the top of the tab.</li>
+          <li>Assign a tag to group related resources together.</li>
+          <li>Filter by tag using the tag selector.</li>
+        </ul>
+      </div></div>
 
+      <!-- OUTREACH -->
+      <div class="help-spanel" id="h-outreach"><div class="ref-section">
+        <h2 class="help-h2">Outreach</h2>
+        <p class="help-p">Outreach manages contacts for blurb requests, press outreach, agent queries, and publisher submissions. Each contact card tracks status, notes, materials sent, and follow-up dates.</p>
+        <h3 class="help-h3">Contact cards</h3>
+        <ul class="help-ul">
+          <li>Add a contact with name, role, and organization.</li>
+          <li>Track status: <em>Not contacted, Sent, Responded, Declined, Committed.</em></li>
+          <li>Add timestamped notes to each card as the relationship develops.</li>
+          <li>Attach a materials link (press kit, sample chapter, etc.).</li>
+        </ul>
+      </div></div>
+
+      <!-- REFERENCE -->
+      <div class="help-spanel" id="h-reference"><div class="ref-section">
+        <h2 class="help-h2">Reference</h2>
+        <p class="help-p">The Reference deck provides quick access to production and style information. Panels include Passes, Style &amp; Chapter Map, ISBNs &amp; Pricing, and Distribution. These are read-only reference materials updated by Claude at session end.</p>
+      </div></div>
+
+      <!-- SETTINGS -->
+      <div class="help-spanel" id="h-settings"><div class="ref-section">
+        <h2 class="help-h2">Settings</h2>
+        <p class="help-p">Settings lets you customize how the hub behaves for your project. Changes are saved to localStorage immediately and pushed to GitHub when you sync with Claude.</p>
+
+        <h3 class="help-h3">How sync works</h3>
+        <p class="help-p">The hub is a single HTML file in a private GitHub repository. Data lives in two places: <strong>localStorage</strong> on the current device, and the <strong>GitHub file</strong> after a sync. Tap <strong>Update Claude</strong> to copy a JSON snapshot to the clipboard, paste into Claude, and Claude pushes the updated file back to GitHub. Refreshing on any device gives you the latest version.</p>
+        <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 18px;margin:14px 0">
+          <p style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">Collision prevention</p>
+          <p class="help-p" style="margin:0;font-size:13px">Avoid running two Claude sessions that both push to GitHub at the same time. One session writing at a time is the safe pattern.</p>
+        </div>
+
+        <h3 class="help-h3">Project settings</h3>
+        <div class="settings-card">
+          <span class="settings-card-label">Project Name</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="setting-project-name" type="text" value="Over-Classified" class="inp-ta" style="flex:1;padding:7px 10px;font-size:14px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)">
+            <button class="iabtn" onclick="saveProjectName()">Save</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Hub URL</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The live URL where this hub is served. Used for reference and sharing.</p>
+          <input id="setting-hub-url" type="text" value="https://hub.over-classified.com" class="inp-ta" style="width:100%;padding:7px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);font-family:'Source Code Pro',monospace">
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Tags</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, Resources, and Outreach. Add tags by chapter, topic, or workflow area.</p>
+          <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
+          <div style="display:flex;gap:8px">
+            <input id="kw-inp" type="text" placeholder="Add tag…" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')addKw()">
+            <button class="iabtn" onclick="addKw()">+ Add</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Default note type</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The type pre-selected when you open the add-note form.</p>
+          <select id="setting-default-type" class="inp-sel" style="font-size:13px" onchange="saveDefaultType(this.value)">
+            <option value="note" selected>Project Note</option>
+            <option value="question">Question</option>
+            <option value="reminder">Reminder</option>
+            <option value="fordave">For Claude / Dave</option>
+          </select>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Open items default filter</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Which status filter is applied when you switch to the Notes tab.</p>
+          <select id="setting-default-filter" class="inp-sel" style="font-size:13px" onchange="saveDefaultFilter(this.value)">
+            <option value="open" selected>Open</option>
+            <option value="">All</option>
+            <option value="priority">Priority</option>
+          </select>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Restore dialog</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Reset all hub data from a JSON backup. Use with caution — this overwrites current localStorage.</p>
+          <button class="iabtn" onclick="showRestore()" style="background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore from JSON</button>
+        </div>
+
+      </div></div>
+
+    </div><!-- end help-content -->
+  </div><!-- end help-layout -->
 </div>
 
 
@@ -1471,11 +1534,122 @@ const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
 let RF_REFRESH_KW=['news','current-events'];
 let RF_CAT_COLLAPSED={};
-const SEED_VERSION='2026-06-14T12:00:00.000Z'; // bump this each time seed data is updated
+const SEED_VERSION='2026-06-14T23:59:00.000Z'; // bump this each time seed data is updated
 const MASTER_VERSION = 'v304'; // current manuscript version — update each session
 
 /* ── SEED DATA (v7, 2026-06-10 — v281 session update) ── */
 const SEED_ITEMS=[
+  // ROADMAP MIRROR ITEMS — auto-generated
+  {id:'rm_r_1780839259957',type:'roadmap',rmKind:'phase',rmId:'r_1780839259957',rmPhaseId:null,rmColor:'#2070C8',text:'Write/Edit',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Manual writing and mechanical cleanup passes',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781002498021',type:'roadmap',rmKind:'step',rmId:'r_1781002498021',rmPhaseId:'r_1780839259957',rmColor:null,text:'First Draft [Write/Edit]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-04-01 · Completed: 2026-04-15',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-04-01',completedDate:'2026-04-15',itemUrl:null},
+  {id:'rm_r_1780839399135',type:'roadmap',rmKind:'step',rmId:'r_1780839399135',rmPhaseId:'r_1780839259957',rmColor:null,text:'Edit second pass [Write/Edit]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-01 · Completed: 2026-05-17',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-06-01',completedDate:'2026-05-17',itemUrl:null},
+  {id:'rm_r_1780839415621',type:'roadmap',rmKind:'step',rmId:'r_1780839415621',rmPhaseId:'r_1780839259957',rmColor:null,text:'Mechanical Pass [Write/Edit]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-04 · Completed: 2026-06-06 · Word for Word, Thematic Echos, AI removal',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-04',completedDate:'2026-06-06',itemUrl:null},
+  {id:'rm_r_1780839447883',type:'roadmap',rmKind:'step',rmId:'r_1780839447883',rmPhaseId:'r_1780839259957',rmColor:null,text:'Edit Third Pass [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-15',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-15',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780840560799',type:'roadmap',rmKind:'gate',rmId:'r_1780840560799',rmPhaseId:'r_1780839259957',rmColor:null,text:'Manual editing complete [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph4',type:'roadmap',rmKind:'step',rmId:'rph4',rmPhaseId:'r_1780839259957',rmColor:null,text:'June 9 Capitol Event Contingencies [Write/Edit]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Completed: 2026-06-12',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'',completedDate:'2026-06-12',itemUrl:null},
+  {id:'rm_rph_tierA',type:'roadmap',rmKind:'phase',rmId:'rph_tierA',rmPhaseId:null,rmColor:'#1A9E78',text:'Tier A — Prose Pass',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Full prose pass across all chapters. Trigger: "Prose pass [scope]". Covers: A1 Word-by-word, A2 Spelling/grammar, A3 AI-speak, A4 Paragraph logic, A5 Paragraph structure, A6 Flow check, A7 Thematic ec',dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781189760732',type:'roadmap',rmKind:'step',rmId:'r_1781189760732',rmPhaseId:'rph_tierA',rmColor:null,text:'Full Tier A Pass [Tier A — Prose Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-27 · Run all A-passes sequentially.',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'2026-06-27',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB',type:'roadmap',rmKind:'phase',rmId:'rph_tierB',rmPhaseId:null,rmColor:'#2070C8',text:'Tier B — Mechanical Pass',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Mechanical verification passes. Run after Tier A is confirmed clean. Each sub-pass is discrete and logs on completion.',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s1',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s1',rmPhaseId:'rph_tierB',rmColor:null,text:'B1 — Formatting Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-20 · Style ID compliance, image placement rule, caption construction, section breaks, pull quote/Attribution pairs, TextOpen after subheadings, chapter structure order, two-space title normalization.',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-06-20',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s2',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s2',rmPhaseId:'rph_tierB',rmColor:null,text:'B2 — Citation Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-25 · Four-point check: (1) every significant factual claim has a marker; (2) all citations are primary sources per hierarchy; (3) each citation fetched and read to confirm it supports the specific claim; (',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-06-25',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s3',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s3',rmPhaseId:'rph_tierB',rmColor:null,text:'B3 — Cross-Reference Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-26 · Every "see Chapter N" and "Appendix AX" reference verified to resolve to real content with matching material. Back matter included. Logs to CrossRef_Verification_Log.md.',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-06-26',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s4',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s4',rmPhaseId:'rph_tierB',rmColor:null,text:'B4 — Footnote Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-28 · Four-count gate: ref bookmarks = note bookmarks = forward hyperlinks = return hyperlinks. Adjacent marker audit. Sequence integrity 1→N. afootnote construction check. No orphaned markers.',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-28',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s5',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s5',rmPhaseId:'rph_tierB',rmColor:null,text:'B5 — Appendix Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-30 · A2 sightings scan, A12 figures/diagrams, A15 Quotations location codes, A15 Bibliography new entries, Glossary new terms, Index new subjects. Run after B2 confirmed for relevant chapters.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-30',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s6',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s6',rmPhaseId:'rph_tierB',rmColor:null,text:'B6 — URL Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-01 · Every hyperlink verified to resolve. Invisible-hyperlink rendering confirmed (color=auto, u=none, no Hyperlink style).',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-07-01',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierB_s7',type:'roadmap',rmKind:'step',rmId:'rph_tierB_s7',rmPhaseId:'rph_tierB',rmColor:null,text:'B7 — Index Pass [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-02 · Run last — after all content is locked. Locator codes, bookmark naming, subentry formatting, print vs. Kindle locator styles, exclusion rules (A15, A12). Editing body content after B7 potentially inva',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-07-02',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781095322185',type:'roadmap',rmKind:'step',rmId:'r_1781095322185',rmPhaseId:'rph_tierB',rmColor:null,text:'Appendix sequence change A2, A12 [Tier B — Mechanical Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-17 · Appendix sequence rationalization: consolidate reference/lookup appendices (A2, A12) into final grouping per filed remap doc requires a full cross-reference cascade pass.',dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'2026-06-17',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierC',type:'roadmap',rmKind:'phase',rmId:'rph_tierC',rmPhaseId:null,rmColor:'#8B4513',text:'Tier C — Production Pass',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Final production passes. Run only after Tier A and Tier B are confirmed clean for all content. C0 precedes C1 and C2.',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierC_s0',type:'roadmap',rmKind:'step',rmId:'rph_tierC_s0',rmPhaseId:'rph_tierC',rmColor:null,text:'C0 — Final Darlings Review [Tier C — Production Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-09 · One full read for anything missed. Minor prose only — no structural changes. Sterling final commercial assessment.',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-07-09',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierC_s1',type:'roadmap',rmKind:'step',rmId:'rph_tierC_s1',rmPhaseId:'rph_tierC',rmColor:null,text:'C1 — Production Pass Ebook [Tier C — Production Pass]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Completed: 2026-05-01 · Heading hierarchy, TOC integrity, front/back matter, metadata, cross-reference integrity, image resolution (72–150 DPI), table simplification, line break removal, hyperlink audit. Status: Done v230.',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'',completedDate:'2026-05-01',itemUrl:null},
+  {id:'rm_rph_tierC_s2',type:'roadmap',rmKind:'step',rmId:'rph_tierC_s2',rmPhaseId:'rph_tierC',rmColor:null,text:'C2 — Production Pass Print [Tier C — Production Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-10 · Image resolution (300 DPI), color/grayscale audit, margin/gutter (6″×9″, 1″ margins), page breaks on recto, widows/orphans, index locator style (sz=16 print override), print index completeness.',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-07-10',completedDate:'',itemUrl:null},
+  {id:'rm_rph_tierC_g1',type:'roadmap',rmKind:'gate',rmId:'rph_tierC_g1',rmPhaseId:'rph_tierC',rmColor:null,text:'Production-ready master confirmed — all formats [Tier C — Production Pass]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph3',type:'roadmap',rmKind:'phase',rmId:'rph3',rmPhaseId:null,rmColor:'#6040C8',text:'Fresh eyes read',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph3_s2',type:'roadmap',rmKind:'step',rmId:'rph3_s2',rmPhaseId:'rph3',rmColor:null,text:'Flow — continuity and rhythm read [Fresh eyes read]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-16 · Flag repetition, weak transitions, register drift.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-16',completedDate:'',itemUrl:null},
+  {id:'rm_rph3_s3',type:'roadmap',rmKind:'step',rmId:'rph3_s3',rmPhaseId:'rph3',rmColor:null,text:'Reese — sourcing integrity pass [Fresh eyes read]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-16 · Any unsourced factual claims surfaced by fresh read?',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-06-16',completedDate:'',itemUrl:null},
+  {id:'rm_rph3_s1',type:'roadmap',rmKind:'step',rmId:'rph3_s1',rmPhaseId:'rph3',rmColor:null,text:'Sterling — commercial coherence read [Fresh eyes read]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-18 · Argument arc, chapter transitions, author positioning.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-06-18',completedDate:'',itemUrl:null},
+  {id:'rm_rph3_g1',type:'roadmap',rmKind:'gate',rmId:'rph3_g1',rmPhaseId:'rph3',rmColor:null,text:'Prose locked — no further content changes after this point [Fresh eyes read]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780838742141',type:'roadmap',rmKind:'phase',rmId:'r_1780838742141',rmPhaseId:null,rmColor:'#4A9E20',text:'Final Marketing Review - Sterling',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780841363965',type:'roadmap',rmKind:'step',rmId:'r_1780841363965',rmPhaseId:'r_1780838742141',rmColor:null,text:'Read for interest, alignment with marketing approach [Final Marketing Review - Sterling]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-20',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-06-20',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190140073',type:'roadmap',rmKind:'phase',rmId:'r_1781190140073',rmPhaseId:null,rmColor:'#4A9E20',text:'Friendly Reads',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vacation',type:'roadmap',rmKind:'phase',rmId:'rph_vacation',rmPhaseId:null,rmColor:'#6B8E6B',text:'Family Vacation',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Scheduled break June 30 – July 8. No project work. Pitch-ready target is before this date.',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vacation_s1',type:'roadmap',rmKind:'step',rmId:'rph_vacation_s1',rmPhaseId:'rph_vacation',rmColor:null,text:'Family vacation — no project work [Family Vacation]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-08 · June 30 through July 8 inclusive.',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-07-08',completedDate:'',itemUrl:null},
+  {id:'rm_rph6',type:'roadmap',rmKind:'phase',rmId:'rph6',rmPhaseId:null,rmColor:'#E8A020',text:'Export',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph6_s1',type:'roadmap',rmKind:'step',rmId:'rph6_s1',rmPhaseId:'rph6',rmColor:null,text:'Export ebook via Vellum [Export]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-12 · Generate EPUB. Verify footnote navigation, image rendering, TOC.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-07-12',completedDate:'',itemUrl:null},
+  {id:'rm_rph6_s2',type:'roadmap',rmKind:'step',rmId:'rph6_s2',rmPhaseId:'rph6',rmColor:null,text:'Export print PDF via Vellum [Export]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-14 · Verify trim, bleed, margins, running heads, image resolution.',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-07-14',completedDate:'',itemUrl:null},
+  {id:'rm_rph6_s3',type:'roadmap',rmKind:'step',rmId:'rph6_s3',rmPhaseId:'rph6',rmColor:null,text:'Order and review proof copy [Export]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-15 · Order proof from KDP or IngramSpark before approving for distribution.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-07-15',completedDate:'',itemUrl:null},
+  {id:'rm_rph6_g1',type:'roadmap',rmKind:'gate',rmId:'rph6_g1',rmPhaseId:'rph6',rmColor:null,text:'All formats exported and verified [Export]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781189629830',type:'roadmap',rmKind:'phase',rmId:'r_1781189629830',rmPhaseId:null,rmColor:'#1A9E78',text:'Book Production - Vellum',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190322426',type:'roadmap',rmKind:'step',rmId:'r_1781190322426',rmPhaseId:'r_1781189629830',rmColor:null,text:'Layout [Book Production - Vellum]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-30 · Style, link checks',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-06-30',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190377593',type:'roadmap',rmKind:'step',rmId:'r_1781190377593',rmPhaseId:'r_1781189629830',rmColor:null,text:'QA [Book Production - Vellum]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-30 · Check all pages, flow, links, formatting',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-06-30',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190423802',type:'roadmap',rmKind:'step',rmId:'r_1781190423802',rmPhaseId:'r_1781189629830',rmColor:null,text:'Export for Epub [Book Production - Vellum]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-14 · Test read in Kindle',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-06-14',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190493676',type:'roadmap',rmKind:'step',rmId:'r_1781190493676',rmPhaseId:'r_1781189629830',rmColor:null,text:'Layout for Print - Paper Back [Book Production - Vellum]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-24',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-07-24',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch',type:'roadmap',rmKind:'phase',rmId:'rph_pubpitch',rmPhaseId:null,rmColor:'#C8501A',text:'Agent/Publisher Decision and Pitch',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'60-day pitch window to PublicAffairs, Dutton, Twelve, and one other. Lead with June 9 and Turner document. Differentiation: analytical/structural book vs. Elizondo memoir. Hard deadline: if nothing co',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_s1',type:'roadmap',rmKind:'step',rmId:'rph_pubpitch_s1',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Pitch decision — go/no-go and target list [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-20 · Decide whether to pitch and finalize list of 3–4 publishers (PublicAffairs, Dutton, Twelve + one). Make this call before prose is locked.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-20',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_s2',type:'roadmap',rmKind:'step',rmId:'rph_pubpitch_s2',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Build pitch package [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-27 · Query letter, 2-page synopsis, sample chapters (suggest Ch. 1 + Ch. 9 or Ch. 16). Lead with June 9 Capitol steps and Turner document as differentiation hook.',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-06-27',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_s3',type:'roadmap',rmKind:'step',rmId:'rph_pubpitch_s3',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Send to publishers — pitch window opens [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-30 · Submit to all targets simultaneously. Log submission dates.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-06-30',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_g1',type:'roadmap',rmKind:'gate',rmId:'rph_pubpitch_g1',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Pitch-ready — submissions out before vacation [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_s4',type:'roadmap',rmKind:'step',rmId:'rph_pubpitch_s4',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Publisher response window [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-29 · Allow 60 days from submission. Follow up at 30 days if no acknowledgment.',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'2026-08-29',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781190004916',type:'roadmap',rmKind:'step',rmId:'r_1781190004916',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Agent Pitch [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-29 · Determine if any interested agents and then decide whether to self-publish',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-08-29',completedDate:'',itemUrl:null},
+  {id:'rm_rph_pubpitch_g2',type:'roadmap',rmKind:'gate',rmId:'rph_pubpitch_g2',rmPhaseId:'rph_pubpitch',rmColor:null,text:'Response window closes — proceed to self-publish if no compelling offer [Agent/Publisher Decision and Pitch]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780841436950',type:'roadmap',rmKind:'phase',rmId:'r_1780841436950',rmPhaseId:null,rmColor:'#E8622A',text:'Marketing Plan',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868347381',type:'roadmap',rmKind:'step',rmId:'r_1780868347381',rmPhaseId:'r_1780841436950',rmColor:null,text:'Establish overall plan outline [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-25',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-06-25',completedDate:'',itemUrl:null},
+  {id:'rm_r_website_desc_update',type:'roadmap',rmKind:'step',rmId:'r_website_desc_update',rmPhaseId:'r_1780841436950',rmColor:null,text:'Update over-classified.com book description [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-22 · Reflect June 9 Capitol press conference, Turner/NAA document, Aldo Rebelo/Varginha confirmation, PURSUE release milestone, and current disclosure momentum. Must be live before publisher pitch submissi',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-22',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868403899',type:'roadmap',rmKind:'step',rmId:'r_1780868403899',rmPhaseId:'r_1780841436950',rmColor:null,text:'Develop channel plan [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-03 · Social media, messaging, methods',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-07-03',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868436853',type:'roadmap',rmKind:'step',rmId:'r_1780868436853',rmPhaseId:'r_1780841436950',rmColor:null,text:'Develop blurb candidates list [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-19 · Contact information, tailored approaches',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-06-19',completedDate:'',itemUrl:null},
+  {id:'rm_rph7_s1',type:'roadmap',rmKind:'step',rmId:'rph7_s1',rmPhaseId:'r_1780841436950',rmColor:null,text:'Build blurb pitch sheet [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-03 · Title · subtitle · 150-word synopsis · 100-word bio · pub target window.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-07-03',completedDate:'',itemUrl:null},
+  {id:'rm_rph8_s1',type:'roadmap',rmKind:'step',rmId:'rph8_s1',rmPhaseId:'r_1780841436950',rmColor:null,text:'Congressional — Burlison · Burchett · Luna [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-31 · First wave — allow ~10 weeks.',dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'2026-07-31',completedDate:'',itemUrl:null},
+  {id:'rm_rph8_s2',type:'roadmap',rmKind:'step',rmId:'rph8_s2',rmPhaseId:'r_1780841436950',rmColor:null,text:'Elizondo · Mellon outreach [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-29 · Second wave — ~6–8 weeks.',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'2026-08-29',completedDate:'',itemUrl:null},
+  {id:'rm_rph8_s3',type:'roadmap',rmKind:'step',rmId:'rph8_s3',rmPhaseId:'r_1780841436950',rmColor:null,text:'Coulthart · Knuth · Loeb outreach [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-31 · Third wave — validation tier.',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-08-31',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868683433',type:'roadmap',rmKind:'gate',rmId:'r_1780868683433',rmPhaseId:'r_1780841436950',rmColor:null,text:'Ready to publicize [Marketing Plan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent',type:'roadmap',rmKind:'phase',rmId:'rph_agent',rmPhaseId:null,rmColor:'#7B5EA7',text:'Literary Agent Query',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Query literary agents before or alongside publisher pitch. All three target publishers (PublicAffairs, Dutton/Caliber, Twelve) require agent submission. Top targets: Keith Urbahn (Javelin), Eric Lupfe',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_s1',type:'roadmap',rmKind:'step',rmId:'rph_agent_s1',rmPhaseId:'rph_agent',rmColor:null,text:'Agent decision — go/no-go on querying [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-20 · Decide whether to pursue agents simultaneously with or before publisher pitch. Agents can submit to publishers more effectively and negotiate better terms. Time cost: 2–4 weeks to query; 4–8 weeks typ',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-06-20',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_s2',type:'roadmap',rmKind:'step',rmId:'rph_agent_s2',rmPhaseId:'rph_agent',rmColor:null,text:'Build query letter + 25-page sample [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-24 · Query letter: 1 page. Hook (June 9 + Turner/NAA document), premise (analytical/structural vs. memoir wave), author credentials, chapter outline, word count. Sample: Ch.1 + Ch.5 opener. Calligraph: pas',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-24',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_s3',type:'roadmap',rmKind:'step',rmId:'rph_agent_s3',rmPhaseId:'rph_agent',rmColor:null,text:'Query Urbahn + Lupfer + Latimer simultaneously [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-27 · All three can be queried at once — no exclusivity requirement at query stage. Urbahn/Latimer (Javelin): national security insider nonfiction lane. Lupfer (Calligraph): explicitly lists national securi',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-27',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_g1',type:'roadmap',rmKind:'gate',rmId:'rph_agent_g1',rmPhaseId:'rph_agent',rmColor:null,text:'Agent query out — before vacation [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_s4',type:'roadmap',rmKind:'step',rmId:'rph_agent_s4',rmPhaseId:'rph_agent',rmColor:null,text:'Agent response window [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-22 · Allow 6–8 weeks from submission. Follow up at 4 weeks if no acknowledgment. If agent offers representation, evaluate deal terms before committing.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-08-22',completedDate:'',itemUrl:null},
+  {id:'rm_rph_agent_g2',type:'roadmap',rmKind:'gate',rmId:'rph_agent_g2',rmPhaseId:'rph_agent',rmColor:null,text:'Agent decision — sign or proceed self-publish [Literary Agent Query]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph9',type:'roadmap',rmKind:'phase',rmId:'rph9',rmPhaseId:null,rmColor:'#D43540',text:'Publishing Distribution setup',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780841107590',type:'roadmap',rmKind:'step',rmId:'r_1780841107590',rmPhaseId:'rph9',rmColor:null,text:'Establish accounts [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-15 · Set up relationships and learn process',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-07-15',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780841189745',type:'roadmap',rmKind:'step',rmId:'r_1780841189745',rmPhaseId:'rph9',rmColor:null,text:'Trial run for loading demo [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-17',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-07-17',completedDate:'',itemUrl:null},
+  {id:'rm_rph9_s1',type:'roadmap',rmKind:'step',rmId:'rph9_s1',rmPhaseId:'rph9',rmColor:null,text:'KDP setup — Kindle and POD [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-03 · Upload EPUB and print PDF. Do not enroll KDP Select.',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-08-03',completedDate:'',itemUrl:null},
+  {id:'rm_rph9_s2',type:'roadmap',rmKind:'step',rmId:'rph9_s2',rmPhaseId:'rph9',rmColor:null,text:'Draft2Digital — wide ebook distribution [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-03 · Enable all retail channels including OverDrive/Libby.',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-08-03',completedDate:'',itemUrl:null},
+  {id:'rm_rph9_s3',type:'roadmap',rmKind:'step',rmId:'rph9_s3',rmPhaseId:'rph9',rmColor:null,text:'IngramSpark — print to bookstores [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-03 · Upload print PDF and cover PDF. Set 55% trade discount.',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-08-03',completedDate:'',itemUrl:null},
+  {id:'rm_rph9_s4',type:'roadmap',rmKind:'step',rmId:'rph9_s4',rmPhaseId:'rph9',rmColor:null,text:'Bowker metadata · website updates · press kit [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-07-31 · Update subtitle, LCCN, categories. Favicons, hero images, press kit.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-07-31',completedDate:'',itemUrl:null},
+  {id:'rm_rph9_g1',type:'roadmap',rmKind:'gate',rmId:'rph9_g1',rmPhaseId:'rph9',rmColor:null,text:'All platforms live — launch ready [Publishing Distribution setup]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780841462043',type:'roadmap',rmKind:'phase',rmId:'r_1780841462043',rmPhaseId:null,rmColor:'#B03090',text:'Business establishment',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868143685',type:'roadmap',rmKind:'step',rmId:'r_1780868143685',rmPhaseId:'r_1780841462043',rmColor:null,text:'Learn real requirements from Hilton Head Island [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-13',dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'2026-06-13',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868167879',type:'roadmap',rmKind:'step',rmId:'r_1780868167879',rmPhaseId:'r_1780841462043',rmColor:null,text:'Follow up with SC DOR [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-12',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'2026-06-12',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868197640',type:'roadmap',rmKind:'step',rmId:'r_1780868197640',rmPhaseId:'r_1780841462043',rmColor:null,text:'Register business SC DOR [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-19',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-06-19',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868226753',type:'roadmap',rmKind:'step',rmId:'r_1780868226753',rmPhaseId:'r_1780841462043',rmColor:null,text:'Update EIN number Record with new Vigilia Name [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-19',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-06-19',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868272578',type:'roadmap',rmKind:'step',rmId:'r_1780868272578',rmPhaseId:'r_1780841462043',rmColor:null,text:'Finalize business licensing filings in time for book sales [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-08-31',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-08-31',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780868718771',type:'roadmap',rmKind:'gate',rmId:'r_1780868718771',rmPhaseId:'r_1780841462043',rmColor:null,text:'Established business records [Business establishment]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel',type:'roadmap',rmKind:'phase',rmId:'rph_vercel',rmPhaseId:null,rmColor:'#2070C8',text:'Move Hub to Vercel',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Fix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required.',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel_s1',type:'roadmap',rmKind:'step',rmId:'rph_vercel_s1',rmPhaseId:'rph_vercel',rmColor:null,text:'Step 1 — Create Vercel account & import oc-hub repo [Move Hub to Vercel]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-13 · Go to vercel.com → Sign Up → Continue with GitHub → Import the brownd11-a11y/oc-hub repository. No settings to change — Vercel detects it is a static site automatically. Click Deploy.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-13',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel_s2',type:'roadmap',rmKind:'step',rmId:'rph_vercel_s2',rmPhaseId:'rph_vercel',rmColor:null,text:'Step 2 — Assign hub.over-classified.com in Vercel [Move Hub to Vercel]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-14 · In your new Vercel project → Settings → Domains → Add: hub.over-classified.com. Vercel will show you a CNAME value to copy (looks like: cname.vercel-dns.com). Leave this tab open.',dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'2026-06-14',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel_s3',type:'roadmap',rmKind:'step',rmId:'rph_vercel_s3',rmPhaseId:'rph_vercel',rmColor:null,text:'Step 3 — Add CNAME at your DNS registrar [Move Hub to Vercel]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-14 · Log in to wherever you bought over-classified.com → DNS settings → Add record: Type=CNAME, Name=hub, Value=paste what Vercel gave you in Step 2. Save. Takes up to 1 hour to propagate.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-06-14',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel_s4',type:'roadmap',rmKind:'step',rmId:'rph_vercel_s4',rmPhaseId:'rph_vercel',rmColor:null,text:'Step 4 — Remove custom domain from GitHub Pages [Move Hub to Vercel]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-14 · Go to github.com → brownd11-a11y/oc-hub → Settings → Pages → Custom domain → clear the field and Save. Hub push workflow unchanged — Claude still pushes index.html; Vercel redeploys automatically.',dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'2026-06-14',completedDate:'',itemUrl:null},
+  {id:'rm_rph_vercel_g1',type:'roadmap',rmKind:'gate',rmId:'rph_vercel_g1',rmPhaseId:'rph_vercel',rmColor:null,text:'hub.over-classified.com live · over-classified.com clean [Move Hub to Vercel]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph1',type:'roadmap',rmKind:'phase',rmId:'rph1',rmPhaseId:null,rmColor:'#E8A020',text:'Mechanical rescan',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph1_s1',type:'roadmap',rmKind:'step',rmId:'rph1_s1',rmPhaseId:'rph1',rmColor:null,text:'W3.1 — Mechanical pass rescan [Mechanical rescan]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-05 · Completed: 2026-06-07 · Re-run against chapters edited since v229.',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-06-05',completedDate:'2026-06-07',itemUrl:null},
+  {id:'rm_rph1_s2',type:'roadmap',rmKind:'step',rmId:'rph1_s2',rmPhaseId:'rph1',rmColor:null,text:'W3.8 — Word-by-word rescan [Mechanical rescan]',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-05 · Completed: 2026-06-07 · Focus on recently touched sections.',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-06-05',completedDate:'2026-06-07',itemUrl:null},
+  {id:'rm_r_1780838559575',type:'roadmap',rmKind:'step',rmId:'r_1780838559575',rmPhaseId:'rph1',rmColor:null,text:'Orphan authors out [Mechanical rescan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-07',dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'2026-06-07',completedDate:'',itemUrl:null},
+  {id:'rm_r_1780840827808',type:'roadmap',rmKind:'step',rmId:'r_1780840827808',rmPhaseId:'rph1',rmColor:null,text:'Image trim whitespace review table [Mechanical rescan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-07',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-07',completedDate:'',itemUrl:null},
+  {id:'rm_rph1_g1',type:'roadmap',rmKind:'gate',rmId:'rph1_g1',rmPhaseId:'rph1',rmColor:null,text:'Ready for manual editing [Mechanical rescan]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph5',type:'roadmap',rmKind:'phase',rmId:'rph5',rmPhaseId:null,rmColor:'#1A9E78',text:'Print production',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_rph5_s1',type:'roadmap',rmKind:'step',rmId:'rph5_s1',rmPhaseId:'rph5',rmColor:null,text:'W3.9b — Production pass print [Print production]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-20 · Running heads · widow/orphan · image resolution · page breaks · TOC numbers.',dialogue:null,created:'2026-01-01T00:00:06.000Z',dueDate:'2026-06-20',completedDate:'',itemUrl:null},
+  {id:'rm_rph5_g1',type:'roadmap',rmKind:'gate',rmId:'rph5_g1',rmPhaseId:'rph5',rmColor:null,text:'Print-ready master confirmed [Print production]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:07.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781316948878',type:'roadmap',rmKind:'step',rmId:'r_1781316948878',rmPhaseId:'r_1780839259957',rmColor:null,text:'3rd Pass Edit part 1 [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-10',dialogue:null,created:'2026-01-01T00:00:08.000Z',dueDate:'2026-06-10',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781316962855_yx0i',type:'roadmap',rmKind:'step',rmId:'r_1781316962855_yx0i',rmPhaseId:'r_1780839259957',rmColor:null,text:'3rd Pass Edit part 2 [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-15',dialogue:null,created:'2026-01-01T00:00:09.000Z',dueDate:'2026-06-15',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781316960183_u5pp',type:'roadmap',rmKind:'step',rmId:'r_1781316960183_u5pp',rmPhaseId:'r_1780839259957',rmColor:null,text:'3rd Pass Edit part 3 [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-18',dialogue:null,created:'2026-01-01T00:00:00.000Z',dueDate:'2026-06-18',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781316966361_1v3s',type:'roadmap',rmKind:'step',rmId:'r_1781316966361_1v3s',rmPhaseId:'r_1780839259957',rmColor:null,text:'3rd Pass Edit part 4 [Write/Edit]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-19',dialogue:null,created:'2026-01-01T00:00:01.000Z',dueDate:'2026-06-19',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781321425888_17fn',type:'roadmap',rmKind:'phase',rmId:'r_1781321425888_17fn',rmPhaseId:null,rmColor:'#B03090',text:'Copy of Repetition check',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:02.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781321425888_rp3r',type:'roadmap',rmKind:'step',rmId:'r_1781321425888_rp3r',rmPhaseId:'r_1781321425888_17fn',rmColor:null,text:'Word for Word on entire book [Copy of Repetition check]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-15',dialogue:null,created:'2026-01-01T00:00:03.000Z',dueDate:'2026-06-15',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781321425888_g36y',type:'roadmap',rmKind:'step',rmId:'r_1781321425888_g36y',rmPhaseId:'r_1781321425888_17fn',rmColor:null,text:'Thematic echo scan [Copy of Repetition check]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'Target: 2026-06-15 · Flag arguments or phrases appearing in substantially similar form across chapters.',dialogue:null,created:'2026-01-01T00:00:04.000Z',dueDate:'2026-06-15',completedDate:'',itemUrl:null},
+  {id:'rm_r_1781321425888_mfpz',type:'roadmap',rmKind:'gate',rmId:'r_1781321425888_mfpz',rmPhaseId:'r_1781321425888_17fn',rmColor:null,text:'No material repetition — Dave reviews and approves any cuts [Copy of Repetition check]',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-01-01T00:00:05.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  
+  {id:'i_hub_data_file',type:'fordave',text:'Architecture: Move hub data to separate data.json on GitHub. HTML file = app code only (rarely changes). data.json = all notes/roadmap/outreach (changes every session). Any device fetches data.json on load — no localStorage conflicts across devices. Claude pushes only data.json at session end. Meaningful refactor — defer until after interface is stable.',done:false,priority:false,memFlag:true,tag:'hubui',deferred:true,answer:null,dialogue:null,created:'2026-06-14T16:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_hub_vercel_done',type:'note',text:'Session 2026-06-14: Vercel setup complete. hub.over-classified.com live. oc-hub repo deployed to Vercel. Cloudflare CNAME auto-configured. www redirect rule deployed. GitHub push workflow unchanged — Claude still pushes index.html, Vercel redeploys automatically.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-06-14T16:00:00.000Z',dueDate:'',completedDate:'2026-06-14',itemUrl:null},
+  {id:'i_hub_interface_session',type:'note',text:'Session 2026-06-14: Hub interface pass. To Claude toggle (replaces Flow/Note only). Full-screen thread overlay with reply form, amber/blue speaker colors, Escape to close, newest-first. Roadmap type added to Notes: 106 items mirrored from S.road, fully collapsed on load, phase click = inline detail panel, chevron = toggle children, ▶ icon = jump to Roadmap tab, phaseRange() for dates. Help tab redesigned: sidebar nav, About panel with function grid, devices, Settings with live controls. ⓘ icon in header. Glass theme: photos at full strength, rgba semi-transparent cards.',done:true,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:null,dialogue:null,created:'2026-06-14T17:00:00.000Z',dueDate:'',completedDate:'2026-06-14',itemUrl:null},
   {id:'i_session0614_handoff',type:'fordave',text:'Session 2026-06-14 handoff: v304 complete. Ch.8 footnote retrofit PASS 33/33/33/33. Five open items need Dave decisions — present choice forms Groups A through E in order.',done:false,priority:true,memFlag:false,tag:'Ch.8',deferred:false,answer:null,dialogue:null,created:'2026-06-14T12:00:00.000Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_1781410794622',type:'fordave',text:'Ch.8 footnote retrofit: Note 1 should be Note 33 (Rebelo moved to end).',done:true,priority:false,memFlag:false,tag:'Ch.8',deferred:false,answer:'DONE v304: Rebelo duplicate at position 1 deleted; notes cascaded 2\u219131 through 32\u219131; Rebelo reconstructed at position 33.',dialogue:null,created:'2026-06-14T04:21:03.105Z',dueDate:'',completedDate:'2026-06-14',itemUrl:null},
   {id:'i_1781410507149',type:'fordave',text:'Ch.8 footnote retrofit: section break below note 1 (Rebelo) needs removal.',done:true,priority:false,memFlag:false,tag:'Ch.8',deferred:false,answer:'DONE v304: Embedded section break removed from Rebelo note position.',dialogue:null,created:'2026-06-14T04:20:07.149Z',dueDate:'',completedDate:'2026-06-14',itemUrl:null},
@@ -1485,12 +1659,12 @@ const SEED_ITEMS=[
   {id:'i_1781410051443',type:'fordave',text:'Glossary: add CEFAA entry.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'DONE v304: CEFAA entry added to Glossary C section.',dialogue:null,created:'2026-06-14T04:10:51.443Z',dueDate:'',completedDate:'2026-06-14',itemUrl:null},
   {id:'i_1781354163297',type:'fordave',text:'I am rethinking the functionality of the synching of notes from the RoadMap to this project notes tab.  I believe we should automatically copy any item added in the RoadMap to the Notes Tab.  That would allow a quick check of outstanding items whiteout going to the RoadMap panel.  Then when adding a date completed or clicking the done checkbox in ether tab, it will add the corresponding information in the second place.  Thoughts?  If you agree, please addd each of the Phases.  To group these items together, i.e., we could create a  new Type, &#x201C;Roadmap.&#x201D;  When some one selects Roadmap from the  type filter, all Open Phases and tasks would automatically appear in the same order as shown on the roadmap.  Thoughts?',done:false,priority:false,memFlag:true,tag:null,deferred:true,answer:null,dialogue:[{from:'dave',text:'I am rethinking the functionality of the synching of notes from the RoadMap to this project notes tab.  I believe we should automatically copy any item added in the RoadMap to the Notes Tab.  That would allow a quick check of outstanding items whiteout going to the RoadMap panel.  Then when adding a date completed or clicking the done checkbox in ether tab, it will add the corresponding information in the second place.  Thoughts?  If you agree, please addd each of the Phases.  To group these items together, i.e., we could create a  new Type, &#x201C;Roadmap.&#x201D;  When some one selects Roadmap from the  type filter, all Open Phases and tasks would automatically appear in the same order as shown on the roadmap.  Thoughts?',ts:'2026-06-13T12:36:03.297Z'}],created:'2026-06-13T12:36:03.297Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_1781353188436',type:'fordave',text:'Move hub to Vercel:  in session yesterday, I was noting that the project hub is being served when I go to overclassified.com. You recommended: Fix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required. If I move the hub to vercell, well that undo the work we\'ve done on automating the update of GitHub with the latest live build, and latest live data',done:false,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Move hub to Vercel:  in session yesterday, I was noting that the project hub is being served when I go to overclassified.com. You recommended: Fix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required. If I move the hub to vercell, well that undo the work we\'ve done on automating the update of GitHub with the latest live build, and latest live data',ts:'2026-06-13T12:19:48.436Z'}],created:'2026-06-13T12:19:48.436Z',dueDate:'',completedDate:'',itemUrl:null},
-  {id:'i_1781352590018',type:'fordave',text:'Change hub to notes section flow button to be To Claude (toggle to activate in small print below or something like that.  Flow is not intuitive if I share this with others',done:false,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Change hub to notes section flow button to be To Claude (toggle to activate in small print below or something like that.  Flow is not intuitive if I share this with others',ts:'2026-06-13T12:09:50.018Z'}],created:'2026-06-13T12:09:50.018Z',dueDate:'',completedDate:'',itemUrl:null},
+  {id:'i_1781352590018',type:'fordave',text:'Change hub to notes section flow button to be To Claude (toggle to activate in small print below or something like that.  Flow is not intuitive if I share this with others',done:true,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Change hub to notes section flow button to be To Claude (toggle to activate in small print below or something like that.  Flow is not intuitive if I share this with others',ts:'2026-06-13T12:09:50.018Z'}],created:'2026-06-13T12:09:50.018Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_1781352444457',type:'fordave',text:'Look for the Jared Moskowitz quote in the June 9 press conference regarding the assignation of bin Laden using a helicopter that congress never knew about.  It makes the case clearly — then find the best place to use it in the book, and recommend to Dave.  Also confirm we do not have a Moskowitz quote.',done:false,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Look for the Jared Moskowitz quote in the June 9 press conference regarding the assignation of bin Laden using a helicopter that congress never knew about.  It makes the case clearly — then find the best place to use it in the book, and recommend to Dave.  Also confirm we do not have a Moskowitz quote.',ts:'2026-06-13T12:07:24.457Z'}],created:'2026-06-13T12:07:24.457Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_1781350416562',type:'fordave',text:'Look for the Eric Burlison quote in the June 9 press conference regarding Grusch and Gallaudet being the most important figures in this matter because they had to endure an &#x201C;avalanche of stress&#x201D; and see where we can use that in the book. It seems like a very powerful statement by Burlison that we should not let go by. Thoughts?',done:false,priority:false,memFlag:true,tag:null,deferred:false,answer:null,dialogue:[{from:'dave',text:'Look for the Erick Burson quote in the June 9 press conference regarding Rush and Gallaudet being the most important figures in this matter because they had to indoor a \u201cavalanche of stress\u201d and see where we can use that in the book. It seems like a very powerful statement by Burleson that we should not let go by. Thoughts?',ts:'2026-06-13T11:33:36.562Z'}],created:'2026-06-13T11:33:36.562Z',dueDate:'',completedDate:'',itemUrl:null},
   {id:'i_1781318933544',type:'reminder',text:'Add PI 23 to the project files',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-06-13T02:48:53.544Z',dueDate:'2026-06-13',completedDate:'',itemUrl:'iCloud Drive \u25b8 Desktop \u25b8 Book and Materials \u25b8 Over-classified-Vigilia'},
   {id:'i_life1952_research',type:'note',text:'RESEARCH NOTE — Life magazine April 7, 1952: "Have We Visitors from Space?" by H. B. Darrach Jr. and Robert Ginna. Same issue as Marilyn Monroe cover. Interior headline: "The Air Force is now ready to concede that many saucer and fireball sightings still defy explanation; here LIFE offers some scientific evidence that there is a real case for interplanetary saucers." Air Force collaborated and may have prompted the article. After the 1952 Washington DC UFO flap that summer, the Air Force reversed to denial/debunking — this issue stands as the last time a mainstream outlet made such a claim with apparent official sanction. SOURCE: Heard on Podcast UFO — Charles Lear audio blog on LIFE magazine and UFOs. — ARTICLE LINKS: (1) AFU collection of LIFE UAP articles 1947–1966 (direct download index): https://files.afu.se/Downloads/?dir=Magazines/0 - Articles/United States/Life (2) NICAP full transcript: http://www.nicap.org/life52.htm (3) Project 1947 transcript: http://www.project1947.com/shg/articles/lifemag52.html (4) Wikipedia "Have We Visitors From Space?": https://en.wikipedia.org/wiki/Have_We_Visitors_From_Space%3F — LEAR BLOG (Podcast UFO): Blog has not yet received a standalone permalink — currently live on Podcast UFO homepage (podcastufo.com). Title appears to be "LIFE Magazine and UFOs" or similar. Check podcastufo.com/blog/ for the permalink once published. — PUBLIC DOMAIN IMAGE CANDIDATES (all USAF govt photos = PD): (A) Wikimedia Commons F-94B Starfire category: https://commons.wikimedia.org/wiki/Category:F-94B_Starfire — includes "61st Fighter-Interceptor Squadron Lockheed F-94B-1-LO Starfire 50-889 1952.jpg" (dated 1952, exact aircraft type scrambled from New Castle AFB) and "F-94B 319th FIS over Korea c1952.jpg" (in-flight, atmospheric). (B) Project Blue Book 1952 UFO report frequency chart: public domain via Wikimedia Commons — cited by Smithsonian. Potentially citable in Ch.4 (What We Agreed to See) or Ch.9 (Manufacturing Doubt) re: press/AF collaboration pre-debunking era.',done:false,priority:false,memFlag:false,tag:'research',deferred:false,answer:null,dialogue:[{from:'claude',text:'Updated 2026-06-12 with article links, AFU download URL, image candidates, and Lear blog status. Lear blog on Podcast UFO does not yet have a standalone permalink — it is the current homepage feature. AFU direct link confirmed from Spreaker transcript of blog. F-94B Starfire USAF photos on Wikimedia Commons confirmed public domain. NICAP and Project 1947 both carry full article transcripts.',ts:'2026-06-12T00:00:00.000Z'}],created:'2026-06-12T00:00:00.000Z',dueDate:'',completedDate:'',itemUrl:'https://files.afu.se/Downloads/?dir=Magazines/0%20-%20Articles/United%20States/Life'},
-  {id:'i_1781352906593',type:'fordave',text:'Move Hub to Vercel\n\nFix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required.',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:'If I move the hub to Vercel, will that undo the work we\'ve done on automating the update of GitHub with the latest live build, and latest live data',dialogue:null,created:'2026-06-13T12:15:06.593Z',dueDate:'',completedDate:'',itemUrl:'roadmap:rph_vercel'},
+  {id:'i_1781352906593',type:'fordave',text:'Move Hub to Vercel\n\nFix conflict between over-classified.com (Vercel) and hub (GitHub Pages) by moving hub to Vercel. Four steps — takes about 30 minutes total. No coding required.',done:true,priority:false,memFlag:false,tag:null,deferred:false,answer:'If I move the hub to Vercel, will that undo the work we\'ve done on automating the update of GitHub with the latest live build, and latest live data',dialogue:null,created:'2026-06-13T12:15:06.593Z',dueDate:'',completedDate:'',itemUrl:'roadmap:rph_vercel'},
   {id:'i_1781352881423',type:'note',text:'Step 4 — Remove custom domain from GitHub Pages\n\nGo to github.com \u2192 brownd11-a11y/oc-hub \u2192 Settings \u2192 Pages \u2192 Custom domain \u2192 clear the field and Save. This stops GitHub from intercepting over-classified.com traffic. Hub push workflow is unchanged — Claude still pushes index.html to the same GitHub repo; Vercel redeploys automatically on every push.',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-06-13T12:14:41.423Z',dueDate:'',completedDate:'',itemUrl:'roadmap:rph_vercel_s4'},
   {id:'i_1781352861064',type:'note',text:'Step 3 — Add CNAME at your DNS registrar\n\nLog in to wherever you bought over-classified.com \u2192 DNS settings \u2192 Add record: Type=CNAME, Name=hub, Value=paste what Vercel gave you in Step 2. Save. Takes up to 1 hour to propagate. Hub will then be live at hub.over-classified.com.',done:false,priority:false,memFlag:false,tag:null,deferred:false,answer:null,dialogue:null,created:'2026-06-13T12:14:21.064Z',dueDate:'',completedDate:'',itemUrl:'roadmap:rph_vercel_s3'},
   {id:'i_1781352822108',type:'note',text:'Step 2 — Assign hub.over-classified.com in Vercel\n\nIn your new Vercel project \u2192 Settings \u2192 Domains \u2192 Add: hub.over-classified.com. Vercel will show you a CNAME value to copy (looks like: cname.vercel-dns.com). Leave this tab open.',done:false,priority:false,memFlag:false,tag:'hubui',deferred:false,answer:null,dialogue:null,created:'2026-06-13T12:13:42.108Z',dueDate:'',completedDate:'',itemUrl:'roadmap:rph_vercel_s2'},
@@ -1945,9 +2119,17 @@ function hdSearchClear(){
   searchClose();
 }
 function setTag(v){fTag=v||null;render();}
-function setType(v){fType=v||null;render();}
+function setType(v){
+  fType=v||null;
+  const rmCtrl=document.getElementById('rm-collapse-controls');
+  if(rmCtrl)rmCtrl.style.display=(fType==='roadmap'?'flex':'none');
+  if(fType==='roadmap'){_rmInitialized=false;_rmExpanded={};}
+  render();
+}
 function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;render();}
 function iVis(it){
+  if(it.type==='roadmap')return false; // roadmap items shown only in roadmap view
+
   if(fSt==='done'&&!it.done)return false;
   if(fSt==='open'&&(it.done||it.deferred))return false;
   if(fSt==='deferred'&&(!it.deferred||it.done))return false;
@@ -2179,6 +2361,14 @@ function kwSave(){
 // ─────────────────────────────────────────────────────────────────────────
 
 function rlist(){
+  // Roadmap type view
+  if(fType==='roadmap'){
+    const list=document.getElementById('list');
+    if(list){renderRoadmapNotes(list);}
+    const lc=document.getElementById('list-count');
+    if(lc)lc.textContent='Roadmap';
+    return;
+  }
   const list=document.getElementById('list');
   const visible=(S.items||[]).filter(iVis);
   document.getElementById('list-count').textContent=visible.length+' item'+(visible.length===1?'':'s');
@@ -2252,7 +2442,7 @@ function rlist(){
       </div></div>`;
     }
     return`<div class="${cls}" id="it_${it.id}">
-      <div class="ihead" onclick="xItem('${it.id}')">
+      <div class="ihead" onclick="itemHeadClick('${it.id}')">
         <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':it.deferred?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>':''}</div>
         <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
         <div class="imeta">
@@ -2376,8 +2566,8 @@ function toggleMem(){/* legacy no-op */}
 function toggleFlow(){
   inputFlowOn=!inputFlowOn;
   const btn=document.getElementById('flow-toggle');
-  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> Flow';}
-  else{btn.className='flow-toggle off';btn.innerHTML='&#9675; Note only';}
+  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> To Claude';}
+  else{btn.className='flow-toggle off';btn.innerHTML='&#9675; To Claude';}
 }
 function toggleReminder(){
   inputIsReminder=!inputIsReminder;
@@ -4590,6 +4780,373 @@ document.addEventListener('keydown',function(e){
   }
 });
 
+
+/* ── THREAD OVERLAY ── */
+let threadOverlayItemId = null;
+function threadOverlayOpen(itemId) {
+  const it = S.items.find(i => i.id === itemId); if (!it) return;
+  threadOverlayItemId = itemId;
+  const ov = document.getElementById('thread-overlay');
+  const title = document.getElementById('thread-overlay-title');
+  const body = document.getElementById('thread-overlay-body');
+  const ta = document.getElementById('thread-reply-ta');
+  title.textContent = (it.text || '').substring(0, 100);
+  ta.value = '';
+  ta.style.height = 'auto';
+  // Render dialogue entries oldest-first
+  const dlg = (it.dialogue || []);
+  if (!dlg.length) {
+    body.innerHTML = '<div style="padding:20px;font-family:&apos;Source Code Pro&apos;,monospace;font-size:11px;color:var(--label-secondary);text-align:center">No dialogue entries yet.</div>';
+  } else {
+    body.innerHTML = [...dlg].reverse().map(d => `<div class="tov-entry from-${d.from}">
+      <div class="tov-meta"><span class="tov-from ${d.from}">${d.from === 'dave' ? 'Dave' : 'Claude'}</span><span class="tov-ts">${fmtDate((d.ts||'').slice(0,10))}</span></div>
+      <div class="tov-text">${esc(d.text)}</div>
+    </div>`).join('');
+  }
+  ov.style.display = 'flex';
+  // Scroll to bottom
+  setTimeout(() => { body.scrollTop = body.scrollHeight; }, 50);
+}
+function threadOverlayClose() {
+  document.getElementById('thread-overlay').style.display = 'none';
+  threadOverlayItemId = null;
+}
+function threadOverlaySend() {
+  const ta = document.getElementById('thread-reply-ta');
+  const txt = (ta.value || '').trim(); if (!txt) return;
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  if (!it.dialogue) it.dialogue = [];
+  it.dialogue.push({ from: 'dave', text: txt, ts: new Date().toISOString() });
+  save();
+  // Re-render the thread in overlay
+  threadOverlayOpen(threadOverlayItemId);
+}
+
+/* ── ROADMAP TYPE — INPUT FORM ── */
+let rmSubtype = 'phase';
+function onInputTypeChange(val) {
+  const row = document.getElementById('roadmap-subtype-row');
+  if (val === 'roadmap') {
+    row.style.display = 'flex';
+    populateRmPhaseSel();
+  } else {
+    row.style.display = 'none';
+  }
+}
+function setRmSubtype(t) {
+  rmSubtype = t;
+  ['phase','step','gate'].forEach(k => {
+    const btn = document.getElementById('rmst-' + k);
+    if (btn) btn.className = 'mtr-type-btn' + (k === t ? ' active' : '');
+  });
+  const psel = document.getElementById('rmst-phase-sel');
+  if (psel) psel.style.display = (t === 'step' || t === 'gate') ? 'block' : 'none';
+}
+function populateRmPhaseSel() {
+  const sel = document.getElementById('rmst-phase-sel'); if (!sel) return;
+  const phases = (S.road || []).filter(r => r.kind === 'phase');
+  sel.innerHTML = '<option value="">— Assign to phase —</option>' +
+    phases.map(p => `<option value="${p.id}">${esc(p.label||'')}</option>`).join('');
+}
+
+/* ── ROADMAP TYPE — NOTES TAB RENDER ── */
+function renderRoadmapNotes(container) {
+  const rmCtrl = document.getElementById('rm-collapse-controls');
+  if (rmCtrl) rmCtrl.style.display = 'flex';
+
+  const allRm = (S.items || []).filter(it => it.type === 'roadmap');
+
+  // Auto-collapse all phases on first entry to roadmap view
+  if (!_rmInitialized) {
+    allRm.filter(it => it.rmKind === 'phase').forEach(ph => { _rmCollapsed[ph.rmId] = true; });
+    _rmInitialized = true;
+  }
+  const phases = allRm.filter(it => it.rmKind === 'phase');
+  const roadOrder = (S.road || []).map(r => r.id);
+  phases.sort((a,b) => roadOrder.indexOf(a.rmId) - roadOrder.indexOf(b.rmId));
+
+  function rmVis(it) {
+    if (fSt === 'open') return !it.done;
+    if (fSt === 'done') return !!it.done;
+    if (fSt === 'deferred') return !!it.deferred;
+    return true;
+  }
+
+  function fmtDateShort(d) {
+    if (!d) return '';
+    const p = d.split('-');
+    if (p.length < 2) return d;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[parseInt(p[1])-1] + ' ' + p[2];
+  }
+
+  function renderRmRow(it, indent) {
+    const isPhase = it.rmKind === 'phase';
+    const isGate  = it.rmKind === 'gate';
+    const phColor = it.rmColor || 'var(--accent)';
+    const collapsed = isPhase && !!_rmCollapsed[it.rmId];
+    const expanded  = !!_rmExpanded[it.id];
+    const iid = it.id, rid = it.rmId;
+
+    // Date strings
+    var dateHtml = '';
+    if (isPhase) {
+      const pr = phaseRange(rid);
+      if (pr.start || pr.end) {
+        dateHtml = '<span style="font-family:var(--font-mono,monospace);font-size:10px;color:var(--label-secondary);margin-left:14px;flex-shrink:0">'
+          + (pr.start ? fmtDateShort(pr.start) : '?')
+          + (pr.end ? ' \u2192 ' + fmtDateShort(pr.end) : '')
+          + '</span>';
+      }
+    } else if (it.dueDate) {
+      dateHtml = '<span style="font-family:var(--font-mono,monospace);font-size:10px;color:var(--label-secondary);flex-shrink:0">' + fmtDateShort(it.dueDate) + '</span>';
+    }
+
+    const doneIcon = it.done ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2a7a2a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' : '';
+
+    // Build row using data-attributes to avoid quote nesting
+    var rowHtml;
+    if (isPhase) {
+      rowHtml = '<div class="rm-phase-header' + (it.done ? ' done' : '') + '" '
+        + 'style="border-left-color:' + phColor + ';cursor:pointer" '
+        + 'data-iid="' + iid + '" data-rid="' + rid + '" '
+        + 'onclick="rmRowClick(this.dataset.iid)">'
+        + '<span style="display:flex;align-items:center;flex:1;min-width:0">'
+        + '<span style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(it.text||'') + '</span>'
+        + dateHtml
+        + '</span>'
+        + doneIcon
+        + '<span onclick="event.stopPropagation();rmPhaseToggle(this.parentElement.dataset.rid)" '
+        + 'title="' + (collapsed ? 'Expand steps' : 'Collapse steps') + '" '
+        + 'style="cursor:pointer;font-size:12px;color:var(--label-secondary);flex-shrink:0;padding:2px 6px;margin-left:4px">'
+        + (collapsed ? '\u25bc' : '\u25b2') + '</span>'
+        + '<span onclick="event.stopPropagation();showTab(&apos;roadmap&apos;)" title="Go to Roadmap tab" '
+        + 'style="cursor:pointer;color:var(--label-secondary);flex-shrink:0;padding:2px 6px;'
+        + 'font-size:11px;border:1px solid var(--separator);border-radius:4px;margin-left:4px">\u25b6</span>'
+        + '</div>';
+    } else {
+      const badgeCls = isGate ? 'gate' : 'step';
+      const badgeLbl = isGate ? 'Gate' : 'Step';
+      rowHtml = '<div class="rm-item-row' + (isGate ? ' is-gate' : '') + (it.done ? ' done' : '') + '" '
+        + 'style="padding-left:' + (indent||28) + 'px;cursor:pointer" '
+        + 'data-iid="' + iid + '" data-rid="' + rid + '" '
+        + 'onclick="rmRowClick(this.dataset.iid)">'
+        + '<span class="rm-kind-badge ' + badgeCls + '">' + badgeLbl + '</span>'
+        + '<span style="flex:1">' + esc(it.text||'') + '</span>'
+        + dateHtml + doneIcon
+        + '</div>';
+    }
+
+    // Detail panel
+    var detailHtml = '';
+    if (expanded) {
+      const roadItem = (S.road || []).find(r => r.id === rid) || {};
+      const desc     = (roadItem.note || '').trim();
+      const noteText = (it.answer || '').trim();
+      const compDate = roadItem.completedDate || it.completedDate || '';
+      const tStart   = roadItem.targetStart || '';
+      const tEnd     = roadItem.targetEnd   || '';
+
+      var metaRows = '';
+      if (tStart || tEnd) {
+        metaRows += '<div class="rm-detail-meta-row"><span class="rm-detail-lbl">Dates</span>'
+          + '<span>' + (tStart||'\u2014') + (tEnd ? ' \u2192 ' + tEnd : '') + '</span></div>';
+      }
+      if (compDate) {
+        metaRows += '<div class="rm-detail-meta-row"><span class="rm-detail-lbl">Completed</span>'
+          + '<span>' + compDate + '</span></div>';
+      }
+
+      detailHtml = '<div class="rm-detail-panel">'
+        + (metaRows ? '<div class="rm-detail-meta">' + metaRows + '</div>' : '')
+        + (desc     ? '<div class="rm-detail-section-lbl">Description</div><div class="rm-detail-note">' + esc(desc) + '</div>' : '')
+        + (noteText ? '<div class="rm-detail-section-lbl">Notes</div><div class="rm-detail-note">' + esc(noteText) + '</div>' : '')
+        + (!desc && !noteText ? '<div class="rm-detail-note" style="color:var(--label-secondary);font-style:italic">No description or notes.</div>' : '')
+        + '<div class="rm-detail-actions" data-iid="' + iid + '" data-rid="' + rid + '">'
+        + '<button class="iabtn" onclick="event.stopPropagation();rmToggleDone(this.parentElement.dataset.iid,this.parentElement.dataset.rid)">'
+        + (it.done ? 'Mark open' : 'Mark done') + '</button>'
+        + (!isPhase ? '<button class="iabtn" onclick="event.stopPropagation();showTab(&apos;roadmap&apos;)">\u25b6 Roadmap</button>' : '')
+        + '</div>'
+        + '</div>';
+    }
+
+    return rowHtml + detailHtml;
+  }
+  let html = '';
+  let visCount = 0;
+
+  phases.forEach(ph => {
+    if (!rmVis(ph)) return;
+    const collapsed = !!_rmCollapsed[ph.rmId];
+    html += renderRmRow(ph, 0);
+    visCount++;
+
+    if (!collapsed) {
+      const children = allRm.filter(it => it.rmPhaseId === ph.rmId);
+      children.sort((a,b) => roadOrder.indexOf(a.rmId) - roadOrder.indexOf(b.rmId));
+      children.forEach(ch => {
+        if (!rmVis(ch)) return;
+        html += renderRmRow(ch, 28);
+        visCount++;
+      });
+    }
+  });
+
+  const lc = document.getElementById('list-count');
+  if (lc) lc.textContent = visCount + ' roadmap items';
+  container.innerHTML = html || '<div style="padding:20px;font-family:\'Source Code Pro\',monospace;'
+    + 'font-size:11px;color:var(--label-secondary);text-align:center">No roadmap items match current filter.</div>';
+}
+
+/* ── ROADMAP TYPE — ADDITEM EXTENSION ── */
+const _origAddItem = addItem;
+// Patch addItem to handle roadmap type
+function addItem() {
+  const typeEl = document.getElementById('input-type');
+  if (typeEl && typeEl.value === 'roadmap') {
+    const ta = document.getElementById('input-ta');
+    const txt = (ta.value || '').trim(); if (!txt) return;
+    const label = txt.split('\n')[0].substring(0, 80);
+    const phaseId = document.getElementById('rmst-phase-sel')?.value || null;
+    const newId = 'r_' + Date.now();
+    const roadItem = {
+      id: newId,
+      kind: rmSubtype,
+      label,
+      note: txt.length > 80 ? txt : '',
+      phase: (rmSubtype === 'step' || rmSubtype === 'gate') ? (phaseId || null) : undefined,
+      color: rmSubtype === 'phase' ? '#2070C8' : undefined,
+      open: rmSubtype === 'phase' ? true : undefined,
+      num: rmSubtype === 'phase' ? ((S.road||[]).filter(r=>r.kind==='phase').length + 1) : undefined,
+      targetStart: '', targetEnd: '', completedDate: '', metDate: '',
+      done: false
+    };
+    if (!S.road) S.road = [];
+    S.road.push(roadItem);
+    ta.value = '';
+    typeEl.value = 'note';
+    document.getElementById('roadmap-subtype-row').style.display = 'none';
+    save(); render();
+    return;
+  }
+  _origAddItem();
+}
+
+
+function itemHeadClick(id) {
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  // If item has a dialogue thread, open the full-screen overlay
+  if (it.dialogue && it.dialogue.length > 0) {
+    threadOverlayOpen(id);
+  } else {
+    xItem(id);
+  }
+}
+
+/* ── ESCAPE TO CLOSE THREAD OVERLAY ── */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const ov = document.getElementById('thread-overlay');
+    if (ov && ov.style.display === 'flex') { threadOverlayClose(); }
+  }
+});
+
+/* ── ROADMAP PHASE COLLAPSE IN NOTES VIEW ── */
+let _rmCollapsed = {};  // rmId -> bool
+let _rmInitialized = false;  // true after first auto-collapse
+
+function rmTogglePhase(rmId) {
+  _rmCollapsed[rmId] = !_rmCollapsed[rmId];
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+
+function rmCollapsePhases() {
+  const allRm = (S.items || []).filter(it => it.type === 'roadmap' && it.rmKind === 'phase');
+  allRm.forEach(ph => { _rmCollapsed[ph.rmId] = true; });
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+
+function rmExpandPhases() {
+  _rmCollapsed = {};
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+
+
+
+/* ── ROADMAP NOTES — ROW INTERACTION ── */
+let _rmExpanded = {};  // item.id -> bool (detail panel open)
+
+function rmRowClick(itemId) {
+  _rmExpanded[itemId] = !_rmExpanded[itemId];
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+function rmPhaseToggle(rmId) {
+  _rmCollapsed[rmId] = !_rmCollapsed[rmId];
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+
+function rmToggleDone(itemId, rmId) {
+  // Sync done state between S.items mirror and S.road
+  const it = (S.items || []).find(i => i.id === itemId);
+  if (it) {
+    it.done = !it.done;
+    it.completedDate = it.done ? new Date().toISOString().slice(0,10) : '';
+  }
+  const roadItem = (S.road || []).find(r => r.id === rmId);
+  if (roadItem) {
+    roadItem.done = it ? it.done : !roadItem.done;
+    roadItem.completedDate = roadItem.done ? new Date().toISOString().slice(0,10) : '';
+  }
+  save();
+  const list = document.getElementById('list');
+  if (list) renderRoadmapNotes(list);
+}
+
+
+/* ── HELP TAB ── */
+function showHelpTab(id, btn) {
+  document.querySelectorAll('.help-spanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.help-nav').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+/* ── SETTINGS STUBS ── */
+function saveProjectName() {
+  const v = document.getElementById('setting-project-name')?.value || '';
+  if (!S.settings) S.settings = {};
+  S.settings.projectName = v;
+  save();
+  const el = document.querySelector('.hub-title');
+  if (el) el.textContent = v;
+}
+function saveDefaultType(v) {
+  if (!S.settings) S.settings = {};
+  S.settings.defaultNoteType = v;
+  save();
+}
+function saveDefaultFilter(v) {
+  if (!S.settings) S.settings = {};
+  S.settings.defaultFilter = v;
+  save();
+}
+
+/* ── INFO ICON — navigate to help tab ── */
+function openHelp(section) {
+  showTab('help', document.getElementById('tab-help'));
+  if (section) {
+    setTimeout(() => {
+      const btn = document.querySelector('.help-nav[onclick*="' + section + '"]');
+      showHelpTab(section, btn);
+    }, 50);
+  }
+}
 </script>
 
 <!-- MOVE-TO-ROADMAP SLIDE PANEL -->
@@ -4672,5 +5229,23 @@ document.addEventListener('keydown',function(e){
   </div>
 </div>
 <div class="uc-toast" id="uc-toast">JSON copied &mdash; paste into Claude ✓</div>
+
+<!-- FULL-SCREEN THREAD OVERLAY -->
+<div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);display:none;flex-direction:column">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
+    <span id="thread-overlay-title" style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-primary);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:12px"></span>
+    <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0">&#215; Close</button>
+  </div>
+  <!-- Reply form -->
+  <div style="padding:14px 18px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
+    <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">Your reply</div>
+    <div style="display:flex;gap:10px;align-items:flex-end">
+      <textarea id="thread-reply-ta" rows="2" placeholder="Type your reply…" style="flex:1;border:1px solid var(--separator);border-radius:6px;padding:8px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:14px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button onclick="threadOverlaySend()" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;height:38px">Send</button>
+    </div>
+  </div>
+  <!-- Scrollable dialogue thread -->
+  <div id="thread-overlay-body" style="flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px"></div>
+</div>
 </body>
 </html>
