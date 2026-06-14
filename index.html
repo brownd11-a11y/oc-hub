@@ -285,7 +285,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .list-bar-btn:hover{color:var(--label-primary);border-color:var(--label-primary)}
 
 /* ── ITEMS (Apple light) ── */
-.item{border-left:3px solid transparent;margin:1px 0;background:var(--card-bg);transition:border-color .15s,box-shadow .15s,background .15s;border-bottom:1px solid var(--separator);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.item{border-left:3px solid transparent;margin:3px 0;background:var(--card-bg);transition:border-color .15s,box-shadow .15s,background .15s;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden}
 .item.done{background:var(--done-bg);border-left-color:var(--done-fg)}
 .item.hold{background:var(--hold-bg);border-left-color:var(--hold-fg)}
 .item.pri:not(.done):not(.hold){background:var(--pri-bg);border-left-color:var(--pri-color)}
@@ -2641,11 +2641,6 @@ function rlist(){
             ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
             :`<span class="type-pill">${esc(it.type||'note')}</span>`}
         </div>
-        ${isNeedsResponse&&!it.done?`<div class="ihead-pills">
-          <button class="dl-act-pill-inline pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
-          <button class="dl-act-pill-inline pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
-          <button class="dl-act-pill-inline pill-else" onclick="event.stopPropagation();xItem('${it.id}');setTimeout(()=>dlElseOpen('${it.id}'),120)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Other</button>
-        </div>`:''}
         <div class="idate-cols">
           <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
           <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
