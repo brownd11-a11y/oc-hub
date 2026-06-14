@@ -298,8 +298,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .icb{width:15px;height:15px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;margin-top:2px;transition:all .15s}
 .done .icb{background:var(--done-fg);border-color:var(--done-fg);color:white}
 .hold .icb{background:var(--hold-fg);border-color:var(--hold-fg);color:white;font-size:7px}
-.itext{flex:1;font-size:14px;color:var(--label-primary);line-height:1.4}
-.itext-collapsed{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.itext{flex:1;font-size:14px;color:var(--label-primary);line-height:1.4;min-width:0}
+.itext-l1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.itext-l2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;color:var(--label-secondary);margin-top:2px}
+.itext-l2-from{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary);opacity:.7}
 .done .itext{text-decoration:line-through;color:var(--done-fg);opacity:.7}
 .imeta{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .istar{font-size:11px;color:var(--separator)}.istar.on{color:var(--pri-color)}
@@ -2578,10 +2580,24 @@ function rlist(){
     const isAwaitingClaude=!it.done&&lastDlgFrom==='dave'&&dlgCheck.length>1&&isLegacyFordave;
     const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
     const dlgForPreview=(it.dialogue||[]);
-    const lastClaudeMsg=dlgForPreview.length&&dlgForPreview[dlgForPreview.length-1].from==='claude'&&!it.done ? dlgForPreview[dlgForPreview.length-1].text : null;
-    const previewRaw=lastClaudeMsg||(it.text||'');
-    const previewPrefix=lastClaudeMsg?'Claude: ':'';
-    const preview=previewPrefix+(previewRaw.length>120?previewRaw.substring(0,120)+'\u2026':previewRaw);
+    // Line 1: always first line of item text
+    const fullText = (it.text||'');
+    const line1Raw = fullText.split('\n')[0];
+    const line1 = line1Raw.length>110 ? line1Raw.substring(0,110)+'\u2026' : line1Raw;
+    // Line 2: latest dialogue entry (any speaker), or second line of description if no dialogue
+    let line2 = ''; let line2prefix = '';
+    if (dlgForPreview.length) {
+      const last = dlgForPreview[dlgForPreview.length-1];
+      line2prefix = last.from==='claude' ? 'Claude' : last.from==='dave' ? 'Dave' : 'Note';
+      const t = (last.text||'').split('\n')[0];
+      line2 = t.length>100 ? t.substring(0,100)+'\u2026' : t;
+    } else {
+      const lines = fullText.split('\n');
+      if (lines.length>1 && lines[1].trim()) {
+        const t = lines[1].trim();
+        line2 = t.length>110 ? t.substring(0,110)+'\u2026' : t;
+      }
+    }
     const dueCls=isOverdue(it.dueDate)?' overdue':'';
     let bodyHtml='';
     if(isEditing){
@@ -2634,7 +2650,10 @@ function rlist(){
     return`<div class="${cls}" id="it_${it.id}">
       <div class="ihead" onclick="itemHeadClick('${it.id}')">
         <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':it.deferred?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>':''}</div>
-        <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
+        <div class="itext">${exp
+          ? esc(fullText)
+          : `<div class="itext-l1">${esc(line1)}</div>${line2?`<div class="itext-l2">${line2prefix?`<span class="itext-l2-from">${esc(line2prefix)}</span> `:''}${esc(line2)}</div>`:''}`
+        }</div>
         <div class="iright">
           <div class="iright-top">
             <div class="imeta">
