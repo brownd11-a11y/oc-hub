@@ -301,7 +301,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .itext{flex:1;font-size:14px;color:var(--label-primary);line-height:1.4}
 .itext-collapsed{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .done .itext{text-decoration:line-through;color:var(--done-fg);opacity:.7}
-.imeta{display:flex;align-items:center;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.imeta{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .istar{font-size:11px;color:var(--separator)}.istar.on{color:var(--pri-color)}
 .imem{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--separator);cursor:pointer;transition:color .15s}.imem.on{color:#b06000}
 .tag-pill{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
@@ -321,7 +321,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .iabtn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:3px 9px;cursor:pointer;color:var(--label-secondary);transition:all .15s}
 .iabtn:hover{border-color:var(--label-primary);color:var(--label-primary)}
 .iabtn.danger:hover{border-color:var(--pri-color);color:var(--pri-color)}
-.idate-cols{display:flex;flex-direction:column;gap:3px;align-items:flex-end;flex-shrink:0;min-width:100px}
+.iright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.iright-top{display:flex;align-items:center;gap:8px}
+.ibadge-row{display:flex;align-items:center;gap:4px;justify-content:flex-end;flex-wrap:wrap;min-height:0}
+.idate-cols{display:flex;flex-direction:column;gap:1px;align-items:flex-end;flex-shrink:0;min-width:88px}
 .idate-pair{display:flex;flex-direction:column;align-items:flex-end}
 .idate-lbl{font-family:'Source Code Pro',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary)}
 .idate-val{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-primary)}
@@ -2632,20 +2635,26 @@ function rlist(){
       <div class="ihead" onclick="itemHeadClick('${it.id}')">
         <div class="icb" onclick="event.stopPropagation();togDone('${it.id}')">${it.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':it.deferred?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>':''}</div>
         <div class="itext itext-collapsed">${exp?esc(it.text):esc(preview)}</div>
-        <div class="imeta">
-          <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-          ${dlgCheck.length>0?`<span class="idlg-ct" title="${dlgCheck.length} thread entr${dlgCheck.length===1?'y':'ies'}">${dlgCheck.length}</span>`:''}
-          <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
-          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
-          ${it.type==='fordave'
-            ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
-            :`<span class="type-pill">${esc(it.type||'note')}</span>`}
+        <div class="iright">
+          <div class="iright-top">
+            <div class="imeta">
+              <span class="istar${it.priority?' on':''}" onclick="event.stopPropagation();togPri('${it.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+              ${dlgCheck.length>0?`<span class="idlg-ct" title="${dlgCheck.length} thread entr${dlgCheck.length===1?'y':'ies'}">${dlgCheck.length}</span>`:''}
+              <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
+            </div>
+            <div class="idate-cols">
+              <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
+              <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
+            </div>
+            <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </div>
+          <div class="ibadge-row">
+            ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
+            ${it.type==='fordave'
+              ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
+              :`<span class="type-pill">${esc(it.type||'note')}</span>`}
+          </div>
         </div>
-        <div class="idate-cols">
-          <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
-          <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
-        </div>
-        <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
       </div>${bodyHtml}</div>`;
   
   }
