@@ -956,8 +956,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .help-device-row{display:flex;align-items:flex-start;gap:12px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);padding:8px 12px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px;line-height:1.5}
 .help-device-icon{flex-shrink:0;font-size:16px;width:24px;text-align:center}
 /* Info icon button */
-.info-btn{background:none;border:none;cursor:pointer;padding:0 10px;display:flex;align-items:center;justify-content:center;color:var(--label-secondary);transition:color .15s,opacity .15s;flex-shrink:0;font-size:15px;line-height:1;height:100%;letter-spacing:0;opacity:0.8}
-.info-btn:hover{color:var(--accent);opacity:1}
+.info-btn{background:none;border:none;cursor:pointer;padding:0 14px;display:flex;align-items:center;justify-content:center;color:var(--label-secondary);transition:color .15s;flex-shrink:0;font-size:18px;line-height:1;align-self:center;letter-spacing:0}
+.info-btn:hover{color:var(--accent)}
 /* Mobile: sidebar collapses to top strip */
 @media(max-width:600px){
   .help-layout{flex-direction:column}
@@ -1122,6 +1122,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <select class="inp-sel" id="rmst-phase-sel" style="flex:1;display:none">
         <option value="">— Assign to phase —</option>
       </select>
+      <input type="text" id="rmst-start" placeholder="Start YYYY-MM-DD" class="inp-ta" style="width:130px;padding:5px 8px;font-size:11px;border-radius:5px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);display:none" title="Target start date">
+      <input type="text" id="rmst-end" placeholder="End YYYY-MM-DD" class="inp-ta" style="width:130px;padding:5px 8px;font-size:11px;border-radius:5px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);display:none" title="Target end date">
     </div>
   </div></div>
   <div class="list-wrap">
@@ -2129,6 +2131,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRender();}
+  if(t==='outreach'&&S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}
 }
 
 function toggleDeck(e){
@@ -4991,6 +4994,11 @@ function setRmSubtype(t) {
   });
   const psel = document.getElementById('rmst-phase-sel');
   if (psel) psel.style.display = (t === 'step' || t === 'gate') ? 'block' : 'none';
+  const dstart = document.getElementById('rmst-start');
+  const dend   = document.getElementById('rmst-end');
+  const showDates = (t === 'step' || t === 'gate');
+  if (dstart) dstart.style.display = showDates ? 'block' : 'none';
+  if (dend)   dend.style.display   = showDates ? 'block' : 'none';
 }
 function populateRmPhaseSel() {
   const sel = document.getElementById('rmst-phase-sel'); if (!sel) return;
@@ -5159,6 +5167,8 @@ function addItem() {
     const label = txt.split('\n')[0].substring(0, 80);
     const phaseId = document.getElementById('rmst-phase-sel')?.value || null;
     const newId = 'r_' + Date.now();
+    const rmStartVal = (document.getElementById('rmst-start')?.value||'').trim();
+    const rmEndVal   = (document.getElementById('rmst-end')?.value||'').trim();
     const roadItem = {
       id: newId,
       kind: rmSubtype,
@@ -5168,12 +5178,14 @@ function addItem() {
       color: rmSubtype === 'phase' ? '#2070C8' : undefined,
       open: rmSubtype === 'phase' ? true : undefined,
       num: rmSubtype === 'phase' ? ((S.road||[]).filter(r=>r.kind==='phase').length + 1) : undefined,
-      targetStart: '', targetEnd: '', completedDate: '', metDate: '',
+      targetStart: rmStartVal, targetEnd: rmEndVal, completedDate: '', metDate: '',
       done: false
     };
     if (!S.road) S.road = [];
     S.road.push(roadItem);
     ta.value = '';
+    const _dsi = document.getElementById('rmst-start'); if(_dsi) _dsi.value='';
+    const _dei = document.getElementById('rmst-end');   if(_dei) _dei.value='';
     typeEl.value = 'note';
     document.getElementById('roadmap-subtype-row').style.display = 'none';
     save(); render();
@@ -5329,14 +5341,7 @@ function ingestLeads(newLeads) {
   renderLeads(S.leads);
 }
 
-// Render leads on outreach tab show
-const _origShowTab = showTab;
-function showTab(t, btn) {
-  _origShowTab(t, btn);
-  if (t === 'outreach' && S.leads && S.leads.length) {
-    setTimeout(() => renderLeads(S.leads), 50);
-  }
-}
+// leads render handled inside showTab directly
 </script>
 
 <!-- MOVE-TO-ROADMAP SLIDE PANEL -->
