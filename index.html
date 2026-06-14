@@ -5053,10 +5053,16 @@ function threadOverlayRenderBody() {
     }).join('');
   }
 }
+let _tovEditing = false;
+
 function threadOverlayRenderActions() {
+  _tovEditing = false;
   const bar = document.getElementById('tov-actions'); if (!bar) return;
+  const title = document.getElementById('thread-overlay-title');
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
-  const s = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer';
+  // Restore title to plain display
+  if (title) { title.textContent = (it.text || ''); title.contentEditable = 'false'; title.style.border = 'none'; title.style.padding = '0'; title.style.background = 'none'; title.style.borderRadius = '0'; title.style.minHeight = ''; title.style.outline = 'none'; }
+  const s = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap';
   const sd = s + ';border-color:#c00;color:#c00';
   bar.innerHTML =
     `<button style="${s}" onclick="tovAct('done')">` + (it.done ? 'Mark open' : 'Mark done') + `</button>` +
@@ -5065,11 +5071,94 @@ function threadOverlayRenderActions() {
     `<button style="${s}" onclick="tovAct('mtr')">&#8594; Roadmap</button>` +
     `<button style="${sd}" onclick="tovAct('del')">Delete</button>`;
 }
+
+function threadOverlayEnterEdit() {
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  _tovEditing = true;
+  const title = document.getElementById('thread-overlay-title');
+  if (title) {
+    title.textContent = it.text || '';
+    title.contentEditable = 'true';
+    title.style.border = '1px solid var(--separator)';
+    title.style.borderRadius = '6px';
+    title.style.padding = '6px 8px';
+    title.style.background = 'var(--input-bg)';
+    title.style.outline = 'none';
+    title.style.minHeight = '48px';
+    setTimeout(() => { title.focus(); const r = document.createRange(); r.selectNodeContents(title); r.collapse(false); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }, 40);
+  }
+  const bar = document.getElementById('tov-actions'); if (!bar) return;
+  const fs = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.05em;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 7px;border-radius:4px;outline:none';
+  const lbl = 'font-family:\'Source Code Pro\',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);flex-shrink:0';
+  const bs = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap';
+  const bsave = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:none;background:var(--accent);color:#fff;padding:5px 16px;border-radius:4px;cursor:pointer;white-space:nowrap;font-weight:600';
+  bar.innerHTML =
+    `<div style="display:flex;flex-direction:column;gap:7px;width:100%">` +
+      // Row 1: type, tag, priority
+      `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">` +
+        `<span style="${lbl}">Type</span>` +
+        `<select id="tov-ety" style="${fs}">` +
+          `<option value="question"${it.type==='question'?' selected':''}>Question</option>` +
+          `<option value="note"${it.type==='note'?' selected':''}>Project Note</option>` +
+          `<option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option>` +
+          `<option value="fordave"${it.type==='fordave'?' selected':''}>For Claude/Dave</option>` +
+        `</select>` +
+        `<span style="${lbl}">Tag</span>` +
+        `<select id="tov-etg" style="${fs}">` +
+          `<option value=""${!it.tag?' selected':''}>— none —</option>` +
+          `<option value="editing"${it.tag==='editing'?' selected':''}>Editing</option>` +
+          `<option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option>` +
+          `<option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option>` +
+          `<option value="research"${it.tag==='research'?' selected':''}>Research</option>` +
+          `<option value="hubui"${it.tag==='hubui'?' selected':''}>Hub UI</option>` +
+        `</select>` +
+        `<button id="tov-epri" style="${bs+(it.priority?';background:rgba(199,0,37,.12);color:#c00;border-color:#c00':'')}" onclick="tovTogglePri()">` +
+          `${it.priority ? '★ Priority' : '☆ Priority'}</button>` +
+      `</div>` +
+      // Row 2: due date, completed date, link
+      `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">` +
+        `<span style="${lbl}">Due</span><input type="date" id="tov-edu" style="${fs}" value="${esc(it.dueDate||'')}">` +
+        `<span style="${lbl}">Completed</span><input type="date" id="tov-ecd" style="${fs}" value="${esc(it.completedDate||'')}">` +
+        `<span style="${lbl}">🔗</span><input type="text" id="tov-eurl" style="${fs};min-width:160px;flex:1" value="${esc(it.itemUrl||'')}" placeholder="URL or bookmark">` +
+      `</div>` +
+      // Row 3: answer/note + save/cancel
+      `<div style="display:flex;gap:8px;align-items:flex-end">` +
+        `<textarea id="tov-ean" rows="2" style="${fs};flex:1;resize:vertical;line-height:1.45;font-family:'Libre Baskerville',Georgia,serif;font-size:13px" placeholder="Answer / note…">${esc(it.answer||'')}</textarea>` +
+        `<button style="${bsave}" onclick="tovSaveEdit()">Save</button>` +
+        `<button style="${bs}" onclick="threadOverlayRenderActions()">Cancel</button>` +
+      `</div>` +
+    `</div>`;
+}
+
+function tovTogglePri() {
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  it.priority = !it.priority;
+  const btn = document.getElementById('tov-epri'); if (!btn) return;
+  btn.textContent = it.priority ? '★ Priority' : '☆ Priority';
+  btn.style.background = it.priority ? 'rgba(199,0,37,.12)' : 'var(--card-bg)';
+  btn.style.color = it.priority ? '#c00' : 'var(--label-secondary)';
+  btn.style.borderColor = it.priority ? '#c00' : 'var(--separator)';
+}
+
+function tovSaveEdit() {
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  const title = document.getElementById('thread-overlay-title');
+  if (title) { const t = (title.textContent || '').trim(); if (t) it.text = t; }
+  const ety = document.getElementById('tov-ety'); if (ety) it.type = ety.value;
+  const etg = document.getElementById('tov-etg'); if (etg) it.tag = etg.value || null;
+  const edu = document.getElementById('tov-edu'); if (edu) it.dueDate = edu.value || '';
+  const ecd = document.getElementById('tov-ecd'); if (ecd) it.completedDate = ecd.value || '';
+  const eurl = document.getElementById('tov-eurl'); if (eurl) it.itemUrl = eurl.value.trim() || null;
+  const ean = document.getElementById('tov-ean'); if (ean) it.answer = ean.value.trim() || null;
+  save(); render();
+  threadOverlayRenderActions();
+}
+
 function tovAct(action) {
   const id = threadOverlayItemId; if (!id) return;
-  if (action === 'done')  { togDone(id);  threadOverlayRenderActions(); }
+  if (action === 'done')  { togDone(id); threadOverlayRenderActions(); }
   else if (action === 'defer') { togDefer(id); threadOverlayRenderActions(); }
-  else if (action === 'edit')  { threadOverlayClose(); startEdit(id); }
+  else if (action === 'edit')  { threadOverlayEnterEdit(); }
   else if (action === 'mtr')   { threadOverlayClose(); mtrOpen(id); }
   else if (action === 'del')   { threadOverlayClose(); delItem(id); }
 }
@@ -5334,7 +5423,8 @@ document.addEventListener('keydown', function(e) {
   if (!inInput) {
     const targetId = threadOverlayItemId || _lastItemId;
     if (e.key === 'e' || e.key === 'E') {
-      if (targetId) { e.preventDefault(); threadOverlayClose(); startEdit(targetId); }
+      if (threadOverlayItemId) { e.preventDefault(); threadOverlayEnterEdit(); }
+      else if (_lastItemId) { e.preventDefault(); threadOverlayOpen(_lastItemId); setTimeout(threadOverlayEnterEdit, 120); }
     }
     if (e.key === 'd' || e.key === 'D') {
       if (targetId) { e.preventDefault(); togDone(targetId); if (threadOverlayItemId) threadOverlayRenderActions(); }
