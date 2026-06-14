@@ -323,7 +323,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .iabtn.danger:hover{border-color:var(--pri-color);color:var(--pri-color)}
 .iright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
 .iright-top{display:flex;align-items:center;gap:8px}
-.ibadge-row{display:flex;align-items:center;gap:4px;justify-content:flex-end;flex-wrap:wrap;min-height:0}
+.ibadge-row{display:flex;align-items:center;gap:4px;flex-basis:100%;padding:0 0 4px 25px;flex-wrap:wrap;min-height:0}
 .idate-cols{display:flex;flex-direction:column;gap:1px;align-items:flex-end;flex-shrink:0;min-width:88px}
 .idate-pair{display:flex;flex-direction:column;align-items:flex-end}
 .idate-lbl{font-family:'Source Code Pro',monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase;color:var(--label-secondary)}
@@ -2648,12 +2648,12 @@ function rlist(){
             </div>
             <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
           </div>
-          <div class="ibadge-row">
-            ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
-            ${it.type==='fordave'
-              ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
-              :`<span class="type-pill">${esc(it.type||'note')}</span>`}
-          </div>
+        </div>
+        <div class="ibadge-row">
+          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
+          ${it.type==='fordave'
+            ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
+            :(it.type&&it.type!=='note'?`<span class="type-pill">${esc(it.type)}</span>`:'')}
         </div>
       </div>${bodyHtml}</div>`;
   
