@@ -5080,6 +5080,8 @@ let _tovEditing = false;
 
 function threadOverlayRenderActions() {
   _tovEditing = false;
+  // Restore reply form
+  const rf = document.getElementById('tov-reply-form'); if (rf) rf.style.display = '';
   const bar = document.getElementById('tov-actions'); if (!bar) return;
   const title = document.getElementById('thread-overlay-title');
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
@@ -5098,6 +5100,8 @@ function threadOverlayRenderActions() {
 function threadOverlayEnterEdit() {
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   _tovEditing = true;
+  // Hide the reply form while editing
+  const rf = document.getElementById('tov-reply-form'); if (rf) rf.style.display = 'none';
   const title = document.getElementById('thread-overlay-title');
   if (title) {
     title.textContent = it.text || '';
@@ -5144,11 +5148,12 @@ function threadOverlayEnterEdit() {
         `<span style="${lbl}">Completed</span><input type="date" id="tov-ecd" style="${fs}" value="${esc(it.completedDate||'')}">` +
         `<span style="${lbl}">🔗</span><input type="text" id="tov-eurl" style="${fs};min-width:160px;flex:1" value="${esc(it.itemUrl||'')}" placeholder="URL or bookmark">` +
       `</div>` +
-      // Row 3: answer/note + save/cancel
+      // Row 3: answer/note + save/cancel/delete
       `<div style="display:flex;gap:8px;align-items:flex-end">` +
         `<textarea id="tov-ean" rows="2" style="${fs};flex:1;resize:vertical;line-height:1.45;font-family:'Libre Baskerville',Georgia,serif;font-size:13px" placeholder="Answer / note…">${esc(it.answer||'')}</textarea>` +
         `<button style="${bsave}" onclick="tovSaveEdit()">Save</button>` +
         `<button style="${bs}" onclick="threadOverlayRenderActions()">Cancel</button>` +
+        `<button style="${bs};border-color:#c00;color:#c00" onclick="threadOverlayClose();delItem('${it.id}')">Delete</button>` +
       `</div>` +
     `</div>`;
 }
@@ -5174,7 +5179,7 @@ function tovSaveEdit() {
   const eurl = document.getElementById('tov-eurl'); if (eurl) it.itemUrl = eurl.value.trim() || null;
   const ean = document.getElementById('tov-ean'); if (ean) it.answer = ean.value.trim() || null;
   save(); render();
-  threadOverlayRenderActions();
+  threadOverlayRenderActions(); // also restores reply form
 }
 
 function tovAct(action) {
@@ -5678,10 +5683,10 @@ function ingestLeads(newLeads) {
       </div>
       <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
     </div>
-    <div id="tov-actions" style="display:flex;gap:6px;align-items:center;padding:0 18px 12px;flex-wrap:wrap"></div>
+    <div id="tov-actions" style="display:flex;gap:6px;align-items:flex-start;padding:0 18px 12px;flex-wrap:wrap"></div>
   </div>
-  <!-- Reply / note form -->
-  <div style="padding:12px 18px 14px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
+  <!-- Reply / note form — hidden during edit mode -->
+  <div id="tov-reply-form" style="padding:12px 18px 14px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
       <span style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary)">Add as</span>
       <button id="tov-mode-dave" class="tov-mode-btn active" onclick="threadOverlaySetMode('dave')">Dave reply</button>
