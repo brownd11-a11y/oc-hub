@@ -41,6 +41,70 @@ body.tab-roadmap{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg
 body.tab-passes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_passes.jpg')}
 body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_refs.jpg')}
 body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
+body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}/* ── APPLE-STYLE LEGIBILITY ──
+   Photo at full strength in header and gaps between cards.
+   Cards nearly opaque white — crisp black text always. Photo shows in gaps.
+*/
+body::before{display:none}
+.hd,.tabs,.search-bar,.filter-row{position:relative;z-index:2}
+.tabs{background:rgba(255,255,255,0.94) !important;border-bottom:1px solid rgba(0,0,0,0.08) !important}
+.filter-row{background:rgba(255,255,255,0.92) !important}
+.list-bar{background:rgba(255,255,255,0.90) !important}
+.ihead{background:rgba(255,255,255,0.93) !important;box-shadow:0 1px 6px rgba(0,0,0,0.08) !important}
+.icard{background:rgba(255,255,255,0.90) !important}
+.settings-card{background:rgba(255,255,255,0.93) !important}
+.help-sidebar{background:rgba(255,255,255,0.92) !important}
+.help-fn-card{background:rgba(255,255,255,0.93) !important;box-shadow:0 1px 6px rgba(0,0,0,0.08) !important}
+.help-device-row{background:rgba(255,255,255,0.93) !important}
+.rm-phase-header{background:rgba(255,255,255,0.92) !important}
+.rm-item-row{background:rgba(255,255,255,0.88) !important}
+.rm-detail-panel{background:rgba(255,255,255,0.95) !important}
+.gantt-row-label{background:rgba(255,255,255,0.88) !important}
+.phase-label-cell{background:rgba(255,255,255,0.92) !important}
+.gantt-header-label{background:rgba(255,255,255,0.92) !important}
+#thread-overlay{background:rgba(248,248,252,0.98) !important}
+.help-content{background:transparent !important}
+.list-wrap{background:transparent !important}
+#list{background:transparent !important}arset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Over-classified — Project Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── COVER PALETTE (dashboard only) ── */
+:root{
+  --cover-black:#17191E;--cover-red:#C70025;--cover-steel:#6B7078;
+  --cover-warm:#4D313A;--cover-cream:#D3CCD1;
+  /* Apple light (all other tabs) */
+  --page-bg:#F2F2F7;--card-bg:#FFFFFF;--label-primary:#000000;
+  --label-secondary:#8E8E93;--separator:#C6C6C8;--accent:#3D5A99;--pri-color:#C70025;
+  /* Shared functional */
+  --done-bg:#eef5ec;--done-fg:#2d6b2d;--hold-bg:#fff4e6;--hold-fg:#b05a00;--pri-bg:#fff0f0;--open-hover:#e8f0fe;
+  --tag-editing:#1a4a6b;--tag-publishing:#4b1a6b;--tag-todo:#1a6b4a;--tag-research:#6b4a1a;--tag-hubui:#1e508c;
+  --badge-assigned-bg:#dff0d8;--badge-assigned-fg:#2a5a1a;
+  --badge-reserved-bg:#fdf6dc;--badge-reserved-fg:#7a5f10;
+  --badge-un-bg:#eeebe4;--badge-un-fg:#6b6358;
+  /* Universal control height */
+  --ctrl-h:34px;
+  /* For Dave / For Claude dialogue */
+  --fordave-bg:#fffbf0;--fordave-border:#d4a020;
+  --fordave-badge-bg:#fff3cd;--fordave-badge-fg:#7a5a00;
+  --forclaude-bg:#f0f7ff;--forclaude-border:#2070C8;
+  --forclaude-badge-bg:#dbeafe;--forclaude-badge-fg:#1a4a8a;
+  --flow-on-bg:#1a6b2a;--flow-on-fg:#fff;
+  --input-bg:#f7f7f9;
+  /* Tab notification badge */
+  --tab-badge-bg:rgba(199,0,37,0.10);--tab-badge-fg:#C70025;--tab-badge-border:rgba(199,0,37,0.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Libre Baskerville',Georgia,serif;background:var(--page-bg);color:var(--label-primary);min-height:100vh;background-attachment:fixed;background-size:cover;background-position:center center;transition:background-image .4s ease}
+/* ── PER-TAB PHOTO BACKGROUNDS ── */
+body.tab-notes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_notes.jpg')}
+body.tab-roadmap{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_roadmap.jpg')}
+body.tab-passes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_passes.jpg')}
+body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_refs.jpg')}
+body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
 body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
 /* ── PHOTO BLEED-THROUGH — Safari-safe rgba only, no backdrop-filter ──
    Background photo at full strength. UI elements use semi-transparent
@@ -181,7 +245,7 @@ body::before{display:none}
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;background:rgba(255,255,255,0.14);position:relative;z-index:1}
+.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1}
 .panel.active{display:block}
 
 /* ── NOTES INPUT (Apple light) ── */
@@ -892,8 +956,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .help-device-row{display:flex;align-items:flex-start;gap:12px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);padding:8px 12px;background:var(--card-bg);border:1px solid var(--separator);border-radius:6px;line-height:1.5}
 .help-device-icon{flex-shrink:0;font-size:16px;width:24px;text-align:center}
 /* Info icon button */
-.info-btn{background:none;border:none;cursor:pointer;padding:0 12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.75);transition:color .15s;flex-shrink:0;font-size:15px;line-height:1;height:100%;letter-spacing:0}
-.info-btn:hover{color:#fff}
+.info-btn{background:none;border:none;cursor:pointer;padding:0 10px;display:flex;align-items:center;justify-content:center;color:var(--label-secondary);transition:color .15s,opacity .15s;flex-shrink:0;font-size:15px;line-height:1;height:100%;letter-spacing:0;opacity:0.8}
+.info-btn:hover{color:var(--accent);opacity:1}
 /* Mobile: sidebar collapses to top strip */
 @media(max-width:600px){
   .help-layout{flex-direction:column}
@@ -934,7 +998,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <div class="tab-spacer"></div>
-    <button class="info-btn" onclick="openHelp(null)" title="Help &amp; About — click for more information">&#9432;</button>
+    <button class="info-btn" onclick="openHelp(null)" title="Help &amp; About"><span style="font-size:16px;font-weight:400;line-height:1">&#9432;</span></button>
     <span class="tab-action-ok" id="copy-tab-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied</span>
     <button class="tab-action" id="copy-tab-btn" onclick="copyToClaude()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
     <button class="tab" onclick="showTab('help',this)" id="tab-help" style="margin-left:4px">Help &#9881;</button>
