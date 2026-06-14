@@ -1925,123 +1925,148 @@ let sectionOpen={gantt:true,tasklist:true};
 let roadLevel=2; // 0=closed,1=phases,2=full
 let roadOpenFilter=true; // true = show only incomplete phases
 
-function load(){
-  const OLD_KEYS=['oc_hub_v5','oc_hub_v4','oc_hub_v3','oc_hub_v2','oc_hub_v1'];
-  try{
-    let raw=localStorage.getItem(SK);
-    if(!raw){
-      for(const ok of OLD_KEYS){raw=localStorage.getItem(ok);if(raw)break;}
+/* ── DATA LOADING — GitHub-first, localStorage fallback, seed last resort ── */
+const DATA_URL = 'https://raw.githubusercontent.com/brownd11-a11y/oc-hub/main/data.json';
+
+function applyData(data) {
+  // Apply fetched/stored data to S, merging with seed for any missing items
+  const storedItems  = data.items   || [];
+  const storedRoad   = data.road    || [];
+  const storedOt     = data.outreach|| [];
+  const storedRefs   = data.refs    || [];
+  if (data.settings) {
+    S.settings = data.settings;
+    if (data.settings.projectName) {
+      const el = document.querySelector('.hd-title');
+      if (el) el.textContent = data.settings.projectName;
     }
-    if(raw){
-      const stored=JSON.parse(raw);
-      const storedVersion=stored._seedVersion||'1970-01-01T00:00:00.000Z';
-      const seedIsNewer=new Date(SEED_VERSION)>new Date(storedVersion);
-      if(seedIsNewer){
-        // Seed baked into this file is newer than what's in localStorage —
-        // start from seed but PRESERVE user interaction state for existing items
-        const localItems=stored.items||[];
-        const localById={};
-        localItems.forEach(li=>{localById[li.id]=li;});
-        const mergedItems=SEED_ITEMS.map(si=>{
-          const li=localById[si.id];
-          if(!li) return {...si}; // new item — use seed as-is
-          // Dialogue: seed wins if it has more entries (contains Claude replies added this session)
-          const liDlg=li.dialogue||[];
-          const siDlg=si.dialogue||[];
-          const mergedDlg=siDlg.length>=liDlg.length ? siDlg : liDlg;
-          // Existing item — seed wins for content fields, local wins for user-state fields
-          return {...si,
-            done: li.done!==undefined ? li.done : si.done,
-            completedDate: li.completedDate||si.completedDate||'',
-            answer: li.answer||si.answer||null,
-            dialogue: mergedDlg.length ? mergedDlg : null,
-            dueDate: li.dueDate||si.dueDate||''
-          };
-        });
-        // Preserve any local items not in seed (user-added items)
-        const seedIds=new Set(SEED_ITEMS.map(si=>si.id));
-        localItems.forEach(li=>{if(!seedIds.has(li.id))mergedItems.push(li);});
-        // Road: LOCAL ORDER wins. Seed updates labels/notes/colors on existing entries.
-        // New seed entries are inserted after their preceding seed neighbor; local-only entries kept in place.
-        const localRoad=stored.road||[];
-        const localRoadById={};
-        localRoad.forEach(r=>{localRoadById[r.id]=r;});
-        const seedRoadIds=new Set(ROAD_SEED.map(r=>r.id));
-        // Start from local order, updating structural fields from seed where entry exists
-        const mergedRoad=localRoad.map(lr=>{
-          const sr=ROAD_SEED.find(s=>s.id===lr.id);
-          if(!sr) return lr; // local-only entry, keep as-is
-          // Seed wins for: label,color,note,phase,cmd — NOT num (user controls phase order via drag)
-          // Local wins for: num,done,met,completedDate,metDate,open
-          return {...sr,
-            num: lr.num!==undefined ? lr.num : sr.num,
-            done: lr.done!==undefined ? lr.done : sr.done,
-            met: lr.met!==undefined ? lr.met : sr.met,
-            completedDate: lr.completedDate||sr.completedDate||'',
-            metDate: lr.metDate||sr.metDate||'',
-            open: lr.open!==undefined ? lr.open : sr.open
-          };
-        });
-        // Insert new seed entries (not in local) after their preceding seed neighbor
-        ROAD_SEED.forEach((sr,si)=>{
-          if(localRoadById[sr.id]) return; // already in local
-          // Find the last seed entry before this one that exists in mergedRoad
-          let insertAfter=-1;
-          for(let j=si-1;j>=0;j--){
-            const idx=mergedRoad.findIndex(r=>r.id===ROAD_SEED[j].id);
-            if(idx>=0){insertAfter=idx;break;}
-          }
-          if(insertAfter>=0) mergedRoad.splice(insertAfter+1,0,{...sr});
-          else mergedRoad.push({...sr});
-        });
-        S={items:mergedItems,road:mergedRoad};
-      } else {
-        // localStorage is current session work — keep it
-        S=stored;
-        if(!S.items||!S.items.length)S.items=SEED_ITEMS.map(i=>({...i}));
-        if(!S.road||!S.road.length)S.road=ROAD_SEED.map(r=>({...r}));
-        const existingIds=new Set(S.items.map(i=>i.id));
-        SEED_ITEMS.forEach(si=>{if(!existingIds.has(si.id))S.items.unshift({...si});});
-        SEED_ITEMS.forEach(si=>{
-          if(si.done){const st=S.items.find(i=>i.id===si.id);if(st&&!st.done){st.done=true;st.completedDate=si.completedDate||'';st.answer=si.answer||st.answer;}}
-        });
-        // Road: LOCAL ORDER wins. Update structural fields from seed, insert new seed entries positionally.
-        const existingRoadById={};
-        S.road.forEach(r=>{existingRoadById[r.id]=r;});
-        // Update existing entries — seed wins for label/color/note/cmd, local wins for num/done/met/open
-        S.road.forEach(lr=>{
-          const sr=ROAD_SEED.find(s=>s.id===lr.id);
-          if(!sr) return;
-          const saved={num:lr.num,done:lr.done,met:lr.met,completedDate:lr.completedDate,metDate:lr.metDate,open:lr.open};
-          Object.assign(lr,sr,saved);
-        });
-        // Insert new seed entries after their preceding seed neighbor
-        ROAD_SEED.forEach((sr,si)=>{
-          if(existingRoadById[sr.id]) return;
-          let insertAfter=-1;
-          for(let j=si-1;j>=0;j--){
-            const idx=S.road.findIndex(r=>r.id===ROAD_SEED[j].id);
-            if(idx>=0){insertAfter=idx;break;}
-          }
-          const entry={...sr};
-          if(insertAfter>=0) S.road.splice(insertAfter+1,0,entry);
-          else S.road.push(entry);
-          existingRoadById[sr.id]=entry;
-        });
-      }
-      // Migrations — always run
-      S.items.forEach(it=>{if(it.dueDate===undefined)it.dueDate='';if(it.completedDate===undefined)it.completedDate='';});
-      S.road.forEach(r=>{if(r.kind==='step'){if(r.targetDate!==undefined&&r.targetEnd===undefined){r.targetEnd=r.targetDate||'';delete r.targetDate;}if(r.targetStart===undefined)r.targetStart='';}});
-      let n=1;S.road.forEach(r=>{if(r.kind==='phase'&&!r.num){r.num=n;n++;}else if(r.kind==='phase')n++;});
-    } else {
-      S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};
+  }
+
+  // Items: merge stored with seed
+  const storedById = {};
+  storedItems.forEach(i => { storedById[i.id] = i; });
+  const mergedItems = SEED_ITEMS.map(si => {
+    const li = storedById[si.id];
+    if (!li) return {...si};
+    const liDlg = li.dialogue || [], siDlg = si.dialogue || [];
+    const mergedDlg = siDlg.length >= liDlg.length ? siDlg : liDlg;
+    return {...si,
+      done: li.done !== undefined ? li.done : si.done,
+      completedDate: li.completedDate || si.completedDate || '',
+      answer: li.answer || si.answer || null,
+      dialogue: mergedDlg.length ? mergedDlg : null,
+      dueDate: li.dueDate || si.dueDate || ''
+    };
+  });
+  // Keep user-added items not in seed
+  const seedIds = new Set(SEED_ITEMS.map(s => s.id));
+  storedItems.forEach(li => { if (!seedIds.has(li.id)) mergedItems.push(li); });
+
+  // Road: stored order wins, seed updates labels/colors
+  const storedRoadById = {};
+  storedRoad.forEach(r => { storedRoadById[r.id] = r; });
+  const mergedRoad = storedRoad.length ? storedRoad.map(lr => {
+    const sr = ROAD_SEED.find(s => s.id === lr.id);
+    if (!sr) return lr;
+    return {...sr,
+      num: lr.num !== undefined ? lr.num : sr.num,
+      done: lr.done !== undefined ? lr.done : sr.done,
+      met: lr.met !== undefined ? lr.met : sr.met,
+      completedDate: lr.completedDate || sr.completedDate || '',
+      metDate: lr.metDate || sr.metDate || '',
+      open: lr.open !== undefined ? lr.open : sr.open,
+      targetStart: lr.targetStart !== undefined ? lr.targetStart : (sr.targetStart||''),
+      targetEnd: lr.targetEnd !== undefined ? lr.targetEnd : (sr.targetEnd||'')
+    };
+  }) : ROAD_SEED.map(r => ({...r}));
+  // Insert new seed road entries
+  ROAD_SEED.forEach((sr, si) => {
+    if (storedRoadById[sr.id]) return;
+    let insertAfter = -1;
+    for (let j = si-1; j >= 0; j--) {
+      const idx = mergedRoad.findIndex(r => r.id === ROAD_SEED[j].id);
+      if (idx >= 0) { insertAfter = idx; break; }
     }
-    // Promote to current key and purge old keys
-    save();
-    OLD_KEYS.forEach(ok=>{try{localStorage.removeItem(ok);}catch(e){}});
-  }catch(e){S={items:SEED_ITEMS.map(i=>({...i})),road:ROAD_SEED.map(r=>({...r}))};}
+    if (insertAfter >= 0) mergedRoad.splice(insertAfter+1, 0, {...sr});
+    else mergedRoad.push({...sr});
+    storedRoadById[sr.id] = sr;
+  });
+
+  S.items = mergedItems;
+  S.road  = mergedRoad;
+
+  // Migrations
+  S.items.forEach(it => {
+    if (it.dueDate === undefined) it.dueDate = '';
+    if (it.completedDate === undefined) it.completedDate = '';
+  });
+  S.road.forEach(r => {
+    if (r.kind === 'step') {
+      if (r.targetDate !== undefined && r.targetEnd === undefined) { r.targetEnd = r.targetDate||''; delete r.targetDate; }
+      if (r.targetStart === undefined) r.targetStart = '';
+    }
+  });
+  let n = 1;
+  S.road.forEach(r => { if (r.kind === 'phase' && !r.num) { r.num = n; n++; } else if (r.kind === 'phase') n++; });
 }
-function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION});localStorage.setItem(SK,JSON.stringify(payload));}catch(e){}}
+
+function loadFromSeed() {
+  S = { items: SEED_ITEMS.map(i => ({...i})), road: ROAD_SEED.map(r => ({...r})) };
+}
+
+async function loadFromGitHub() {
+  // Show loading indicator
+  const listEl = document.getElementById('list');
+  if (listEl) listEl.innerHTML = '<div style="padding:24px;font-family:var(--font-mono,monospace);font-size:11px;color:var(--label-secondary);text-align:center;letter-spacing:.08em">LOADING DATA…</div>';
+
+  try {
+    // Fetch data.json from GitHub with cache-busting
+    const resp = await fetch(DATA_URL + '?t=' + Date.now(), {cache: 'no-store'});
+    if (!resp.ok) throw new Error('GitHub fetch failed: ' + resp.status);
+    const data = await resp.json();
+
+    // Check if GitHub data is newer than localStorage
+    const ghVersion   = data._version || '1970-01-01T00:00:00.000Z';
+    const raw         = localStorage.getItem(SK);
+    const localData   = raw ? JSON.parse(raw) : null;
+    const localVersion = localData ? (localData._version || localData._seedVersion || '1970-01-01T00:00:00.000Z') : '1970-01-01T00:00:00.000Z';
+    const ghIsNewer   = new Date(ghVersion) >= new Date(localVersion);
+
+    applyData(ghIsNewer ? data : localData);
+    console.log(`Data loaded from ${ghIsNewer ? 'GitHub' : 'localStorage'} (gh:${ghVersion} local:${localVersion})`);
+  } catch(e) {
+    console.warn('GitHub fetch failed, falling back to localStorage:', e.message);
+    try {
+      const raw = localStorage.getItem(SK);
+      if (raw) {
+        applyData(JSON.parse(raw));
+        console.log('Data loaded from localStorage (fallback)');
+      } else {
+        loadFromSeed();
+        console.log('Data loaded from seed (no localStorage, no GitHub)');
+      }
+    } catch(e2) {
+      loadFromSeed();
+    }
+  }
+
+  // Write-through cache to localStorage
+  save();
+  render();
+  // Reinitialize outreach and refs if present in loaded data
+  try { if(typeof renderOT==='function') renderOT(); } catch(e){}
+  try { if(typeof renderRF==='function') renderRF(); } catch(e){}
+}
+
+function load(){
+  // Sync fallback for environments where async isn't triggered yet
+  try{
+    const raw=localStorage.getItem(SK);
+    if(raw){ applyData(JSON.parse(raw)); } else { loadFromSeed(); }
+    save();
+  }catch(e){ loadFromSeed(); }
+}
+function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION,_version:new Date().toISOString()});localStorage.setItem(SK,JSON.stringify(payload));}catch(e){}}
 function migrateDialogue(){
   (S.items||[]).forEach(it=>{
     if(it.type==='fordave'&&it.answer&&!it.dialogue){
@@ -4187,6 +4212,20 @@ function buildExportJSON(){
   },null,2);
 }
 const UC_PREF_SK='oc_uc_skip_modal';
+/* ── DATA.JSON PAYLOAD — what Claude pushes to GitHub ── */
+function buildDataPayload(){
+  return {
+    _version: new Date().toISOString(),
+    _schema: 1,
+    items: S.items||[],
+    road:  S.road||[],
+    outreach: (typeof OT_DATA!=='undefined' ? OT_DATA : (S.outreach||[])),
+    refs:     (typeof RF_DATA!=='undefined' ? RF_DATA : (S.refs||[])),
+    settings: loadSettings()
+  };
+}
+
+
 function copyToClaude(){
   const json=buildExportJSON();
   const btn=document.getElementById('copy-tab-btn');if(btn)btn.disabled=true;
@@ -4586,7 +4625,10 @@ function rfRender(){
 }
 
 /* ── INIT ── */
+// Sync load from localStorage for immediate render
 load();otLoad();rfLoad();kwLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
+// Async GitHub fetch — silently updates if newer data found
+loadFromGitHub();
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();
