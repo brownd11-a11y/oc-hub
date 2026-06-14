@@ -63,7 +63,7 @@ body::before{display:none}
 .phase-label-cell{background:rgba(255,255,255,0.92) !important}
 .gantt-header-label{background:rgba(255,255,255,0.92) !important}
 #thread-overlay{background:rgba(248,248,252,0.98) !important}
-.help-content{background:transparent !important}
+.help-content{background:rgba(255,255,255,0.96) !important}
 .list-wrap{background:transparent !important}
 #list{background:transparent !important}arset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,7 +129,7 @@ body::before{display:none}
 .phase-label-cell{background:rgba(255,255,255,0.80) !important}
 .gantt-header-label{background:rgba(255,255,255,0.82) !important}
 #thread-overlay{background:rgba(248,248,252,0.96) !important}
-.help-content{background:transparent}
+.help-content{background:rgba(255,255,255,0.92) !important}
 
 
 
@@ -326,6 +326,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .iright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
 .iright-top{display:flex;align-items:center;gap:8px}
 .ibadge-row{display:flex;align-items:center;gap:4px;flex-basis:100%;padding:0 0 4px 25px;flex-wrap:wrap;min-height:0}
+.item.kb-focus{outline:2px solid var(--accent);outline-offset:-2px}
 /* Item context menu */
 #item-ctx-menu{position:fixed;z-index:9999;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.18);padding:4px 0;min-width:160px;display:none}
 .ctx-item{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.05em;padding:7px 16px;cursor:pointer;color:var(--label-primary);display:block;background:none;border:none;width:100%;text-align:left;transition:background .1s}
@@ -1519,6 +1520,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <li>Click any task bar or phase label to edit dates, notes, and completion status.</li>
           <li>Drag phases up or down to reorder (iPad: touch-drag supported).</li>
         </ul>
+        <h3 class="help-h3">Keyboard shortcuts</h3>
+        <ul class="help-ul">
+          <li><strong>↑ / ↓</strong> — Scroll the Gantt view up or down one row.</li>
+          <li><strong>← / →</strong> — Scroll the Gantt timeline left or right.</li>
+          <li><strong>+</strong> — Expand all phases (show all tasks).</li>
+          <li><strong>−</strong> — Collapse all phases (show phase headers only).</li>
+        </ul>
       </div></div>
 
       <!-- NOTES -->
@@ -1542,18 +1550,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <h3 class="help-h3">Item overlay</h3>
         <ul class="help-ul">
           <li>Click any item to open the full-screen overlay showing the item text, action buttons, and thread.</li>
+          <li>Long item text is truncated — click <strong>▼ More</strong> to expand, <strong>▲ Less</strong> to collapse.</li>
           <li>Use <strong>Dave reply</strong> / <strong>Plain note</strong> toggle to set the entry type before sending.</li>
           <li>Thread entries are banded: <strong style="color:#7a5a00">yellow = Dave</strong>, <strong style="color:#2040a0">blue = Claude</strong>, white = plain note. Newest first.</li>
-          <li>Press <strong>Escape</strong> or click <em>Close</em> to exit the overlay.</li>
+          <li>Click <strong>Edit</strong> in the action bar to edit all fields inline — item text, type, tag, dates, link, answer.</li>
+          <li>Right-click any collapsed card for a quick context menu: Open, Edit, Mark done, Defer, Delete.</li>
         </ul>
         <h3 class="help-h3">Keyboard shortcuts</h3>
         <ul class="help-ul">
-          <li><strong>Cmd/Ctrl+Enter</strong> — Save new item (when typing in the note input field).</li>
-          <li><strong>Cmd/Ctrl+Enter</strong> — Send reply or note (when typing in the overlay reply field).</li>
-          <li><strong>E</strong> — Edit the current item (overlay must be open, or last item clicked).</li>
-          <li><strong>D</strong> — Toggle done on the current item (overlay open or last clicked).</li>
+          <li><strong>↑ / ↓</strong> — Move selection up or down through the visible item list.</li>
+          <li><strong>Enter</strong> — Open the selected item's overlay.</li>
+          <li><strong>+</strong> — Expand the selected item inline (show body).</li>
+          <li><strong>−</strong> — Collapse the selected item.</li>
+          <li><strong>E</strong> — Edit the selected item (opens overlay in edit mode).</li>
+          <li><strong>D</strong> — Toggle done on the selected item.</li>
+          <li><strong>Cmd/Ctrl+Enter</strong> — Save new item (cursor in note input) or send reply (cursor in overlay reply field).</li>
+          <li><strong>Cmd/Ctrl+Delete</strong> — Delete the selected item (confirm dialog appears).</li>
           <li><strong>Escape</strong> — Close the overlay or dismiss search results.</li>
         </ul>
+        <p class="help-p" style="font-size:13px;color:var(--label-secondary)">Shortcuts E, D, +, −, Enter, and Cmd+Delete are inactive while typing in any input or textarea.</p>
       </div></div>
 
       <!-- RESOURCES -->
@@ -5464,32 +5479,101 @@ function itemHeadClick(id) {
 
 /* ── ESCAPE TO CLOSE THREAD OVERLAY ── */
 let _lastItemId = null; // tracks last overlay-opened item for keyboard shortcuts
+let _navIdx = -1; // current arrow-key selection index in visible list
+function _getVisibleItems() {
+  return (S.items||[]).filter(iVis);
+}
+function _navHighlight(id) {
+  // Remove previous highlight
+  document.querySelectorAll('.item.kb-focus').forEach(el => el.classList.remove('kb-focus'));
+  if (!id) return;
+  const el = document.getElementById('it_' + id);
+  if (el) { el.classList.add('kb-focus'); el.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+}
 document.addEventListener('keydown', function(e) {
-  // Don't fire shortcuts when typing in any input/textarea
   const tag = (document.activeElement||{}).tagName;
   const inInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  const onNotes = document.body.classList.contains('tab-notes');
+  const onRoadmap = document.body.classList.contains('tab-roadmap');
+
   if (e.key === 'Escape') {
     const ov = document.getElementById('thread-overlay');
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
   }
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.activeElement === document.getElementById('thread-reply-ta')) {
-    e.preventDefault();
-    threadOverlaySend();
-    return;
+    e.preventDefault(); threadOverlaySend(); return;
   }
-  if (!inInput) {
-    const targetId = threadOverlayItemId || _lastItemId;
-    if (e.key === 'e' || e.key === 'E') {
-      if (threadOverlayItemId) { e.preventDefault(); threadOverlayEnterEdit(); }
-      else if (_lastItemId) { e.preventDefault(); threadOverlayOpen(_lastItemId); setTimeout(threadOverlayEnterEdit, 120); }
+  if (inInput) return;
+
+  const targetId = threadOverlayItemId || _lastItemId;
+
+  // Arrow navigation — Notes tab
+  if (onNotes && !threadOverlayItemId) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const visible = _getVisibleItems();
+      if (!visible.length) return;
+      if (e.key === 'ArrowDown') _navIdx = Math.min(_navIdx + 1, visible.length - 1);
+      else _navIdx = Math.max(_navIdx - 1, 0);
+      const it = visible[_navIdx];
+      _lastItemId = it.id;
+      _navHighlight(it.id);
+      return;
     }
-    if (e.key === 'd' || e.key === 'D') {
-      if (targetId) { e.preventDefault(); togDone(targetId); if (threadOverlayItemId) threadOverlayRenderActions(); }
+    // Enter to open selected item
+    if (e.key === 'Enter' && _lastItemId && !threadOverlayItemId) {
+      e.preventDefault(); threadOverlayOpen(_lastItemId); return;
     }
-    // Cmd+Delete = delete current item (with confirm)
-    if ((e.metaKey || e.ctrlKey) && (e.key === 'Backspace' || e.key === 'Delete')) {
-      if (targetId) { e.preventDefault(); if (threadOverlayItemId) threadOverlayClose(); delItem(targetId); }
+    // + or = to expand, - to collapse selected item
+    if ((e.key === '+' || e.key === '=') && _lastItemId) {
+      e.preventDefault();
+      const it = S.items.find(i => i.id === _lastItemId); if (!it) return;
+      it._exp = true; rlist(); return;
     }
+    if (e.key === '-' && _lastItemId) {
+      e.preventDefault();
+      const it = S.items.find(i => i.id === _lastItemId); if (!it) return;
+      it._exp = false; rlist(); return;
+    }
+  }
+
+  // Arrow navigation — Roadmap tab (scroll gantt rows)
+  if (onRoadmap) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const outer = document.getElementById('gantt-scroll-outer');
+      if (outer) outer.scrollTop += (e.key === 'ArrowDown' ? 36 : -36);
+      return;
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const outer = document.getElementById('gantt-scroll-outer');
+      if (outer) outer.scrollLeft += (e.key === 'ArrowRight' ? 80 : -80);
+      return;
+    }
+    // + expand all phases, - collapse all phases
+    if (e.key === '+' || e.key === '=') {
+      e.preventDefault();
+      (S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=true; });
+      save(); renderGantt(); return;
+    }
+    if (e.key === '-') {
+      e.preventDefault();
+      (S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=false; });
+      save(); renderGantt(); return;
+    }
+  }
+
+  // Item shortcuts (work on last selected / overlay open item)
+  if (e.key === 'e' || e.key === 'E') {
+    if (threadOverlayItemId) { e.preventDefault(); threadOverlayEnterEdit(); }
+    else if (_lastItemId) { e.preventDefault(); threadOverlayOpen(_lastItemId); setTimeout(threadOverlayEnterEdit, 120); }
+  }
+  if (e.key === 'd' || e.key === 'D') {
+    if (targetId) { e.preventDefault(); togDone(targetId); if (threadOverlayItemId) threadOverlayRenderActions(); _navHighlight(targetId); }
+  }
+  if ((e.metaKey || e.ctrlKey) && (e.key === 'Backspace' || e.key === 'Delete')) {
+    if (targetId) { e.preventDefault(); if (threadOverlayItemId) threadOverlayClose(); delItem(targetId); }
   }
 });
 
