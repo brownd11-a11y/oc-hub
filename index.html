@@ -898,10 +898,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .tov-entry{border-radius:8px;padding:12px 14px;line-height:1.6}
 .tov-entry.from-dave{background:#fffbf0;border-left:3px solid #d4a020}
 .tov-entry.from-claude{background:#f0f4ff;border-left:3px solid #4060c8}
+.tov-entry.from-note{background:var(--card-bg);border-left:3px solid var(--separator)}
 .tov-meta{display:flex;gap:10px;align-items:center;margin-bottom:6px}
 .tov-from{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .tov-from.dave{color:#7a5a00}
 .tov-from.claude{color:#2040a0}
+.tov-from.note{color:var(--label-secondary)}
+.tov-mode-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:20px;cursor:pointer;transition:all .15s}
+.tov-mode-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tov-ts{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)}
 .tov-text{font-family:'Libre Baskerville',Georgia,serif;font-size:14px;color:var(--label-primary);white-space:pre-wrap}
 /* Roadmap notes view */
@@ -4970,29 +4974,58 @@ document.addEventListener('keydown',function(e){
 
 /* ── THREAD OVERLAY ── */
 let threadOverlayItemId = null;
+let threadOverlayMode = 'dave'; // 'dave' | 'note'
+function threadOverlaySetMode(m) {
+  threadOverlayMode = m;
+  const btnDave = document.getElementById('tov-mode-dave');
+  const btnNote = document.getElementById('tov-mode-note');
+  const ta = document.getElementById('thread-reply-ta');
+  if (btnDave) btnDave.className = 'tov-mode-btn' + (m === 'dave' ? ' active' : '');
+  if (btnNote) btnNote.className = 'tov-mode-btn' + (m === 'note' ? ' active' : '');
+  if (ta) ta.placeholder = m === 'dave' ? 'Add your reply (Cmd/Ctrl+Enter to send)…' : 'Add a plain note (Cmd/Ctrl+Enter to save)…';
+}
+function threadOverlayRenderBody() {
+  const body = document.getElementById('thread-overlay-body');
+  if (!body) return;
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  const dlg = (it.dialogue || []);
+  if (!dlg.length) {
+    body.innerHTML = '<div style="padding:24px 0;font-family:\'Source Code Pro\',monospace;font-size:11px;color:var(--label-secondary);text-align:center;letter-spacing:.06em">No entries yet — add the first reply or note above.</div>';
+  } else {
+    const fmtTs = function(ts) {
+      if (!ts) return '';
+      const d = new Date(ts);
+      if (isNaN(d)) return ts.slice(0,10);
+      return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) + ' ' +
+             d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+    };
+    const fromLabel = function(f) {
+      if (f === 'dave') return 'Dave';
+      if (f === 'claude') return 'Claude';
+      return 'Note';
+    };
+    body.innerHTML = [...dlg].reverse().map(d => {
+      const fr = d.from || 'note';
+      return `<div class="tov-entry from-${fr}">
+        <div class="tov-meta"><span class="tov-from ${fr}">${fromLabel(fr)}</span><span class="tov-ts">${fmtTs(d.ts||'')}</span></div>
+        <div class="tov-text">${esc(d.text)}</div>
+      </div>`;
+    }).join('');
+  }
+}
 function threadOverlayOpen(itemId) {
   const it = S.items.find(i => i.id === itemId); if (!it) return;
   threadOverlayItemId = itemId;
   const ov = document.getElementById('thread-overlay');
   const title = document.getElementById('thread-overlay-title');
-  const body = document.getElementById('thread-overlay-body');
   const ta = document.getElementById('thread-reply-ta');
-  title.textContent = (it.text || '').substring(0, 100);
-  ta.value = '';
-  ta.style.height = 'auto';
-  // Render dialogue entries oldest-first
-  const dlg = (it.dialogue || []);
-  if (!dlg.length) {
-    body.innerHTML = '<div style="padding:20px;font-family:&apos;Source Code Pro&apos;,monospace;font-size:11px;color:var(--label-secondary);text-align:center">No dialogue entries yet.</div>';
-  } else {
-    body.innerHTML = [...dlg].reverse().map(d => `<div class="tov-entry from-${d.from}">
-      <div class="tov-meta"><span class="tov-from ${d.from}">${d.from === 'dave' ? 'Dave' : 'Claude'}</span><span class="tov-ts">${fmtDate((d.ts||'').slice(0,10))}</span></div>
-      <div class="tov-text">${esc(d.text)}</div>
-    </div>`).join('');
-  }
+  title.textContent = (it.text || '');
+  if (ta) { ta.value = ''; ta.style.height = 'auto'; }
+  // Default mode: dave for fordave items, note for everything else
+  threadOverlaySetMode(it.type === 'fordave' ? 'dave' : 'note');
+  threadOverlayRenderBody();
   ov.style.display = 'flex';
-  // Scroll to bottom
-  setTimeout(() => { body.scrollTop = body.scrollHeight; }, 50);
+  setTimeout(() => { if (ta) ta.focus(); }, 80);
 }
 function threadOverlayClose() {
   document.getElementById('thread-overlay').style.display = 'none';
@@ -5000,13 +5033,16 @@ function threadOverlayClose() {
 }
 function threadOverlaySend() {
   const ta = document.getElementById('thread-reply-ta');
-  const txt = (ta.value || '').trim(); if (!txt) return;
+  const txt = (ta ? ta.value || '' : '').trim(); if (!txt) return;
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   if (!it.dialogue) it.dialogue = [];
-  it.dialogue.push({ from: 'dave', text: txt, ts: new Date().toISOString() });
+  const from = threadOverlayMode === 'note' ? 'note' : 'dave';
+  it.dialogue.push({ from, text: txt, ts: new Date().toISOString() });
+  // If this item has no dialogue yet and we're sending as dave, make it a fordave flow item
+  if (it.type !== 'fordave' && from === 'dave') { /* keep original type */ }
   save();
-  // Re-render the thread in overlay
-  threadOverlayOpen(threadOverlayItemId);
+  if (ta) { ta.value = ''; ta.style.height = 'auto'; }
+  threadOverlayRenderBody();
 }
 
 /* ── ROADMAP TYPE — INPUT FORM ── */
@@ -5252,12 +5288,7 @@ function addItem() {
 
 function itemHeadClick(id) {
   const it = S.items.find(i => i.id === id); if (!it) return;
-  // If item has a dialogue thread, open the full-screen overlay
-  if (it.dialogue && it.dialogue.length > 0) {
-    threadOverlayOpen(id);
-  } else {
-    xItem(id);
-  }
+  threadOverlayOpen(id);
 }
 
 /* ── ESCAPE TO CLOSE THREAD OVERLAY ── */
@@ -5265,6 +5296,10 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     const ov = document.getElementById('thread-overlay');
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); }
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.activeElement === document.getElementById('thread-reply-ta')) {
+    e.preventDefault();
+    threadOverlaySend();
   }
 });
 
@@ -5481,21 +5516,29 @@ function ingestLeads(newLeads) {
 <div class="uc-toast" id="uc-toast">JSON copied &mdash; paste into Claude ✓</div>
 
 <!-- FULL-SCREEN THREAD OVERLAY -->
-<div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);display:none;flex-direction:column">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
-    <span id="thread-overlay-title" style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-primary);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:12px"></span>
-    <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0">&#215; Close</button>
+<div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);flex-direction:column">
+  <!-- Top bar: item title + close -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0;gap:14px">
+    <div style="flex:1;min-width:0">
+      <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px">Item</div>
+      <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word"></div>
+    </div>
+    <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
   </div>
-  <!-- Reply form -->
-  <div style="padding:14px 18px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
-    <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">Your reply</div>
+  <!-- Reply / note form -->
+  <div style="padding:12px 18px 14px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary)">Add as</span>
+      <button id="tov-mode-dave" class="tov-mode-btn active" onclick="threadOverlaySetMode('dave')">Dave reply</button>
+      <button id="tov-mode-note" class="tov-mode-btn" onclick="threadOverlaySetMode('note')">Plain note</button>
+    </div>
     <div style="display:flex;gap:10px;align-items:flex-end">
-      <textarea id="thread-reply-ta" rows="2" placeholder="Type your reply…" style="flex:1;border:1px solid var(--separator);border-radius:6px;padding:8px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:14px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <textarea id="thread-reply-ta" rows="2" placeholder="Add your reply (Cmd/Ctrl+Enter to send)…" style="flex:1;border:1px solid var(--separator);border-radius:6px;padding:8px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:14px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
       <button onclick="threadOverlaySend()" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;height:38px">Send</button>
     </div>
   </div>
-  <!-- Scrollable dialogue thread -->
-  <div id="thread-overlay-body" style="flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px"></div>
+  <!-- Scrollable thread — newest first -->
+  <div id="thread-overlay-body" style="flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px"></div>
 </div>
 </body>
 </html>
