@@ -3432,7 +3432,13 @@ function toggleMem(){/* legacy no-op */}
 function toggleFlow(){
   inputFlowOn=!inputFlowOn;
   const btn=document.getElementById('flow-toggle');
-  if(inputFlowOn){btn.className='flow-toggle';btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> To Claude';}
+  if(inputFlowOn){
+    btn.className='flow-toggle';
+    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> To Claude';
+    // Auto-set type to fordave when To Claude is activated
+    const typeEl=document.getElementById('input-type');
+    if(typeEl && typeEl.value!=='fordave'){typeEl.value='fordave';onInputTypeChange('fordave');}
+  }
   else{btn.className='flow-toggle off';btn.innerHTML='&#9675; To Claude';}
 }
 function toggleReminder(){
