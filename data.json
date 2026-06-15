@@ -6,12 +6,12 @@
       "id": "i_ch9_edit_1",
       "type": "fordave",
       "text": "Ch.9 prose edit — Debunkers' Playbook opening: three sentences repeat the same idea before the section moves. PASTE TO FIND → These Robertson Panel recommendations were accepted by the CIA and implemented across Government agencies\n\nPROPOSAL: Replace the three-sentence opening with: \"Although the government never acknowledged an official 'playbook,' it clearly had one — built on the Robertson recommendations and refined across decades. Proactive strategies shaped the long-running narrative.\"\n\nCuts ~55 words. The proactive/reactive distinction that follows is preserved.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -26,19 +26,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_2",
       "type": "fordave",
       "text": "Ch.9 prose edit — Proactive implementation: register slip and run-on. PASTE TO FIND → They relied on restriction of the information flow and strong relationships with the media\n\nPROPOSAL: \"They relied on controlling information flow and cultivated relationships with the media to keep UAP coverage mundane — and to establish that serious people had no reason to look twice.\"\n\nFixes: removes 'weirdness' (off-voice), removes 'serious-minded people shouldn't waste their time' (colloquial), tightens run-on.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -53,19 +53,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_3",
       "type": "fordave",
       "text": "Ch.9 fix — Missing period after Cronkite sentence. PASTE TO FIND → illustrates how authority laundering works in practice through journalism\n\nPROPOSAL: Add period after 'journalism'. Also verify footnote marker falls after the period, not before it.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -80,19 +80,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_4",
       "type": "fordave",
       "text": "Ch.9 prose edit — Spielberg paragraph: two errors + italic check. PASTE TO FIND → claiming concern that his story telling would amp up public fears\n\n1. 'story telling' → 'storytelling' (one word)\n2. 'amp up' is the only colloquial phrase in the chapter\n3. Verify Jaws italics in Word — extracted text shows 'Jaw s', possible broken italic run\n\nPROPOSAL: \"expressing concern that his storytelling would inflame public anxiety, as Jaws had.\"",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -107,19 +107,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_5",
       "type": "fordave",
       "text": "Ch.9 prose edit — Clearing Confusion: section opener is flat after the reactive playbook material. PASTE TO FIND → The campaign to recast UAP as mundane began in the 1950s\n\nPROPOSAL: Add bridging sentence and tighten opener:\n\"The proactive and reactive moves described above did not originate from a unified conspiracy. The campaign to recast UAP as mundane began in the 1950s, driven less by what the phenomena are than by anxiety about public distraction from the Cold War — and it has never entirely stopped.\"\n\nAlso removes the awkward 'in the worst way' clause from the original sentence.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -134,19 +134,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_6",
       "type": "fordave",
       "text": "Ch.9 fix — Word error in PURSUE paragraph. PASTE TO FIND → They include decades of previously sighting reports\n\nPROPOSAL: Change 'previously' to 'previous'. Single word fix.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Accepted and applied to manuscript.",
       "dialogue": [
         {
           "from": "dave",
@@ -161,19 +161,19 @@
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
       "id": "i_ch9_edit_7",
       "type": "fordave",
       "text": "Ch.9 structural question — gap between 1969 and 2021. PASTE TO FIND → Project Blue Book closed in December 1969\n\nThe chapter jumps from Blue Book closing + Bolender memo (1969) directly to the reactive playbook (2021–2026), skipping ~50 years.\n\nOPTION A: Add 3–4 sentence bridge after Bolender memo: the classified program continued while the public record went quiet; the proactive playbook ran without a visible target until witnesses emerged post-2017; the reactive moves that follow are the same machinery applied to a new generation.\n\nOPTION B: Leave as is. The chapter documents the architecture of suppression, not a complete timeline. The gap is real but the logic holds without filling it.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "ch9",
       "deferred": false,
-      "answer": null,
+      "answer": "DONE v313: Option A bridge paragraph drafted and inserted after Bolender memo. Please accept or reply.",
       "dialogue": [
         {
           "from": "dave",
@@ -184,11 +184,16 @@
           "from": "claude",
           "text": "DONE v312: Two options presented. Reply A or B (or a variant) — Claude will draft the bridge if A, or close if B.",
           "ts": "2026-06-15T11:18:34.843783+00:00"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v313: Bridge paragraph inserted after Bolender memo. Five-decade gap addressed — proactive playbook ran without visible target; machinery removed the institutional setting; 2017 changed it by surfacing credentialed insiders. Please accept or reply.",
+          "ts": "2026-06-15T11:41:55.083962+00:00"
         }
       ],
       "created": "2026-06-15T11:18:34.843783+00:00",
       "dueDate": "2026-06-16",
-      "completedDate": "",
+      "completedDate": "2026-06-15",
       "itemUrl": null
     },
     {
