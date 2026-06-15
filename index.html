@@ -2545,6 +2545,14 @@ function kwRender(){
     if(prev&&inputTag.value!==prev){for(let i=0;i<inputTag.options.length;i++){if(inputTag.options[i].value===prev){inputTag.selectedIndex=i;break;}}}
   }
   rfBuildKwSelects();
+  // Also sync any open edit form tag selects in the notes list
+  document.querySelectorAll('[id^="etg_"]').forEach(sel=>{
+    const cur=sel.value;
+    sel.innerHTML='<option value="">&#8212; Tag &#8212;</option>'+[...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}"${k===cur?' selected':''}>${esc(k)}</option>`).join('');
+  });
+  // Sync tov edit tag select if open
+  const tovEtg=document.getElementById('tov-etg');
+  if(tovEtg){const cur=tovEtg.value;tovEtg.innerHTML='<option value="">— none —</option>'+[...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}"${k===cur?' selected':''}>${esc(k)}</option>`).join('');}
 }
 function kwRemove(k){KW=KW.filter(w=>w!==k);kwSaveStore();kwRender();}
 function kwQuickAdd(){
@@ -2632,7 +2640,7 @@ function rlist(){
         <textarea class="edit-ta" id="etx_${it.id}" rows="3">${esc(it.text)}</textarea>
         <div class="edit-meta-row">
           <select class="edit-sel" id="ety_${it.id}"><option value="question"${it.type==='question'?' selected':''}>Question</option><option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option><option value="note"${it.type==='note'?' selected':''}>Project Note</option><option value="fordave"${it.type==='fordave'?' selected':''}>⚑ For Dave</option></select>
-          <select class="edit-sel" id="etg_${it.id}"><option value=""${!it.tag?' selected':''}>&#8212; Tag &#8212;</option><option value="editing"${it.tag==='editing'?' selected':''}>Editing</option><option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option><option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option><option value="research"${it.tag==='research'?' selected':''}>Research</option></select>
+          <select class="edit-sel" id="etg_${it.id}"><option value=""${!it.tag?' selected':''}>&#8212; Tag &#8212;</option>${[...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}"${it.tag===k?' selected':''}>${esc(k)}</option>`).join('')}</select>
           <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority':'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority'}</button>
         </div>
         <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
@@ -2695,10 +2703,10 @@ function rlist(){
           </div>
         </div>
         <div class="ibadge-row">
-          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
           ${it.type==='fordave'
             ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
             :(it.type&&it.type!=='note'?`<span class="type-pill">${esc(it.type)}</span>`:'')}
+          ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
         </div>
       </div>${bodyHtml}</div>`;
   
@@ -5105,14 +5113,17 @@ function threadOverlayRenderBody() {
     if (f === 'claude') return 'Claude';
     return 'Note';
   };
-  const entryHtml = function(text, from, ts, id, isOriginal) {
+  const entryHtml = function(text, from, ts, id, isOriginal, dlgIdx) {
     const long = text && text.length > COLLAPSE_CHARS;
     const cls = ['tov-entry', 'from-'+(from||'note'), isOriginal ? 'tov-original' : ''].filter(Boolean).join(' ');
     const label = isOriginal ? 'Original' : fromLabel(from);
     const labelCls = isOriginal ? 'note' : (from||'note');
+    const editIdx = isOriginal ? -1 : dlgIdx;
+    const editable = isOriginal || from === 'dave';
     return '<div class="'+cls+'" id="'+id+'">'
       + '<div class="tov-meta"><span class="tov-from '+labelCls+'">'+label+'</span>'
       + (ts ? '<span class="tov-ts">'+fmtTs(ts)+'</span>' : '')
+      + (editable ? '<button onclick="tovEntryEdit('+editIdx+')" style="margin-left:6px;font-family:\'Source Code Pro\',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:none;color:var(--label-secondary);padding:1px 6px;border-radius:3px;cursor:pointer">Edit</button>' : '')
       + '</div>'
       + '<div class="tov-text'+(long?' collapsed':'')+'" id="'+id+'-text">'+esc(text||'')+'</div>'
       + (long ? '<button class="tov-more-btn" onclick="tovToggleEntry(&apos;'+id+'&apos;)">&#x25BC; More</button>' : '')
@@ -5120,9 +5131,9 @@ function threadOverlayRenderBody() {
   };
 
   // Replies newest-first at top; original item text as seed at bottom
-  const replyEntries = dlg.map((d,i) => entryHtml(d.text, d.from||'note', d.ts, 'tov-dlg-'+i, false));
+  const replyEntries = dlg.map((d,i) => entryHtml(d.text, d.from||'note', d.ts, 'tov-dlg-'+i, false, i));
   replyEntries.reverse();
-  const originalEntry = entryHtml(it.text||'', 'dave', it.created||'', 'tov-original-entry', true);
+  const originalEntry = entryHtml(it.text||'', 'dave', it.created||'', 'tov-original-entry', true, -1);
   body.innerHTML = replyEntries.join('') + originalEntry;
 }
 /* ── PER-ENTRY EXPAND/COLLAPSE IN THREAD ── */
@@ -5256,7 +5267,16 @@ function tovSaveEdit() {
 
 function tovAct(action) {
   const id = threadOverlayItemId; if (!id) return;
-  if (action === 'done')  { togDone(id); threadOverlayRenderActions(); }
+  if (action === 'done')  {
+    const it = S.items.find(i => i.id === id);
+    if (it && !it.done) {
+      it.done = true;
+      if (!it.completedDate) it.completedDate = new Date().toISOString().slice(0,10);
+      save(); render(); threadOverlayClose();
+    } else {
+      togDone(id); threadOverlayRenderActions();
+    }
+  }
   else if (action === 'defer') { togDefer(id); threadOverlayRenderActions(); }
   else if (action === 'edit')  { threadOverlayEnterEdit(); }
   else if (action === 'mtr')   { threadOverlayClose(); mtrOpen(id); }
@@ -5303,6 +5323,68 @@ function tovReplyTogglePri() {
   btn.style.color = btn._priOn ? '#c00' : 'var(--label-secondary)';
   btn.style.borderColor = btn._priOn ? '#c00' : 'var(--separator)';
 }
+function tovReplyAddCustomTag() {
+  const inp = document.getElementById('tov-reply-tag-custom'); if (!inp) return;
+  const val = (inp.value || '').trim(); if (!val) return;
+  if (!KW.includes(val)) { KW.push(val); kwSaveStore(); kwRender(); }
+  // Select it in the tag dropdown
+  const sel = document.getElementById('tov-reply-tag');
+  if (sel) { sel.innerHTML = '<option value="">— Tag —</option>' + [...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}"${k===val?' selected':''}>${esc(k)}</option>`).join(''); }
+  inp.value = '';
+}
+let _tovEditingEntryIdx = null;
+function tovEntryEdit(idx) {
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  // idx === -1 means the original item text
+  _tovEditingEntryIdx = idx;
+  const id = idx === -1 ? 'tov-original-entry' : 'tov-dlg-' + idx;
+  const textDiv = document.getElementById(id + '-text');
+  if (!textDiv) return;
+  const current = idx === -1 ? (it.text || '') : ((it.dialogue || [])[idx] ? it.dialogue[idx].text : '');
+  textDiv.style.display = 'none';
+  const ta = document.createElement('textarea');
+  ta.id = id + '-edit-ta';
+  ta.value = current;
+  ta.style.cssText = 'width:100%;border:1px solid var(--separator);border-radius:5px;padding:6px 8px;font-family:\'Libre Baskerville\',Georgia,serif;font-size:13px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5;box-sizing:border-box;min-height:60px';
+  textDiv.parentNode.insertBefore(ta, textDiv.nextSibling);
+  // Add save/cancel row
+  const row = document.createElement('div');
+  row.id = id + '-edit-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-top:5px';
+  row.innerHTML = '<button onclick="tovEntrySave('+idx+')" style="font-family:\'Source Code Pro\',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:none;background:var(--accent);color:#fff;padding:3px 12px;border-radius:4px;cursor:pointer">Save</button>'
+    + '<button onclick="tovEntryEditCancel('+idx+')" style="font-family:\'Source Code Pro\',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:3px 10px;border-radius:4px;cursor:pointer">Cancel</button>'
+    + (idx !== -1 ? '' : '<span style="font-family:\'Source Code Pro\',monospace;font-size:8px;color:var(--label-secondary);margin-left:4px;align-self:center">Edited text flags Claude for review</span>');
+  ta.parentNode.insertBefore(row, ta.nextSibling);
+  ta.focus();
+}
+function tovEntrySave(idx) {
+  const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  const id = idx === -1 ? 'tov-original-entry' : 'tov-dlg-' + idx;
+  const ta = document.getElementById(id + '-edit-ta'); if (!ta) return;
+  const val = ta.value.trim(); if (!val) return;
+  if (idx === -1) {
+    it.text = val;
+    // Flag for Claude review by adding a dialogue note
+    if (!it.dialogue) it.dialogue = [];
+    it.dialogue.push({ from: 'dave', text: '[EDIT] Original text was updated — Claude please review.', ts: new Date().toISOString() });
+  } else {
+    if (it.dialogue && it.dialogue[idx]) it.dialogue[idx].text = val;
+  }
+  save();
+  threadOverlayRenderBody();
+  // Also update title if original was edited
+  if (idx === -1) { const t = document.getElementById('thread-overlay-title'); if (t) t.textContent = it.text || ''; }
+}
+function tovEntryEditCancel(idx) {
+  const id = idx === -1 ? 'tov-original-entry' : 'tov-dlg-' + idx;
+  const ta = document.getElementById(id + '-edit-ta');
+  const row = document.getElementById(id + '-edit-row');
+  const textDiv = document.getElementById(id + '-text');
+  if (ta) ta.remove();
+  if (row) row.remove();
+  if (textDiv) textDiv.style.display = '';
+  _tovEditingEntryIdx = null;
+}
 function threadOverlaySend() {
   const ta = document.getElementById('thread-reply-ta');
   const txt = (ta ? ta.value || '' : '').trim(); if (!txt) return;
@@ -5323,6 +5405,9 @@ function threadOverlaySend() {
   if (rtag) rtag.value = '';
   if (rpri) { rpri._priOn=false; rpri.textContent='☆ Priority'; rpri.style.background='var(--card-bg)'; rpri.style.color='var(--label-secondary)'; rpri.style.borderColor='var(--separator)'; }
   threadOverlayRenderBody();
+  // Collapse back to 2-line card view after send
+  render();
+  threadOverlayClose();
 }
 
 /* ── ROADMAP TYPE — INPUT FORM ── */
@@ -5911,6 +5996,7 @@ function ingestLeads(newLeads) {
       <select id="tov-reply-tag" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
         <option value="">— Tag —</option>
       </select>
+      <input id="tov-reply-tag-custom" type="text" placeholder="+ new tag" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none;width:72px" onkeydown="if(event.key==='Enter'){event.preventDefault();tovReplyAddCustomTag();}" title="Type a new keyword and press Enter to add it across all forms">
       <button id="tov-reply-pri" onclick="tovReplyTogglePri()" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:3px 10px;border-radius:4px;cursor:pointer;white-space:nowrap">☆ Priority</button>
     </div>
     <div style="display:flex;gap:10px;align-items:flex-end">
