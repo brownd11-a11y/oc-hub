@@ -5209,11 +5209,7 @@ function threadOverlayEnterEdit() {
         `<span style="${lbl}">Tag</span>` +
         `<select id="tov-etg" style="${fs}">` +
           `<option value=""${!it.tag?' selected':''}>— none —</option>` +
-          `<option value="editing"${it.tag==='editing'?' selected':''}>Editing</option>` +
-          `<option value="publishing"${it.tag==='publishing'?' selected':''}>Publishing</option>` +
-          `<option value="todo"${it.tag==='todo'?' selected':''}>To-Do</option>` +
-          `<option value="research"${it.tag==='research'?' selected':''}>Research</option>` +
-          `<option value="hubui"${it.tag==='hubui'?' selected':''}>Hub UI</option>` +
+          [...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}"${it.tag===k?' selected':''}>${esc(k)}</option>`).join('') +
         `</select>` +
         `<button id="tov-epri" style="${bs+(it.priority?';background:rgba(199,0,37,.12);color:#c00;border-color:#c00':'')}" onclick="tovTogglePri()">` +
           `${it.priority ? '★ Priority' : '☆ Priority'}</button>` +
@@ -5281,6 +5277,14 @@ function threadOverlayOpen(itemId) {
   const isLong = (it.text || '').length > 180 || (it.text || '').split('\n').length > 3;
   if (moreBtn) { moreBtn.style.display = isLong ? 'block' : 'none'; moreBtn.textContent = '▼ More'; }
   if (ta) { ta.value = ''; ta.style.height = 'auto'; }
+  // Populate reply tag select with current keyword list
+  const replyTagSel = document.getElementById('tov-reply-tag');
+  if (replyTagSel) {
+    replyTagSel.innerHTML = '<option value="">— Tag —</option>' +
+      [...KW].sort(naturalSort).map(k=>`<option value="${esc(k)}">${esc(k)}</option>`).join('');
+  }
+  const replyPri = document.getElementById('tov-reply-pri');
+  if (replyPri) { replyPri.textContent = '☆ Priority'; replyPri.style.background='var(--card-bg)'; replyPri.style.color='var(--label-secondary)'; replyPri.style.borderColor='var(--separator)'; replyPri._priOn=false; }
   threadOverlaySetMode(it.type === 'fordave' ? 'dave' : 'note');
   threadOverlayRenderActions();
   threadOverlayRenderBody();
@@ -5291,6 +5295,14 @@ function threadOverlayClose() {
   document.getElementById('thread-overlay').style.display = 'none';
   threadOverlayItemId = null;
 }
+function tovReplyTogglePri() {
+  const btn = document.getElementById('tov-reply-pri'); if (!btn) return;
+  btn._priOn = !btn._priOn;
+  btn.textContent = btn._priOn ? '★ Priority' : '☆ Priority';
+  btn.style.background = btn._priOn ? 'rgba(199,0,37,.12)' : 'var(--card-bg)';
+  btn.style.color = btn._priOn ? '#c00' : 'var(--label-secondary)';
+  btn.style.borderColor = btn._priOn ? '#c00' : 'var(--separator)';
+}
 function threadOverlaySend() {
   const ta = document.getElementById('thread-reply-ta');
   const txt = (ta ? ta.value || '' : '').trim(); if (!txt) return;
@@ -5298,10 +5310,18 @@ function threadOverlaySend() {
   if (!it.dialogue) it.dialogue = [];
   const from = threadOverlayMode === 'note' ? 'note' : 'dave';
   it.dialogue.push({ from, text: txt, ts: new Date().toISOString() });
-  // If this item has no dialogue yet and we're sending as dave, make it a fordave flow item
-  if (it.type !== 'fordave' && from === 'dave') { /* keep original type */ }
+  // Apply type/tag/priority from reply controls if set
+  const rtype = document.getElementById('tov-reply-type');
+  const rtag = document.getElementById('tov-reply-tag');
+  const rpri = document.getElementById('tov-reply-pri');
+  if (rtype && rtype.value) it.type = rtype.value;
+  if (rtag && rtag.value) it.tag = rtag.value;
+  if (rpri && rpri._priOn) it.priority = true;
   save();
   if (ta) { ta.value = ''; ta.style.height = 'auto'; }
+  if (rtype) rtype.value = '';
+  if (rtag) rtag.value = '';
+  if (rpri) { rpri._priOn=false; rpri.textContent='☆ Priority'; rpri.style.background='var(--card-bg)'; rpri.style.color='var(--label-secondary)'; rpri.style.borderColor='var(--separator)'; }
   threadOverlayRenderBody();
 }
 
@@ -5880,6 +5900,18 @@ function ingestLeads(newLeads) {
       <span style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary)">Add as</span>
       <button id="tov-mode-dave" class="tov-mode-btn active" onclick="threadOverlaySetMode('dave')">Dave reply</button>
       <button id="tov-mode-note" class="tov-mode-btn" onclick="threadOverlaySetMode('note')">Plain note</button>
+      <div style="flex:1"></div>
+      <select id="tov-reply-type" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
+        <option value="">— Type —</option>
+        <option value="fordave">For Claude/Dave</option>
+        <option value="note">Note</option>
+        <option value="reminder">Reminder</option>
+        <option value="question">Question</option>
+      </select>
+      <select id="tov-reply-tag" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
+        <option value="">— Tag —</option>
+      </select>
+      <button id="tov-reply-pri" onclick="tovReplyTogglePri()" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:3px 10px;border-radius:4px;cursor:pointer;white-space:nowrap">☆ Priority</button>
     </div>
     <div style="display:flex;gap:10px;align-items:flex-end">
       <textarea id="thread-reply-ta" rows="2" placeholder="Add your reply (Cmd/Ctrl+Enter to send)…" style="flex:1;border:1px solid var(--separator);border-radius:6px;padding:8px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:14px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
