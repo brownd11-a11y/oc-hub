@@ -4528,7 +4528,18 @@ function copyToClaude(){
     done();
     const proj=loadSettings().claudeProject||'Over‑Classified';
     const body=document.getElementById('uc-modal-body');
-    if(body)body.innerHTML=`The JSON has been copied to your clipboard. Open Claude in the <strong>${proj}</strong> project and paste to sync. Always paste into your project &mdash; not a new chat.`;
+    const ua=navigator.userAgent||'';
+    const isMac=/Macintosh|MacIntel/.test(ua);
+    const isIOS=/iPhone|iPad/.test(ua);
+    let msg;
+    if(isIOS){
+      msg=`JSON copied. Tap <strong>Open Claude</strong> to switch to the Claude app, then paste into your <strong>${proj}</strong> project.`;
+    } else if(isMac){
+      msg=`JSON copied. Click <strong>Open Claude</strong> to open claude.ai — or switch to the Claude Mac app if it's already open — then paste into your <strong>${proj}</strong> project. Note: the Mac app cannot be opened automatically from a browser tab; switch to it manually if preferred.`;
+    } else {
+      msg=`JSON copied. Open Claude in the <strong>${proj}</strong> project and paste to sync. Always paste into your project &mdash; not a new chat.`;
+    }
+    if(body)body.innerHTML=msg;
     const skip=localStorage.getItem(UC_PREF_SK)==='1';
     if(skip){ucToast();}else{document.getElementById('uc-overlay').classList.add('open');}
   };
@@ -4545,9 +4556,30 @@ function ucOpenClaude(){
   const cb=document.getElementById('uc-remember-cb');
   if(cb&&cb.checked)localStorage.setItem(UC_PREF_SK,'1');
   document.getElementById('uc-overlay').classList.remove('open');
-  const fallback=setTimeout(()=>{window.open('https://claude.ai','_blank');},850);
-  window.addEventListener('blur',()=>clearTimeout(fallback),{once:true});
-  window.location.href='claude://';
+  // Detect platform for best open strategy
+  const ua=navigator.userAgent||'';
+  const isMac=/Macintosh|MacIntel/.test(ua);
+  const isIOS=/iPhone|iPad/.test(ua);
+  const isAndroid=/Android/.test(ua);
+  if(isIOS){
+    // iOS: try claude:// URL scheme (Claude iOS app registers this)
+    const fallback=setTimeout(()=>{window.open('https://claude.ai','_blank');},1200);
+    window.addEventListener('blur',()=>clearTimeout(fallback),{once:true});
+    window.location.href='claude://';
+  } else if(isMac){
+    // Mac: Claude desktop app does not reliably register claude:// in all browsers.
+    // Best approach: open claude.ai in a new tab — user pastes from clipboard.
+    // If user has Claude app open, they can paste there; if not, the web tab works too.
+    window.open('https://claude.ai/project/','_blank');
+  } else if(isAndroid){
+    // Android: try intent URL, fall back to web
+    const fallback=setTimeout(()=>{window.open('https://claude.ai','_blank');},1200);
+    window.addEventListener('blur',()=>clearTimeout(fallback),{once:true});
+    window.location.href='intent://open#Intent;scheme=claude;package=com.anthropic.claude;end';
+  } else {
+    // Desktop web (Windows, Linux, unknown): open claude.ai
+    window.open('https://claude.ai/project/','_blank');
+  }
 }
 function ucOverlayClick(e){if(e.target===document.getElementById('uc-overlay'))ucClose();}
 
