@@ -2262,6 +2262,7 @@ function applyData(data) {
   S.items.forEach(it => {
     if (it.dueDate === undefined) it.dueDate = '';
     if (it.completedDate === undefined) it.completedDate = '';
+    if (it.reminderDate === undefined) it.reminderDate = '';
   });
   S.road.forEach(r => {
     if (r.kind === 'step') {
@@ -2947,6 +2948,7 @@ function rlist(){
         </div>
         <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
           <div><label class="edit-wrap-label">Due date</label><input type="date" class="edit-sel" id="edu_${it.id}" value="${esc(it.dueDate||'')}" style="width:130px" /></div>
+          <div><label class="edit-wrap-label">🔔 Reminder date</label><input type="date" class="edit-sel" id="erd_${it.id}" value="${esc(it.reminderDate||'')}" style="width:130px" title="Independent reminder — fires regardless of due date or deferred status" /></div>
           <div style="flex:1"><label class="edit-wrap-label">Answer / note</label><textarea class="edit-ta" id="ean_${it.id}" rows="2" style="min-height:40px">${esc(it.answer||'')}</textarea></div>
         </div>
         <div style="margin-top:6px"><label class="edit-wrap-label">🔗 Link / Bookmark</label><input type="text" class="edit-ta" id="eurl_${it.id}" value="${esc(it.itemUrl||'')}" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" style="min-height:0;padding:5px 8px;font-size:11px;font-family:'Source Code Pro',monospace" /></div>
@@ -2982,6 +2984,7 @@ function rlist(){
         <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
         <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
         <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
+        <button class="iabtn" onclick="${it.reminderDate?`clearReminder('${it.id}')`:`setReminder('${it.id}')`}" title="${it.reminderDate?'Reminder set: '+it.reminderDate+' — click to clear':'Set a reminder date'}">${it.reminderDate?'🔔 '+fmtDate(it.reminderDate):'🔔 Remind me'}</button>
         <button class="iabtn" onclick="mtrOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Roadmap</button>
         <button class="iabtn danger" onclick="delItem('${it.id}')">Delete</button>
       </div></div>`;
@@ -3001,8 +3004,9 @@ function rlist(){
               <span class="imem${it.memFlag?' on':''}" onclick="event.stopPropagation();togMem2('${it.id}')" title="Memory flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
             </div>
             <div class="idate-cols">
-              <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'\u2014'}</span></div>
-              <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'\u2014'}</span></div>
+              <div class="idate-pair"><span class="idate-lbl">Due</span><span class="idate-val${dueCls}">${it.dueDate?fmtDate(it.dueDate):'—'}</span></div>
+              <div class="idate-pair"><span class="idate-lbl">Done</span><span class="idate-val">${it.completedDate?fmtDate(it.completedDate):'—'}</span></div>
+              ${it.reminderDate?`<div class="idate-pair"><span class="idate-lbl" style="color:#C77800">🔔</span><span class="idate-val" style="color:#C77800">${fmtDate(it.reminderDate)}</span></div>`:''}
             </div>
             <span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
           </div>
@@ -3160,6 +3164,43 @@ function deferCancel() {
   _deferItemId = null; _deferCallback = null;
 }
 
+/* ── SET REMINDER (any item, independent of due date / deferred state) ── */
+let _reminderMode = false; // when true, deferPick writes to reminderDate not dueDate
+function setReminder(id) {
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  _reminderMode = true;
+  deferModalOpen(it, ()=>{
+    // deferPick already wrote to it.dueDate — move that to reminderDate and restore
+    const chosenDate = it.dueDate;
+    // Restore dueDate if it was overwritten (we'll save the original)
+    it.reminderDate = chosenDate;
+    it.dueDate = it._savedDueDate !== undefined ? it._savedDueDate : it.dueDate;
+    delete it._savedDueDate;
+    _reminderMode = false;
+    undoPush('Set reminder: '+(it.text||'').slice(0,40));
+    save(); render();
+    undoToastShow('Reminder set'+(it.reminderDate?' for '+it.reminderDate:'')+': '+(it.text||'').slice(0,30)+'…', 8000, true);
+    // Re-render overlay actions if overlay is open
+    if (threadOverlayItemId === id) threadOverlayRenderActions();
+  });
+  // Save original dueDate so we can restore it
+  it._savedDueDate = it.dueDate;
+  // Override modal title
+  setTimeout(()=>{
+    const title = document.querySelector('.defer-modal-title');
+    if (title) title.textContent = '🔔 Set reminder — when to be notified?';
+  }, 10);
+}
+function clearReminder(id) {
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  undoPush('Clear reminder: '+(it.text||'').slice(0,40));
+  it.reminderDate = '';
+  it._resurfaced = false;
+  save(); render();
+  undoToastShow('Reminder cleared: '+(it.text||'').slice(0,35)+'…', 8000, true);
+  if (threadOverlayItemId === id) threadOverlayRenderActions();
+}
+
 function togDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   if(it.deferred){
@@ -3191,41 +3232,58 @@ function checkDeferredResurface() {
   const today = todayStr();
   let resurfaced = [];
   (S.items||[]).forEach(it => {
-    if (!it.deferred || it.done || it.type === 'roadmap') return;
-    if (!it.dueDate || it.dueDate > today) return;
-    // Promote: un-defer, flag as resurfaced, add dialogue note
-    it.deferred = false;
-    it._resurfaced = true;
-    if (!it.dialogue) it.dialogue = [];
-    // Only add if we haven't already added one today
-    const alreadyFlagged = it.dialogue.some(d =>
-      d.from === 'system' && (d.ts||'').slice(0,10) === today
-    );
-    if (!alreadyFlagged) {
-      it.dialogue.push({
-        from: 'system',
-        text: '🔔 Reminder reached ' + today + ' — action required. Review this item, close it, or extend the reminder by clicking Defer.',
-        ts: new Date().toISOString()
-      });
+    if (it.done || it.type === 'roadmap') return;
+
+    // Case 1: deferred item whose dueDate has passed → promote to open
+    if (it.deferred && it.dueDate && it.dueDate <= today) {
+      it.deferred = false;
+      it._resurfaced = true;
+      if (!it.dialogue) it.dialogue = [];
+      const alreadyFlagged = it.dialogue.some(d =>
+        d.from === 'system' && (d.ts||'').slice(0,10) === today && d.text.includes('Deferred reminder')
+      );
+      if (!alreadyFlagged) {
+        it.dialogue.push({
+          from: 'system',
+          text: '🔔 Deferred reminder reached ' + today + ' — action required. Review this item, close it, or extend the reminder by clicking Defer.',
+          ts: new Date().toISOString()
+        });
+      }
+      resurfaced.push(it);
     }
-    resurfaced.push(it);
+
+    // Case 2: any item (open, deferred, fordave, etc.) with a reminderDate that has passed
+    if (it.reminderDate && it.reminderDate <= today) {
+      it._resurfaced = true;
+      if (!it.dialogue) it.dialogue = [];
+      const alreadyFlagged = it.dialogue.some(d =>
+        d.from === 'system' && (d.ts||'').slice(0,10) === today && d.text.includes('Reminder reached')
+      );
+      if (!alreadyFlagged) {
+        it.dialogue.push({
+          from: 'system',
+          text: '🔔 Reminder reached ' + today + ' — action required. Dismiss by clearing the reminder date in Edit, or set a new one.',
+          ts: new Date().toISOString()
+        });
+      }
+      it.reminderDate = ''; // clear after firing so it doesn't repeat
+      if (!resurfaced.find(r => r.id === it.id)) resurfaced.push(it);
+    }
   });
   if (resurfaced.length > 0) {
     save();
     render();
-    // Show alert modal
     const txt = document.getElementById('rsf-modal-text');
     if (txt) {
       txt.textContent = resurfaced.length === 1
-        ? '1 deferred item has reached its reminder date and has been moved back to Open. It is highlighted in the Notes panel.'
-        : resurfaced.length + ' deferred items have reached their reminder dates and have been moved back to Open. They are highlighted in the Notes panel.';
+        ? '1 item has reached its reminder date and needs your attention. It is highlighted in the Notes panel.'
+        : resurfaced.length + ' items have reached their reminder dates and need your attention. They are highlighted in the Notes panel.';
     }
     document.getElementById('rsf-overlay').classList.add('open');
   }
 }
 function rsfDismiss() {
   document.getElementById('rsf-overlay').classList.remove('open');
-  // Switch to Notes tab so user sees the highlighted items
   showTab('notes', document.getElementById('tab-notes'));
 }
 function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
@@ -3237,11 +3295,12 @@ function togEditPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.pri
 function saveEdit(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Edit: '+(it.text||'').slice(0,40));
-  ['etx_','ety_','etg_','edu_','ean_','eurl_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
+  ['etx_','ety_','etg_','edu_','erd_','ean_','eurl_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
     if(p==='etx_')it.text=el.value.trim();
     else if(p==='ety_')it.type=el.value;
     else if(p==='etg_'){it.tag=el.value.trim()||null;kwHandleInput(it.tag);}
     else if(p==='edu_')it.dueDate=el.value||'';
+    else if(p==='erd_')it.reminderDate=el.value||'';
     else if(p==='ean_')it.answer=el.value.trim()||null;
     else if(p==='eurl_')it.itemUrl=el.value.trim()||null;
   });
@@ -5730,6 +5789,7 @@ function threadOverlayRenderActions() {
   bar.innerHTML =
     `<button style="${s}" onclick="tovAct('done')">` + (it.done ? 'Mark open' : 'Mark done') + `</button>` +
     `<button style="${s}" onclick="tovAct('defer')">` + (it.deferred ? 'Undefer' : 'Defer') + `</button>` +
+    `<button style="${s+(it.reminderDate?';border-color:#C77800;color:#C77800':'')} " onclick="tovAct('remind')" title="${it.reminderDate?'Reminder: '+it.reminderDate+' — click to change':'Set an independent reminder date'}">🔔 ${it.reminderDate?fmtDate(it.reminderDate):'Remind me'}</button>` +
     `<button style="${s}" onclick="tovAct('edit')">Edit</button>` +
     `<button style="${s}" onclick="tovAct('mtr')">&#8594; Roadmap</button>` +
     `<button style="${s+(it.repeat&&it.repeat.on?';border-color:#1A6E9E;background:rgba(26,110,158,.12);color:#1A6E9E':'')}" onclick="tovToggleRepeat()" id="tov-rep-btn">&#8635; ${it.repeat&&it.repeat.on?'Repeating':'Repeat'}</button>` +
@@ -5787,6 +5847,7 @@ function threadOverlayEnterEdit() {
       // Row 2: due date, completed date, link
       `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">` +
         `<span style="${lbl}">Due</span><input type="date" id="tov-edu" style="${fs}" value="${esc(it.dueDate||'')}">` +
+        `<span style="${lbl}">🔔 Remind</span><input type="date" id="tov-erd" style="${fs}" value="${esc(it.reminderDate||'')}" title="Independent reminder date — fires on any item regardless of due date or status">` +
         `<span style="${lbl}">Completed</span><input type="date" id="tov-ecd" style="${fs}" value="${esc(it.completedDate||'')}">` +
         `<span style="${lbl}">🔗</span><input type="text" id="tov-eurl" style="${fs};min-width:160px;flex:1" value="${esc(it.itemUrl||'')}" placeholder="URL or bookmark">` +
       `</div>` +
@@ -5818,6 +5879,7 @@ function tovSaveEdit() {
   const ety = document.getElementById('tov-ety'); if (ety) it.type = ety.value;
   const etg = document.getElementById('tov-etg'); if (etg) { it.tag = etg.value.trim() || null; kwHandleInput(it.tag); }
   const edu = document.getElementById('tov-edu'); if (edu) it.dueDate = edu.value || '';
+  const erd = document.getElementById('tov-erd'); if (erd) it.reminderDate = erd.value || '';
   const ecd = document.getElementById('tov-ecd'); if (ecd) it.completedDate = ecd.value || '';
   const eurl = document.getElementById('tov-eurl'); if (eurl) it.itemUrl = eurl.value.trim() || null;
   const ean = document.getElementById('tov-ean'); if (ean) it.answer = ean.value.trim() || null;
@@ -5861,6 +5923,7 @@ function tovAct(action) {
     }
   }
   else if (action === 'defer') { togDefer(id); threadOverlayRenderActions(); }
+  else if (action === 'remind') { setReminder(id); }
   else if (action === 'edit')  { threadOverlayEnterEdit(); }
   else if (action === 'mtr')   { threadOverlayClose(); mtrOpen(id); }
   else if (action === 'del')   { threadOverlayClose(); delItem(id); }
