@@ -2138,6 +2138,26 @@ async function loadFromGitHub() {
     const localVersion = localData ? (localData._version || localData._seedVersion || '1970-01-01T00:00:00.000Z') : '1970-01-01T00:00:00.000Z';
     const ghIsNewer   = new Date(ghVersion) >= new Date(localVersion);
 
+    // GitHub is authoritative for done/completedDate/dialogue — always apply GitHub's values
+    // for these fields even when localStorage is newer (prevents stale cache overriding Claude's work)
+    if (!ghIsNewer && localData) {
+      const ghById = {};
+      (data.items || []).forEach(i => { ghById[i.id] = i; });
+      (localData.items || []).forEach(li => {
+        const gi = ghById[li.id];
+        if (!gi) return;
+        // GitHub wins on done, completedDate, and dialogue if GitHub has more entries
+        if (gi.done !== undefined) li.done = gi.done;
+        if (gi.completedDate) li.completedDate = gi.completedDate;
+        if (gi.answer && (!li.answer || gi.answer.length >= li.answer.length)) li.answer = gi.answer;
+        const giDlg = gi.dialogue || [], liDlg = li.dialogue || [];
+        if (giDlg.length >= liDlg.length) li.dialogue = gi.dialogue;
+      });
+      // Add any items in GitHub but not in localStorage
+      const localIds = new Set((localData.items || []).map(i => i.id));
+      (data.items || []).forEach(gi => { if (!localIds.has(gi.id)) localData.items.push(gi); });
+    }
+
     applyData(ghIsNewer ? data : localData);
     console.log(`Data loaded from ${ghIsNewer ? 'GitHub' : 'localStorage'} (gh:${ghVersion} local:${localVersion})`);
   } catch(e) {
