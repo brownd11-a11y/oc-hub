@@ -1565,11 +1565,27 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <li><strong>−</strong> — Collapse the selected item.</li>
           <li><strong>E</strong> — Edit the selected item (opens overlay in edit mode).</li>
           <li><strong>D</strong> — Toggle done on the selected item.</li>
-          <li><strong>Cmd/Ctrl+Enter</strong> — Save new item (cursor in note input) or send reply (cursor in overlay reply field).</li>
+          <li><strong>Cmd/Ctrl+Enter</strong> — Save new item (cursor in note input) or send reply (cursor anywhere in the overlay reply area).</li>
+          <li><strong>Cmd/Ctrl+Z</strong> — Undo the last action. Works anywhere — in input fields, the overlay, the roadmap, or while browsing. Up to 10 actions deep.</li>
           <li><strong>Cmd/Ctrl+Delete</strong> — Delete the selected item (confirm dialog appears).</li>
-          <li><strong>Escape</strong> — Close the overlay or dismiss search results.</li>
+          <li><strong>Escape</strong> — Close the overlay, dismiss search results, or hide the undo toast.</li>
         </ul>
-        <p class="help-p" style="font-size:13px;color:var(--label-secondary)">Shortcuts E, D, +, −, Enter, and Cmd+Delete are inactive while typing in any input or textarea.</p>
+        <p class="help-p" style="font-size:13px;color:var(--label-secondary)">Shortcuts E, D, +, −, Enter, and Cmd+Delete are inactive while typing in any input or textarea. Cmd+Z and Cmd+Enter always work.</p>
+        <h3 class="help-h3">Undo</h3>
+        <ul class="help-ul">
+          <li>Every data-changing action — mark done, mark open, defer, delete, edit, add item, reply, accept, roadmap step toggle — is undoable.</li>
+          <li>After any such action, a dark toast appears at the bottom of the screen for 8 seconds with an <strong>↺ Undo</strong> button.</li>
+          <li><strong>Cmd/Ctrl+Z</strong> also undoes the last action at any time, even after the toast fades.</li>
+          <li>The undo stack holds the last 10 actions. There is no redo.</li>
+        </ul>
+        <h3 class="help-h3">Tags</h3>
+        <ul class="help-ul">
+          <li>Tag fields appear in the main input form, inline item edit, overlay edit mode, and the overlay reply form.</li>
+          <li>All tag fields share a single keyword list. Start typing to filter existing tags or type a new word.</li>
+          <li><strong>To add a new tag:</strong> type it into any tag field and press Enter (in the overlay reply form) or navigate away. The new keyword is immediately added to the list and available everywhere.</li>
+          <li>Manage the full keyword list in <strong>Settings → Keywords</strong>: add in bulk (comma-separated) or remove individual tags.</li>
+          <li>In the overlay reply form, press Enter in the tag field to commit the tag and move focus to the reply textarea, then Cmd+Enter to send.</li>
+        </ul>
       </div></div>
 
       <!-- RESOURCES -->
@@ -2725,12 +2741,55 @@ function rlist(){
 }
 
 function xItem(id){const it=S.items.find(i=>i.id===id);if(!it)return;it._exp=!it._exp;rlist();}
+/* ── UNDO SYSTEM ── */
+const UNDO_MAX = 10;
+let _undoStack = [];
+let _undoToastTimer = null;
+
+function undoPush(label) {
+  // Deep clone items only (road/outreach changes are less likely to need undo)
+  _undoStack.push({ label, items: JSON.parse(JSON.stringify(S.items)) });
+  if (_undoStack.length > UNDO_MAX) _undoStack.shift();
+}
+
+function undoPop() {
+  if (!_undoStack.length) return;
+  const entry = _undoStack.pop();
+  S.items = entry.items;
+  save(); render();
+  undoToastHide();
+  // Brief confirmation
+  undoToastShow('Undone: ' + entry.label, 0, false);
+  setTimeout(undoToastHide, 2200);
+}
+
+function undoToastShow(label, duration, showBtn) {
+  let toast = document.getElementById('undo-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'undo-toast';
+    toast.style.cssText = 'display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:none;align-items:center;gap:14px;white-space:nowrap';
+    document.body.appendChild(toast);
+  }
+  if (_undoToastTimer) { clearTimeout(_undoToastTimer); _undoToastTimer = null; }
+  toast.innerHTML = '<span>' + esc(label) + '</span>'
+    + (showBtn ? '<button onclick="undoPop()" style="font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);color:#fff;padding:3px 12px;border-radius:5px;cursor:pointer;white-space:nowrap">&#8630; Undo</button>' : '');
+  toast.style.display = 'flex';
+  if (duration > 0) _undoToastTimer = setTimeout(undoToastHide, duration);
+}
+
+function undoToastHide() {
+  if (_undoToastTimer) { clearTimeout(_undoToastTimer); _undoToastTimer = null; }
+  const toast = document.getElementById('undo-toast');
+  if (toast) toast.style.display = 'none';
+}
+
 function togDone(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
+  undoPush((it.done?'Mark open: ':'Mark done: ')+(it.text||'').slice(0,40));
   it.done=!it.done;
   if(it.done){
     it.completedDate=todayStr();
-    // If linked to a roadmap item, mark it done too
     if(it.linkedRoadId){
       const ritem=S.road.find(r=>r.id===it.linkedRoadId);
       if(ritem&&ritem.kind==='step'){ritem.done=true;ritem.completedDate=todayStr();}
@@ -2739,16 +2798,23 @@ function togDone(id){
     it.completedDate='';
   }
   save();render();
+  undoToastShow((it.done?'Marked done':'Marked open')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
-function togDefer(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.deferred=!it.deferred;save();render();}
+function togDefer(id){
+  const it=S.items.find(i=>i.id===id);if(!it)return;
+  undoPush((it.deferred?'Undefer: ':'Defer: ')+(it.text||'').slice(0,40));
+  it.deferred=!it.deferred;save();render();
+  undoToastShow((it.deferred?'Deferred':'Undeferred')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
+}
 function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
 function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
-function delItem(id){if(!confirm('Delete?'))return;S.items=S.items.filter(i=>i.id!==id);save();render();}
+function delItem(id){if(!confirm('Delete?'))return;const it=S.items.find(i=>i.id===id);undoPush('Delete: '+(it?it.text||'':'').slice(0,40));S.items=S.items.filter(i=>i.id!==id);save();render();undoToastShow('Deleted: '+(it?(it.text||'').slice(0,35)+'…':'item'), 8000, true);}
 function startEdit(id){editingId=id;rlist();}
 function cancelEdit(){editingId=null;rlist();}
 function togEditPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;const btn=document.getElementById('epr_'+id);if(btn){btn.textContent=it.priority?'★ Priority':'☆ Priority';btn.className='edit-pritoggle'+(it.priority?' on':'');}}
 function saveEdit(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
+  undoPush('Edit: '+(it.text||'').slice(0,40));
   ['etx_','ety_','etg_','edu_','ean_','eurl_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
     if(p==='etx_')it.text=el.value.trim();
     else if(p==='ety_')it.type=el.value;
@@ -2765,19 +2831,24 @@ function dlReply(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   const ta=document.getElementById('dlrta-'+id);
   const txt=(ta?ta.value||'':'').trim();if(!txt)return;
+  undoPush('Reply: '+(it.text||'').slice(0,40));
   if(!it.dialogue)it.dialogue=[];
   it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
   save();render();
 }
 function dlAccept(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
+  undoPush('Accept: '+(it.text||'').slice(0,40));
   it.done=true;it.completedDate=new Date().toISOString().slice(0,10);
   save();render();
+  undoToastShow('Accepted: '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
 function dlDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
+  undoPush('Defer: '+(it.text||'').slice(0,40));
   it.deferred=true;
   save();render();
+  undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
 function dlElseOpen(id){
   const comp=document.getElementById('dlcomp-'+id);
@@ -2795,6 +2866,7 @@ function dlSend(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   const ta=document.getElementById('dlcta-'+id);
   const txt=(ta?ta.value||'':'').trim();if(!txt)return;
+  undoPush('Reply: '+(it.text||'').slice(0,40));
   if(!it.dialogue)it.dialogue=[];
   it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
   save();render();
@@ -2832,8 +2904,7 @@ const addItem=function(){
   const txt=(ta.value||'').trim();if(!txt)return;
   // Roadmap type — add to S.road instead of S.items
   const typeEl=document.getElementById('input-type');
-  if(typeEl&&typeEl.value==='roadmap'){
-    const label=txt.split('\n')[0].substring(0,80);
+  if(typeEl&&typeEl.value==='roadmap'){    const label=txt.split('\n')[0].substring(0,80);
     const phaseId=document.getElementById('rmst-phase-sel')?.value||null;
     const newId='r_'+Date.now();
     const rmStartVal=(document.getElementById('rmst-start')?.value||'').trim();
@@ -2864,6 +2935,7 @@ const addItem=function(){
   // Initial dialogue entry if flow is on
   const dialogue=inputFlowOn?[{from:'dave',text:txt,ts:new Date().toISOString()}]:null;
   const storeText=inputFlowOn?txt:txt; // always use full text
+  undoPush('Add item: '+txt.slice(0,40));
   S.items.unshift({
     id:'i_'+Date.now(),
     type,
@@ -3389,9 +3461,11 @@ function toggleGate(id){
 
 function toggleStep(id){
   const s=S.road.find(r=>r.id===id);if(!s)return;
+  undoPush((s.done?'Mark step open: ':'Mark step done: ')+(s.label||'').slice(0,40));
   s.done=!s.done;
   if(s.done)s.completedDate=todayStr();else s.completedDate='';
   save();renderGantt();
+  undoToastShow((s.done?'Step done':'Step open')+': '+(s.label||'').slice(0,35)+'…', 8000, true);
 }
 
 function setStepDate(id,which,val){
@@ -3401,7 +3475,7 @@ function setStepDate(id,which,val){
   save();renderGantt();
 }
 function setGateDate(id,val){const g=S.road.find(r=>r.id===id);if(!g)return;g.date=val;save();renderGantt();}
-function deleteRoadItem(id){if(!confirm('Delete?'))return;S.road=S.road.filter(r=>r.id!==id);renumberPhases();save();renderGantt();}
+function deleteRoadItem(id){if(!confirm('Delete?'))return;const s=S.road.find(r=>r.id===id);undoPush('Delete roadmap item: '+(s?s.label||'':'').slice(0,40));S.road=S.road.filter(r=>r.id!==id);renumberPhases();save();renderGantt();undoToastShow('Deleted: '+(s?(s.label||'').slice(0,35):'roadmap item'), 8000, true);}
 
 /* ── RENUMBER ── */
 function renumberPhases(){
@@ -5243,6 +5317,7 @@ function tovTogglePri() {
 
 function tovSaveEdit() {
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  undoPush('Edit: '+(it.text||'').slice(0,40));
   const titleTa = document.getElementById('tov-title-ta');
   if (titleTa) { const t = (titleTa.value || '').trim(); if (t) it.text = t; }
   const ety = document.getElementById('tov-ety'); if (ety) it.type = ety.value;
@@ -5260,9 +5335,11 @@ function tovAct(action) {
   if (action === 'done')  {
     const it = S.items.find(i => i.id === id);
     if (it && !it.done) {
+      undoPush('Mark done: '+(it.text||'').slice(0,40));
       it.done = true;
       if (!it.completedDate) it.completedDate = new Date().toISOString().slice(0,10);
       save(); render(); threadOverlayClose();
+      undoToastShow('Marked done: '+(it.text||'').slice(0,35)+'…', 8000, true);
     } else {
       togDone(id); threadOverlayRenderActions();
     }
@@ -5367,6 +5444,7 @@ function threadOverlaySend() {
   const ta = document.getElementById('thread-reply-ta');
   const txt = (ta ? ta.value || '' : '').trim(); if (!txt) return;
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
+  undoPush('Reply: '+(it.text||'').slice(0,40));
   if (!it.dialogue) it.dialogue = [];
   const from = threadOverlayMode === 'note' ? 'note' : 'dave';
   it.dialogue.push({ from, text: txt, ts: new Date().toISOString() });
@@ -5619,6 +5697,11 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     const ov = document.getElementById('thread-overlay');
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
+    undoToastHide(); return;
+  }
+  // Cmd/Ctrl+Z — undo last action (works everywhere, even while typing)
+  if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+    if (_undoStack.length) { e.preventDefault(); undoPop(); return; }
   }
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     // Send/save from anywhere inside the overlay reply form area
