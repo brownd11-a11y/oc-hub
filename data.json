@@ -1,7 +1,39 @@
 {
-  "_version": "2026-06-15T16:15:00.000Z",
+  "_version": "2026-06-15T16:30:00.000Z",
   "_schema": 1,
   "items": [
+    {
+      "id": "i_test_resurface_1",
+      "type": "note",
+      "text": "TEST \u2014 resurface behavior check. This item was deferred with a reminder one week ago. If you see it highlighted in amber with a \ud83d\udd14 alert entry below, the resurface system is working.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-15T16:30:00.000Z",
+      "dueDate": "2026-06-08",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_test_resurface_2",
+      "type": "reminder",
+      "text": "TEST \u2014 second resurface check (reminder type). This was deferred three days ago. Delete both test items once you've confirmed the amber tint and alert modal are working.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-15T16:30:00.000Z",
+      "dueDate": "2026-06-12",
+      "completedDate": "",
+      "itemUrl": null
+    },
     {
       "id": "i_demo_standalone",
       "type": "reminder",
