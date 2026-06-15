@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-14T23:43:10.687744+00:00",
+  "_version": "2026-06-15T00:56:43.027478+00:00",
   "_schema": 1,
   "items": [
     {
@@ -2400,7 +2400,7 @@
       "memFlag": true,
       "tag": null,
       "deferred": false,
-      "answer": "DONE v306: Moskowitz bin Laden paragraph inserted in Ch.6 body after F-117 section, before Limitations imposed on Congress subheading. ref_2_2_15 superscript created; note_2_2_15 return link fixed (was garbled \u2191avalanc); sectPr moved from note 14 to note 15 (last note). Four-count PASS 15/15/15/15.",
+      "answer": "CONFIRMED v308: A1 Moskowitz GlossEnt correct. Ch.6 para 639 (aBOOKtext) is body prose, not an appendix entry \u2014 correct style for that location.",
       "dialogue": [
         {
           "from": "dave",
@@ -2427,7 +2427,7 @@
       "memFlag": true,
       "tag": null,
       "deferred": false,
-      "answer": "DONE v306: Burlison avalanche sentence confirmed in Ch.10 body text; superscript formatting removed so it displays as normal body text.",
+      "answer": "DONE v308: Three Ch.10 display fixes applied: (1) Burlison avalanche sentence extracted from superscript \u2014 now normal TextOpen body text with ref_3_2_30 marker placed after it. (2) Double-28 on Graves paragraph fixed. (3) Double-29 on UAP records paragraph fixed. REMAINING: full Ch.10 footnote renumber and note-bookmark system \u2014 ref_3_2_30 is out of body sequence (appears after 20, before 21-29) \u2014 requires B4 footnote pass. | PASTE TO FIND \u2192 Their careers were upended. Their families were torn apart.",
       "dialogue": [
         {
           "from": "dave",
