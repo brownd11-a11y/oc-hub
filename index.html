@@ -295,6 +295,30 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item.done .ihead:hover{background:rgba(45,107,45,0.08)}
 .item.hold .ihead:hover{background:rgba(176,90,0,0.08)}
 .item.pri:not(.done):not(.hold) .ihead:hover{background:rgba(199,0,37,0.08)}
+/* ── RESURFACED ITEMS (deferred reminder reached) ── */
+.item.resurface .ihead{background:rgba(199,120,0,0.10) !important;border-left:3px solid #C77800 !important}
+.item.resurface .ihead:hover{background:rgba(199,120,0,0.18) !important}
+/* ── DEFER MODAL ── */
+.defer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.50);z-index:9100;align-items:center;justify-content:center}
+.defer-overlay.open{display:flex}
+.defer-modal{background:var(--card-bg);border:1px solid var(--separator);border-radius:12px;padding:24px 28px;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.defer-modal-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px}
+.defer-modal-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.5;margin-bottom:18px;max-height:60px;overflow:hidden;text-overflow:ellipsis}
+.defer-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.defer-pill{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;border:1.5px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:7px 14px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.defer-pill:hover{border-color:var(--accent);color:var(--accent)}
+.defer-pill.never{color:var(--label-secondary)}
+.defer-pill.never:hover{border-color:var(--label-secondary);color:var(--label-secondary);background:var(--input-bg)}
+.defer-custom-row{display:none;align-items:center;gap:8px;margin-bottom:16px}
+.defer-custom-row.open{display:flex}
+.defer-cancel{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:none;border:none;cursor:pointer;padding:4px 0;text-decoration:underline}
+/* ── RESURFACE ALERT MODAL ── */
+.rsf-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9200;align-items:center;justify-content:center}
+.rsf-overlay.open{display:flex}
+.rsf-modal{background:var(--card-bg);border:1px solid #C77800;border-radius:12px;padding:24px 28px;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.rsf-modal h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#C77800;margin:0 0 10px}
+.rsf-modal p{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.6;margin:0 0 18px}
+.rsf-ok{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:#C77800;color:#fff;border:none;border-radius:6px;padding:9px 24px;cursor:pointer}
 .icb{width:15px;height:15px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;margin-top:2px;transition:all .15s}
 .done .icb{background:var(--done-fg);border-color:var(--done-fg);color:white}
 .hold .icb{background:var(--hold-fg);border-color:var(--hold-fg);color:white;font-size:7px}
@@ -857,6 +881,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item.fordave:not(.done){background:#fff3cc;border-left-color:var(--fordave-border)}
 .item.fordave:not(.done) .ihead{background:#fff3cc !important}
 .item.fordave:not(.done) .ihead:hover{background:#ffe9a0 !important}
+/* System dialogue entries (resurface alerts) */
+.dl-entry.from-system{background:rgba(199,120,0,0.07);border-left:2px solid #C77800;margin-left:-2px}
+.dl-entry.from-system .dl-from{color:#C77800}
 .idlg-ct{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;letter-spacing:.04em;background:var(--separator);color:var(--label-secondary);padding:1px 5px;border-radius:8px;line-height:1.6;flex-shrink:0}
 .item.flow-item:not(.done) .idlg-ct{background:rgba(32,112,200,0.18);color:#1a4a90}
 .item.needs-response:not(.done) .idlg-ct,.item.fordave:not(.done) .idlg-ct{background:rgba(212,160,32,0.25);color:#7a5000}
@@ -2244,6 +2271,9 @@ function applyData(data) {
   });
   let n = 1;
   S.road.forEach(r => { if (r.kind === 'phase' && !r.num) { r.num = n; n++; } else if (r.kind === 'phase') n++; });
+  // After data is applied, render and then check for resurfaced deferred items
+  render();
+  setTimeout(()=>checkDeferredResurface(), 100);
 }
 
 function loadFromSeed() {
@@ -2880,7 +2910,7 @@ function rlist(){
     );
     // isAwaitingClaude = Dave has replied after Claude (blue — awaiting Claude follow-up)
     const isAwaitingClaude=!it.done&&lastDlgFrom==='dave'&&dlgCheck.length>1&&isLegacyFordave;
-    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',it.type==='note'?'type-note':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
+    const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',it.type==='note'?'type-note':'',it._resurfaced&&!it.done?'resurface':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
     const dlgForPreview=(it.dialogue||[]);
     // Line 1: always first line of item text
     const fullText = (it.text||'');
@@ -2928,7 +2958,7 @@ function rlist(){
       const dlg=(it.dialogue||[]);
       const dlgHtml=dlg.length?`<div class="dialogue-thread">${
         [...dlg].reverse().map(d=>`<div class="dl-entry from-${d.from}">
-          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':'Claude'}</span><span class="dl-ts">${fmtDate(d.ts.slice(0,10))}</span></div>
+          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':d.from==='system'?'&#128276; Alert':'Claude'}</span><span class="dl-ts">${fmtDate((d.ts||'').slice(0,10))}</span></div>
           <div class="dl-text">${esc(d.text)}</div>
         </div>`).join('')
       }</div>`:'';
@@ -3082,47 +3112,121 @@ function togDone(id){
   save();render();
   undoToastShow((it.done?'Marked done':'Marked open')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
-function requireDeferDate(it, onConfirmed) {
-  // If already has a due date, or we're un-deferring, proceed immediately
-  if (it.dueDate || it.deferred) { onConfirmed(); return; }
-  // Prompt for a date before deferring
-  const date = prompt('Defer until — enter a date (YYYY-MM-DD):', '');
-  if (date === null) return; // cancelled
-  const clean = (date || '').trim();
-  // Validate loosely: must look like a date or be empty (we allow empty but warn)
-  if (clean && !/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
-    alert('Please enter a date in YYYY-MM-DD format, or leave blank to defer without a date.');
-    return;
-  }
-  if (clean) it.dueDate = clean;
-  else {
-    // Allow defer without date only after explicit acknowledgment
-    if (!confirm('No date set — defer anyway? The item will sit in Deferred with no reminder.')) return;
-  }
-  onConfirmed();
+/* ── DEFER MODAL SYSTEM ── */
+let _deferItemId = null;
+let _deferCallback = null;
+
+function deferModalOpen(it, onConfirmed) {
+  _deferItemId = it.id;
+  _deferCallback = onConfirmed;
+  const txt = document.getElementById('defer-modal-text');
+  if (txt) txt.textContent = (it.text || '').slice(0, 120) + ((it.text||'').length > 120 ? '…' : '');
+  // Reset custom row
+  const cr = document.getElementById('defer-custom-row');
+  if (cr) cr.classList.remove('open');
+  const cd = document.getElementById('defer-custom-date');
+  if (cd) cd.value = '';
+  document.getElementById('defer-overlay').classList.add('open');
 }
+function deferPick(days) {
+  document.getElementById('defer-overlay').classList.remove('open');
+  const it = S.items.find(i => i.id === _deferItemId); if (!it) return;
+  if (days > 0) {
+    const d = new Date(); d.setDate(d.getDate() + days);
+    it.dueDate = d.toISOString().slice(0,10);
+  } else {
+    it.dueDate = ''; // Never — conscious choice
+  }
+  if (_deferCallback) _deferCallback();
+  _deferItemId = null; _deferCallback = null;
+}
+function deferPickCustom() {
+  const cr = document.getElementById('defer-custom-row');
+  if (cr) cr.classList.add('open');
+  setTimeout(() => { const d = document.getElementById('defer-custom-date'); if (d) d.focus(); }, 50);
+}
+function deferPickDate() {
+  const cd = document.getElementById('defer-custom-date');
+  const val = (cd ? cd.value : '').trim();
+  if (!val) { alert('Please select a date.'); return; }
+  document.getElementById('defer-overlay').classList.remove('open');
+  const it = S.items.find(i => i.id === _deferItemId); if (!it) return;
+  it.dueDate = val;
+  if (_deferCallback) _deferCallback();
+  _deferItemId = null; _deferCallback = null;
+}
+function deferCancel() {
+  document.getElementById('defer-overlay').classList.remove('open');
+  _deferItemId = null; _deferCallback = null;
+}
+
 function togDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   if(it.deferred){
-    // Un-deferring — always immediate
     undoPush('Undefer: '+(it.text||'').slice(0,40));
-    it.deferred=false;save();render();
+    it.deferred=false;
+    // Clear resurface flag if present
+    it._resurfaced=false;
+    save();render();
     undoToastShow('Undeferred: '+(it.text||'').slice(0,35)+'…',8000,true);
     return;
   }
-  requireDeferDate(it, ()=>{
+  deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
-    it.deferred=true;save();render();
-    undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…',8000,true);
+    it.deferred=true;it._resurfaced=false;save();render();
+    undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
 }
 function dlDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
-  requireDeferDate(it, ()=>{
+  deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
-    it.deferred=true;save();render();
-    undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…',8000,true);
+    it.deferred=true;it._resurfaced=false;save();render();
+    undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
+}
+
+/* ── DEFERRED RESURFACE CHECK (runs at init and after GitHub fetch) ── */
+function checkDeferredResurface() {
+  const today = todayStr();
+  let resurfaced = [];
+  (S.items||[]).forEach(it => {
+    if (!it.deferred || it.done || it.type === 'roadmap') return;
+    if (!it.dueDate || it.dueDate > today) return;
+    // Promote: un-defer, flag as resurfaced, add dialogue note
+    it.deferred = false;
+    it._resurfaced = true;
+    if (!it.dialogue) it.dialogue = [];
+    // Only add if we haven't already added one today
+    const alreadyFlagged = it.dialogue.some(d =>
+      d.from === 'system' && (d.ts||'').slice(0,10) === today
+    );
+    if (!alreadyFlagged) {
+      it.dialogue.push({
+        from: 'system',
+        text: '🔔 Reminder reached ' + today + ' — action required. Review this item, close it, or extend the reminder by clicking Defer.',
+        ts: new Date().toISOString()
+      });
+    }
+    resurfaced.push(it);
+  });
+  if (resurfaced.length > 0) {
+    save();
+    render();
+    // Show alert modal
+    const txt = document.getElementById('rsf-modal-text');
+    if (txt) {
+      txt.textContent = resurfaced.length === 1
+        ? '1 deferred item has reached its reminder date and has been moved back to Open. It is highlighted in the Notes panel.'
+        : resurfaced.length + ' deferred items have reached their reminder dates and have been moved back to Open. They are highlighted in the Notes panel.';
+    }
+    document.getElementById('rsf-overlay').classList.add('open');
+  }
+}
+function rsfDismiss() {
+  document.getElementById('rsf-overlay').classList.remove('open');
+  // Switch to Notes tab so user sees the highlighted items
+  showTab('notes', document.getElementById('tab-notes'));
 }
 function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
 function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
@@ -3171,13 +3275,6 @@ function dlAccept(id){
   save();render();
   undoToastShow('Accepted: '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
-function dlDefer(id){
-  const it=S.items.find(i=>i.id===id);if(!it)return;
-  undoPush('Defer: '+(it.text||'').slice(0,40));
-  it.deferred=true;
-  save();render();
-  undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…', 8000, true);
-}
 function dlElseOpen(id){
   const comp=document.getElementById('dlcomp-'+id);
   const acts=document.getElementById('dlact-'+id);
@@ -3216,30 +3313,28 @@ function toggleReminder(){
 }
 function toggleStatus(){
   if(!inputStatusDeferred){
-    // About to defer — require a date
-    const date = prompt('Defer until — enter a date (YYYY-MM-DD):', '');
-    if(date===null)return; // cancelled
-    const clean=(date||'').trim();
-    if(clean&&!/^\d{4}-\d{2}-\d{2}$/.test(clean)){alert('Please enter a date in YYYY-MM-DD format.');return;}
-    if(!clean&&!confirm('No date set — defer anyway?'))return;
-    inputStatusDeferred=true;
-    if(clean){
-      // Pre-fill the due date field if it exists
-      const due=document.getElementById('input-due');if(due)due.value=clean;
-      // Also show reminder row so the date is visible
-      if(!inputIsReminder){
-        inputIsReminder=true;
-        const rb=document.getElementById('rem-toggle');
-        if(rb){rb.className='rem-toggle on';rb.innerHTML='&#128276; Reminder on';}
-        document.getElementById('rem-due-row').style.display='flex';
+    // Fake an item object to pass to the modal
+    const fakeIt = {id:'__input__', text:'New item (set a reminder date)', dueDate:''};
+    deferModalOpen(fakeIt, ()=>{
+      inputStatusDeferred=true;
+      const btn=document.getElementById('status-toggle');
+      if(btn){btn.className='status-toggle deferred';btn.textContent='Deferred';}
+      // Pre-fill due date field if a date was chosen
+      if(fakeIt.dueDate){
+        const due=document.getElementById('input-due');if(due)due.value=fakeIt.dueDate;
+        if(!inputIsReminder){
+          inputIsReminder=true;
+          const rb=document.getElementById('rem-toggle');
+          if(rb){rb.className='rem-toggle on';rb.innerHTML='&#128276; Reminder on';}
+          document.getElementById('rem-due-row').style.display='flex';
+        }
       }
-    }
+    });
   } else {
     inputStatusDeferred=false;
+    const btn=document.getElementById('status-toggle');
+    if(btn){btn.className='status-toggle open';btn.textContent='Open';}
   }
-  const btn=document.getElementById('status-toggle');
-  if(inputStatusDeferred){btn.className='status-toggle deferred';btn.textContent='Deferred';}
-  else{btn.className='status-toggle open';btn.textContent='Open';}
 }
 function cyclePriority(){
   inputPriLevel=(inputPriLevel+1)%3;
@@ -5267,6 +5362,8 @@ function rfRender(){
 /* ── INIT ── */
 // Sync load from localStorage for immediate render
 load();otLoad();rfLoad();kwLoad();ctLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
+// Check for deferred items that have reached their reminder date
+setTimeout(()=>checkDeferredResurface(), 300);
 // Async GitHub fetch — silently updates if newer data found
 loadFromGitHub();
 // Collapse all roadmap phases on initial load (display default, not persisted)
@@ -6465,6 +6562,35 @@ function ingestLeads(newLeads) {
   </div>
 </div>
 <div class="uc-toast" id="uc-toast">JSON copied &mdash; paste into Claude ✓</div>
+
+<!-- DEFER DATE MODAL -->
+<div class="defer-overlay" id="defer-overlay">
+  <div class="defer-modal">
+    <div class="defer-modal-title">&#8987; Defer — when to resurface?</div>
+    <div class="defer-modal-text" id="defer-modal-text"></div>
+    <div class="defer-pills">
+      <button class="defer-pill" onclick="deferPick(1)">1 Day</button>
+      <button class="defer-pill" onclick="deferPick(7)">1 Week</button>
+      <button class="defer-pill" onclick="deferPick(30)">1 Month</button>
+      <button class="defer-pill" onclick="deferPickCustom()">Custom…</button>
+      <button class="defer-pill never" onclick="deferPick(0)">Never</button>
+    </div>
+    <div class="defer-custom-row" id="defer-custom-row">
+      <input type="date" id="defer-custom-date" style="font-family:'Source Code Pro',monospace;font-size:12px;border:1px solid var(--separator);border-radius:6px;padding:6px 10px;background:var(--input-bg);color:var(--label-primary);outline:none">
+      <button class="defer-pill" onclick="deferPickDate()">Set</button>
+    </div>
+    <button class="defer-cancel" onclick="deferCancel()">Cancel</button>
+  </div>
+</div>
+
+<!-- RESURFACE ALERT MODAL -->
+<div class="rsf-overlay" id="rsf-overlay">
+  <div class="rsf-modal">
+    <h3>&#128276; Reminders reached</h3>
+    <p id="rsf-modal-text"></p>
+    <button class="rsf-ok" onclick="rsfDismiss()">OK — I'll review them</button>
+  </div>
+</div>
 
 <!-- FULL-SCREEN THREAD OVERLAY -->
 <div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);flex-direction:column">
