@@ -1,7 +1,23 @@
 {
-  "_version": "2026-06-15T15:00:00.000Z",
+  "_version": "2026-06-15T15:30:00.000Z",
   "_schema": 1,
   "items": [
+    {
+      "id": "i_demo_standalone",
+      "type": "reminder",
+      "text": "Create standalone demo HTML file \u2014 bake current hub data into seed, freeze GitHub sync, add demo banner. Share with friends as single self-contained file.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": "Approach: copy index.html, replace SEED_ITEMS and SEED_ROAD with current live data snapshot, disable GitHub fetch (loadFromGitHub = no-op), add a subtle demo banner. Output as downloadable .html file. Draft email already written in hub.",
+      "dialogue": null,
+      "created": "2026-06-15T15:30:00.000Z",
+      "dueDate": "2026-06-22",
+      "completedDate": "",
+      "itemUrl": null
+    },
     {
       "id": "i_ios_app_note",
       "type": "note",
