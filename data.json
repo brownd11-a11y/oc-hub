@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-15T14:00:00.000Z",
+  "_version": "2026-06-15T15:00:00.000Z",
   "_schema": 1,
   "items": [
     {
@@ -4011,7 +4011,7 @@
       "text": "Update PURSUE references throughout manuscript \u2014 refresh counts based on latest file drops and media buzz. REPEATABLE: run before any final edit pass and again just before upload for sale.",
       "done": false,
       "priority": false,
-      "memFlag": true,
+      "memFlag": false,
       "tag": "writing",
       "deferred": false,
       "answer": "",
@@ -4043,10 +4043,15 @@
         }
       ],
       "created": "2026-06-15T00:00:00.000Z",
-      "dueDate": "",
+      "dueDate": "2026-06-26",
       "completedDate": "",
       "itemUrl": null,
-      "repeat": true
+      "repeat": {
+        "on": true,
+        "freq": "biweekly",
+        "customDays": 14,
+        "endDate": ""
+      }
     },
     {
       "id": "i_burlison_species_source",
