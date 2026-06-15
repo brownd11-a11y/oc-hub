@@ -2390,6 +2390,7 @@ function toggleSection(id){
 function counts(){
   let openCt=0,pri=0,hold=0,done=0,fordave=0,needsResp=0;
   (S.items||[]).forEach(it=>{
+    if(it.type==='roadmap')return; // roadmap mirrors shown separately — exclude from notes counts
     if(it.done){done++;return;}
     if(it.deferred){hold++;return;}
     openCt++;
@@ -2427,10 +2428,12 @@ function setBadge(id,count){
   el.className='tab-nbadge'+(count?'':' zero');
 }
 function rdash(){
-  const{open:openCt,pri,hold,done,fordave,needsResp}=counts();
-  const all=(S.items||[]).length;
-  const deferred=(S.items||[]).filter(function(it){return it.deferred&&!it.done;}).length;
-  const remCt=(S.items||[]).filter(function(it){return it.dueDate&&!it.done;}).length;
+  const{open:openCt,pri,hold,done}=counts();
+  // "All" = open + deferred + done (non-roadmap items only); roadmap mirrors excluded
+  const all=openCt+hold+done;
+  const deferred=hold;
+  // Reminder count: only items with type==='reminder' that are open (not done, not deferred)
+  const remCt=(S.items||[]).filter(function(it){return it.type==='reminder'&&!it.done&&!it.deferred;}).length;
   updateTabBadges();
   // Update chip counts and active states
   function setChip(id,countId,count,active){
@@ -2449,7 +2452,7 @@ function rdash(){
   updateTypeCounts();
 }
 function tSt(k){fSt=k;render();}
-function tReminder(){fReminder=!fReminder;if(fReminder&&fSt==='open')fSt=null;render();}
+function tReminder(){fReminder=!fReminder;render();}
 function hdSearchUpdate(v){
   v=(v||'').trim();
   var clr=document.getElementById('hd-search-clear');
@@ -2482,7 +2485,7 @@ function updateTypeCounts(){
     'roadmap':'\uD83D\uDDFA Roadmap'
   };
   const counts={
-    '':items.filter(function(it){return !it.done&&!it.deferred;}).length,
+    '':items.filter(function(it){return it.type!=='roadmap'&&!it.done&&!it.deferred;}).length,
     'question':openOf('question'),
     'reminder':openOf('reminder'),
     'note':openOf('note'),
@@ -2512,7 +2515,7 @@ function iVis(it){
   if(fSt==='deferred'&&(!it.deferred||it.done))return false;
   if(fSt==='priority'&&(!it.priority||it.done))return false;
   // fSt===null means All — no status filter applied
-  if(fReminder&&!it.dueDate)return false;
+  if(fReminder&&it.type!=='reminder')return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
   return true;
