@@ -1565,14 +1565,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <ul class="help-ul">
           <li><strong>Project Note</strong> — general observations, decisions, or reference entries.</li>
           <li><strong>Question</strong> — open questions awaiting answers or research.</li>
-          <li><strong>Reminder</strong> — date-linked to-do items. Appear in the Reminders filter.</li>
+          <li><strong>Reminder</strong> — date-linked to-do items. Appear in the Reminders filter. Only open, non-deferred reminders count toward the Reminders badge.</li>
           <li><strong>For Claude / Dave</strong> — dialogue threads. Toggle <em>To Claude</em> when adding to start a thread.</li>
-          <li><strong>Roadmap</strong> — mirror of all roadmap phases, tasks, and gates. Filterable and expandable inline.</li>
+          <li><strong>Roadmap</strong> — mirror of all roadmap phases, tasks, and gates. Filterable and expandable inline. <em>Roadmap items are not included in the Open, Done, Deferred, Priority, or Reminders counts</em> — those counts reflect Notes-only items. The Roadmap type filter shows roadmap items with their own count from the Roadmap tab.</li>
+          <li><strong>Custom types</strong> — add your own types (e.g. Research) in <strong>Settings → Note Types</strong>. Custom types appear in all type selectors and the filter dropdown. Built-in types cannot be removed.</li>
         </ul>
         <h3 class="help-h3">Filters</h3>
         <ul class="help-ul">
-          <li>Filter by <strong>status</strong> (Open, Deferred, Done, Priority) using the chips at the top.</li>
+          <li>Filter by <strong>status</strong> (Open, Deferred, Done, Priority) using the chips at the top. <strong>All</strong> = open + deferred + done; Priority and Reminders are subsets and not added separately.</li>
           <li>Filter by <strong>tag</strong> or <strong>type</strong> using the dropdowns on the right. Each type shows its open item count.</li>
+          <li>The <strong>Reminders</strong> chip filters to open reminder-type items only and stacks with the status filter.</li>
           <li><strong>Reset</strong> clears all filters and returns to the default Open view.</li>
         </ul>
         <h3 class="help-h3">Item overlay</h3>
@@ -1687,6 +1689,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <div style="display:flex;gap:8px">
             <input id="kw-inp" type="text" placeholder="Add tag…" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')addKw()">
             <button class="iabtn" onclick="addKw()">+ Add</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Note Types</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Built-in types (Project Note, Question, Reminder, For Claude/Dave) cannot be removed. Add custom types to extend the list — they appear in all type selectors and the filter dropdown. Names are lowercase, letters/numbers/hyphens only.</p>
+          <div id="ct-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
+          <div style="display:flex;gap:8px">
+            <input id="ct-inp" type="text" placeholder="Add type… e.g. research" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')ctAdd()">
+            <button class="iabtn" onclick="ctAdd()">+ Add</button>
           </div>
         </div>
 
@@ -2472,31 +2484,21 @@ function setTag(v){fTag=v||null;render();}
 function updateTypeCounts(){
   const sel=document.getElementById('type-filter');if(!sel)return;
   const items=S.items||[];
-  // open count per type (non-done, non-deferred)
+  // open count per type (non-done, non-deferred, non-roadmap)
   const openOf=function(t){return items.filter(function(it){return it.type===t&&!it.done&&!it.deferred;}).length;};
   // roadmap: count open road steps/gates
   const roadOpen=(S.road||[]).filter(function(r){return !r.done&&!r.met&&(r.kind==='step'||r.kind==='gate');}).length;
-  const labels={
-    '':'All Types',
-    'question':'Questions',
-    'reminder':'Reminders',
-    'note':'Project Notes',
-    'fordave':'For Claude / Dave',
-    'roadmap':'\uD83D\uDDFA Roadmap'
-  };
-  const counts={
-    '':items.filter(function(it){return it.type!=='roadmap'&&!it.done&&!it.deferred;}).length,
-    'question':openOf('question'),
-    'reminder':openOf('reminder'),
-    'note':openOf('note'),
-    'fordave':openOf('fordave'),
-    'roadmap':roadOpen
-  };
+  const allOpen=items.filter(function(it){return it.type!=='roadmap'&&!it.done&&!it.deferred;}).length;
+  // Build options from dynamic type list
+  const types=ctAll();
   Array.from(sel.options).forEach(function(opt){
     const v=opt.value;
-    const lbl=labels[v]||opt.textContent.replace(/\s*\(\d+\)$/,'');
-    const ct=counts[v];
-    opt.textContent=lbl+(ct!=null?' ('+ct+')':'');
+    if(v===''){opt.textContent='All Types ('+allOpen+')';return;}
+    if(v==='roadmap'){opt.textContent='🗺 Roadmap ('+roadOpen+')';return;}
+    const t=types.find(function(t){return t.value===v;});
+    const lbl=t?t.label:opt.textContent.replace(/\s*\(\d+\)$/,'');
+    const ct=openOf(v);
+    opt.textContent=lbl+' ('+ct+')';
   });
 }
 function setType(v){
@@ -2743,6 +2745,110 @@ function kwSave(){
 }
 // ─────────────────────────────────────────────────────────────────────────
 
+/* ── CUSTOM NOTE TYPES ── */
+const CT_SK='oc_custom_types_v1';
+// Built-in types: protected, always present, cannot be deleted
+const BUILTIN_TYPES=[
+  {value:'note',    label:'Project Note'},
+  {value:'question',label:'Question'},
+  {value:'reminder',label:'Reminder'},
+  {value:'fordave', label:'For Claude / Dave'}
+];
+let CUSTOM_TYPES=[]; // user-defined types stored in localStorage
+
+function ctLoad(){
+  try{const r=localStorage.getItem(CT_SK);CUSTOM_TYPES=r?JSON.parse(r):['research'];}
+  catch(e){CUSTOM_TYPES=['research'];}
+}
+function ctSave(){try{localStorage.setItem(CT_SK,JSON.stringify(CUSTOM_TYPES));}catch(e){}}
+
+// Returns merged list of all types [{value,label,custom?}]
+function ctAll(){
+  return [
+    ...BUILTIN_TYPES,
+    ...CUSTOM_TYPES.map(v=>({value:v,label:v.charAt(0).toUpperCase()+v.slice(1),custom:true}))
+  ];
+}
+
+// Build <option> elements for a type selector; optionally add an All Types entry
+function ctOptions(selected, includeAll){
+  const all=ctAll();
+  let html=includeAll?'<option value="">All Types</option>':'';
+  html+=all.map(t=>`<option value="${esc(t.value)}"${t.value===selected?' selected':''}>${esc(t.label)}</option>`).join('');
+  return html;
+}
+
+// Rebuild every type selector in the UI
+function ctRenderAll(){
+  // 1. Type-filter dropdown (top bar) — includes All Types + custom + roadmap
+  const tf=document.getElementById('type-filter');
+  if(tf){
+    const prev=tf.value;
+    tf.innerHTML='<option value="">All Types</option>'+
+      ctAll().map(t=>`<option value="${esc(t.value)}">${esc(t.label)}</option>`).join('')+
+      '<option value="roadmap">🗺 Roadmap</option>';
+    if(prev)tf.value=prev;
+  }
+  // 2. Input form type selector
+  const it=document.getElementById('input-type');
+  if(it){
+    const prev=it.value;
+    it.innerHTML=ctAll().map(t=>`<option value="${esc(t.value)}">${esc(t.label)}</option>`).join('');
+    it.value=prev&&[...ctAll()].find(t=>t.value===prev)?prev:'note';
+  }
+  // 3. Settings default-type selector
+  const sd=document.getElementById('setting-default-type');
+  if(sd){
+    const prev=sd.value;
+    sd.innerHTML=ctAll().map(t=>`<option value="${esc(t.value)}">${esc(t.label)}</option>`).join('');
+    sd.value=prev;
+  }
+  // 4. Refresh updateTypeCounts so new types appear in the dropdown with counts
+  updateTypeCounts();
+  // 5. Rebuild tov-reply-type select in the overlay reply form
+  const trt=document.getElementById('tov-reply-type');
+  if(trt){
+    const prev=trt.value;
+    trt.innerHTML='<option value="">— Type —</option>'+ctAll().map(t=>`<option value="${esc(t.value)}">${esc(t.label)}</option>`).join('');
+    if(prev)trt.value=prev;
+  }
+  // 6. Render the settings management card
+  ctRenderSettings();
+}
+
+function ctRenderSettings(){
+  const wrap=document.getElementById('ct-chips');
+  if(!wrap)return;
+  // Builtin types (read-only)
+  const builtinHtml=BUILTIN_TYPES.map(t=>
+    `<span class="kw-chip" style="background:var(--input-bg);border-color:var(--separator);color:var(--label-secondary)">${esc(t.label)} <span style="font-size:9px;opacity:.5">built-in</span></span>`
+  ).join('');
+  // Custom types (deletable)
+  const customHtml=CUSTOM_TYPES.map(v=>
+    `<span class="kw-chip">${esc(v.charAt(0).toUpperCase()+v.slice(1))}<span class="kw-chip-x" onclick="ctRemove(${JSON.stringify(v)})" title="Remove">&#10005;</span></span>`
+  ).join('');
+  wrap.innerHTML=builtinHtml+customHtml;
+}
+
+function ctAdd(){
+  const inp=document.getElementById('ct-inp');
+  const raw=(inp?inp.value||'':'').trim().toLowerCase().replace(/[^a-z0-9-_]/g,'');
+  if(!raw)return;
+  const allVals=[...BUILTIN_TYPES.map(t=>t.value),...CUSTOM_TYPES];
+  if(allVals.includes(raw)){if(inp)inp.value='';return;}
+  CUSTOM_TYPES.push(raw);
+  ctSave();
+  if(inp)inp.value='';
+  ctRenderAll();
+}
+
+function ctRemove(v){
+  if(BUILTIN_TYPES.find(t=>t.value===v))return; // protect builtins
+  CUSTOM_TYPES=CUSTOM_TYPES.filter(t=>t!==v);
+  ctSave();
+  ctRenderAll();
+}
+// ─────────────────────────────────────────────────────────────────────────
 function rlist(){
   // Roadmap type view
   if(fType==='roadmap'){
@@ -2805,7 +2911,7 @@ function rlist(){
         <label class="edit-wrap-label">Text</label>
         <textarea class="edit-ta" id="etx_${it.id}" rows="3">${esc(it.text)}</textarea>
         <div class="edit-meta-row">
-          <select class="edit-sel" id="ety_${it.id}"><option value="question"${it.type==='question'?' selected':''}>Question</option><option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option><option value="note"${it.type==='note'?' selected':''}>Project Note</option><option value="fordave"${it.type==='fordave'?' selected':''}>⚑ For Dave</option></select>
+          <select class="edit-sel" id="ety_${it.id}">${ctOptions(it.type)}</select>
           <input class="edit-sel" id="etg_${it.id}" list="kw-list" value="${esc(it.tag||'')}" placeholder="&#8212; Tag &#8212;" autocomplete="off" title="Type or select a tag — press Enter to add as new keyword" onchange="kwHandleInput(this.value)" style="width:120px">
           <button class="edit-pritoggle${it.priority?' on':''}" id="epr_${it.id}" onclick="togEditPri('${it.id}')">${it.priority?'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority':'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority'}</button>
         </div>
@@ -5103,14 +5209,14 @@ function rfRender(){
 
 /* ── INIT ── */
 // Sync load from localStorage for immediate render
-load();otLoad();rfLoad();kwLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
+load();otLoad();rfLoad();kwLoad();ctLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
 // Async GitHub fetch — silently updates if newer data found
 loadFromGitHub();
 // Collapse all roadmap phases on initial load (display default, not persisted)
 (S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=false; });
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
-migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();
+migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();ctRenderAll();
 // Restore last active tab from previous session
 (function(){
   try{
@@ -5518,12 +5624,7 @@ function threadOverlayEnterEdit() {
       // Row 1: type, tag, priority
       `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">` +
         `<span style="${lbl}">Type</span>` +
-        `<select id="tov-ety" style="${fs}">` +
-          `<option value="question"${it.type==='question'?' selected':''}>Question</option>` +
-          `<option value="note"${it.type==='note'?' selected':''}>Project Note</option>` +
-          `<option value="reminder"${it.type==='reminder'?' selected':''}>Reminder</option>` +
-          `<option value="fordave"${it.type==='fordave'?' selected':''}>For Claude/Dave</option>` +
-        `</select>` +
+        `<select id="tov-ety" style="${fs}">${ctOptions(it.type)}</select>` +
         `<span style="${lbl}">Tag</span>` +
         `<input id="tov-etg" list="kw-list" value="${esc(it.tag||'')}" placeholder="— none —" autocomplete="off" title="Type or select a tag — press Enter to add as new keyword" onchange="kwHandleInput(this.value)" style="${fs};width:110px">` +
         `<button id="tov-epri" style="${bs+(it.priority?';background:rgba(199,0,37,.12);color:#c00;border-color:#c00':'')}" onclick="tovTogglePri()">` +
