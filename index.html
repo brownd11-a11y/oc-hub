@@ -3082,11 +3082,47 @@ function togDone(id){
   save();render();
   undoToastShow((it.done?'Marked done':'Marked open')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
+function requireDeferDate(it, onConfirmed) {
+  // If already has a due date, or we're un-deferring, proceed immediately
+  if (it.dueDate || it.deferred) { onConfirmed(); return; }
+  // Prompt for a date before deferring
+  const date = prompt('Defer until — enter a date (YYYY-MM-DD):', '');
+  if (date === null) return; // cancelled
+  const clean = (date || '').trim();
+  // Validate loosely: must look like a date or be empty (we allow empty but warn)
+  if (clean && !/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
+    alert('Please enter a date in YYYY-MM-DD format, or leave blank to defer without a date.');
+    return;
+  }
+  if (clean) it.dueDate = clean;
+  else {
+    // Allow defer without date only after explicit acknowledgment
+    if (!confirm('No date set — defer anyway? The item will sit in Deferred with no reminder.')) return;
+  }
+  onConfirmed();
+}
 function togDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
-  undoPush((it.deferred?'Undefer: ':'Defer: ')+(it.text||'').slice(0,40));
-  it.deferred=!it.deferred;save();render();
-  undoToastShow((it.deferred?'Deferred':'Undeferred')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
+  if(it.deferred){
+    // Un-deferring — always immediate
+    undoPush('Undefer: '+(it.text||'').slice(0,40));
+    it.deferred=false;save();render();
+    undoToastShow('Undeferred: '+(it.text||'').slice(0,35)+'…',8000,true);
+    return;
+  }
+  requireDeferDate(it, ()=>{
+    undoPush('Defer: '+(it.text||'').slice(0,40));
+    it.deferred=true;save();render();
+    undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…',8000,true);
+  });
+}
+function dlDefer(id){
+  const it=S.items.find(i=>i.id===id);if(!it)return;
+  requireDeferDate(it, ()=>{
+    undoPush('Defer: '+(it.text||'').slice(0,40));
+    it.deferred=true;save();render();
+    undoToastShow('Deferred: '+(it.text||'').slice(0,35)+'…',8000,true);
+  });
 }
 function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
 function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
@@ -3179,7 +3215,28 @@ function toggleReminder(){
   document.getElementById('rem-due-row').style.display=inputIsReminder?'flex':'none';
 }
 function toggleStatus(){
-  inputStatusDeferred=!inputStatusDeferred;
+  if(!inputStatusDeferred){
+    // About to defer — require a date
+    const date = prompt('Defer until — enter a date (YYYY-MM-DD):', '');
+    if(date===null)return; // cancelled
+    const clean=(date||'').trim();
+    if(clean&&!/^\d{4}-\d{2}-\d{2}$/.test(clean)){alert('Please enter a date in YYYY-MM-DD format.');return;}
+    if(!clean&&!confirm('No date set — defer anyway?'))return;
+    inputStatusDeferred=true;
+    if(clean){
+      // Pre-fill the due date field if it exists
+      const due=document.getElementById('input-due');if(due)due.value=clean;
+      // Also show reminder row so the date is visible
+      if(!inputIsReminder){
+        inputIsReminder=true;
+        const rb=document.getElementById('rem-toggle');
+        if(rb){rb.className='rem-toggle on';rb.innerHTML='&#128276; Reminder on';}
+        document.getElementById('rem-due-row').style.display='flex';
+      }
+    }
+  } else {
+    inputStatusDeferred=false;
+  }
   const btn=document.getElementById('status-toggle');
   if(inputStatusDeferred){btn.className='status-toggle deferred';btn.textContent='Deferred';}
   else{btn.className='status-toggle open';btn.textContent='Open';}
