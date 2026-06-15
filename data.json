@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-15T12:00:00.000Z",
+  "_version": "2026-06-15T14:00:00.000Z",
   "_schema": 1,
   "items": [
     {
@@ -4025,6 +4025,21 @@
           "from": "claude",
           "text": "PURSUE SITE CHECK \u2014 2026-06-15\n\nwar.gov/ufo current status (3 releases as of June 15, 2026):\n\n\u2022 Release 01 \u2014 May 8, 2026: 162 files (134 PDFs, 24 FBI photos, 6 NASA transcripts, 28 videos, 2 State Dept cables). 4 source agencies. Spans 1944\u20132025.\n\u2022 Release 02 \u2014 May 22, 2026: 70 files (6 PDFs, 7 audio, 57 video). Notable: F-16 gun-camera Lake Huron shootdown footage; Persian Gulf formation video; Apollo 12 audio; 2025 senior intel officer account.\n\u2022 Release 03 \u2014 June 12, 2026: 72 files (53 PDFs, 10 images, 6 video, 3 audio). First CIA contribution (18 records, incl. Robertson Panel docs). First FBI-contributed records. First ICA. Colorado Springs incident file.\n\nRunning total: 304 files across 3 releases. Agencies: DoD, FBI, CIA, NASA, State Dept.\nSite traffic: over 1 billion hits since May 8 launch.\nRelease cadence: approximately every 2\u20133 weeks per DoD confirmation.\nLast release: June 12, 2026. Next expected: late June 2026.\n\nLast notable release link: https://www.warufo.com/ (independent analysis of all 3 releases)\nOfficial archive: https://war.gov/ufo\n\nUpdate manuscript PURSUE references to reflect: 3 drops, 304 files, 5 agencies. Adjust before next edit pass.",
           "ts": "2026-06-15T12:00:00.000Z"
+        },
+        {
+          "from": "dave",
+          "text": "Please add repeat functionality to all notes in this panel as a toggle switch. When it's toggled on, it presents choices in terms of how often to repeat, a fixed end date, etc.",
+          "ts": "2026-06-15T09:56:08.341Z"
+        },
+        {
+          "from": "dave",
+          "text": "Please also confirm whether or not, if I press Mark Done, it will reappear the next time it's due to run. I'd like this task to run for pursue every two weeks unless I prompt it sooner. And the two weeks would start from last Friday's release. In other words, this wouldn't be checked every time we run a refresh. It would be checked specifically on a date certain based on the selected choices on the new repeat interface. And that repeat interface would apply to all tasks if chosen.",
+          "ts": "2026-06-15T09:57:31.641Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v312 (hub): Repeat functionality added to all notes.\n\nTOGGLE \u2014 Each item in collapsed view has a \ud83d\udd01 Repeat toggle button (off by default). Toggling on expands a small repeat config row: frequency (Daily / Weekly / Bi-weekly / Monthly / Custom days), end date (optional), and a note field.\n\nMARK DONE BEHAVIOR \u2014 When a repeating item is marked done, it does NOT permanently close. Instead it sets completedDate to today, calculates the next due date from the repeat schedule, resets done=false on that date, and re-opens as a fresh instance. The completion history is logged in the dialogue thread.\n\nFOR PURSUE SPECIFICALLY \u2014 Repeat set to Bi-weekly, starting from last release (June 12, 2026). Next scheduled check: June 26, 2026. When you mark done after a check, it resets to 14 days from that date. Will not surface in the default open-items view until the due date arrives.\n\nPlease accept or reply.",
+          "ts": "2026-06-15T14:00:00.000Z"
         }
       ],
       "created": "2026-06-15T00:00:00.000Z",
@@ -4054,6 +4069,33 @@
       "dueDate": "",
       "completedDate": "",
       "itemUrl": "https://x.com/overclassifiedx/status/2066291266753810725"
+    },
+    {
+      "id": "i_1781517517166",
+      "type": "fordave",
+      "text": "Please add a settings function to allow additional note types, like the tags. I think it'd be great if we could do an inline add, and then in the settings tab we could do managing of those types.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": null,
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Please add a settings function to allow additional note types, like the tags. I think it'd be great if we could do an inline add, and then in the settings tab we could do managing of those types.",
+          "ts": "2026-06-15T09:58:37.165Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v312 (hub): Custom note types added. How it works:\n\nINLINE ADD \u2014 In the Notes input form, the type selector now has a '+' write-in option at the bottom. Type a new type name + Enter to add it to the type list immediately (saved to settings, available across all forms).\n\nSETTINGS MANAGEMENT \u2014 Help \u2192 Settings now includes a 'Note Types' card. Shows all current types (standard + custom). Each custom type has a rename field and a delete button. Standard types (fordave, note, reminder, question, roadmap) cannot be deleted. Custom types can be reordered by drag.\n\nBEHAVIOR \u2014 Custom types appear in the type filter dropdown and in all input/edit forms. If a custom type is deleted, items using it fall back to 'note'. Please accept or reply.",
+          "ts": "2026-06-15T14:00:00.000Z"
+        }
+      ],
+      "created": "2026-06-15T09:58:37.166Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
     }
   ],
   "road": [
