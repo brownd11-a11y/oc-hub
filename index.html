@@ -1095,6 +1095,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
     <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
     <div class="fchip-sep"></div>
+    <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date">
+      <option value="">— Due —</option>
+      <option value="attention">Past due &amp; today</option>
+      <option value="custom">Within N days…</option>
+    </select>
+    <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px">
+      <input type="number" id="due-custom-days" min="1" max="365" value="7" style="width:52px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none" onchange="setDueFilter('custom')">
+      <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">days</span>
+    </span>
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
       <option value="">All Tags</option>
     </select>
@@ -2084,7 +2093,7 @@ const ROAD_SEED=[
 ];
 
 let S={items:[],road:[]};
-let fSt='open',fTag=null,fType=null,fReminder=false,inputPriFlag=0,inputMemFlag=false,editingId=null;
+let fSt='open',fTag=null,fType=null,fReminder=false,fDue=null,inputPriFlag=0,inputMemFlag=false,editingId=null;
 // Entry form state
 let inputFlowOn=false;  // Flow toggle (false = local note by default)
 let inputIsReminder=false;
@@ -2384,7 +2393,7 @@ function showTab(t,btn){
   // Swap per-tab background photo
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
-  if(t==='notes'){fSt='open';fReminder=false;}
+  if(t==='notes'){fSt='open';fReminder=false;fDue=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRender();}
   if(t==='outreach'&&S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}
@@ -2492,6 +2501,7 @@ function rdash(){
   setChip('fchip-reminder','fc-reminder',remCt,fReminder);
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
   const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
+  const df=document.getElementById('due-filter');if(df&&df.value!==(fDue||''))df.value=fDue||'';
   updateTypeCounts();
 }
 function tSt(k){fSt=k;render();}
@@ -2539,7 +2549,17 @@ function setType(v){
   if(fType==='roadmap'){_rmInitialized=false;_rmExpanded={};}
   render();
 }
-function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;render();}
+function setDueFilter(v){
+  fDue = v || null;
+  const wrap = document.getElementById('due-custom-wrap');
+  if (wrap) wrap.style.display = (v === 'custom') ? 'flex' : 'none';
+  render();
+}
+function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;fDue=null;
+  const df=document.getElementById('due-filter');if(df)df.value='';
+  const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';
+  render();
+}
 function iVis(it){
   if(it.type==='roadmap')return false; // roadmap items shown only in roadmap view
 
@@ -2551,6 +2571,19 @@ function iVis(it){
   if(fReminder&&it.type!=='reminder')return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
+  // Due filter — stacks with status filter
+  if(fDue){
+    const today=todayStr();
+    if(fDue==='attention'){
+      // Past due + due today: dueDate must be set and <= today
+      if(!it.dueDate||it.dueDate>today)return false;
+    } else if(fDue==='custom'){
+      const days=parseInt(document.getElementById('due-custom-days')?.value||7);
+      const cutoff=new Date();cutoff.setDate(cutoff.getDate()+days);
+      const cutoffStr=cutoff.toISOString().slice(0,10);
+      if(!it.dueDate||it.dueDate>cutoffStr)return false;
+    }
+  }
   return true;
 }
 
@@ -2577,7 +2610,7 @@ function naturalSort(a,b){
 
 function fmtDate(s){if(!s)return'\u2014';const d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
 function todayStr(){return new Date().toISOString().split('T')[0];}
-function isOverdue(due){if(!due)return false;return new Date(due+'T23:59:59')<new Date();}
+function isOverdue(due){if(!due)return false;return due<=todayStr();} // past due OR due today — both need attention
 
 
 /* ── NOTES GROUPING ── */
@@ -3232,7 +3265,9 @@ function dlDefer(id){
 /* ── DEFERRED RESURFACE CHECK (runs at init and after GitHub fetch) ── */
 function checkDeferredResurface() {
   const today = todayStr();
-  let resurfaced = [];
+  let resurfaced = [];   // deferred items promoted back to open, or reminderDate fired
+  let needsAttention = []; // open/non-deferred items past due or due today
+
   (S.items||[]).forEach(it => {
     if (it.done || it.type === 'roadmap') return;
 
@@ -3247,14 +3282,15 @@ function checkDeferredResurface() {
       if (!alreadyFlagged) {
         it.dialogue.push({
           from: 'system',
-          text: '🔔 Deferred reminder reached ' + today + ' — action required. Review this item, close it, or extend the reminder by clicking Defer.',
+          text: '\u{1F514} Deferred reminder reached ' + today + ' \u2014 action required. Review this item, close it, or extend the reminder by clicking Defer.',
           ts: new Date().toISOString()
         });
       }
       resurfaced.push(it);
+      return; // don\'t also count in needsAttention
     }
 
-    // Case 2: any item (open, deferred, fordave, etc.) with a reminderDate that has passed
+    // Case 2: reminderDate fired on any item
     if (it.reminderDate && it.reminderDate <= today) {
       it._resurfaced = true;
       if (!it.dialogue) it.dialogue = [];
@@ -3264,25 +3300,53 @@ function checkDeferredResurface() {
       if (!alreadyFlagged) {
         it.dialogue.push({
           from: 'system',
-          text: '🔔 Reminder reached ' + today + ' — action required. Dismiss by clearing the reminder date in Edit, or set a new one.',
+          text: '\u{1F514} Reminder reached ' + today + ' \u2014 action required. Dismiss by clearing the reminder date in Edit, or set a new one.',
           ts: new Date().toISOString()
         });
       }
-      it.reminderDate = ''; // clear after firing so it doesn't repeat
+      it.reminderDate = '';
       if (!resurfaced.find(r => r.id === it.id)) resurfaced.push(it);
+      return;
+    }
+
+    // Case 3: open (non-deferred) item with dueDate past or today
+    if (!it.deferred && it.dueDate && it.dueDate <= today) {
+      needsAttention.push(it);
     }
   });
-  if (resurfaced.length > 0) {
-    save();
-    render();
-    const txt = document.getElementById('rsf-modal-text');
-    if (txt) {
-      txt.textContent = resurfaced.length === 1
-        ? '1 item has reached its reminder date and needs your attention. It is highlighted in the Notes panel.'
-        : resurfaced.length + ' items have reached their reminder dates and need your attention. They are highlighted in the Notes panel.';
+
+  const hasAlert = resurfaced.length > 0 || needsAttention.length > 0;
+  if (!hasAlert) return;
+
+  save();
+  render();
+
+  // Build modal content
+  const txt = document.getElementById('rsf-modal-text');
+  if (txt) {
+    let html = '';
+    if (resurfaced.length > 0) {
+      html += '<div style="margin-bottom:14px">';
+      html += '<div style="font-family:Source Code Pro,monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:#C77800;margin-bottom:6px">🔔 Resurfaced (' + resurfaced.length + ')</div>';
+      resurfaced.forEach(it => {
+        html += '<div style="padding:3px 0;border-bottom:1px solid var(--separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px">' + esc((it.text||'').slice(0,90)) + '</div>';
+      });
+      html += '</div>';
     }
-    document.getElementById('rsf-overlay').classList.add('open');
+    if (needsAttention.length > 0) {
+      html += '<div style="margin-bottom:14px">';
+      html += '<div style="font-family:Source Code Pro,monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Past due &amp; today (' + needsAttention.length + ')</div>';
+      needsAttention.forEach(it => {
+        const dueLabel = it.dueDate === today ? 'Today' : fmtDate(it.dueDate);
+        html += '<div style="padding:3px 0;border-bottom:1px solid var(--separator);display:flex;gap:8px;align-items:baseline;font-size:13px">';
+        html += '<span style="font-family:Source Code Pro,monospace;font-size:10px;color:var(--accent);flex-shrink:0">' + esc(dueLabel) + '</span>';
+        html += '<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc((it.text||'').slice(0,80)) + '</span></div>';
+      });
+      html += '</div>';
+    }
+    txt.innerHTML = html;
   }
+  document.getElementById('rsf-overlay').classList.add('open');
 }
 function rsfDismiss() {
   document.getElementById('rsf-overlay').classList.remove('open');
@@ -6657,8 +6721,8 @@ function ingestLeads(newLeads) {
 <!-- RESURFACE ALERT MODAL -->
 <div class="rsf-overlay" id="rsf-overlay">
   <div class="rsf-modal">
-    <h3>&#128276; Reminders reached</h3>
-    <p id="rsf-modal-text"></p>
+    <h3>&#128276; Items need attention</h3>
+    <div id="rsf-modal-text" style="max-height:320px;overflow-y:auto;margin-bottom:18px"></div>
     <button class="rsf-ok" onclick="rsfDismiss()">OK — I'll review them</button>
   </div>
 </div>
