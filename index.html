@@ -5620,8 +5620,29 @@ document.addEventListener('keydown', function(e) {
     const ov = document.getElementById('thread-overlay');
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
   }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.activeElement === document.getElementById('thread-reply-ta')) {
-    e.preventDefault(); threadOverlaySend(); return;
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    // Send/save from anywhere inside the overlay reply form area
+    const replyForm = document.getElementById('tov-reply-form');
+    if (replyForm && replyForm.contains(document.activeElement)) {
+      e.preventDefault(); threadOverlaySend(); return;
+    }
+    if (document.activeElement === document.getElementById('thread-reply-ta')) {
+      e.preventDefault(); threadOverlaySend(); return;
+    }
+  }
+  // Plain Enter in a tag input inside the overlay: commit tag and move focus to reply textarea
+  if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey) {
+    const active = document.activeElement;
+    if (active && active.list && active.list.id === 'kw-list') {
+      const replyForm = document.getElementById('tov-reply-form');
+      if (replyForm && replyForm.contains(active)) {
+        e.preventDefault();
+        kwHandleInput(active.value);
+        const ta = document.getElementById('thread-reply-ta');
+        if (ta) ta.focus();
+        return;
+      }
+    }
   }
   if (inInput) return;
 
