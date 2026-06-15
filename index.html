@@ -2617,8 +2617,13 @@ function rlist(){
     const isFlowItem=it.type==='fordave'&&dlgCheck.length>0&&dlgCheck[0].from==='dave';
     const isLegacyFordave=it.type==='fordave'&&!isFlowItem;
     const lastDlgFrom=dlgCheck.length?dlgCheck[dlgCheck.length-1].from:null;
-    // isNeedsResponse = last dialogue entry is from Claude (amber — awaiting Dave)
-    const isNeedsResponse=!it.done&&lastDlgFrom==='claude'&&(isFlowItem||(isLegacyFordave&&dlgCheck.length>0));
+    // hasClaudeAnswer = Claude has responded via it.answer with no subsequent Dave reply in dialogue
+    const hasClaudeAnswer=!it.done&&isLegacyFordave&&!dlgCheck.length&&!!(it.answer||'').trim();
+    // isNeedsResponse = last dialogue entry is from Claude (amber — awaiting Dave), OR Claude has set answer
+    const isNeedsResponse=!it.done&&(
+      (lastDlgFrom==='claude'&&(isFlowItem||(isLegacyFordave&&dlgCheck.length>0)))
+      || hasClaudeAnswer
+    );
     // isAwaitingClaude = Dave has replied after Claude (blue — awaiting Claude follow-up)
     const isAwaitingClaude=!it.done&&lastDlgFrom==='dave'&&dlgCheck.length>1&&isLegacyFordave;
     const cls=['item',it.done?'done':'',it.deferred&&!it.done?'hold':'',it.priority&&!it.done?'pri':'',isNeedsResponse?'needs-response':(isFlowItem||isAwaitingClaude)?'flow-item':isLegacyFordave?'fordave':'',exp?'expanded':''].filter(Boolean).join(' ');
@@ -2627,12 +2632,16 @@ function rlist(){
     const fullText = (it.text||'');
     const line1Raw = fullText.split('\n')[0];
     const line1 = line1Raw.length>110 ? line1Raw.substring(0,110)+'\u2026' : line1Raw;
-    // Line 2: latest dialogue entry (any speaker), or second line of description if no dialogue
+    // Line 2: latest dialogue entry, or answer if no dialogue, or second line of description
     let line2 = ''; let line2prefix = '';
     if (dlgForPreview.length) {
       const last = dlgForPreview[dlgForPreview.length-1];
       line2prefix = last.from==='claude' ? 'Claude' : last.from==='dave' ? 'Dave' : 'Note';
       const t = (last.text||'').split('\n')[0];
+      line2 = t.length>100 ? t.substring(0,100)+'\u2026' : t;
+    } else if (it.answer) {
+      line2prefix = 'Claude';
+      const t = (it.answer||'').split('\n')[0];
       line2 = t.length>100 ? t.substring(0,100)+'\u2026' : t;
     } else {
       const lines = fullText.split('\n');
@@ -2668,11 +2677,13 @@ function rlist(){
           <div class="dl-text">${esc(d.text)}</div>
         </div>`).join('')
       }</div>`:'';
-      const needsReply=dlg.length&&dlg[dlg.length-1].from==='claude'&&!it.done;
+      const needsReply=(dlg.length&&dlg[dlg.length-1].from==='claude'&&!it.done)||hasClaudeAnswer;
+      // For answer-only items, show the answer in the thread body too
+      const answerAsEntry=hasClaudeAnswer?`<div class="dialogue-thread"><div class="dl-entry from-claude"><div class="dl-meta"><span class="dl-from claude">Claude</span></div><div class="dl-text">${esc(it.answer||'')}</div></div></div>`:'';
       const dlgReplyHtml=needsReply?`<div class="dl-actions" id="dlact-${it.id}">
         <button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
         <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
-        <button class="dl-act-pill pill-else" onclick="event.stopPropagation();dlElseOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Something else&hellip;</button>
+        <button class="dl-act-pill pill-else" onclick="event.stopPropagation();dlElseOpen('${it.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Reply</button>
       </div>
       <div class="dl-compose" id="dlcomp-${it.id}">
         <textarea class="dl-compose-ta" id="dlcta-${it.id}" rows="2" placeholder="Your response…" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
@@ -2681,8 +2692,8 @@ function rlist(){
           <span class="dl-cancel-link" onclick="event.stopPropagation();dlElseClose('${it.id}')">Cancel</span>
         </div>
       </div>`:'';
-      const legacyAnswer=(!it.dialogue&&it.answer)?`<div class="ianswer">${esc(it.answer)}</div>`:'';
-      bodyHtml=`<div class="ibody">${legacyAnswer}${dlgHtml}${dlgReplyHtml}${renderItemLink(it)}<div class="iactions">
+      const legacyAnswer=(!it.dialogue&&it.answer&&!hasClaudeAnswer)?`<div class="ianswer">${esc(it.answer)}</div>`:'';
+      bodyHtml=`<div class="ibody">${legacyAnswer}${answerAsEntry}${dlgHtml}${dlgReplyHtml}${renderItemLink(it)}<div class="iactions">
         <button class="iabtn" onclick="startEdit('${it.id}')">Edit</button>
         <button class="iabtn" onclick="togDone('${it.id}')">${it.done?'Mark open':'Mark done'}</button>
         <button class="iabtn" onclick="togDefer('${it.id}')">${it.deferred?'Undefer':'Defer'}</button>
