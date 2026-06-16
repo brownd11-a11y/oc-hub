@@ -794,35 +794,38 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 
 /* ── UNIVERSAL SEARCH ── */
-
-.search-results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
+.search-results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
 .search-results-panel.open{display:flex}
-.search-results-box{background:#1a1815;border:1px solid #3a3630;border-radius:8px;width:min(680px,96vw);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.6)}
-.search-results-header{padding:12px 16px;border-bottom:1px solid #2a2820;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.search-results-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#706858}
-.search-results-close{background:none;border:none;cursor:pointer;color:#706858;font-size:20px;line-height:1;padding:0 4px}
-.search-results-close:hover{color:#d4c9a8}
-.sr-filter-row{display:flex;gap:6px;align-items:center;padding:6px 16px 8px;border-bottom:1px solid #2a2820;flex-shrink:0}
-.sr-filter-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid #3a3630;background:none;color:#706858;padding:3px 10px;border-radius:3px;cursor:pointer;transition:all .15s}
-.sr-filter-btn:hover{border-color:#6a5a30;color:#c9a050}
-.sr-filter-btn.active{border-color:#c9a050;background:rgba(201,160,80,.15);color:#c9a050;font-weight:600}
-.sr-filter-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840}
+.search-results-box{background:var(--card-bg);border:1px solid var(--separator);border-radius:12px;width:min(680px,96vw);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 6px 28px rgba(0,0,0,.14)}
+.search-results-header{padding:12px 16px;border-bottom:1px solid var(--separator);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.search-results-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)}
+.search-results-close{background:none;border:none;cursor:pointer;color:var(--label-secondary);font-size:20px;line-height:1;padding:0 4px}
+.search-results-close:hover{color:var(--label-primary)}
+.sr-filter-row{display:flex;gap:6px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--separator);flex-shrink:0;flex-wrap:wrap}
+.sr-filter-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-secondary);padding:3px 10px;border-radius:12px;cursor:pointer;transition:all .15s}
+.sr-filter-btn:hover{border-color:var(--label-secondary);color:var(--label-primary)}
+.sr-filter-btn.active{border-color:#C70025;background:rgba(199,0,37,.08);color:#C70025;font-weight:600}
+.sr-filter-lbl{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);flex-shrink:0}
+.sr-kw-chip{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-secondary);padding:2px 9px;border-radius:10px;cursor:pointer;transition:all .15s}
+.sr-kw-chip:hover{border-color:var(--label-secondary);color:var(--label-primary)}
+.sr-kw-chip.active{border-color:#2070C8;background:rgba(32,112,200,.1);color:#2070C8;font-weight:600}
+.sr-divider{width:1px;height:14px;background:var(--separator);flex-shrink:0;margin:0 2px}
 .search-results-scroll{overflow-y:auto;flex:1;padding:8px 0}
-.search-result-item{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;border-bottom:1px solid #221f1a;transition:background .1s}
-.search-result-item:hover{background:#221f1a}
+.search-result-item{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--separator);transition:background .1s}
+.search-result-item:hover{background:var(--input-bg)}
 .search-result-item:last-child{border-bottom:none}
-.sr-source{flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#504840;width:72px;padding-top:2px;line-height:1.4}
+.sr-source{flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary);width:72px;padding-top:2px;line-height:1.4}
 .sr-source.src-roadmap{color:#2070C8}
-.sr-source.src-notes{color:#c9a050}
+.sr-source.src-notes{color:#C70025}
 .sr-source.src-passes{color:#1A9E78}
 .sr-source.src-refs{color:#B03090}
-.sr-source.src-other{color:#706858}
+.sr-source.src-other{color:var(--label-secondary)}
 .sr-body{flex:1;min-width:0}
-.sr-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:#d4c9a8;line-height:1.3;margin-bottom:2px}
-.sr-title mark{background:rgba(200,169,110,.25);color:#e8d4a8;border-radius:2px;padding:0 1px}
-.sr-sub{font-family:'Source Code Pro',monospace;font-size:10px;color:#504840;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sr-arrow{flex-shrink:0;color:#3a3630;font-size:16px;align-self:center}
-.search-empty{padding:24px 16px;text-align:center;font-family:'Source Code Pro',monospace;font-size:11px;color:#504840}
+.sr-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--label-primary);line-height:1.3;margin-bottom:2px}
+.sr-title mark{background:rgba(199,0,37,.12);color:#C70025;border-radius:2px;padding:0 1px}
+.sr-sub{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-arrow{flex-shrink:0;color:var(--separator);font-size:16px;align-self:center}
+.search-empty{padding:24px 16px;text-align:center;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary)}
 
 
 /* ── TAB NOTIFICATION BADGES ── */
@@ -1141,6 +1144,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <span class="sr-filter-lbl">Show</span>
       <button class="sr-filter-btn active" id="srf-all" onclick="srSetFilter('all')">All</button>
       <button class="sr-filter-btn" id="srf-open" onclick="srSetFilter('open')">Open only</button>
+      <div class="sr-divider" id="sr-kw-divider" style="display:none"></div>
+      <div id="sr-kw-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
     </div>
     <div class="search-results-scroll" id="search-results-scroll"></div>
   </div>
@@ -5563,6 +5568,7 @@ let _searchResults=[];
 let _searchIdx=-1;
 
 let _srFilter='all'; // 'all' | 'open'
+let _srTags=new Set(); // keyword tag filter — OR multi-select
 let _srVisible=[];   // filtered subset currently shown
 function srSetFilter(f){
   _srFilter=f;
@@ -5570,8 +5576,17 @@ function srSetFilter(f){
     const btn=document.getElementById('srf-'+k);
     if(btn)btn.className='sr-filter-btn'+(k===f?' active':'');
   });
-  const q=(document.getElementById('search-input')?.value||'').trim();
-  if(q)searchRender(q);
+  const q=(document.getElementById('hd-search-input')||{}).value||'';
+  searchRender(q);
+}
+
+function srSetTag(tag){
+  if(_srTags.has(tag))_srTags.delete(tag); else _srTags.add(tag);
+  document.querySelectorAll('.sr-kw-chip').forEach(c=>{
+    c.className='sr-kw-chip'+(_srTags.has(c.dataset.tag)?' active':'');
+  });
+  const q=(document.getElementById('hd-search-input')||{}).value||'';
+  searchRender(q);
 }
 function searchUpdate(){
   const q=(document.getElementById('search-input')?.value||'').trim();
@@ -5595,9 +5610,11 @@ function searchClear(){
 function searchClose(){
   document.getElementById('search-results-panel').classList.remove('open');
   _searchResults=[];_srVisible=[];_searchIdx=-1;
-  // Reset filter to All for next open
-  _srFilter='all';
+  // Reset filters for next open
+  _srFilter='all';_srTags=new Set();
   ['all','open'].forEach(k=>{const btn=document.getElementById('srf-'+k);if(btn)btn.className='sr-filter-btn'+(k==='all'?' active':'');});
+  const kwWrap=document.getElementById('sr-kw-chips');if(kwWrap)kwWrap.innerHTML='';
+  const div=document.getElementById('sr-kw-divider');if(div)div.style.display='none';
 }
 
 function searchPanelClick(e){
@@ -5681,6 +5698,7 @@ function searchBuild(q){
       source:'notes',
       sourceLabel:'Notes',
       _done:it.done||false,
+      _tag:it.tag||null,
       title:it.text,
       sub:'Notes & Checklist · '+typeLabel+(it.tag?' · '+it.tag:'')+(it.done?' · done':''),
       action:()=>{
@@ -5769,21 +5787,40 @@ function searchRender(q){
   const scroll=document.getElementById('search-results-scroll');
   const title=document.getElementById('search-results-title');
   if(!scroll)return;
-  // Apply open filter: for notes source, hide done items
-  _srVisible=_srFilter==='open'
+  // Apply status filter
+  const afterStatus=_srFilter==='open'
     ?_searchResults.filter(r=>r.source!=='notes'||!r._done)
     :_searchResults;
+  // Build keyword chips from tags in filtered results
+  const tagsInResults=[...new Set(afterStatus.map(r=>r._tag).filter(Boolean))].sort();
+  const kwWrap=document.getElementById('sr-kw-chips');
+  const kwDiv=document.getElementById('sr-kw-divider');
+  if(kwWrap){
+    if(tagsInResults.length){
+      if(kwDiv)kwDiv.style.display='block';
+      kwWrap.innerHTML=tagsInResults.map(t=>
+        `<button class="sr-kw-chip${_srTags.has(t)?' active':''}" data-tag="${esc(t)}" onclick="srSetTag('${esc(t)}')">${esc(t)}</button>`
+      ).join('');
+    } else {
+      if(kwDiv)kwDiv.style.display='none';
+      kwWrap.innerHTML='';
+    }
+  }
+  // Apply tag filter
+  _srVisible=_srTags.size?afterStatus.filter(r=>r._tag&&_srTags.has(r._tag)):afterStatus;
   const visible=_srVisible;
   if(!visible.length){
     scroll.innerHTML='<div class="search-empty">'+(
-      _srFilter==='open'&&_searchResults.length
-        ?'No open items match &ldquo;'+esc(q)+'&rdquo; &mdash; <span style="cursor:pointer;text-decoration:underline;color:#c9a050" onclick="srSetFilter(\u0022all\u0022)">show all</span>'
-        :'No results for &ldquo;'+esc(q)+'&rdquo;'
+      _srTags.size&&afterStatus.length
+        ?'No results for selected tags &mdash; <span style="cursor:pointer;text-decoration:underline;color:var(--label-secondary)" onclick="_srTags=new Set();srSetTag(null)">clear tags</span>'
+        :_srFilter==='open'&&_searchResults.length
+          ?'No open items match &ldquo;'+esc(q)+'&rdquo; &mdash; <span style="cursor:pointer;text-decoration:underline;color:var(--label-secondary)" onclick="srSetFilter(\'all\')">show all</span>'
+          :'No results for &ldquo;'+esc(q)+'&rdquo;'
     )+'</div>';
     if(title)title.textContent='No results';
     return;
   }
-  if(title)title.textContent=visible.length+' result'+(visible.length===1?'':'s')+(_srFilter==='open'?' (open)':'');
+  if(title)title.textContent=visible.length+' result'+(visible.length===1?'':'s')+(_srFilter==='open'?' (open)':'')+(_srTags.size?' · '+[..._srTags].join(', '):'');
   scroll.innerHTML=visible.map((r,i)=>`
     <div class="search-result-item" onclick="searchGo(_srVisible[${i}])">
       <span class="sr-source src-${r.source}">${esc(r.sourceLabel)}</span>
