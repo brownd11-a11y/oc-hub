@@ -5097,6 +5097,28 @@
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
       "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+    },
+    {
+      "id": "i_burlison_uapda_recheck",
+      "type": "fordave",
+      "title": "Recheck Burlison UAPDA/NDAA status",
+      "tags": [
+        "ch16"
+      ],
+      "dueDate": "2026-06-30",
+      "done": false,
+      "answer": "",
+      "itemUrl": "",
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Add a deferred note to recheck Burlison UAPDA/NDAA status in two weeks."
+        },
+        {
+          "from": "claude",
+          "text": "As of June 16, 2026: Burlison is pushing for UAPDA inclusion in the FY2027 NDAA (FY2026 NDAA passed without it \u2014 blocked by Senate Approps staff). His June 9 Capitol press conference signaled renewed pressure. An X post (@overclassifiedx) claimed active NDAA work but no primary-sourced quote yet confirmed. Recheck for a sourced statement or press release."
+        }
+      ]
     }
   ],
   "road": [
