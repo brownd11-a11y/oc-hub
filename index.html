@@ -1199,6 +1199,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="note" selected>Project Note</option>
         <option value="roadmap">&#128506; Roadmap</option>
       </select>
+      <input type="text" id="ct-inline-inp" placeholder="+ new type" title="Type a new note type and press Enter to add it" style="width:82px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);border-radius:5px;padding:3px 7px;background:var(--input-bg);color:var(--label-primary);outline:none" onkeydown="if(event.key==='Enter'){ctAddInline();event.preventDefault();}">
       <input class="inp-sel" id="input-tag" list="kw-list" placeholder="— Tag —" autocomplete="off" title="Type or select a tag — press Enter to add as new keyword" onchange="lastTag=this.value;kwHandleInput(this.value)" style="width:120px">
       <button class="status-toggle open" id="status-toggle" onclick="toggleStatus()" title="Open / Deferred">Open</button>
     </div>
@@ -2586,7 +2587,8 @@ function iVis(it){
   if(fSt==='open'&&(it.done||it.deferred))return false;
   if(fSt==='deferred'&&(!it.deferred||it.done))return false;
   if(fSt==='priority'&&(!it.priority||it.done))return false;
-  // fSt===null means All — no status filter applied
+  // fSt===null means All — hide deferred unless resurfaced (past due date)
+  if(fSt===null&&it.deferred&&!it._resurfaced)return false;
   if(fReminder&&it.type!=='reminder')return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
@@ -2923,6 +2925,19 @@ function ctAdd(){
   ctSave();
   if(inp)inp.value='';
   ctRenderAll();
+}
+
+function ctAddInline(){
+  const inp=document.getElementById('ct-inline-inp');
+  const raw=(inp?inp.value||'':'').trim().toLowerCase().replace(/[^a-z0-9-_]/g,'');
+  if(!raw)return;
+  const allVals=[...BUILTIN_TYPES.map(t=>t.value),...CUSTOM_TYPES];
+  if(!allVals.includes(raw)){CUSTOM_TYPES.push(raw);ctSave();}
+  ctRenderAll();
+  // Select the newly added type in the input form
+  const sel=document.getElementById('input-type');
+  if(sel)sel.value=raw;
+  if(inp)inp.value='';
 }
 
 function ctRemove(v){
@@ -6773,7 +6788,7 @@ function ingestLeads(newLeads) {
       <button id="tov-mode-dave" class="tov-mode-btn active" onclick="threadOverlaySetMode('dave')">Dave reply</button>
       <button id="tov-mode-note" class="tov-mode-btn" onclick="threadOverlaySetMode('note')">Plain note</button>
       <div style="flex:1"></div>
-      <select id="tov-reply-type" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
+      <select id="tov-reply-type" onchange="if(this.value==='fordave'){threadOverlaySetMode('dave');}" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
         <option value="">— Type —</option>
         <option value="fordave">For Claude/Dave</option>
         <option value="note">Note</option>
