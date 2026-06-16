@@ -1218,10 +1218,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <!-- Row 2: classification metadata — divider marks the boundary -->
     <div class="inp-controls-row">
       <select class="inp-sel" id="input-type" onchange="onInputTypeChange(this.value)">
+        <option value="fordave">For Claude / Dave</option>
         <option value="question">Question</option>
         <option value="note" selected>Project Note</option>
+        <option value="reminder">Reminder</option>
         <option value="roadmap">&#128506; Roadmap</option>
       </select>
+      <input id="input-type-new" class="inp-sel" placeholder="+ New type" autocomplete="off" title="Type a new note type and press Enter to add it" style="width:90px;display:none" onkeydown="if(event.key==='Enter'){event.preventDefault();const v=this.value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');ctAdd_inline(v);this.value='';this.style.display='none';}">
+      <button title="Add custom note type" onclick="const f=document.getElementById('input-type-new');f.style.display=f.style.display==='none'?'':'none';if(f.style.display!=='none')f.focus();" style="background:none;border:1px solid var(--separator);border-radius:4px;padding:3px 7px;cursor:pointer;font-size:11px;color:var(--label-secondary)" id="btn-new-type">+</button>
       <input class="inp-sel" id="input-tag" list="kw-list" placeholder="— Tag —" autocomplete="off" title="Type or select a tag — press Enter to add as new keyword" onchange="lastTag=this.value;kwHandleInput(this.value)" style="width:120px">
       <button class="status-toggle open" id="status-toggle" onclick="toggleStatus()" title="Open / Deferred">Open</button>
     </div>
@@ -5632,7 +5636,7 @@ loadFromGitHub();
 (S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=false; });
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
-migrateDialogue();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();ctRenderAll();
+migrateDialogue();ctLoad();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();ctRenderAll();
 // Restore last active tab from previous session
 (function(){
   try{
@@ -6278,6 +6282,41 @@ function onInputTypeChange(val) {
   } else {
     row.style.display = 'none';
   }
+  // Auto-activate To Claude when fordave is selected
+  const btn = document.getElementById('flow-toggle');
+  if (val === 'fordave') {
+    if (btn && !btn.classList.contains('on')) toggleFlow();
+  } else {
+    if (btn && btn.classList.contains('on')) toggleFlow();
+  }
+  // Show/hide custom type field
+  const ntInp = document.getElementById('input-type-new');
+  if (ntInp) ntInp.style.display = 'none';
+}
+
+
+/* ── REPLY FORM: auto To Claude on fordave ── */
+function tovReplyTypeChange(val){
+  if(val==='fordave'){
+    // Switch to Dave reply mode (which routes to Claude)
+    threadOverlaySetMode('dave');
+  }
+}
+
+/* ── INLINE CUSTOM TYPE ADD (routes to existing ctAdd system) ── */
+function ctAdd_inline(val){
+  if(!val)return;
+  const allVals=[...BUILTIN_TYPES.map(t=>t.value),...CUSTOM_TYPES];
+  if(allVals.includes(val)){
+    const it=document.getElementById('input-type');
+    if(it){it.value=val;onInputTypeChange(val);}
+    return;
+  }
+  CUSTOM_TYPES.push(val);
+  ctSave();
+  ctRenderAll();
+  const it=document.getElementById('input-type');
+  if(it){it.value=val;onInputTypeChange(val);}
 }
 function setRmSubtype(t) {
   rmSubtype = t;
@@ -6899,7 +6938,7 @@ function ingestLeads(newLeads) {
       <button id="tov-mode-dave" class="tov-mode-btn active" onclick="threadOverlaySetMode('dave')">Dave reply</button>
       <button id="tov-mode-note" class="tov-mode-btn" onclick="threadOverlaySetMode('note')">Plain note</button>
       <div style="flex:1"></div>
-      <select id="tov-reply-type" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none">
+      <select id="tov-reply-type" style="font-family:'Source Code Pro',monospace;font-size:10px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);padding:3px 6px;border-radius:4px;outline:none" onchange="tovReplyTypeChange(this.value)">
         <option value="">— Type —</option>
         <option value="fordave">For Claude/Dave</option>
         <option value="note">Note</option>
