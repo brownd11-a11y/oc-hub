@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-16T11:29:26.849343+00:00",
+  "_version": "2026-06-16T13:22:16.227774+00:00",
   "_schema": 1,
   "items": [
     {
@@ -4359,6 +4359,11 @@
           "from": "claude",
           "text": "DONE v312 (hub): Custom note types added. How it works:\n\nINLINE ADD \u2014 In the Notes input form, the type selector now has a '+' write-in option at the bottom. Type a new type name + Enter to add it to the type list immediately (saved to settings, available across all forms).\n\nSETTINGS MANAGEMENT \u2014 Help \u2192 Settings now includes a 'Note Types' card. Shows all current types (standard + custom). Each custom type has a rename field and a delete button. Standard types (fordave, note, reminder, question, roadmap) cannot be deleted. Custom types can be reordered by drag.\n\nBEHAVIOR \u2014 Custom types appear in the type filter dropdown and in all input/edit forms. If a custom type is deleted, items using it fall back to 'note'. Please accept or reply.",
           "ts": "2026-06-15T14:00:00.000Z"
+        },
+        {
+          "from": "dave",
+          "text": "Inline options not seen in either the input or the reply function",
+          "ts": "2026-06-16T13:10:33.842Z"
         }
       ],
       "created": "2026-06-15T09:58:37.166Z",
@@ -4373,7 +4378,7 @@
       "title": "Voice Pass 1 \u2014 Preface opening paragraph",
       "text": "PASTE TO FIND \u2192 I have been watching this subject for more than thirty years\n\nVoice pass proposal for Preface opening paragraph. Current text opens with a long compound sentence that can be broken for better rhythm. See VoicePass1_Preface_Introduction.docx section P-01 for full original/proposed comparison.\n\nPROPOSAL: Break opening sentence, simplify \"contemporary recording,\" shorten final sentence for punch. See review doc.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4390,7 +4395,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_p02",
@@ -4399,7 +4405,7 @@
       "title": "Voice Pass 1 \u2014 Preface paragraphs 2\u20133 (stigma and research)",
       "text": "PASTE TO FIND \u2192 I read hundreds of detailed, well-sourced accounts and could not\n\nVoice pass proposal for Preface paragraphs 2\u20133. Light trim only \u2014 these are already strong. Closing compound question broken into three short sentences for rhythm.\n\nPROPOSAL: Minor trim. Final three-sentence close broken for rhythm. See review doc section P-02.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4416,7 +4422,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_p03",
@@ -4425,7 +4432,7 @@
       "title": "Voice Pass 1 \u2014 Preface risk management paragraph",
       "text": "PASTE TO FIND \u2192 My profession was in enterprise risk management\n\nVoice pass proposal for the risk management paragraph. Light trim \u2014 tighten phrasing, remove one redundant clause, shorten final sentence.\n\nPROPOSAL: \"My profession was in\" \u2192 \"My profession was.\" Redundant phrase cut. Final sentence shortened. See review doc section P-03.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4442,7 +4449,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_p04",
@@ -4451,7 +4459,7 @@
       "title": "Voice Pass 1 \u2014 Preface sources and back matter",
       "text": "PASTE TO FIND \u2192 More than 600 primary sources are listed in the chapter notes\n\nVoice pass proposal for Sources and back matter section. Currently reads like legal boilerplate. Needs to be relaxed and shortened.\n\nPROPOSAL: Direct address (\"You don't have to follow any of them\"), minor trim throughout. See review doc section P-04.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4468,7 +4476,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i01",
@@ -4477,7 +4486,7 @@
       "title": "Voice Pass 1 \u2014 Introduction Capitol steps opening",
       "text": "PASTE TO FIND \u2192 On a bright Tuesday afternoon in June 2026 a group of\n\nVoice pass proposal for Introduction opening scene (paragraphs 1\u20134). This is already strong \u2014 changes are minimal. Light rhythm tightening only.\n\nPROPOSAL: \"Retired high-ranking\" \u2192 \"retired.\" Two em-dashes added where they earn their place. One redundant phrase trimmed. See review doc section I-01.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4494,7 +4503,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i02",
@@ -4503,7 +4513,7 @@
       "title": "Voice Pass 1 \u2014 Introduction December 16, 2017 section",
       "text": "PASTE TO FIND \u2192 On Sunday December 16 2017 the front page of The New York Times\n\nVoice pass proposal for the December 16, 2017 section. Semicolon construction broken into two sentences for impact. Minor trim.\n\nPROPOSAL: \"And the Times used it deliberately\" becomes its own sentence. AATIP introduced with em-dash aside. Elizondo paragraph tightened. See review doc section I-02.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4520,7 +4530,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i03",
@@ -4529,7 +4540,7 @@
       "title": "Voice Pass 1 \u2014 Introduction Why this book (opening)",
       "text": "PASTE TO FIND \u2192 Craft that defy known physics have been operating in controlled\n\nVoice pass proposal for Why this book opening paragraphs. Original front-loads the conclusion; proposed builds to it. \"Performance characteristics\" language removed.\n\nPROPOSAL: Lead with the mystery, not the category. \"Something has been operating...\" opener. See review doc section I-03.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4546,7 +4557,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i04",
@@ -4555,7 +4567,7 @@
       "title": "Voice Pass 1 \u2014 Introduction collapsing the objection paragraph",
       "text": "PASTE TO FIND \u2192 The objection collapses under its own logic\n\nVoice pass proposal for the \"secret technology\" objection paragraph. Semicolon joining two clauses broken into two sentences for impact.\n\nPROPOSAL: \"Were not\" becomes its own sentence. Minor trim. See review doc section I-04.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4572,7 +4584,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i05",
@@ -4581,7 +4594,7 @@
       "title": "Voice Pass 1 \u2014 Introduction nuclear interference and narrative paragraphs",
       "text": "PASTE TO FIND \u2192 These craft show concerning behaviors beyond their interaction\n\nVoice pass proposal for three paragraphs covering nuclear interference and narrative control. These contain the most significant AI-drift in the Introduction. Substantial revision proposed.\n\nPROPOSAL: \"These are just a few examples of behavior which should be concerning to everyone\" \u2014 cut entirely. Paragraph 3 restructured to lead with action. See review doc section I-05.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4598,7 +4611,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i06",
@@ -4607,7 +4621,7 @@
       "title": "Voice Pass 1 \u2014 Introduction this book's purpose paragraph",
       "text": "PASTE TO FIND \u2192 This book's purpose is not to settle what UAP are\n\nVoice pass proposal for the purpose paragraph. Several weak constructions tightened.\n\nPROPOSAL: 'Much more focused' \u2192 'narrower.' 'That secrecy' \u2192 'That decision' (more precise). 'Increasingly' cut. See review doc section I-06.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4624,7 +4638,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i07",
@@ -4633,7 +4648,7 @@
       "title": "Voice Pass 1 \u2014 Introduction fight for transparency section",
       "text": "PASTE TO FIND \u2192 Congress acted on the whistleblower revelations\n\nVoice pass proposal for the fight for transparency section. Senate passage and stripping broken into separate short sentences for impact. Several weak transitions removed.\n\nPROPOSAL: \"Congress moved\" opener. UAPDA \u2192 \"the Act.\" Passage/stripping broken into two sentences. \"Yet\" cut. See review doc section I-07.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4650,7 +4665,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_i08",
@@ -4659,7 +4675,7 @@
       "title": "Voice Pass 1 \u2014 Introduction closing questions",
       "text": "PASTE TO FIND \u2192 Who decided that the American public has no right to know\n\nVoice pass proposal for closing three questions. Minor only \u2014 already strong.\n\nPROPOSAL: \"How and why\" split into two sentences. Three questions, three sentences. See review doc section I-08.",
       "answer": "DONE v316: Voice pass proposal queued in VoicePass1_Preface_Introduction.docx. Please review and accept, defer, or reply.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "itemUrl": "",
       "repeat": {
@@ -4676,7 +4692,8 @@
           "text": "DONE v316: Voice pass proposal ready. See VoicePass1_Preface_Introduction.docx for full original/proposed comparison. Please accept, defer, or reply.",
           "ts": "2026-06-16T09:55:09.000Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p1",
@@ -4684,7 +4701,7 @@
       "text": "PASTE TO FIND \u2192 a friend handed me a book on an incident in Rendlesham Forest\n\nRHYTHM: Only 1 sentence under 12 words. Proposed breaks 'He was professional, but a little breathless' into two short landing sentences and tightens the close.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 1 \u2014 Rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4704,7 +4721,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p2",
@@ -4712,7 +4730,7 @@
       "text": "PASTE TO FIND \u2192 I read hundreds of detailed, well-sourced accounts\n\nRHYTHM / OPENER: Consecutive 'I' openers (paras 1 and 2). Proposed restructures opening sentence to resolve. Short sentences preserved.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 2 \u2014 Rhythm + consecutive \u201cI\u201d opener. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4732,7 +4750,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p3",
@@ -4740,7 +4759,7 @@
       "text": "PASTE TO FIND \u2192 The more I researched, the more I struggled\n\nRHYTHM / EM-DASH: 2 em-dashes in a short paragraph. Proposed removes both by restructuring. Adds short declarative landing sentence.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 3 \u2014 Rhythm + em-dash (2). Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4760,7 +4779,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p4",
@@ -4768,7 +4788,7 @@
       "text": "PASTE TO FIND \u2192 In December 2017, the New York Times reported on a classified Pentagon program\n\nRHYTHM: Only 1 short sentence. Proposed adds short-sentence pair ('The files may tell us what UAP are. They may not.') and tightens the closing clause.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 4 \u2014 Rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4788,7 +4808,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p5",
@@ -4796,7 +4817,7 @@
       "text": "PASTE TO FIND \u2192 This book is my attempt to answer that question rigorously\n\nRHYTHM: 'I do not know, and neither does anyone else who is being honest' split into two short sentences. Final sentence trimmed to its core weight.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 5 \u2014 Rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4816,7 +4837,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_p7",
@@ -4824,7 +4846,7 @@
       "text": "PASTE TO FIND \u2192 The question of what is operating in our airspace matters\n\nRHYTHM: Weak trailing close. Proposed restructures as semicolon list and adds a two-beat punchy close.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Para 7 \u2014 Rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4844,7 +4866,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_pref_sources",
@@ -4852,7 +4875,7 @@
       "text": "PASTE TO FIND \u2192 More than 600 primary sources are listed in the chapter notes\n\nAI-SPEAK: 'framework' (watch list) removed. EM-DASH: 2 removed. 'deeper dives' removed (watch list). Tightened throughout.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "preface",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Preface \u00b7 Sources para \u2014 AI-speak + em-dash. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4872,7 +4895,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_p3",
@@ -4880,7 +4904,7 @@
       "text": "PASTE TO FIND \u2192 Standing behind her on those steps were four members of Congress\n\nEM-DASH: 6 em-dashes. All removed. 'arrived\u2014or was arriving\u2014or was being fought over' becomes three short sentences, which is stronger.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Para 3 \u2014 Em-dash (6) + rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4900,7 +4924,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_p4",
@@ -4908,7 +4933,7 @@
       "text": "PASTE TO FIND \u2192 This book was written in that fight\n\nEM-DASH: 2. Removed by splitting compound sentence. 'the decision and the architecture are two distinct acts' \u2014 separate sentences are stronger.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Para 4 \u2014 Em-dash (2). Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4928,7 +4953,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_dec16p2",
@@ -4936,7 +4962,7 @@
       "text": "PASTE TO FIND \u2192 The man who ran the program was Luis Elizondo\n\nOPENER: Consecutive 'The' openers. Proposed opens 'Luis Elizondo ran it.' \u2014 stronger and resolves the pattern.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 December 16 Para 2 \u2014 Consecutive \u201cThe\u201d + rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4956,7 +4982,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_objection",
@@ -4964,7 +4991,7 @@
       "text": "PASTE TO FIND \u2192 The most common objection to taking this record seriously\n\nEM-DASH: 6. All removed by restructuring. 'to taking this record seriously' trimmed as redundant.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Classified tech objection \u2014 Em-dash (6) + rhythm. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -4984,7 +5011,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_collapses",
@@ -4992,7 +5020,7 @@
       "text": "PASTE TO FIND \u2192 The objection collapses under its own logic\n\nEM-DASH: 4. Removed. 'The objection collapses' \u2192 'It collapses' resolves consecutive 'The' openers and is more direct.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Objection collapses \u2014 Em-dash (4) + consecutive \u201cThe\u201d. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -5012,7 +5040,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_behaviors",
@@ -5020,7 +5049,7 @@
       "text": "PASTE TO FIND \u2192 These craft show concerning behaviors beyond their interaction\n\nEDITORIALIZE: Final sentence ('These are just a few examples of behavior which should be concerning to everyone.') is a hard prohibition \u2014 tells reader what to think. Cut entirely. Facts speak.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Concerning behaviors \u2014 Editorializing close. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -5040,7 +5069,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_purpose",
@@ -5048,7 +5078,7 @@
       "text": "PASTE TO FIND \u2192 This book's purpose is not to settle what UAP are\n\nOPENER: Consecutive 'This' openers (previous para opens 'This is the position\u2026'). Restructured to 'The purpose of this book\u2026'\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Purpose para \u2014 Consecutive \u201cThis\u201d opener. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -5068,7 +5098,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "vp1_intro_p5",
@@ -5076,7 +5107,7 @@
       "text": "PASTE TO FIND \u2192 To understand how that question became necessary, you have to go back\n\nCONNECTIVE TISSUE: Classic throat-clearing transition ('To understand X, we must first go to Y'). Hard prohibition. Propose cutting entirely \u2014 section heading does the navigational work.\n\nSee VoicePass1_Preface_Intro.docx for full original/proposed comparison.",
       "tag": "intro",
       "dueDate": "2026-06-17",
-      "done": false,
+      "done": true,
       "answer": "DONE v317: Voice Pass 1 \u2014 Introduction \u00b7 Para 5 \u2014 Connective tissue / throat-clear. Proposed revision in review doc. Please accept or reply.",
       "dialogue": [
         {
@@ -5096,7 +5127,8 @@
         "on": false
       },
       "createdAt": "2026-06-16T11:29:26.849343+00:00",
-      "updatedAt": "2026-06-16T11:29:26.849343+00:00"
+      "updatedAt": "2026-06-16T11:29:26.849343+00:00",
+      "completedDate": "2026-06-16"
     },
     {
       "id": "i_burlison_uapda_recheck",
@@ -5119,6 +5151,94 @@
           "text": "As of June 16, 2026: Burlison is pushing for UAPDA inclusion in the FY2027 NDAA (FY2026 NDAA passed without it \u2014 blocked by Senate Approps staff). His June 9 Capitol press conference signaled renewed pressure. An X post (@overclassifiedx) claimed active NDAA work but no primary-sourced quote yet confirmed. Recheck for a sourced statement or press release."
         }
       ]
+    },
+    {
+      "id": "i_1781616000845",
+      "type": "fordave",
+      "text": "Please create a process to ensure that the order of items in the Word document pass for a prose pass matches the order of documents or the order of the notes in the hub related to acceptance of those. What are your thoughts about how best to do this?",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Please create a process to ensure that the order of items in the Word document pass for a prose pass matches the order of documents or the order of the notes in the hub related to acceptance of those. What are your thoughts about how best to do this?",
+          "ts": "2026-06-16T13:20:00.844Z"
+        }
+      ],
+      "created": "2026-06-16T13:20:00.845Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_1781615823690",
+      "type": "fordave",
+      "text": "Please add a select function that is in the same bar as collapse and expand on the left-hand edge, maybe lined up with the columns. You can move the seven items to the right of that if necessary, or left. I'm not sure how to do it, but you'll figure out the interface. The select word would then allow one to choose individual or group items to batch. With the choice to batch mark them Done, Delete, or Defer",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Please add a select function that is in the same bar as collapse and expand on the left-hand edge, maybe lined up with the columns. You can move the seven items to the right of that if necessary, or left. I'm not sure how to do it, but you'll figure out the interface. The select word would then allow one to choose individual or group items to batch. With the choice to batch mark them Done, Delete, or Defer",
+          "ts": "2026-06-16T13:17:03.688Z"
+        }
+      ],
+      "created": "2026-06-16T13:17:03.690Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_1781615568545",
+      "type": "fordave",
+      "text": "This may be in memory from a prior session, but I don't know, so it could be a repeat. Change the search bar pop-up to be similar to the light display used elsewhere across the Project Hub now, so that it's current in its styling. Add a function that the search displays the various tags that are present and allows one to filter down on those individual tags as well.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "This may be in memory from a prior session, but I don't know, so it could be a repeat. Change the search bar pop-up to be similar to the light display used elsewhere across the Project Hub now, so that it's current in its styling. Add a function that the search displays the various tags that are present and allows one to filter down on those individual tags as well.",
+          "ts": "2026-06-16T13:12:48.543Z"
+        }
+      ],
+      "created": "2026-06-16T13:12:48.545Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_1781615524200",
+      "type": "fordave",
+      "text": "Please add a settings function to automatically select To Claude when I choose the note type for Claude/Dave, or to choose the note type for Claude/Dave if I press 2CLAW. Also add a function to prompt for use of a tag when inputting a new item. The prompt can be dismissed with an X, or choose the tag. That's only if a tag has not been chosen in a previous entry during the same session. As long as there is a default tag showing from the prior entry, that dialog does not appear.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Please add a settings function to automatically select 2CLAW when I choose the note type for Claude/Dave, or to choose the note type for Claude/Dave if I press 2CLAW. Also add a function to prompt for use of a tag when inputting a new item. The prompt can be dismissed with an X, or choose the tag. That's only if a tag has not been chosen in a previous entry during the same session. As long as there is a default tag showing from the prior entry, that dialog does not appear.",
+          "ts": "2026-06-16T13:12:04.199Z"
+        }
+      ],
+      "created": "2026-06-16T13:12:04.200Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
     }
   ],
   "road": [
