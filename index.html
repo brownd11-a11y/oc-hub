@@ -2314,24 +2314,43 @@ async function loadFromGitHub() {
       localData.items.forEach(i => { if (i.done === true) localDone[i.id] = true; });
     }
 
-    // GitHub is authoritative for dialogue/answer; never downgrades local done:true
-    if (!ghIsNewer && localData) {
-      const ghById = {};
-      (data.items || []).forEach(i => { ghById[i.id] = i; });
-      (localData.items || []).forEach(li => {
-        const gi = ghById[li.id];
-        if (!gi) return;
-        // GitHub done:true propagates; never set done:false over local done:true
-        if (gi.done === true) { li.done = true; localDone[li.id] = true; }
-        if (gi.done === true && gi.completedDate) li.completedDate = gi.completedDate;
-        // GitHub always wins on answer and dialogue (Claude's work)
-        if (gi.answer && (!li.answer || gi.answer.length >= li.answer.length)) li.answer = gi.answer;
-        const giDlg = gi.dialogue || [], liDlg = li.dialogue || [];
-        if (giDlg.length >= liDlg.length) li.dialogue = gi.dialogue;
-      });
-      // Add any items in GitHub but not in localStorage
-      const localIds = new Set((localData.items || []).map(i => i.id));
-      (data.items || []).forEach(gi => { if (!localIds.has(gi.id)) localData.items.push(gi); });
+    // Merge strategy: GitHub wins on content (answer/dialogue/done from Claude's work)
+    // but localStorage-only items (newly added by Dave since last push) are always preserved.
+    if (localData && localData.items) {
+      const ghIds = new Set((data.items || []).map(i => i.id));
+
+      if (!ghIsNewer) {
+        // localStorage is newer: update local items with GitHub's Claude-authored fields
+        const ghById = {};
+        (data.items || []).forEach(i => { ghById[i.id] = i; });
+        (localData.items || []).forEach(li => {
+          const gi = ghById[li.id];
+          if (!gi) return;
+          if (gi.done === true) { li.done = true; localDone[li.id] = true; }
+          if (gi.done === true && gi.completedDate) li.completedDate = gi.completedDate;
+          if (gi.answer && (!li.answer || gi.answer.length >= li.answer.length)) li.answer = gi.answer;
+          const giDlg = gi.dialogue || [], liDlg = li.dialogue || [];
+          if (giDlg.length >= liDlg.length) li.dialogue = gi.dialogue;
+        });
+        // Add any items in GitHub but not in localStorage
+        (data.items || []).forEach(gi => { if (!ghIds.has(gi.id) || false) {} });
+        (data.items || []).forEach(gi => { if (!localData.items.find(li => li.id === gi.id)) localData.items.push(gi); });
+      } else {
+        // GitHub is newer: use GitHub data as base, but preserve any items Dave added locally
+        // that haven't been pushed to GitHub yet (localStorage-only items)
+        const localOnly = (localData.items || []).filter(li => !ghIds.has(li.id));
+        if (localOnly.length > 0) {
+          data.items = (data.items || []).concat(localOnly);
+          console.log(`Preserved ${localOnly.length} localStorage-only item(s) not yet in GitHub`);
+        }
+        // Also propagate local done:true marks onto GitHub items
+        const ghById = {};
+        (data.items || []).forEach(i => { ghById[i.id] = i; });
+        (localData.items || []).forEach(li => {
+          const gi = ghById[li.id];
+          if (gi && li.done === true) { gi.done = true; localDone[li.id] = true; if (li.completedDate) gi.completedDate = li.completedDate; }
+        });
+      }
     }
 
     applyData._localDone = localDone;
