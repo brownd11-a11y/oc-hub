@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-16T13:22:16.227774+00:00",
+  "_version": "2026-06-16T14:10:51.967528+00:00",
   "_schema": 1,
   "items": [
     {
@@ -5239,6 +5239,22 @@
       "dueDate": "",
       "completedDate": "",
       "itemUrl": null
+    },
+    {
+      "id": "i_session0616b",
+      "type": "note",
+      "text": "Session 2026-06-16 (afternoon): Voice Pass 1 all 15 proposals applied to master. v317\u2192v318. Preface: p1 rhythm, p2 I-opener, p3 em-dash, p4 rhythm, p5 rhythm, p7 rhythm, Sources AI-speak/em-dash. Introduction: p3 em-dash x6, p4 em-dash x2, para 5 throat-clear deleted, Dec16-p2 The-opener, tech objection em-dash x6, collapses em-dash x4/The-opener, behaviors editorializing close cut, purpose This-opener, transparency para retained as-is (already clean). All bookmarks preserved. Pack PASS 3734 paragraphs.",
+      "done": true,
+      "tag": "publishing",
+      "memFlag": false,
+      "deferred": false,
+      "priority": false,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-16T14:10:51.967528+00:00",
+      "dueDate": "",
+      "completedDate": "2026-06-16",
+      "itemUrl": null
     }
   ],
   "road": [
@@ -7199,6 +7215,6 @@
     "defaultNoteType": "note",
     "defaultFilter": "open"
   },
-  "masterVersion": "v317",
+  "masterVersion": "v318",
   "seedVersion": "2026-06-15T21:30:00.000Z"
 }
