@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-17T10:52:43Z",
+  "_version": "2026-06-17T11:34:59Z",
   "_schema": 1,
   "items": [
     {
@@ -7387,9 +7387,9 @@
       "type": "fordave",
       "title": "VP2 Ch9 — Hard Prohibition: 'Not all authority laundering…'",
       "body": "PASTE TO FIND → Not all authority laundering required a witting participant\n\n'Not X' construction on Hard Prohibitions list. Also passive/bureaucratic register. Proposed: fold into Cronkite paragraph setup or replace with 'Authority laundering did not require a willing accomplice. The mechanism worked even when the vehicle had no idea it was a vehicle.' See VP2-C9-04.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
-      "answer": "",
+      "answer": "DONE v324: \"Not all authority laundering\" sentence folded in — opening sentence removed; Cronkite paragraph now opens directly on \"Walter Cronkite's 1966 CBS special…\". vp2_c9_03 also applied (illustrates → is the clearest example of).",
       "dialogue": [
         {
           "from": "dave",
@@ -7400,6 +7400,11 @@
           "from": "claude",
           "text": "Two options in the review doc — accept proposed text or write your own. VP2-C9-04.",
           "ts": "2026-06-17T01:51:02Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v324: Applied. Cronkite paragraph now opens on Cronkite directly. vp2_c9_03 also applied simultaneously.",
+          "ts": "2026-06-17T11:34:59Z"
         }
       ],
       "tag": "ch9",
@@ -7407,7 +7412,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c9_05",
@@ -7522,9 +7528,9 @@
       "type": "fordave",
       "title": "VP2 Ch15 — 'The presidential address and disclosure plan above are speculative'",
       "body": "PASTE TO FIND → The presidential address and the disclosure plan above are speculative\n\nUnnecessary disclaimer — reader already knows the status of the model address. Weakens the chapter close. Proposed: delete and open the 'way forward' paragraph with 'The Brookings report warns that social disintegration is the primary risk of a failure to act.' See VP2-C15-04.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
-      "answer": "",
+      "answer": "DONE v324: Disclaimer sentence deleted. Para 1485 now opens on \"The Brookings report warns…\" See VP2-C15-03 in hub for presidential address register proposals.",
       "dialogue": [
         {
           "from": "dave",
@@ -7535,6 +7541,11 @@
           "from": "claude",
           "text": "Dropping the disclaimer strengthens the chapter ending. VP2-C15-04.",
           "ts": "2026-06-17T01:51:02Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v324: Disclaimer deleted. Para opens on Brookings. Presidential address register proposals posted in VP2-C15-03.",
+          "ts": "2026-06-17T11:34:59Z"
         }
       ],
       "tag": "ch15",
@@ -7542,7 +7553,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c16_01",
@@ -7576,9 +7588,9 @@
       "type": "fordave",
       "title": "VP2 Ch16 — connective tissue: UAPDA → Broken AARO transition",
       "body": "PASTE TO FIND → Broken AARO\n\nAbrupt transition between UAPDA stripping and AARO failure sections. The causal link is implicit. Proposed: strengthen the 'Broken AARO' opener: 'Congress attempted to solve the UAP oversight problem by creating AARO. It didn't work — and the reason is the same one that gutted the UAPDA.' See VP2-C16-03.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
-      "answer": "",
+      "answer": "DONE v324: Causal link added to end of last UAPDA para (para 1521): \"Congress responded by creating AARO. The same dynamics that gutted the UAPDA determined what AARO could and could not do.\" Broken AARO body para now opens directly on \"The office was chartered to investigate, coordinate, and report.\" — cutting the \"Congress attempted\" throat-clear.",
       "dialogue": [
         {
           "from": "dave",
@@ -7589,6 +7601,11 @@
           "from": "claude",
           "text": "Adds explicit causal link. Accept proposed text or write your own bridge. VP2-C16-03.",
           "ts": "2026-06-17T01:51:02Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v324: UAPDA causal link added to para 1521 close. Broken AARO opens on operational limits directly.",
+          "ts": "2026-06-17T11:34:59Z"
         }
       ],
       "tag": "ch16",
@@ -7596,7 +7613,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c16_04",
@@ -7684,9 +7702,9 @@
       "type": "fordave",
       "title": "VP2 Ch17 — em-dash in 'appeal to his self-interest — and his authority'",
       "body": "PASTE TO FIND → The statement was not an accusation against the president\n\nEm-dash used as connector — per the Em-Dash Rule, check whether a comma works as well. Proposed: 'It was an appeal to his self-interest, and to his authority.' See VP2-C17-03.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
-      "answer": "",
+      "answer": "DONE v324: Em-dash → comma applied. \"It was an appeal to his self-interest, and to his authority.\"",
       "dialogue": [
         {
           "from": "dave",
@@ -7697,6 +7715,11 @@
           "from": "claude",
           "text": "The weight is in the content; comma carries it fine. VP2-C17-03.",
           "ts": "2026-06-17T01:51:02Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v324: Comma applied. Para 1591 now has one em-dash (the \"he said — the president knew\" construction).",
+          "ts": "2026-06-17T11:34:59Z"
         }
       ],
       "tag": "ch17",
@@ -7704,7 +7727,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c17_04",
