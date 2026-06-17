@@ -400,7 +400,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .item.expanded .ibody{display:block}
 .ianswer{color:var(--label-primary);margin:8px 0;white-space:pre-wrap;font-size:13px}
 .iactions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.iabtn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:3px 9px;cursor:pointer;color:var(--label-secondary);transition:all .15s}
+.iabtn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;background:none;border:1px solid var(--separator);padding:0 12px;height:32px;cursor:pointer;color:var(--label-secondary);transition:all .15s;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
 .iabtn:hover{border-color:var(--label-primary);color:var(--label-primary)}
 .iabtn.danger:hover{border-color:var(--pri-color);color:var(--pri-color)}
 .iright{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
@@ -717,7 +717,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-save-btn:hover{background:var(--accent)}
 .rf-filter{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .rf-filter-lbl{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary)}
-.rf-filter-sel{font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:4px 8px;outline:none;cursor:pointer;
+.rf-filter-sel{font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid var(--separator);background:var(--page-bg);color:var(--label-primary);padding:0 8px;height:32px;outline:none;cursor:pointer;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.07);
   height:var(--ctrl-h);line-height:var(--ctrl-h);box-sizing:border-box;vertical-align:middle}
 .rf-filter-sel:focus{border-color:var(--accent)}
 .rf-cat-section{margin-bottom:8px;border:1px solid var(--separator);border-radius:8px;overflow:hidden}
@@ -804,7 +804,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-standalone-gate:hover{transform:translateY(-50%) translateX(-12px) rotate(45deg) scale(1.2)}
 /* ── ROADMAP OPEN FILTER ── */
 .road-open-filter{display:flex;align-items:center;gap:8px;margin-left:16px}
-.road-open-filter-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;cursor:pointer;transition:all .15s;border-radius:3px}
+.road-open-filter-btn{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:0 12px;height:32px;cursor:pointer;transition:all .15s;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
 .road-open-filter-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
 .road-open-filter-btn.active{background:#1a5a2a;color:#fff;border-color:#1a5a2a}
 /* ── HUB INTERFACE TAG ── */
@@ -1514,7 +1514,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="fchip" id="ot-chip-confirmed" onclick="otSetChip('confirmed',this)"><span class="fchip-lbl">Confirmed</span></button>
     <button class="fchip" id="ot-chip-closed" onclick="otSetChip('closed',this)"><span class="fchip-lbl">Closed</span></button>
     <span style="margin-left:auto;display:flex;gap:6px;align-items:center">
-      <select class="rf-filter-sel" id="ot-role-filter" onchange="otRoleFilter(this.value)" style="font-size:11px;padding:3px 8px">
+      <select class="rf-filter-sel" id="ot-role-filter" onchange="otRoleFilter(this.value)" >
         <option value="">All Roles</option>
         <option value="Member of Congress">Member of Congress</option>
         <option value="Publisher">Publisher</option>
@@ -1523,8 +1523,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="Author">Author</option>
         <option value="Agent">Agent</option>
       </select>
-      <button class="iabtn" onclick="otExpandAll()" style="font-size:11px;padding:4px 10px">Expand All</button>
-      <button class="iabtn" onclick="otCollapseAll()" style="font-size:11px;padding:4px 10px">Collapse All</button>
+      <button class="iabtn" onclick="otExpandAll()">Expand All</button>
+      <button class="iabtn" onclick="otCollapseAll()">Collapse All</button>
       <button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button>
     </span>
   </div>
@@ -1558,8 +1558,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <button class="ot-add-btn" onclick="addContact()">Add Contact</button>
   </div>
-  <div class="ot-cards" id="ot-cards"></div>
-  <div id="ot-empty" class="empty-state" style="display:none">No contacts yet &#8212; add one above</div>
+  <div class="inp-collapse-bar" id="ot-master-bar" onclick="otToggleMaster()" style="margin-bottom:8px;border-radius:8px">
+    <span class="inp-collapse-label" id="ot-master-label">&#128101; Contacts</span>
+    <span class="inp-collapse-chev" id="ot-master-chev">&#9660;</span>
+  </div>
+  <div id="ot-cards-wrap" style="display:none">
+    <div class="ot-cards" id="ot-cards"></div>
+    <div id="ot-empty" class="empty-state" style="display:none">No contacts yet &#8212; add one above</div>
+  </div>
 </div></div>
 <!-- PASSES -->
 <div class="panel" id="panel-passes"><div class="passes-wrap">
@@ -1683,8 +1689,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span style="margin-left:auto;display:flex;gap:8px;align-items:center">
       <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
       <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
-      <button class="iabtn" onclick="rfExpandAll()" style="font-size:11px;padding:4px 10px">Expand All</button>
-      <button class="iabtn" onclick="rfCollapseAll()" style="font-size:11px;padding:4px 10px">Collapse All</button>
+      <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
+      <button class="iabtn" onclick="rfCollapseAll()">Collapse All</button>
       <button class="dl-send-btn" id="rf-refresh-btn" onclick="rfRefresh()" style="height:32px;font-size:12px;padding:0 14px" title="Update Last Checked for news/current-events sources">&#8635; Refresh</button>
     </span>
   </div>
@@ -2597,7 +2603,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){_rfMasterCollapsed=true;const rc=document.getElementById('rf-cat-container');const rchev=document.getElementById('rf-master-chev');if(rc)rc.style.display='none';if(rchev)rchev.className='inp-collapse-chev';rfBuildKwSelects();rfRender();}
-  if(t==='outreach'){OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
+  if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
 }
@@ -5646,9 +5652,31 @@ function addContact(){
   renderOT();
 }
 
+let _otMasterCollapsed = true;
+function otToggleMaster(){
+  _otMasterCollapsed = !_otMasterCollapsed;
+  const wrap = document.getElementById('ot-cards-wrap');
+  const chev = document.getElementById('ot-master-chev');
+  if(wrap) wrap.style.display = _otMasterCollapsed ? 'none' : 'block';
+  if(chev) chev.className = 'inp-collapse-chev' + (_otMasterCollapsed ? '' : ' open');
+}
 function otToggle(id){const c=OT.find(o=>o.id===id);if(c){c._open=!c._open;renderOT();}}
-function otExpandAll(){OT.forEach(c=>c._open=true);renderOT();}
-function otCollapseAll(){OT.forEach(c=>c._open=false);renderOT();}
+function otExpandAll(){
+  _otMasterCollapsed=false;
+  const wrap=document.getElementById('ot-cards-wrap');
+  const chev=document.getElementById('ot-master-chev');
+  if(wrap)wrap.style.display='block';
+  if(chev)chev.className='inp-collapse-chev open';
+  OT.forEach(c=>c._open=true);renderOT();
+}
+function otCollapseAll(){
+  _otMasterCollapsed=true;
+  const wrap=document.getElementById('ot-cards-wrap');
+  const chev=document.getElementById('ot-master-chev');
+  if(wrap)wrap.style.display='none';
+  if(chev)chev.className='inp-collapse-chev';
+  OT.forEach(c=>c._open=false);renderOT();
+}
 
 function otSaveEdit(id){
   const c=OT.find(o=>o.id===id);if(!c)return;
@@ -5807,6 +5835,14 @@ function renderOT(){
     out+=`</div>`; // card
   });
   if(wrap)wrap.innerHTML=out;
+  const masterLbl=document.getElementById('ot-master-label');
+  const visCount=OT.filter(c=>{
+    if(!_otShowAll&&(c.status==='confirmed'||c.status==='closed'||c.status==='rejected'))return false;
+    if(_otChipFilter&&_otChipFilter!=='all'&&c.status!==_otChipFilter)return false;
+    if(_otRoleFilter&&!(c.role||'').toLowerCase().includes(_otRoleFilter.toLowerCase()))return false;
+    return true;
+  }).length;
+  if(masterLbl)masterLbl.textContent='\u{1F465} Contacts — '+visCount+' contact'+(visCount===1?'':'s');
   updateTabBadges();
 }
 
