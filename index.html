@@ -1227,12 +1227,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <span style="width:1px;height:16px;background:var(--separator)"></span>
         <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:28px">&#9745; Select</button>
         <span style="width:1px;height:16px;background:var(--separator)"></span>
-        <span style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Group</span>
-        <select class="dash-sel" id="notes-group-sel" onchange="setNotesGroup(this.value)" style="font-size:11px">
-          <option value="">None</option>
-          <option value="status">Status</option>
-          <option value="type">Type</option>
-          <option value="tag">Tag</option>
+        <select class="dash-showall" id="notes-group-sel" onchange="setNotesGroup(this.value)" title="Group notes by field" style="height:30px;padding:0 10px;cursor:pointer;appearance:auto">
+          <option value="">Group</option>
+          <option value="status">By Status</option>
+          <option value="type">By Type</option>
+          <option value="tag">By Tag</option>
         </select>
         <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:3px 8px;display:none">Collapse All</button>
         <button class="iabtn" id="notes-expand-all-btn" onclick="notesExpandAll()" style="font-size:11px;padding:3px 8px;display:none">Expand All</button>
