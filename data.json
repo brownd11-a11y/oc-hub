@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-17T10:51:51Z",
+  "_version": "2026-06-17T10:52:43Z",
   "_schema": 1,
   "items": [
     {
@@ -7935,6 +7935,28 @@
         }
       ],
       "created": "2026-06-17T10:37:32.539Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_hub_localstorage_sync_flag",
+      "type": "fordave",
+      "text": "Hub localStorage/GitHub sync workflow fix needed.\n\nTWO PROBLEMS:\n1. When localStorage _version is newer than data.json, Claude's tag/field pushes are silently ignored — browser keeps showing stale data.\n2. Items added in the browser (localStorage-only) can be overwritten when GitHub wins the version check.\n\nFIX NEEDED:\n(A) Claude must always bump _version to current UTC time on every push — guarantees GitHub wins.\n(B) Pre-push reconciliation step: before Claude pushes, merge any localStorage-only items (new items not yet in data.json) into the payload, so they survive the overwrite.\n\nDefer until hub workflow improvement session.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "claude",
+          "text": "Flagged 2026-06-17: localStorage wins over GitHub when its _version is newer, silently dropping tag/field updates. Two-part fix needed: (A) always bump _version on push; (B) pre-push reconciliation to preserve localStorage-only items. Deferred to hub workflow session.",
+          "ts": "2026-06-17T10:52:43Z"
+        }
+      ],
+      "created": "2026-06-17T10:52:43Z",
       "dueDate": "",
       "completedDate": "",
       "itemUrl": null
