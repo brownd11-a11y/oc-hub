@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-17T12:26:04Z",
+  "_version": "2026-06-17T12:28:16Z",
   "_schema": 1,
   "items": [
     {
@@ -6309,7 +6309,7 @@
       "id": "i_1781626344958",
       "type": "fordave",
       "text": "Do a search and replace for every time the words for a part name are used in the book, and then come back and propose how we update those, if at all, to include the part number.",
-      "done": false,
+      "done": true,
       "priority": true,
       "memFlag": true,
       "tag": "editing",
@@ -6324,14 +6324,14 @@
       ],
       "created": "2026-06-16T16:12:24.958Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
       "id": "i_1781623677736",
       "type": "fordave",
       "text": "In an earlier session, I accepted text describing the Whitehouse negotiation for whistleblower protection. Please find that text and rewrite it to indicate Congress is working with the Whitehouse in an effort to secure whistleblower protections. The Whitehouse hasn't negotiated anything publicly.",
-      "done": false,
+      "done": true,
       "priority": true,
       "memFlag": true,
       "tag": "editing",
@@ -6346,7 +6346,7 @@
       ],
       "created": "2026-06-16T15:27:57.736Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
@@ -7342,7 +7342,7 @@
       "type": "fordave",
       "title": "VP2 Ch9 \u2014 throat-clear opener 'One does not need to understand'",
       "body": "PASTE TO FIND \u2192 One does not need to understand UAP to understand what the Government\n\nHard Prohibition: explains why the next sentence matters instead of writing it. Proposed: cut to 'The CIA's own intelligence chief framed the problem precisely in 1952: it was not the objects. It was the reports.' See VoicePass2 doc VP2-C9-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7362,14 +7362,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c9_03",
       "type": "fordave",
       "title": "VP2 Ch9 \u2014 AI-speak 'illustrates how authority laundering works'",
       "body": "PASTE TO FIND \u2192 illustrates how authority laundering works in practice through journalism\n\nWatch list: 'illustrates' used as label instead of letting the example work. Proposed: '\u2026is the clearest example of authority laundering through journalism.' See VP2-C9-03.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7389,7 +7390,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c9_04",
@@ -7429,7 +7431,7 @@
       "type": "fordave",
       "title": "VP2 Ch9 \u2014 throat-clear 'One can reasonably ask'",
       "body": "PASTE TO FIND \u2192 One can reasonably ask how a filmmaker arrives at that confidence\n\nThroat-clearing opener announces the question instead of asking it. Proposed: delete first sentence entirely \u2014 start with 'Spielberg is working from the same public record available to anyone\u2026' The analysis is the answer. See VP2-C9-05.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7449,14 +7451,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c9_07",
       "type": "fordave",
       "title": "VP2 Ch9 \u2014 chapter close announces rather than lands",
       "body": "PASTE TO FIND \u2192 The first two parts of this book have examined what UAP are\n\nChapter closing announces Part 3 instead of landing Ch9's argument. Voice standard flags this pattern. Proposed: 'Disclosure has begun. Full disclosure has not. Part Three turns to the empirical record that accumulated in spite of everything documented here.' See VP2-C9-07.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7476,14 +7479,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c15_01",
       "type": "fordave",
       "title": "VP2 Ch15 \u2014 'There is a definite danger in this unmanaged approach'",
       "body": "PASTE TO FIND \u2192 There is a definite danger in this unmanaged approach\n\nWeak passive setup. 'Definite danger' is redundant. Proposed: 'The unmanaged approach has a name for its worst outcome, coined at the Sol Foundation's 2023 inaugural conference at Stanford: Catastrophic Disclosure.' See VP2-C15-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7503,14 +7507,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c15_02",
       "type": "fordave",
       "title": "VP2 Ch15 \u2014 AI throat-clear 'The risk side of the equation'",
       "body": "PASTE TO FIND \u2192 The risk side of the equation: what catastrophic disclosure looks like\n\nSignpost sentence \u2014 only announces the next section, adds no content. Proposed: delete. The next paragraph opens cleanly without it. See VP2-C15-02.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7530,7 +7535,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c15_04",
@@ -7570,7 +7576,7 @@
       "type": "fordave",
       "title": "VP2 Ch16 \u2014 'The need for national secrecy\u2026is unquestioned'",
       "body": "PASTE TO FIND \u2192 The need for national secrecy to protect our defense and security is unquestioned\n\nThroat-clearing concession. Voice standard: the concession should be implicit, not formally announced. Proposed: 'Some secrets belong in the strongest vaults of Special Access Programs.' See VP2-C16-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7590,7 +7596,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c16_03",
@@ -7630,7 +7637,7 @@
       "type": "fordave",
       "title": "VP2 Ch16 \u2014 'Historically, transparency advances' generalization",
       "body": "PASTE TO FIND \u2192 Historically, transparency advances when public demand becomes politically unavoidable\n\nGeneral truth announced rather than shown \u2014 throat-clearing. Proposed: delete and move directly to the action items: 'Legislative inertia will persist unless citizens demand accountability. The select committee authority, enhanced subpoena power, and budgetary pressure that could restore oversight are available tools.' See VP2-C16-04.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7650,14 +7657,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c17_01",
       "type": "fordave",
       "title": "VP2 Ch17 \u2014 throat-clear 'The first assumption that must be dispelled'",
       "body": "PASTE TO FIND \u2192 The first assumption that must be dispelled is that the person\n\nHard Prohibition: announces the task instead of doing it. Proposed: 'The person sitting at the president's desk does not know all of the important secrets.' See VP2-C17-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7677,14 +7685,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c17_02",
       "type": "fordave",
       "title": "VP2 Ch17 \u2014 AI-speak: 'framework' used metaphorically",
       "body": "PASTE TO FIND \u2192 the legal framework of non-acknowledgment fully intact\n\nWatch list: 'framework' used metaphorically. 'Legal architecture of non-acknowledgment' already used elsewhere in the book \u2014 substitute here for consistency. Check adjacent 'SAP framework' for second instance. See VP2-C17-02.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7704,7 +7713,8 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c17_03",
@@ -7744,7 +7754,7 @@
       "type": "fordave",
       "title": "VP2 Ch17 \u2014 chapter close announces Ch18",
       "body": "PASTE TO FIND \u2192 What moves presidents moves Congress. Both follow the same signal\n\nFinal sentence 'That signal is the subject of the final chapter' announces rather than lands. Voice standard flags chapter endings that do this. Proposed: delete last sentence; let 'organized, sustained public demand that is impossible to ignore' be the final note. See VP2-C17-04.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7764,14 +7774,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c18_01",
       "type": "fordave",
       "title": "VP2 Ch18 \u2014 AI-speak: 'ecosystem'",
       "body": "PASTE TO FIND \u2192 the advocacy ecosystem that has grown around it\n\nWatch list: 'ecosystem' as buzzword noun. Proposed: 'the organizations and advocates working this issue are now better organized and more sophisticated than at any prior moment\u2026' See VP2-C18-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7791,14 +7802,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c18_02",
       "type": "fordave",
       "title": "VP2 Ch18 \u2014 'Three organizations have earned the most credibility'",
       "body": "PASTE TO FIND \u2192 Three organizations have earned the most credibility and each has a tight strategic focus\n\nTells the reader what to think (watch list: sentences that editorialize). Proposed: 'Three organizations are doing the most focused work.' Let the descriptions carry the credibility claim. See VP2-C18-02.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7818,14 +7830,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c18_03",
       "type": "fordave",
       "title": "VP2 Ch18 \u2014 'The request is narrow but can make a real difference'",
       "body": "PASTE TO FIND \u2192 The request is narrow but can make a real difference\n\nHedges the ask \u2014 voice standard is confident, not apologetic. Proposed: 'The ask is narrow: support transparency, enforce oversight, resist over-classification.' Move 'constitutional obligations' sentence immediately after. See VP2-C18-03.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7845,14 +7858,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_con_01",
       "type": "fordave",
       "title": "VP2 Conclusion \u2014 'This book began with a simple, unsettling proposition'",
       "body": "PASTE TO FIND \u2192 This book began with a simple, unsettling proposition\n\nConclusion throat-clear: announces the opening instead of opening. Proposed: delete first sentence; start with 'The U.S. Government has not merely failed to explain Unidentified Anomalous Phenomena.' See VP2-CON-01.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7872,14 +7886,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_con_02",
       "type": "fordave",
       "title": "VP2 Conclusion \u2014 superlative 'most consequential question in history of human inquiry'",
       "body": "PASTE TO FIND \u2192 The most consequential question in the history of human inquiry\n\nSuperlative risks blurb-register. Voice standard: dry specificity over declaration. Proposed: 'The question of whether humanity shares its world with another intelligence has been managed as a bureaucratic secret.' See VP2-CON-02.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7899,14 +7914,15 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_con_03",
       "type": "fordave",
       "title": "VP2 Conclusion \u2014 Kean paragraph: 'put the question plainly'",
       "body": "PASTE TO FIND \u2192 Classification authority exists to protect national security\n\nThe Kean para setup ('put the question plainly') is flat summary language. The argument that follows is the strongest sentence in this section. Proposed: 'At the June 9 press conference, Leslie Kean made the sharpest argument of the day.' Or drop the setup and open on the argument. See VP2-CON-03.",
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-18",
       "answer": "",
       "dialogue": [
@@ -7926,13 +7942,14 @@
       "created": "2026-06-17T10:34:21Z",
       "itemUrl": null,
       "memFlag": false,
-      "priority": false
+      "priority": false,
+      "completedDate": "2026-06-17"
     },
     {
       "id": "i_1781692767697",
       "type": "fordave",
       "text": "Hub UI \u2014 toolbar layout: move Select up with Collapse/Expand, or move Collapse/Expand down with Select. Remove redundant individual collapse/expand icons from group bar since they duplicate the group chevron. Clean up vertical spacing.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "hubui",
@@ -7947,7 +7964,7 @@
       ],
       "created": "2026-06-17T10:39:27.697Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
