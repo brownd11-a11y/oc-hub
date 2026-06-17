@@ -684,6 +684,22 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-cat-body{background:var(--card-bg)}
 .notes-grp-section{margin-bottom:6px}
 .notes-grp-header{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;user-select:none;transition:background 0.15s;margin-bottom:2px}
+/* Two-section Notes layout */
+.section-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;cursor:pointer;user-select:none;transition:background .15s;margin-bottom:2px}
+.section-bar:hover{background:var(--page-bg)}
+.section-bar-label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);display:flex;align-items:center;gap:8px}
+.section-bar-ct{background:var(--separator);color:var(--label-secondary);font-family:'Source Code Pro',monospace;font-size:9px;padding:1px 7px;border-radius:10px}
+.section-bar-chev{font-size:11px;color:var(--label-secondary);transition:transform .2s}
+.section-bar-chev.open{transform:rotate(180deg)}
+/* Roadmap section rows */
+.rm-phase-hd{padding:6px 14px 4px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);border-top:1px solid var(--separator);margin-top:4px;display:flex;align-items:center;gap:8px}
+.rm-phase-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rm-task-row{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 28px;border-bottom:1px solid rgba(0,0,0,0.04)}
+.rm-task-row.done-row{color:var(--label-secondary);text-decoration:line-through}
+.rm-task-row.gate-row{font-style:italic;color:var(--label-secondary);padding-left:14px}
+.rm-task-label{flex:1;font-family:'Libre Baskerville',Georgia,serif;font-size:12px}
+.rm-task-date{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);white-space:nowrap}
+.rm-task-done-mark{width:14px;height:14px;flex-shrink:0}
 .notes-grp-header:hover{background:var(--separator)}
 .notes-grp-label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-primary);flex:1}
 .notes-grp-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);background:var(--separator);padding:2px 7px;border-radius:10px}
@@ -1163,6 +1179,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </select>
     <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
     <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:28px">&#9745; Select</button>
+      <span style="width:1px;height:16px;background:var(--separator);margin:0 2px"></span>
       <span style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Group</span>
       <select class="dash-sel" id="notes-group-sel" onchange="setNotesGroup(this.value)" style="font-size:11px">
         <option value="">None</option>
@@ -1276,13 +1294,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div></div><!-- end inp-card + inp-collapse-body -->
   </div><!-- end inp-wrap -->
   <div class="list-wrap">
-        <div class="list-bar">
-      <span class="list-ct" id="list-count"></span>
-      <button class="list-bar-btn" onclick="collapseAll()" title="Collapse all items">&#9650; Collapse</button>
-      <button class="list-bar-btn" onclick="expandAll()" title="Expand all items">&#9660; Expand</button>
-      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on">&#9745; Select</button>
-      <button class="list-bar-btn" onclick="toggleInputForm()" id="inp-form-toggle-btn" title="Show/hide input form" style="margin-left:4px">&#9651; Form</button>
-      <span id="rm-collapse-controls" style="display:none;margin-left:8px;display:none;gap:6px;align-items:center">
+        <div class="list-bar" style="min-height:0;padding:4px 12px">
+      <span id="rm-collapse-controls" style="display:none;gap:6px;align-items:center">
         <button class="list-bar-btn" id="rm-collapse-btn" onclick="rmCollapsePhases()" title="Collapse to phases only">&#9650; Phases only</button>
         <button class="list-bar-btn" id="rm-expand-btn" onclick="rmExpandPhases()" title="Expand all phases">&#9660; Expand all</button>
       </span>
@@ -2178,6 +2191,8 @@ let lastTag='';         // remembers last-used tag
 let lastType='note';    // remembers last-used note type
 let _sessionTagSet=false; // true once user has set a tag this session
 let _sessionFirstSave=false; // true once first item saved this session (triggers persist toast)
+let _notesOpen=false;   // Project Notes section collapsed by default
+let _roadmapOpen=false; // Roadmap section collapsed by default
 let mtrSourceId=null;   // item being moved to roadmap
 
 /* ── REPEAT SYSTEM ── */
@@ -3027,20 +3042,54 @@ function ctRemove(v){
   ctSave();
   ctRenderAll();
 }
+function toggleNotesSection(){
+  _notesOpen=!_notesOpen;
+  var body=document.getElementById('section-notes-body');
+  var chev=document.getElementById('section-notes-chev');
+  if(body)body.style.display=_notesOpen?'block':'none';
+  if(chev)chev.className='section-bar-chev'+(_notesOpen?' open':'');
+}
+function toggleRoadmapSection(){
+  _roadmapOpen=!_roadmapOpen;
+  var body=document.getElementById('section-roadmap-body');
+  var chev=document.getElementById('section-roadmap-chev');
+  if(body)body.style.display=_roadmapOpen?'block':'none';
+  if(chev)chev.className='section-bar-chev'+(_roadmapOpen?' open':'');
+}
 // ─────────────────────────────────────────────────────────────────────────
 function rlist(){
-  // Roadmap type view
-  if(fType==='roadmap'){
-    const list=document.getElementById('list');
-    if(list){renderRoadmapNotes(list);}
-    const lc=document.getElementById('list-count');
-    if(lc)lc.textContent='Roadmap';
-    return;
-  }
   const list=document.getElementById('list');
+  const rmCtrl=document.getElementById('rm-collapse-controls');
+  if(rmCtrl)rmCtrl.style.display='none';
+
+  // Sync roadmap mirrors into S.items
+  const existingRmIds=new Set((S.items||[]).filter(i=>i.type==='roadmap').map(i=>i.rmId));
+  const phaseLabels={};
+  (S.road||[]).forEach(r=>{if(r.kind==='phase')phaseLabels[r.id]=r.label||'';});
+  (S.road||[]).forEach(r=>{
+    if(existingRmIds.has(r.id))return;
+    const phLabel=r.phase?(phaseLabels[r.phase]||''):'';
+    const text=r.label+(phLabel?' ['+phLabel+']':'');
+    S.items.push({id:'rm_'+r.id,type:'roadmap',rmKind:r.kind,rmId:r.id,
+      rmPhaseId:r.phase||null,rmColor:r.color||null,text,
+      done:!!(r.done||r.completedDate),priority:false,memFlag:false,
+      tag:null,deferred:false,answer:null,dialogue:null,
+      created:new Date().toISOString(),dueDate:r.targetEnd||'',
+      completedDate:r.completedDate||'',itemUrl:null});
+    existingRmIds.add(r.id);
+  });
+
+  // Project Notes (non-roadmap items passing iVis)
   const visible=(S.items||[]).filter(iVis);
-  document.getElementById('list-count').textContent=visible.length+' item'+(visible.length===1?'':'s');
-  if(!visible.length){list.innerHTML='<div class="empty-state">No items match the current filter</div>';return;}
+  // Roadmap items with status/tag filters applied
+  const allRm=(S.items||[]).filter(it=>it.type==='roadmap');
+  const visibleRm=allRm.filter(it=>{
+    if(fSt==='open'&&it.done)return false;
+    if(fSt==='done'&&!it.done)return false;
+    if(fSt==='deferred'&&(!it.deferred||it.done))return false;
+    if(fTag&&it.tag!==fTag)return false;
+    return true;
+  });
 
   function renderItem(it){
     const exp=it._exp||false;
@@ -3176,13 +3225,44 @@ function rlist(){
       </div>${bodyHtml}</div>`;
   
   }
+  // Build roadmap section HTML — phases as subheadings, tasks indented
+  function buildRoadmapHtml(){
+    var roadOrder=(S.road||[]).map(function(r){return r.id;});
+    var phases=allRm.filter(function(it){return it.rmKind==='phase';})
+      .sort(function(a,b){return roadOrder.indexOf(a.rmId)-roadOrder.indexOf(b.rmId);});
+    if(!phases.length)return '<div class="empty-state">No roadmap phases found</div>';
+    var html='';
+    phases.forEach(function(ph){
+      var phColor=ph.rmColor||'var(--accent)';
+      var children=visibleRm.filter(function(it){return(it.rmKind==='step'||it.rmKind==='gate')&&it.rmPhaseId===ph.rmId;})
+        .sort(function(a,b){return roadOrder.indexOf(a.rmId)-roadOrder.indexOf(b.rmId);});
+      if(!visibleRm.includes(ph)&&!children.length)return;
+      html+='<div class="rm-phase-hd"><span class="rm-phase-dot" style="background:'+phColor+'"></span>'+esc(ph.text.replace(/\s*\[.*?\]$/,''))+'</div>';
+      children.forEach(function(it){
+        var isGate=it.rmKind==='gate';
+        var doneCls=it.done?' done-row':'';
+        var label=it.text.replace(/\s*\[.*?\]$/,'');
+        var dateStr=it.dueDate?fmtDate(it.dueDate):'';
+        html+='<div class="rm-task-row'+(isGate?' gate-row':'')+doneCls+'">';
+        if(isGate)html+='<span style="font-size:10px;color:'+phColor+'">&#9671;</span>';
+        else html+='<span class="rm-task-done-mark">'+(it.done?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'')+'</span>';
+        html+='<span class="rm-task-label">'+esc(label)+'</span>';
+        if(dateStr)html+='<span class="rm-task-date">'+dateStr+'</span>';
+        html+='</div>';
+      });
+    });
+    return html||'<div class="empty-state">No roadmap items match the current filter</div>';
+  }
+
+  // Build notes HTML
+  var notesHtml;
   if(!_notesGroup){
-    list.innerHTML=visible.map(renderItem).join('');
+    notesHtml=visible.length?visible.map(renderItem).join(''):'<div class="empty-state">No items match the current filter</div>';
   } else {
-    const grps={};
-    visible.forEach(it=>{const k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
-    list.innerHTML=Object.keys(grps).sort().map(k=>{
-      const col=!!_notesGrpCollapsed[k];
+    var grps={};
+    visible.forEach(function(it){var k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
+    notesHtml=Object.keys(grps).sort().map(function(k){
+      var col=!!_notesGrpCollapsed[k];
       return '<div class="notes-grp-section">'
         +'<div class="notes-grp-header" onclick="notesToggleGroup(\''+k+'\')">'
         +'<span class="notes-grp-label">'+_notesGroupLabel(k)+'</span>'
@@ -3192,8 +3272,22 @@ function rlist(){
         +'<div id="ngrp-body-'+k+'" style="overflow:hidden;transition:max-height 0.3s ease,opacity 0.25s ease;max-height:'+(col?'0':'8000px')+';opacity:'+(col?'0':'1')+'">'
         +grps[k].map(renderItem).join('')
         +'</div></div>';
-    }).join('');
+    }).join('')||'<div class="empty-state">No items match the current filter</div>';
   }
+
+  var rmHtml=buildRoadmapHtml();
+
+  list.innerHTML=
+    '<div class="section-bar" onclick="toggleNotesSection()">'
+    +'<span class="section-bar-label">Project Notes <span class="section-bar-ct">'+visible.length+'</span></span>'
+    +'<span class="section-bar-chev'+(_notesOpen?' open':'')+'" id="section-notes-chev">&#9660;</span>'
+    +'</div>'
+    +'<div id="section-notes-body" style="display:'+(_notesOpen?'block':'none')+'">'+notesHtml+'</div>'
+    +'<div class="section-bar" onclick="toggleRoadmapSection()" style="margin-top:6px">'
+    +'<span class="section-bar-label">Roadmap Notes <span class="section-bar-ct">'+visibleRm.length+'</span></span>'
+    +'<span class="section-bar-chev'+(_roadmapOpen?' open':'')+'" id="section-roadmap-chev">&#9660;</span>'
+    +'</div>'
+    +'<div id="section-roadmap-body" style="display:'+(_roadmapOpen?'block':'none')+'">'+rmHtml+'</div>';
 }
 
 function xItem(id){const it=S.items.find(i=>i.id===id);if(!it)return;it._exp=!it._exp;rlist();}
