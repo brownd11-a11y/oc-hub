@@ -49,7 +49,7 @@ body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_he
    Cards nearly opaque white — crisp black text always. Photo shows in gaps.
 */
 body::before{display:none}
-.hd,.tabs,.search-bar,.filter-row{position:relative;z-index:2}
+.hd,.search-bar{position:relative;z-index:2}.tabs{position:relative;z-index:10}.filter-row{position:relative;z-index:1}
 .tabs{background:rgba(255,255,255,0.94) !important;border-bottom:1px solid rgba(0,0,0,0.08) !important}
 .filter-row{background:rgba(255,255,255,0.92) !important}
 .list-bar{background:rgba(255,255,255,0.90) !important}
@@ -120,7 +120,7 @@ body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_he
    0.75 = subtle bars (list-bar, footer)
 */
 body::before{display:none}
-.hd,.tabs,.search-bar,.filter-row{position:relative;z-index:2}
+.hd,.search-bar{position:relative;z-index:2}.tabs{position:relative;z-index:10}.filter-row{position:relative;z-index:1}
 /* Chrome */
 .tabs{background:rgba(255,255,255,0.82) !important}
 .search-bar{background:rgba(255,255,255,0.82) !important}
@@ -246,7 +246,7 @@ body::before{display:none}
 .deck-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
 .deck-trigger{font-family:'Source Code Pro',monospace;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px 7px;border:1px solid #E5E5EA;border-bottom:none;background:#F2F2F7;color:#8E8E93;cursor:pointer;border-radius:6px 6px 0 0;white-space:nowrap;position:relative;top:2px;user-select:none;transition:all .18s;display:flex;align-items:center;gap:6px;box-shadow:0 -1px 3px rgba(0,0,0,0.06)}
 .deck-trigger:hover,.deck-group:hover .deck-trigger{color:#000;background:#fff;border-color:#C6C6C8}
-.deck-trigger.active{color:#fff;background:#C70025;border-color:#C70025;border-bottom:2px solid #fff;font-weight:700;top:0;padding-bottom:9px;box-shadow:0 -3px 8px rgba(199,0,37,0.30)}
+.deck-trigger.active{color:#fff;background:#3D5A99;border-color:#3D5A99;border-bottom:2px solid #fff;font-weight:700;top:0;padding-bottom:9px;box-shadow:0 -3px 8px rgba(61,90,153,0.28),0 2px 4px rgba(61,90,153,0.18)}
 .deck-arrow{font-size:9px;opacity:.7;transition:transform .2s}
 .deck-group:hover .deck-arrow{transform:rotate(180deg)}
 .deck-flyout{position:absolute;top:100%;left:0;background:#ffffff;border:1px solid #C6C6C8;border-top:none;border-radius:0 0 8px 8px;min-width:180px;z-index:200;display:none;flex-direction:column;box-shadow:0 4px 16px rgba(0,0,0,.12)}
@@ -481,8 +481,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-today-line-v{position:absolute;top:0;bottom:0;height:100%;width:2px;background:#C70025;opacity:.55;z-index:5;pointer-events:none}
 
 /* ── Phase row ── */
-.gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid #E5E7EB;position:relative;z-index:2}
-.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-phase-row{display:flex;align-items:stretch;min-height:58px;border-bottom:3px solid transparent;background:rgba(240,242,247,0.72);position:relative;z-index:2}
+.gantt-phase-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-right:1px solid #D1D5DB;background:rgba(240,242,247,0.82)}
 /* phase label cell colored border */
 .gantt-phase-label-cell.ph-frame{border-left:4px solid var(--ph-color,#3a6b9e)}
 .gantt-drag-handle{font-size:18px;color:#bbb;cursor:grab;flex-shrink:0;user-select:none;line-height:1;padding:0 2px;transition:color .15s}.gantt-drag-handle:hover{color:#555}.gantt-drag-handle:active{cursor:grabbing;color:#333}
@@ -508,9 +508,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 /* ── Task rows ── */
 .gantt-tasks-wrap{background:var(--page-bg)}
-.gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:1px solid #EBEBEF;position:relative;z-index:2}
+.gantt-task-row{display:flex;align-items:stretch;min-height:36px;border-bottom:3px solid transparent;background:rgba(255,255,255,0.78);position:relative;z-index:2}
 .gantt-swipe-wrap{position:relative}.gantt-swipe-inner{position:relative;display:flex;align-items:stretch;width:100%;transition:transform .18s ease}.gantt-swipe-reveal-l{position:absolute;right:0;top:0;bottom:0;width:100%;background:#D43540;display:flex;align-items:center;justify-content:flex-end;padding-right:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-reveal-r{position:absolute;left:0;top:0;bottom:0;width:100%;background:#2070C8;display:flex;align-items:center;justify-content:flex-start;padding-left:18px;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;pointer-events:none;opacity:0;transition:opacity .12s}.gantt-swipe-delete-btn{position:absolute;left:0;top:0;bottom:0;width:auto;min-width:80px;background:#D43540;display:flex;align-items:center;justify-content:center;font-family:'Source Code Pro',monospace;font-size:10px;font-weight:700;color:#fff;letter-spacing:.06em;cursor:pointer;z-index:5}
-.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:var(--card-bg)}
+.gantt-task-label-cell{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;background:rgba(255,255,255,0.82)}
 .gantt-task-cb{width:13px;height:13px;flex-shrink:0;border:1.5px solid var(--separator);background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;transition:all .15s}
 .gantt-task-cb.checked{background:var(--done-fg);border-color:var(--done-fg);color:#fff}
 .gantt-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--ph-color,#3a6b9e)}
@@ -525,14 +525,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-task-bar-fill{position:absolute;top:0;left:0;height:100%;transition:width .4s}
 
 /* Gate-task row — shows diamond only in track */
-.gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:1px solid #EBEBEF;background:#fdf8ed;position:relative;z-index:2}
-.gantt-gate-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:#fdf8ed}
+.gantt-gate-task-row{display:flex;align-items:stretch;min-height:32px;border-bottom:3px solid transparent;background:rgba(253,248,237,0.80);position:relative;z-index:2}
+.gantt-gate-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;display:flex;align-items:center;gap:6px;padding:0 8px 0 20px;border-right:1px solid #D1D5DB;border-left:3px solid var(--ph-color,#b06000);background:rgba(253,248,237,0.82)}
 .gantt-gate-task-name{flex:1;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;font-size:14px;color:#7a5a10;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gantt-gate-task-track{position:absolute;left:0;right:0;top:0;bottom:0;background:transparent;pointer-events:none;z-index:0}
 
 /* Add task row */
-.gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:1px solid #EBEBEF;background:var(--page-bg);position:relative;z-index:2}
-.gantt-add-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:var(--page-bg)}
+.gantt-add-task-row{display:flex;align-items:stretch;min-height:28px;border-bottom:3px solid transparent;background:rgba(242,242,247,0.60);position:relative;z-index:2}
+.gantt-add-task-label{width:var(--gantt-label-w);min-width:80px;position:sticky;left:0;z-index:10;padding:0 8px 0 20px;display:flex;align-items:center;border-right:1px solid #D1D5DB;background:rgba(242,242,247,0.70)}
 .gantt-add-task-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#9CA3AF;background:none;border:1px dashed #D1D5DB;padding:2px 10px;cursor:pointer;width:100%;text-align:left;transition:all .15s}
 .gantt-add-task-btn:hover{border-color:var(--accent);color:var(--accent)}
 .gantt-add-task-track{flex:1;background:var(--page-bg)}
@@ -585,8 +585,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .ref-section h2{font-size:13px;font-weight:600;color:var(--label-primary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);font-family:'Source Code Pro',monospace}
 .isbn-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
 .isbn-table th{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 8px 10px;border-bottom:1px solid var(--separator)}
-.isbn-table td{padding:10px;border-bottom:1px solid var(--separator);vertical-align:top}
-.isbn-table tbody tr:hover{background:var(--page-bg)}
+.isbn-table td{padding:10px;border-bottom:3px solid transparent;vertical-align:top}
+.isbn-table tbody tr{background:rgba(255,255,255,0.80)}
+.isbn-table tbody tr:hover{background:rgba(255,255,255,0.96)}
 .isbn-code{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-primary);white-space:nowrap;font-weight:500}
 .fmt-name{font-weight:600;color:var(--label-primary);font-size:13px}
 .fmt-note{font-size:12px;color:var(--label-secondary);margin-top:2px}
@@ -595,7 +596,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .b-res{background:var(--badge-reserved-bg);color:var(--badge-reserved-fg)}
 .b-un{background:var(--badge-un-bg);color:var(--badge-un-fg)}
 .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}
-.price-card{background:var(--card-bg);border:1px solid var(--separator);padding:14px}
+.price-card{background:rgba(255,255,255,0.82);border:1px solid rgba(229,229,234,0.6);padding:14px;border-radius:6px;backdrop-filter:blur(2px)}
 .price-format{font-weight:600;font-size:13px;color:var(--label-primary);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--separator);font-family:'Source Code Pro',monospace;letter-spacing:.05em;text-transform:uppercase}
 .price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--label-secondary)}
 .price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
@@ -634,6 +635,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .dist-note strong{color:var(--label-primary)}
 /* ── OUTREACH ── */
 .ot-wrap{padding:16px 24px}
+.ot-filter-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 0 10px 0;margin-bottom:8px;border-bottom:1px solid var(--separator)}
 .ot-add{background:var(--card-bg);border:1px solid var(--separator);padding:14px;margin-bottom:16px;border-radius:4px}
 .ot-add-title{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:10px}
 .ot-form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -769,7 +771,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .passes-wrap{padding:16px 32px}
 .passes-intro{font-size:13px;color:var(--label-secondary);margin-bottom:18px;line-height:1.65}
 .pass-tier{margin-bottom:24px}
-.pass-tier-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);flex-wrap:wrap}
+.pass-tier-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);flex-wrap:wrap;cursor:pointer;user-select:none}
+.pass-tier-head:hover{opacity:0.85}
+.pass-tier-arrow{font-size:10px;color:var(--label-secondary);margin-left:auto;transition:transform .2s;display:inline-block}
+.pass-tier.collapsed .pass-tier-arrow{transform:rotate(-90deg)}
+.pass-tier.collapsed .pass-tier-body{display:none}
+.pass-tier-summary{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);letter-spacing:.04em;margin-left:6px}
 .pass-tier-head h2{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-primary)}
 .pass-tier-tag{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);border:1px solid var(--separator);padding:1px 5px}
 .pass-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
@@ -1499,12 +1506,46 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
   </div>
 
-  <div style="padding:10px 0 10px 0"><button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button></div>
-  <div class="ot-add">
-    <div class="ot-add-title">Add Contact</div>
+  <!-- FILTER BAR -->
+  <div class="ot-filter-bar">
+    <button class="fchip act" id="ot-chip-all" onclick="otSetChip('all',this)"><span class="fchip-lbl">All</span></button>
+    <button class="fchip" id="ot-chip-new" onclick="otSetChip('new',this)"><span class="fchip-lbl">New</span></button>
+    <button class="fchip" id="ot-chip-waiting" onclick="otSetChip('waiting',this)"><span class="fchip-lbl">Waiting</span></button>
+    <button class="fchip" id="ot-chip-confirmed" onclick="otSetChip('confirmed',this)"><span class="fchip-lbl">Confirmed</span></button>
+    <button class="fchip" id="ot-chip-closed" onclick="otSetChip('closed',this)"><span class="fchip-lbl">Closed</span></button>
+    <span style="margin-left:auto;display:flex;gap:6px;align-items:center">
+      <select class="rf-filter-sel" id="ot-role-filter" onchange="otRoleFilter(this.value)" style="font-size:11px;padding:3px 8px">
+        <option value="">All Roles</option>
+        <option value="Member of Congress">Member of Congress</option>
+        <option value="Publisher">Publisher</option>
+        <option value="Influencer">Influencer</option>
+        <option value="Media">Media</option>
+        <option value="Author">Author</option>
+        <option value="Agent">Agent</option>
+      </select>
+      <button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button>
+    </span>
+  </div>
+
+  <!-- COLLAPSIBLE ADD CONTACT FORM -->
+  <div class="inp-collapse-bar" id="ot-form-bar" onclick="otToggleForm()" style="margin-bottom:0">
+    <span style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary)">&#43; Add Contact</span>
+    <span id="ot-form-arrow" style="font-size:10px;color:var(--label-secondary);transition:transform .2s;display:inline-block">▼</span>
+  </div>
+  <div class="ot-add" id="ot-form-body" style="display:none;border-top:none;border-radius:0 0 4px 4px;margin-bottom:16px">
     <div class="ot-form">
       <input type="text" id="ot-name" placeholder="Name" />
-      <input type="text" id="ot-role" placeholder="Role / affiliation" />
+      <select id="ot-role-aff">
+        <option value="">&#8212; Role / Affiliation &#8212;</option>
+        <option value="Member of Congress">Member of Congress</option>
+        <option value="Publisher">Publisher</option>
+        <option value="Influencer">Influencer</option>
+        <option value="Media">Media</option>
+        <option value="Author">Author</option>
+        <option value="Agent">Agent</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="text" id="ot-role" placeholder="Role detail / title (optional)" />
       <select id="ot-req"><option value="">&#8212; Request type &#8212;</option><option value="Blurb">Blurb</option><option value="Foreword">Foreword</option><option value="Quote">Quote</option><option value="Interview">Interview</option><option value="Other">Other</option></select>
       <select id="ot-status"><option value="new">New</option><option value="waiting">Waiting</option><option value="confirmed">Confirmed</option><option value="closed">Closed</option><option value="rejected">Rejected</option></select>
       <select id="ot-method"><option value="">&#8212; Contact method &#8212;</option><option value="Email">Email</option><option value="Web Form">Web Form</option><option value="LinkedIn">LinkedIn</option><option value="Twitter / X">Twitter / X</option><option value="Substack">Substack</option><option value="Publisher">Through Publisher</option><option value="Direct">Direct / Known</option></select>
@@ -1522,7 +1563,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <div class="panel" id="panel-passes"><div class="passes-wrap">
   <p class="passes-intro">Trigger passes by typing the command phrase to Claude with the master uploaded. Scope is set by the command — Claude will report what is already logged clean versus open, and propose a reasonable chunk if the volume is large. Logs are written before every pack.</p>
 
-  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier A &mdash; Prose Passes</h2><span class="pass-tier-tag">Scope by command</span></div>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier A &mdash; Prose Passes</h2><span class="pass-tier-tag">Scope by command</span><span class="pass-tier-summary">12 sub-passes · voice, logic, rhythm, wit, grounding</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Triggered by prompt scope, not document structure. Run before any Tier B work on the same content. All eleven sub-passes run together unless you call one individually.</p>
     <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:140px">Sub-pass</th><th>What it covers</th></tr></thead><tbody>
       <tr><td><span class="pass-cmd">"Prose pass [scope]"</span></td><td><span class="pass-label">Full Tier A</span></td><td class="pass-desc">All eleven sub-passes on the stated scope (e.g. Ch 5, Chs 1–4, book-wide).</td></tr>
@@ -1539,9 +1580,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <tr><td><span class="pass-cmd">"Appendix tone pass"</span></td><td><span class="pass-label">A11</span></td><td class="pass-desc">Audits all appendices for register compliance. Explanatory appendices carry the full body voice standard. Catalog/reference appendices (lists, bibliography, glossary, index, templates) use a professional reference register — precise, no editorial color. Each appendix classified before auditing. Same delivery format as A9.</td></tr>
       <tr><td><span class="pass-cmd">"Grounding pass [scope]"</span></td><td><span class="pass-label">A12</span></td><td class="pass-desc">Scans for moments where the reader lacks enough context to feel the weight of what is happening — not to follow the argument, but to receive it at full force. Trigger conditions: (1) person introduced consequentially without the one or two facts that make their involvement matter; (2) institutional moment where the reader hasn't been given enough context for a departure to register as a departure; (3) historical event cited as evidence whose significance is asserted rather than grounded; (4) scale or stakes unmarked — classification level, budget figure, procedural step, or access restriction cited without context for what it enables or prevents. Each proposed addition must earn its place: does this make the reader more capable of receiving the next paragraph at full force? Additions are minimal — typically one to three sentences. A longer addition flags a structural issue for fordave. Runs after A9 and A10 are confirmed clean. Delivers review document plus one hub item per proposal. Label sequence: G-01, G-02, etc.</td></tr>
     </tbody></table>
-  </div>
+  </div></div>
 
-  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier B &mdash; Mechanical Passes</h2><span class="pass-tier-tag">Scope by command &mdash; each logs on completion</span></div>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier B &mdash; Mechanical Passes</h2><span class="pass-tier-tag">Scope by command &mdash; each logs on completion</span><span class="pass-tier-summary">7 sub-passes · formatting, citations, cross-refs, footnotes, index</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Run after Tier A is confirmed clean for the same content. Each sub-pass is discrete and writes a timestamped log entry before packing. If content is edited after a log entry, that passage is flagged for re-check at next session open.</p>
     <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:140px">Sub-pass</th><th>What it covers</th></tr></thead><tbody>
       <tr><td><span class="pass-cmd">"Formatting pass [scope]"</span></td><td><span class="pass-label">B1</span></td><td class="pass-desc">Style ID compliance, image placement rule, caption construction, section breaks, pull quote/Attribution pairs, TextOpen after subheadings, chapter structure order, two-space title normalization.</td></tr>
@@ -1552,37 +1593,43 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <tr><td><span class="pass-cmd">"URL pass"</span></td><td><span class="pass-label">B6</span></td><td class="pass-desc">Every hyperlink verified to resolve. Invisible-hyperlink rendering confirmed (color=auto, u=none, no Hyperlink style).</td></tr>
       <tr><td><span class="pass-cmd">"Index pass"</span></td><td><span class="pass-label">B7</span></td><td class="pass-desc">Run last — after all content is locked. Locator codes, bookmark naming, subentry formatting, print vs. Kindle locator styles, exclusion rules (A15, A12). Editing body content after B7 potentially invalidates locators.</td></tr>
     </tbody></table>
-  </div>
+  </div></div>
 
-  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier B — Verification Logs</h2><span class="pass-tier-tag">Project files</span></div>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier B &mdash; Verification Logs</h2><span class="pass-tier-tag">Project files</span><span class="pass-tier-summary">Citation_Verification_Log.md · CrossRef_Verification_Log.md</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Two log files are maintained as project files. Entries are written at the moment work is done — never reconstructed. Logs start clean; prior v228/229 work is not backfilled.</p>
     <table class="pass-table"><thead><tr><th style="width:240px">File</th><th>What it records</th></tr></thead><tbody>
       <tr><td><span class="pass-label">Citation_Verification_Log.md</span></td><td class="pass-desc">One entry per B2 pass: chapter(s), version, date, citations checked, source fetch result (confirmed / flagged / unreachable), agreed exceptions.</td></tr>
       <tr><td><span class="pass-label">CrossRef_Verification_Log.md</span></td><td class="pass-desc">One entry per B3 pass: scope, version, date, references verified, mismatches found and resolved.</td></tr>
     </tbody></table>
-  </div>
+  </div></div>
 
-  <div class="pass-tier"><div class="pass-tier-head"><h2>Tier C &mdash; Production Passes</h2><span class="pass-tier-tag">After Tier A + B complete</span></div>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier C &mdash; Production Passes</h2><span class="pass-tier-tag">After Tier A + B complete</span><span class="pass-tier-summary">C0 final darlings · C1 ebook · C2 print</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Run only after Tier A and B are confirmed clean for all content. C0 precedes C1 and C2.</p>
     <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:140px">Pass</th><th>What it covers</th><th style="width:110px">Status</th></tr></thead><tbody>
       <tr><td><span class="pass-cmd">"Final darlings review"</span></td><td><span class="pass-label">C0</span></td><td class="pass-desc">One full read for anything that slipped through. Minor prose only — no structural changes. Sterling final commercial assessment.</td><td></td></tr>
       <tr><td><span class="pass-cmd">"Production pass ebook"</span></td><td><span class="pass-label">C1</span></td><td class="pass-desc">Heading hierarchy, TOC integrity, front/back matter, metadata, cross-reference integrity, image resolution (72–150 DPI), table simplification, manual line break removal, hyperlink audit.</td><td><span class="pass-status ps-done">Done v230</span></td></tr>
       <tr><td><span class="pass-cmd">"Production pass print"</span></td><td><span class="pass-label">C2</span></td><td class="pass-desc">Image resolution (300 DPI), color/grayscale audit, margin/gutter (6″×9″, 1″ margins), page breaks on recto, widows/orphans, index locator style (sz=16 print override), print index completeness.</td><td><span class="pass-status ps-next">Next priority</span></td></tr>
     </tbody></table>
-  </div>
+  </div></div>
 
-  <div class="pass-tier"><div class="pass-tier-head"><h2>Session Protocol</h2><span class="pass-tier-tag">Every session</span></div>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Session Protocol</h2><span class="pass-tier-tag">Every session</span><span class="pass-tier-summary">Open · close · pre-pack gate</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <table class="pass-table"><thead><tr><th style="width:180px">When</th><th>What Claude does</th></tr></thead><tbody>
       <tr><td><span class="pass-label">Session open</span></td><td class="pass-desc">Reports in one line: what is logged clean, what is open, and what content has been touched since the last verified pass.</td></tr>
       <tr><td><span class="pass-label">Session close</span></td><td class="pass-desc">Presents continuation prompt. Reminds Dave to attach the hub JSON export at the start of the next session so any new hub items are picked up.</td></tr>
       <tr><td><span class="pass-label">Before every pack</span></td><td class="pass-desc">Writes log entry for any Tier B pass completed this session. Runs Pre-Pack Gate (sectPr integrity, style compliance, para structure, four-count).</td></tr>
     </tbody></table>
-  </div>
+  </div></div>
 
 </div></div>
 <!-- REFERENCES -->
 <div class="panel" id="panel-refs"><div class="rf-wrap">
-  <div class="rf-add inp-card" style="margin-bottom:16px">
+
+  <!-- COLLAPSIBLE ADD FORM -->
+  <div class="inp-collapse-bar" id="rf-form-bar" onclick="rfToggleForm()" style="margin-bottom:0;border-radius:10px 10px 0 0">
+    <span class="inp-collapse-label">&#43; Add Reference</span>
+    <span class="inp-collapse-chev" id="rf-form-chev">&#9660;</span>
+  </div>
+  <div class="rf-add inp-card" id="rf-form-body" style="display:none;border-top:none;border-radius:0 0 10px 10px;margin-bottom:16px">
     <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px">
       <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
         <label class="settings-lbl">Category</label>
@@ -1621,16 +1668,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
     </div>
   </div>
-  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
-    <span class="rf-filter-lbl">Filter:</span>
-    <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()"><option value="">All Tags</option></select>
-    <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
-    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+
+  <!-- CHIP FILTER BAR -->
+  <div class="filter-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0 10px 0;margin-bottom:8px;border-bottom:1px solid var(--separator);background:transparent">
+    <button class="fchip act" id="rf-chip-all" onclick="rfSetCatChip('',this)"><span class="fchip-lbl">All</span></button>
+    <button class="fchip" id="rf-chip-primary" onclick="rfSetCatChip('primary',this)"><span class="fchip-lbl">Primary</span></button>
+    <button class="fchip" id="rf-chip-substack" onclick="rfSetCatChip('substack',this)"><span class="fchip-lbl">Substacks</span></button>
+    <button class="fchip" id="rf-chip-social" onclick="rfSetCatChip('social',this)"><span class="fchip-lbl">Social/News</span></button>
+    <button class="fchip" id="rf-chip-analysis" onclick="rfSetCatChip('analysis',this)"><span class="fchip-lbl">Analysis</span></button>
+    <button class="fchip" id="rf-chip-podcast" onclick="rfSetCatChip('podcast',this)"><span class="fchip-lbl">Podcast/Video</span></button>
+    <button class="fchip" id="rf-chip-book" onclick="rfSetCatChip('book',this)"><span class="fchip-lbl">Book</span></button>
+    <span style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
+      <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
       <button class="iabtn" onclick="rfExpandAll()" style="font-size:11px;padding:4px 10px">Expand All</button>
       <button class="iabtn" onclick="rfCollapseAll()" style="font-size:11px;padding:4px 10px">Collapse All</button>
       <button class="dl-send-btn" id="rf-refresh-btn" onclick="rfRefresh()" style="height:32px;font-size:12px;padding:0 14px" title="Update Last Checked for news/current-events sources">&#8635; Refresh</button>
-    </div>
+    </span>
   </div>
+
   <div id="rf-refresh-ct" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-bottom:10px"></div>
   <div id="rf-cat-container"></div>
   <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
@@ -3940,6 +3996,17 @@ document.addEventListener('keydown',function(e){
     const ta=document.getElementById('input-ta');
     if(ta)ta.focus();
   }
+
+/* ── Cmd/Ctrl+Shift+R → open Resources add form ── */
+  if((e.metaKey||e.ctrlKey)&&e.shiftKey&&e.key==='R'){
+    e.preventDefault();
+    showTab('refs',document.getElementById('tab-refs'));
+    const body=document.getElementById('rf-form-body');
+    const chev=document.getElementById('rf-form-chev');
+    if(body&&body.style.display==='none'){body.style.display='block';if(chev)chev.className='inp-collapse-chev open';}
+    const urlEl=document.getElementById('rf-url');
+    if(urlEl)urlEl.focus();
+  }
 });
 
 
@@ -5649,6 +5716,25 @@ function toggleOTFilter(){
   if(btn){btn.className='road-open-filter-btn'+(_otShowAll?'':' active');btn.textContent=_otShowAll?'Show All':'Open Only';}
   renderOT();
 }
+let _otChipFilter='all';
+let _otRoleFilter='';
+function otSetChip(val,btn){
+  _otChipFilter=val;
+  document.querySelectorAll('#panel-outreach .fchip').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');
+  renderOT();
+}
+function otRoleFilter(val){
+  _otRoleFilter=val;
+  renderOT();
+}
+function otToggleForm(){
+  const body=document.getElementById('ot-form-body');
+  const arrow=document.getElementById('ot-form-arrow');
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.style.transform=open?'':'rotate(180deg)';
+}
 function renderOT(){
   const wrap=document.getElementById('ot-cards');
   const empty=document.getElementById('ot-empty');
@@ -5659,6 +5745,8 @@ function renderOT(){
   let out='';
   OT.forEach(c=>{
     if(!_otShowAll&&(c.status==='confirmed'||c.status==='closed'||c.status==='rejected'))return;
+    if(_otChipFilter&&_otChipFilter!=='all'&&c.status!==_otChipFilter)return;
+    if(_otRoleFilter&&!(c.role||'').toLowerCase().includes(_otRoleFilter.toLowerCase())&&c.role!==_otRoleFilter)return;
     if(c.wave&&c.wave!==lastWave){lastWave=c.wave;out+=`<div class="ot-wave-hdr">${esc(waveLabels[c.wave]||'Wave '+c.wave)}</div>`;}
     const noteCount=(c.notes||[]).length;
     const isOD=c.dueDate&&c.status!=='confirmed'&&c.status!=='closed'&&new Date(c.dueDate+'T23:59:59')<new Date();
@@ -5812,6 +5900,20 @@ function rfHideKwInput(){
   if(btn)btn.style.display='';
 }
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
+function rfToggleForm(){
+  const body=document.getElementById('rf-form-body');
+  const chev=document.getElementById('rf-form-chev');
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(chev)chev.className='inp-collapse-chev'+(open?'':' open');
+}
+let _rfCatChip='';
+function rfSetCatChip(val,btn){
+  _rfCatChip=val;
+  document.querySelectorAll('#panel-refs .fchip').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');
+  rfRender();
+}
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const cat=(document.getElementById('rf-cat-sel')||{}).value||'primary';const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),cat,kw,url,desc,lastChecked:'',lastPost:''});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
 function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
@@ -5840,6 +5942,7 @@ function rfRender(){
   var fk=(document.getElementById('rf-filter-kw')||{}).value||'';
   rfBuildKwSelects();
   var list=rfSorted(RF);if(fk)list=list.filter(function(r){return r.kw===fk;});
+  if(_rfCatChip)list=list.filter(function(r){return (r.cat||'primary')===_rfCatChip;});
   if(ct)ct.textContent=list.length+' resource'+(list.length===1?'':'s');
   var groups={};Object.keys(RF_CATS).forEach(function(c){groups[c]=[];});
   list.forEach(function(r){var c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
