@@ -1,7 +1,23 @@
 {
-  "_version": "2026-06-17T12:35:07Z",
+  "_version": "2026-06-17T13:27:25Z",
   "_schema": 1,
   "items": [
+    {
+      "id": "i_session0617_hubui",
+      "type": "note",
+      "text": "Session 2026-06-17 (hub UI pass): Major hub interface changes applied. (1) Two-section Notes layout: Project Notes + Roadmap Notes collapsible bars, both collapsed by default, filters apply to both. Roadmap section shows phases as color subheadings, tasks indented in roadmap order. (2) Glass theme made consistent throughout: all surfaces use rgba opacity vocabulary (0.75\u20130.97); items semi-transparent so photo bleeds between them; ihead transparent; pass tables readable at 0.92; footer/gantt/help all calibrated. (3) Input form defaults collapsed \u2014 click '+ New Note' bar to expand. (4) Two-row filter layout: Row 1 = status chips; Row 2 = Due Date \u00b7 Created \u00b7 Tags \u00b7 Types + right-aligned Reset \u00b7 Select \u00b7 Group (all same button size). (5) Type/tag persistence after save with 'Got it' toast on first save of session. (6) Bidirectional To Claude / fordave lock fixed. (7) Date filters expanded: due (past due, this week, this month, within N days) + created (today, this week, this month, after date). (8) List-bar stripped to near-invisible. v324 master unchanged.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-17T13:27:25Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
     {
       "id": "i_session0615a",
       "type": "note",
