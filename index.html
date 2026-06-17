@@ -1690,7 +1690,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   </div>
 
   <div id="rf-refresh-ct" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-bottom:10px"></div>
-  <div id="rf-cat-container"></div>
+  <div class="inp-collapse-bar" id="rf-master-bar" onclick="rfToggleMaster()" style="margin-bottom:8px;border-radius:8px">
+    <span class="inp-collapse-label" id="rf-master-label">&#128196; Resources</span>
+    <span class="inp-collapse-chev" id="rf-master-chev">&#9660;</span>
+  </div>
+  <div id="rf-cat-container" style="display:none"></div>
   <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
 </div></div>
 <!-- HELP -->
@@ -2592,7 +2596,7 @@ function showTab(t,btn){
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
-  if(t==='refs'){rfBuildKwSelects();rfRender();}
+  if(t==='refs'){_rfMasterCollapsed=true;const rc=document.getElementById('rf-cat-container');const rchev=document.getElementById('rf-master-chev');if(rc)rc.style.display='none';if(rchev)rchev.className='inp-collapse-chev';rfBuildKwSelects();rfRender();}
   if(t==='outreach'){OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
@@ -5876,8 +5880,24 @@ function rfToggleCat(cat){
   if(body){body.style.maxHeight=RF_CAT_COLLAPSED[cat]?'0':body.scrollHeight+500+'px';body.style.opacity=RF_CAT_COLLAPSED[cat]?'0':'1';}
   if(arrow)arrow.style.transform=RF_CAT_COLLAPSED[cat]?'rotate(-90deg)':'rotate(0deg)';
 }
-function rfExpandAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});rfSaveCollapsed();rfRender();}
-function rfCollapseAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});rfSaveCollapsed();rfRender();}
+function rfExpandAll(){
+  _rfMasterCollapsed=false;
+  const container=document.getElementById('rf-cat-container');
+  const chev=document.getElementById('rf-master-chev');
+  if(container)container.style.display='block';
+  if(chev)chev.className='inp-collapse-chev open';
+  Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});
+  rfSaveCollapsed();rfRender();
+}
+function rfCollapseAll(){
+  _rfMasterCollapsed=true;
+  const container=document.getElementById('rf-cat-container');
+  const chev=document.getElementById('rf-master-chev');
+  if(container)container.style.display='none';
+  if(chev)chev.className='inp-collapse-chev';
+  Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});
+  rfSaveCollapsed();rfRender();
+}
 async function rfRefresh(){
   const btn=document.getElementById('rf-refresh-btn');
   if(btn){btn.textContent='Checking…';btn.disabled=true;}
@@ -5904,6 +5924,14 @@ function rfHideKwInput(){
   if(btn)btn.style.display='';
 }
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
+let _rfMasterCollapsed = true;
+function rfToggleMaster(){
+  _rfMasterCollapsed = !_rfMasterCollapsed;
+  const container = document.getElementById('rf-cat-container');
+  const chev = document.getElementById('rf-master-chev');
+  if(container) container.style.display = _rfMasterCollapsed ? 'none' : 'block';
+  if(chev) chev.className = 'inp-collapse-chev' + (_rfMasterCollapsed ? '' : ' open');
+}
 function rfToggleForm(){
   const body=document.getElementById('rf-form-body');
   const chev=document.getElementById('rf-form-chev');
@@ -5948,6 +5976,8 @@ function rfRender(){
   var list=rfSorted(RF);if(fk)list=list.filter(function(r){return r.kw===fk;});
   if(_rfCatChip)list=list.filter(function(r){return (r.cat||'primary')===_rfCatChip;});
   if(ct)ct.textContent=list.length+' resource'+(list.length===1?'':'s');
+  const masterLbl=document.getElementById('rf-master-label');
+  if(masterLbl)masterLbl.textContent='\u{1F4C4} Resources — '+list.length+' item'+(list.length===1?'':'s');
   var groups={};Object.keys(RF_CATS).forEach(function(c){groups[c]=[];});
   list.forEach(function(r){var c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
   var kwS=[...RF_KW].sort(naturalSort);
