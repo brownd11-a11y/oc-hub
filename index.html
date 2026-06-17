@@ -292,7 +292,7 @@ body::before{display:none}
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1}
+.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1;padding-bottom:36px}
 .panel.active{display:block}
 
 /* ── NOTES INPUT (Apple light) ── */
@@ -1366,9 +1366,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <div id="list"></div>
   </div>
-  <div class="ftr">
-    <span>2026-06-09 &middot; ISBNs: 979-8-9964101-0-1 ebook &middot; -1-8 hc &middot; -2-5 pb</span>
-  </div>
+
 </div>
 <!-- ROADMAP PANEL -->
 <div class="panel active" id="panel-roadmap">
@@ -2595,7 +2593,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRender();}
-  if(t==='outreach'&&S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}
+  if(t==='outreach'){OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
 }
@@ -7230,7 +7228,7 @@ function ingestLeads(newLeads) {
   </div>
 </div>
 
-<div style="position:relative;z-index:2;text-align:center;padding:18px 20px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;color:rgba(0,0,0,0.35);border-top:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.70);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+<div id="site-footer" style="position:fixed;bottom:0;left:0;right:0;z-index:50;text-align:center;padding:7px 20px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.07em;color:rgba(0,0,0,0.40);border-top:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
   &copy; David R. Brown &nbsp;&middot;&nbsp; Hilton Head Island, South Carolina &nbsp;&middot;&nbsp; <em>Over&#8209;Classified</em> &nbsp;&middot;&nbsp; Vigilia Press &nbsp;&middot;&nbsp; info@vigiliapress.com
 </div>
 
