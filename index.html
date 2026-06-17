@@ -254,6 +254,15 @@ body::before{display:none}
 /* ── NOTES INPUT (Apple light) ── */
 .inp-wrap{background:var(--page-bg);border-bottom:1px solid var(--separator);padding:14px 32px 16px}
 .inp-card{background:var(--card-bg);border:1.5px solid var(--separator);border-radius:10px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+/* Collapsible input form */
+.inp-collapse-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:var(--card-bg);border:1.5px solid var(--separator);border-radius:10px;cursor:pointer;user-select:none;transition:background .15s}
+.inp-collapse-bar:hover{background:var(--page-bg)}
+.inp-collapse-label{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)}
+.inp-collapse-chev{font-size:12px;color:var(--label-secondary);transition:transform .2s}
+.inp-collapse-chev.open{transform:rotate(180deg)}
+/* Glass add button */
+.inp-add{background:rgba(61,90,153,0.12);color:var(--accent);border:1.5px solid rgba(61,90,153,0.3);cursor:pointer;font-size:18px;padding:0 16px;align-self:stretch;transition:all .15s;font-family:'Source Code Pro',monospace;border-radius:8px;flex-shrink:0;min-width:46px;backdrop-filter:blur(4px)}
+.inp-add:hover{background:rgba(61,90,153,0.22);border-color:var(--accent);color:var(--accent);box-shadow:0 2px 8px rgba(61,90,153,0.18)}
 .inp-top{display:flex;gap:10px;align-items:flex-start}
 .inp-ta{flex:1;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.5;color:var(--label-primary);background:var(--page-bg);border:1px solid var(--separator);border-radius:6px;padding:9px 13px;resize:vertical;min-height:64px;outline:none;transition:border-color .15s}
 .inp-ta:focus{border-color:var(--accent)}
@@ -1121,13 +1130,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
     <div class="fchip-sep"></div>
     <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date">
-      <option value="">— Due —</option>
+      <option value="">— Due Date —</option>
       <option value="attention">Past due &amp; today</option>
+      <option value="week">Due this week</option>
+      <option value="month">Due this month</option>
       <option value="custom">Within N days…</option>
     </select>
     <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px">
       <input type="number" id="due-custom-days" min="1" max="365" value="7" style="width:52px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none" onchange="setDueFilter('custom')">
       <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">days</span>
+    </span>
+    <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by created date">
+      <option value="">— Created —</option>
+      <option value="today">Created today</option>
+      <option value="week">Created this week</option>
+      <option value="month">Created this month</option>
+      <option value="custom">Created after…</option>
+    </select>
+    <span id="created-custom-wrap" style="display:none;align-items:center;gap:4px">
+      <input type="date" id="created-custom-date" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none" onchange="setCreatedFilter('custom')">
     </span>
     <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
       <option value="">All Tags</option>
@@ -1173,7 +1194,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- NOTES PANEL -->
 <div class="panel" id="panel-notes">
-  <div class="inp-wrap"><div class="inp-card">
+  <div class="inp-wrap" id="inp-wrap">
+  <!-- Collapse bar — always visible -->
+  <div class="inp-collapse-bar" id="inp-collapse-bar" onclick="toggleInputForm()" title="Show/hide input form">
+    <span class="inp-collapse-label">&#43; New Note</span>
+    <span class="inp-collapse-chev open" id="inp-collapse-chev">&#9660;</span>
+  </div>
+  <!-- Collapsible body -->
+  <div id="inp-collapse-body" style="margin-top:8px">
+  <div class="inp-card">
     <!-- Row 1: action toggles + text area + add button -->
     <div style="display:flex;gap:10px;align-items:flex-start">
       <!-- Action toggles: Flow, Reminder, Priority — compose-time decisions -->
@@ -1193,7 +1222,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <input id="input-url" type="text" placeholder="https://… or Word bookmark (e.g. ref_3_5_31) or plain label" />
         </div>
       </div>
-      <button class="inp-add" onclick="addItem()" title="Add item (Cmd/Ctrl+Enter)">+</button>
+      <button class="inp-add" onclick="addItem()" title="Save note (Cmd/Ctrl+Enter)">&#43;</button>
     </div>
     <!-- Reminder due date row (hidden until reminder toggled on) -->
     <div class="rem-due-row" id="rem-due-row" style="display:none">
@@ -1244,13 +1273,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <input type="text" id="rmst-start" placeholder="Start YYYY-MM-DD" class="inp-ta" style="width:130px;padding:5px 8px;font-size:11px;border-radius:5px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);display:none" title="Target start date">
       <input type="text" id="rmst-end" placeholder="End YYYY-MM-DD" class="inp-ta" style="width:130px;padding:5px 8px;font-size:11px;border-radius:5px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);display:none" title="Target end date">
     </div>
-  </div></div>
+  </div></div><!-- end inp-card + inp-collapse-body -->
+  </div><!-- end inp-wrap -->
   <div class="list-wrap">
         <div class="list-bar">
       <span class="list-ct" id="list-count"></span>
       <button class="list-bar-btn" onclick="collapseAll()" title="Collapse all items">&#9650; Collapse</button>
       <button class="list-bar-btn" onclick="expandAll()" title="Expand all items">&#9660; Expand</button>
       <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on">&#9745; Select</button>
+      <button class="list-bar-btn" onclick="toggleInputForm()" id="inp-form-toggle-btn" title="Show/hide input form" style="margin-left:4px">&#9651; Form</button>
       <span id="rm-collapse-controls" style="display:none;margin-left:8px;display:none;gap:6px;align-items:center">
         <button class="list-bar-btn" id="rm-collapse-btn" onclick="rmCollapsePhases()" title="Collapse to phases only">&#9650; Phases only</button>
         <button class="list-bar-btn" id="rm-expand-btn" onclick="rmExpandPhases()" title="Expand all phases">&#9660; Expand all</button>
@@ -2144,7 +2175,9 @@ let inputRepeatOn=false; // Repeat toggle
 let inputStatusDeferred=false;
 let inputPriLevel=0;    // 0=low, 1=medium, 2=high
 let lastTag='';         // remembers last-used tag
+let lastType='note';    // remembers last-used note type
 let _sessionTagSet=false; // true once user has set a tag this session
+let _sessionFirstSave=false; // true once first item saved this session (triggers persist toast)
 let mtrSourceId=null;   // item being moved to roadmap
 
 /* ── REPEAT SYSTEM ── */
@@ -2437,7 +2470,7 @@ function showTab(t,btn){
   // Swap per-tab background photo
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
-  if(t==='notes'){fSt='open';fReminder=false;fDue=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';}
+  if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRender();}
   if(t==='outreach'&&S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}
@@ -2599,9 +2632,18 @@ function setDueFilter(v){
   if (wrap) wrap.style.display = (v === 'custom') ? 'flex' : 'none';
   render();
 }
-function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;fDue=null;
+let fCreated = null;
+function setCreatedFilter(v){
+  fCreated = v || null;
+  const wrap = document.getElementById('created-custom-wrap');
+  if (wrap) wrap.style.display = (v === 'custom') ? 'flex' : 'none';
+  render();
+}
+function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;fDue=null;fCreated=null;
   const df=document.getElementById('due-filter');if(df)df.value='';
   const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';
+  const cf=document.getElementById('created-filter');if(cf)cf.value='';
+  const cwrap=document.getElementById('created-custom-wrap');if(cwrap)cwrap.style.display='none';
   render();
 }
 function iVis(it){
@@ -2618,14 +2660,43 @@ function iVis(it){
   // Due filter — stacks with status filter
   if(fDue){
     const today=todayStr();
+    const now=new Date();
     if(fDue==='attention'){
-      // Past due + due today: dueDate must be set and <= today
       if(!it.dueDate||it.dueDate>today)return false;
+    } else if(fDue==='week'){
+      const cutoff=new Date(now);cutoff.setDate(cutoff.getDate()+7);
+      const cutoffStr=cutoff.toISOString().slice(0,10);
+      if(!it.dueDate||it.dueDate<today||it.dueDate>cutoffStr)return false;
+    } else if(fDue==='month'){
+      const cutoff=new Date(now);cutoff.setMonth(cutoff.getMonth()+1);
+      const cutoffStr=cutoff.toISOString().slice(0,10);
+      if(!it.dueDate||it.dueDate<today||it.dueDate>cutoffStr)return false;
     } else if(fDue==='custom'){
       const days=parseInt(document.getElementById('due-custom-days')?.value||7);
       const cutoff=new Date();cutoff.setDate(cutoff.getDate()+days);
       const cutoffStr=cutoff.toISOString().slice(0,10);
       if(!it.dueDate||it.dueDate>cutoffStr)return false;
+    }
+  }
+  // Created date filter
+  if(fCreated){
+    const created=it.created?it.created.slice(0,10):null;
+    const today=todayStr();
+    const now=new Date();
+    if(!created)return false;
+    if(fCreated==='today'){
+      if(created!==today)return false;
+    } else if(fCreated==='week'){
+      const weekAgo=new Date(now);weekAgo.setDate(weekAgo.getDate()-7);
+      const weekAgoStr=weekAgo.toISOString().slice(0,10);
+      if(created<weekAgoStr)return false;
+    } else if(fCreated==='month'){
+      const monthAgo=new Date(now);monthAgo.setMonth(monthAgo.getMonth()-1);
+      const monthAgoStr=monthAgo.toISOString().slice(0,10);
+      if(created<monthAgoStr)return false;
+    } else if(fCreated==='custom'){
+      const cutoffDate=document.getElementById('created-custom-date')?.value;
+      if(cutoffDate&&created<cutoffDate)return false;
     }
   }
   return true;
@@ -3169,6 +3240,20 @@ function undoToastHide() {
   if (toast) toast.style.display = 'none';
 }
 
+/* ── PERSIST TOAST: shown once per session after first save ── */
+function showPersistToast() {
+  let toast = document.getElementById('persist-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'persist-toast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:flex;align-items:center;gap:14px;white-space:nowrap';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = '<span>&#128204; Note type and tag will stay the same until you change them</span>'
+    + '<button onclick="document.getElementById(\'persist-toast\').style.display=\'none\'" style="font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);color:#fff;padding:3px 12px;border-radius:5px;cursor:pointer">Got it</button>';
+  toast.style.display = 'flex';
+}
+
 function togDone(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush((it.done?'Mark open: ':'Mark done: ')+(it.text||'').slice(0,40));
@@ -3550,6 +3635,18 @@ function toggleFlow(){
   }
   else{btn.className='flow-toggle off';btn.innerHTML='&#9675; To Claude';}
 }
+
+/* ── COLLAPSIBLE INPUT FORM ── */
+let _inpFormOpen = true;
+function toggleInputForm() {
+  _inpFormOpen = !_inpFormOpen;
+  const body = document.getElementById('inp-collapse-body');
+  const chev = document.getElementById('inp-collapse-chev');
+  const btn  = document.getElementById('inp-form-toggle-btn');
+  if (body) body.style.display = _inpFormOpen ? 'block' : 'none';
+  if (chev) { chev.className = 'inp-collapse-chev' + (_inpFormOpen ? ' open' : ''); }
+  if (btn)  btn.innerHTML = (_inpFormOpen ? '&#9651; Form' : '&#9661; Form');
+}
 function toggleReminder(){
   inputIsReminder=!inputIsReminder;
   const btn=document.getElementById('rem-toggle');
@@ -3629,10 +3726,11 @@ const addItem=function(){
     // Don't block — let the item save without a tag, but mark session as prompted
     _sessionTagSet=true; // suppress repeat prompt after first item
   }
-  // Remember last tag and add to KW if new
+  // Remember type and tag for persistence
   if(tag){lastTag=tag;_sessionTagSet=true;kwHandleInput(tag);}
-  const dueDate=inputIsReminder?(document.getElementById('input-due').value||''):'';
-  const urlRaw=(document.getElementById('input-url')?.value||'').trim();
+  lastType=type; // always persist the type used
+
+  const dueDate=inputIsReminder?(document.getElementById('input-due').value||''):'';  const urlRaw=(document.getElementById('input-url')?.value||'').trim();
   const priority=inputPriLevel>=2?true:(inputPriLevel===1?'medium':false);
   // Repeat settings
   let repeatObj = null;
@@ -3663,18 +3761,28 @@ const addItem=function(){
     itemUrl:urlRaw||null,
     repeat:repeatObj
   });
-  // Reset form
+  // Reset form — restore persistent type and tag
   ta.value='';
-  document.getElementById('input-type').value='note';
-  // Restore last tag in input
+  // Restore last type (persistence)
+  const typeInp=document.getElementById('input-type');
+  if(typeInp){typeInp.value=lastType;onInputTypeChange(lastType);}
+  // Restore last tag
   const tagInp=document.getElementById('input-tag');
   if(lastTag&&tagInp)tagInp.value=lastTag;
   document.getElementById('input-url').value='';
   document.getElementById('input-due').value='';
   if(document.getElementById('input-due-time'))document.getElementById('input-due-time').value='';
-  // Keep flow/status/reminder/pri at their current state (sticky) — only reset reminder
+  // Keep flow/status/reminder/pri at their current state (sticky) — only reset reminder/repeat
   if(inputIsReminder){inputIsReminder=false;document.getElementById('rem-toggle').className='rem-toggle';document.getElementById('rem-toggle').innerHTML='&#128276; Reminder';document.getElementById('rem-due-row').style.display='none';}
   if(inputRepeatOn){inputRepeatOn=false;const rb=document.getElementById('rep-toggle');if(rb){rb.className='rep-toggle';rb.innerHTML='&#8635; Repeat';}document.getElementById('rep-config-row').style.display='none';}
+  // Persist toast: show once per session after first save
+  if(!_sessionFirstSave&&!sessionStorage.getItem('oc_persist_toast_shown')){
+    _sessionFirstSave=true;
+    sessionStorage.setItem('oc_persist_toast_shown','1');
+    showPersistToast();
+  } else {
+    _sessionFirstSave=true;
+  }
   save();render();
 }
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
@@ -6288,12 +6396,11 @@ function onInputTypeChange(val) {
   } else {
     row.style.display = 'none';
   }
-  // Auto-activate To Claude when fordave is selected
-  const btn = document.getElementById('flow-toggle');
+  // Bidirectional lock: fordave ↔ To Claude toggle
   if (val === 'fordave') {
-    if (btn && !btn.classList.contains('on')) toggleFlow();
+    if (!inputFlowOn) toggleFlow();
   } else {
-    if (btn && btn.classList.contains('on')) toggleFlow();
+    if (inputFlowOn) toggleFlow();
   }
   // Show/hide custom type field
   const ntInp = document.getElementById('input-type-new');
