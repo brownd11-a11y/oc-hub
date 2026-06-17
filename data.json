@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-17T12:28:16Z",
+  "_version": "2026-06-17T12:35:07Z",
   "_schema": 1,
   "items": [
     {
@@ -2433,7 +2433,7 @@
       "id": "i_hub_data_file",
       "type": "fordave",
       "text": "Architecture: Move hub data to separate data.json on GitHub. HTML file = app code only (rarely changes). data.json = all notes/roadmap/outreach (changes every session). Any device fetches data.json on load \u2014 no localStorage conflicts across devices. Claude pushes only data.json at session end. Meaningful refactor \u2014 defer until after interface is stable.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "hubui",
@@ -2442,7 +2442,7 @@
       "dialogue": null,
       "created": "2026-06-14T16:00:00.000Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
@@ -2792,7 +2792,7 @@
       "id": "i_1781352881423",
       "type": "note",
       "text": "Step 4 \u2014 Remove custom domain from GitHub Pages\n\nGo to github.com \u2192 brownd11-a11y/oc-hub \u2192 Settings \u2192 Pages \u2192 Custom domain \u2192 clear the field and Save. This stops GitHub from intercepting over-classified.com traffic. Hub push workflow is unchanged \u2014 Claude still pushes index.html to the same GitHub repo; Vercel redeploys automatically on every push.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": null,
@@ -2801,14 +2801,14 @@
       "dialogue": null,
       "created": "2026-06-13T12:14:41.423Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": "roadmap:rph_vercel_s4"
     },
     {
       "id": "i_1781352861064",
       "type": "note",
       "text": "Step 3 \u2014 Add CNAME at your DNS registrar\n\nLog in to wherever you bought over-classified.com \u2192 DNS settings \u2192 Add record: Type=CNAME, Name=hub, Value=paste what Vercel gave you in Step 2. Save. Takes up to 1 hour to propagate. Hub will then be live at hub.over-classified.com.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": null,
@@ -2817,14 +2817,14 @@
       "dialogue": null,
       "created": "2026-06-13T12:14:21.064Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": "roadmap:rph_vercel_s3"
     },
     {
       "id": "i_1781352822108",
       "type": "note",
       "text": "Step 2 \u2014 Assign hub.over-classified.com in Vercel\n\nIn your new Vercel project \u2192 Settings \u2192 Domains \u2192 Add: hub.over-classified.com. Vercel will show you a CNAME value to copy (looks like: cname.vercel-dns.com). Leave this tab open.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "hubui",
@@ -2833,14 +2833,14 @@
       "dialogue": null,
       "created": "2026-06-13T12:13:42.108Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": "roadmap:rph_vercel_s2"
     },
     {
       "id": "i_1781352771114",
       "type": "note",
       "text": "Step 1 \u2014 Create Vercel account & import oc-hub repo\n\nGo to vercel.com \u2192 Sign Up \u2192 Continue with GitHub \u2192 Import the brownd11-a11y/oc-hub repository. No settings to change \u2014 Vercel detects it is a static site automatically. Click Deploy. Copy/paste block: vercel.com/new",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": null,
@@ -2849,7 +2849,7 @@
       "dialogue": null,
       "created": "2026-06-13T12:12:51.114Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": "roadmap:rph_vercel_s1"
     },
     {
@@ -7971,7 +7971,7 @@
       "id": "i_1781692652539",
       "type": "fordave",
       "text": "Voice style pass \u2014 dry wit injection: develop prompt for occasional dry humor or wit, e.g. after AARO limitations: 'Apparently, it's easier to keep a secret if you can keep it from yourself.' Deferred until after current voice pass complete.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "hubui",
@@ -7986,14 +7986,14 @@
       ],
       "created": "2026-06-17T10:37:32.539Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
       "id": "i_hub_localstorage_sync_flag",
       "type": "fordave",
       "text": "Hub localStorage/GitHub sync workflow fix needed.\n\nTWO PROBLEMS:\n1. When localStorage _version is newer than data.json, Claude's tag/field pushes are silently ignored \u2014 browser keeps showing stale data.\n2. Items added in the browser (localStorage-only) can be overwritten when GitHub wins the version check.\n\nFIX NEEDED:\n(A) Claude must always bump _version to current UTC time on every push \u2014 guarantees GitHub wins.\n(B) Pre-push reconciliation step: before Claude pushes, merge any localStorage-only items (new items not yet in data.json) into the payload, so they survive the overwrite.\n\nDefer until hub workflow improvement session.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "hubui",
@@ -8008,7 +8008,7 @@
       ],
       "created": "2026-06-17T10:52:43Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
@@ -8017,7 +8017,7 @@
       "title": "Hub UI: Add A10 Wry Wit Pass and A11 Appendix Tone Pass to Help tab passes section",
       "answer": "Add A10 Wry Wit Pass (wit pass [scope]) and A11 Appendix Tone Pass (appendix tone pass) to the Help tab Tier A passes list. Per PI update agreed June 17 session.",
       "keywords": "hubui",
-      "done": false,
+      "done": true,
       "createdAt": "2026-06-17T12:09:42Z",
       "dialogue": [
         {
@@ -8025,7 +8025,8 @@
           "text": "Add A10 Wry Wit Pass (wit pass [scope]) and A11 Appendix Tone Pass (appendix tone pass) to the Help tab Tier A passes list. Per PI update agreed June 17 session.",
           "date": "2026-06-17T12:09:42Z"
         }
-      ]
+      ],
+      "completedDate": "2026-06-17"
     },
     {
       "id": "i_178169818212402",
