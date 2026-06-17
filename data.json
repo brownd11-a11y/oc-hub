@@ -7108,7 +7108,9 @@
           "text": "DONE v323: Paras 1083+1091 openers varied as proposed. G9 (anaphora) left as written — confirm close.",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_01] Part 3 rhythm edit — DONE v323: Paras 1083+1091 openers varied as proposed. G9 (anaphora) left as wri"
     },
     {
       "id": "vp3_r_02",
@@ -7133,7 +7135,9 @@
           "text": "DONE v323: Paras 1195+1196 openers varied as proposed.",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_02] Part 3 rhythm edit — DONE v323: Paras 1195+1196 openers varied as proposed."
     },
     {
       "id": "vp3_r_03",
@@ -7158,7 +7162,9 @@
           "text": "DONE v323: Para 1332 opener changed to 'Its authors are careful to note…'",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_03] Part 3 rhythm edit — DONE v323: Para 1332 opener changed to 'Its authors are careful to note…'"
     },
     {
       "id": "vp3_r_04",
@@ -7183,7 +7189,9 @@
           "text": "DONE v323: Para 1354 restructured with Vallée 'absurdity' framing as proposed.",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_04] Part 3 rhythm edit — DONE v323: Para 1354 restructured with Vallée 'absurdity' framing as proposed."
     },
     {
       "id": "vp3_r_05",
@@ -7208,7 +7216,9 @@
           "text": "DONE v323: Para 1466 closing tightened — 'Brookings described societies…' version applied.",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_05] Part 3 rhythm edit — DONE v323: Para 1466 closing tightened — 'Brookings described societies…' versio"
     },
     {
       "id": "vp3_r_06",
@@ -7233,7 +7243,9 @@
           "text": "DONE v323: Para 1481 opener changed to 'No model plan for managed disclosure exists in the literature.'",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_06] Part 3 rhythm edit — DONE v323: Para 1481 opener changed to 'No model plan for managed disclosure exi"
     },
     {
       "id": "vp3_r_07",
@@ -7258,7 +7270,9 @@
           "text": "DONE v323: 'The scope of this issue is substantial.' deleted; folded into 'Animal mutilation as a documented phenomenon…'",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_07] Part 3 rhythm edit — DONE v323: 'The scope of this issue is substantial.' deleted; folded into 'Anima"
     },
     {
       "id": "vp3_r_08",
@@ -7283,7 +7297,9 @@
           "text": "DONE v323: Para 1174 second sentence varied to 'Unlike the preceding sections…'",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_08] Part 3 rhythm edit — DONE v323: Para 1174 second sentence varied to 'Unlike the preceding sections…'"
     },
     {
       "id": "vp3_r_09",
@@ -7308,7 +7324,9 @@
           "text": "DONE v323: Left as written (intentional anaphora). Please Accept to close, or Reply if you want one opener varied.",
           "ts": "2026-06-17T01:51:02Z"
         }
-      ]
+      ],
+      "tag": "part3",
+      "text": "[vp3_r_09] Part 3 rhythm edit — DONE v323: Left as written (intentional anaphora). Please Accept to close, or Re"
     },
     {
       "id": "vp2_c9_01",
@@ -7876,6 +7894,50 @@
       "itemUrl": null,
       "memFlag": false,
       "priority": false
+    },
+    {
+      "id": "i_1781692767697",
+      "type": "fordave",
+      "text": "Hub UI — toolbar layout: move Select up with Collapse/Expand, or move Collapse/Expand down with Select. Remove redundant individual collapse/expand icons from group bar since they duplicate the group chevron. Clean up vertical spacing.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "I think we need to move the \"Select choice\" up above the input form...",
+          "ts": "2026-06-17T10:39:27.695Z"
+        }
+      ],
+      "created": "2026-06-17T10:39:27.697Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "i_1781692652539",
+      "type": "fordave",
+      "text": "Voice style pass — dry wit injection: develop prompt for occasional dry humor or wit, e.g. after AARO limitations: 'Apparently, it's easier to keep a secret if you can keep it from yourself.' Deferred until after current voice pass complete.",
+      "done": false,
+      "priority": false,
+      "memFlag": true,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "I want to work on a voice prompt for the next pass...",
+          "ts": "2026-06-17T10:37:32.537Z"
+        }
+      ],
+      "created": "2026-06-17T10:37:32.539Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
     }
   ],
   "road": [
