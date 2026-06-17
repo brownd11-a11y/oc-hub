@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-17T12:09:42Z",
+  "_version": "2026-06-17T12:26:04Z",
   "_schema": 1,
   "items": [
     {
@@ -2696,7 +2696,7 @@
       "id": "i_1781350416562",
       "type": "fordave",
       "text": "Look for the Eric Burlison quote in the June 9 press conference regarding Grusch and Gallaudet being the most important figures in this matter because they had to endure an &#x201C;avalanche of stress&#x201D; and see where we can use that in the book. It seems like a very powerful statement by Burlison that we should not let go by. Thoughts?",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": null,
@@ -2731,7 +2731,7 @@
       ],
       "created": "2026-06-13T11:33:36.562Z",
       "dueDate": "",
-      "completedDate": "",
+      "completedDate": "2026-06-17",
       "itemUrl": null
     },
     {
@@ -7094,7 +7094,7 @@
         "ch11",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Paras 1083+1091 openers varied as proposed. G9 (anaphora) left as written \u2014 confirm close.",
       "dialogue": [
@@ -7110,7 +7110,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_01] Part 3 rhythm edit \u2014 DONE v323: Paras 1083+1091 openers varied as proposed. G9 (anaphora) left as wri"
+      "text": "[vp3_r_01] Part 3 rhythm edit \u2014 DONE v323: Paras 1083+1091 openers varied as proposed. G9 (anaphora) left as wri",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_02",
@@ -7121,7 +7122,7 @@
         "ch12",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Paras 1195+1196 openers varied as proposed.",
       "dialogue": [
@@ -7137,7 +7138,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_02] Part 3 rhythm edit \u2014 DONE v323: Paras 1195+1196 openers varied as proposed."
+      "text": "[vp3_r_02] Part 3 rhythm edit \u2014 DONE v323: Paras 1195+1196 openers varied as proposed.",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_03",
@@ -7148,7 +7150,7 @@
         "ch13",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Para 1332 opener changed to 'Its authors are careful to note\u2026'",
       "dialogue": [
@@ -7164,7 +7166,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_03] Part 3 rhythm edit \u2014 DONE v323: Para 1332 opener changed to 'Its authors are careful to note\u2026'"
+      "text": "[vp3_r_03] Part 3 rhythm edit \u2014 DONE v323: Para 1332 opener changed to 'Its authors are careful to note\u2026'",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_04",
@@ -7175,7 +7178,7 @@
         "ch13",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Para 1354 restructured with Vall\u00e9e 'absurdity' framing as proposed.",
       "dialogue": [
@@ -7191,7 +7194,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_04] Part 3 rhythm edit \u2014 DONE v323: Para 1354 restructured with Vall\u00e9e 'absurdity' framing as proposed."
+      "text": "[vp3_r_04] Part 3 rhythm edit \u2014 DONE v323: Para 1354 restructured with Vall\u00e9e 'absurdity' framing as proposed.",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_05",
@@ -7202,7 +7206,7 @@
         "ch15",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Para 1466 closing tightened \u2014 'Brookings described societies\u2026' version applied.",
       "dialogue": [
@@ -7218,7 +7222,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_05] Part 3 rhythm edit \u2014 DONE v323: Para 1466 closing tightened \u2014 'Brookings described societies\u2026' versio"
+      "text": "[vp3_r_05] Part 3 rhythm edit \u2014 DONE v323: Para 1466 closing tightened \u2014 'Brookings described societies\u2026' versio",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_06",
@@ -7229,7 +7234,7 @@
         "ch15",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Para 1481 opener changed to 'No model plan for managed disclosure exists in the literature.'",
       "dialogue": [
@@ -7245,7 +7250,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_06] Part 3 rhythm edit \u2014 DONE v323: Para 1481 opener changed to 'No model plan for managed disclosure exi"
+      "text": "[vp3_r_06] Part 3 rhythm edit \u2014 DONE v323: Para 1481 opener changed to 'No model plan for managed disclosure exi",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_07",
@@ -7256,7 +7262,7 @@
         "ch12",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: 'The scope of this issue is substantial.' deleted; folded into 'Animal mutilation as a documented phenomenon\u2026'",
       "dialogue": [
@@ -7272,7 +7278,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_07] Part 3 rhythm edit \u2014 DONE v323: 'The scope of this issue is substantial.' deleted; folded into 'Anima"
+      "text": "[vp3_r_07] Part 3 rhythm edit \u2014 DONE v323: 'The scope of this issue is substantial.' deleted; folded into 'Anima",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_08",
@@ -7283,7 +7290,7 @@
         "ch12",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Para 1174 second sentence varied to 'Unlike the preceding sections\u2026'",
       "dialogue": [
@@ -7299,7 +7306,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_08] Part 3 rhythm edit \u2014 DONE v323: Para 1174 second sentence varied to 'Unlike the preceding sections\u2026'"
+      "text": "[vp3_r_08] Part 3 rhythm edit \u2014 DONE v323: Para 1174 second sentence varied to 'Unlike the preceding sections\u2026'",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp3_r_09",
@@ -7310,7 +7318,7 @@
         "ch13",
         "voice-pass"
       ],
-      "done": false,
+      "done": true,
       "dueDate": "2026-06-17",
       "answer": "DONE v323: Left as written (intentional anaphora). Please Accept to close, or Reply if you want one opener varied.",
       "dialogue": [
@@ -7326,7 +7334,8 @@
         }
       ],
       "tag": "part3",
-      "text": "[vp3_r_09] Part 3 rhythm edit \u2014 DONE v323: Left as written (intentional anaphora). Please Accept to close, or Re"
+      "text": "[vp3_r_09] Part 3 rhythm edit \u2014 DONE v323: Left as written (intentional anaphora). Please Accept to close, or Re",
+      "completedDate": "2026-06-17"
     },
     {
       "id": "vp2_c9_01",
