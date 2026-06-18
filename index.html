@@ -1387,8 +1387,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div class="gpill-sep"></div>
       <button class="gpill active" id="road-open-btn" onclick="toggleRoadOpenFilter()">Open</button>
       <div class="gpill-sep"></div>
-      <button class="gpill" onclick="roadExpandAll()" title="Expand all phases">&#9654; Expand</button>
-      <button class="gpill" onclick="roadCollapseAll()" title="Collapse all phases">&#9664; Collapse</button>
+      <button class="gpill" id="road-expand-btn" onclick="roadExpandAll()" title="Expand one level">&#9654; Expand</button>
+      <button class="gpill" id="road-collapse-btn" onclick="roadCollapseAll()" title="Collapse one level">&#9664; Collapse</button>
     </div>
     <!-- Row 2: add buttons + summary -->
     <div class="gantt-toolbar">
@@ -2406,7 +2406,7 @@ function tovToggleRepeat() {
 }
 let mtrType='phase';    // phase|task|gate
 let sectionOpen={gantt:true,tasklist:true};
-let roadLevel=2; // 0=closed,1=phases,2=full
+let roadLevel=0; // 0=closed,1=phases,2=full
 let roadOpenFilter=true; // true = show only incomplete phases
 
 /* ── DATA LOADING — GitHub-first, localStorage fallback, seed last resort ── */
@@ -2610,7 +2610,7 @@ function showTab(t,btn){
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
-  if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});renderGantt();setTimeout(()=>ganttScrollToday(),100);}
+  if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){_rfMasterCollapsed=true;const rc=document.getElementById('rf-cat-container');const rchev=document.getElementById('rf-master-chev');if(rc)rc.style.display='none';if(rchev)rchev.className='inp-collapse-chev';rfBuildKwSelects();rfRender();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
@@ -3750,9 +3750,20 @@ function inpTaToggle(){
   if(isExp){ta.classList.remove('expanded');if(sm)sm.textContent='\u25bc Show more';}
   else{ta.classList.add('expanded');if(sm)sm.textContent='\u25b2 Show less';}
 }
-/* ── ROADMAP COLLAPSE/EXPAND ALL ── */
-function roadCollapseAll(){(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});save();renderGantt();}
-function roadExpandAll(){(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=true;});save();renderGantt();}
+/* ── ROADMAP COLLAPSE/EXPAND ALL — 3 levels ── */
+// Level 0: all phases hidden (fully collapsed — show only header bar)
+// Level 1: phases visible, tasks hidden
+// Level 2: phases visible, tasks visible
+function roadCollapseAll(){
+  // If currently at level 1 (phases showing, tasks hidden), go to level 0
+  // If at level 2, go to level 1 first
+  if(roadLevel===2){setRoadLevel(1);}
+  else{setRoadLevel(0);}
+}
+function roadExpandAll(){
+  if(roadLevel===0){setRoadLevel(1);}
+  else{setRoadLevel(2);}
+}
 
 /* ── BATCH SELECT ── */
 let _batchMode=false;
@@ -4295,6 +4306,11 @@ function renderGantt(){
 
   // ── Phase + task rows ──
   const showTasks = roadLevel >= 2;
+  if(roadLevel===0){
+    // Fully collapsed — show a summary bar only
+    const openPhases=(S.road||[]).filter(r=>r.kind==='phase'&&(!roadOpenFilter||roadSteps(r.id).some(s=>!s.done)||roadGates(r.id).some(g=>!g.met)));
+    html+=`<div style="padding:14px 16px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);letter-spacing:.06em;text-align:center;opacity:.7">${openPhases.length} phases hidden &mdash; press &#9654; Expand to show</div>`;
+  } else {
   phases.forEach((ph,phIdx)=>{
     // Ensure color assigned
     if(!ph.color)ph.color=rainbowColor(phIdx);
@@ -4467,6 +4483,7 @@ function renderGantt(){
       html+=`</div>`;
     }
   });
+  } // end else (roadLevel > 0)
 
   // Write to DOM
   const inner=document.getElementById('gantt-scroll-inner');
@@ -4502,13 +4519,22 @@ function ganttScrollToday(){
 /* ── GANTT COLLAPSE LEVELS ── */
 function setRoadLevel(level){
   roadLevel=level;
-  // Update pill active states — only rcl-1 and rcl-2 exist now
+  // Update pill active states — rcl-1 and rcl-2
   [1,2].forEach(l=>{
     const btn=document.getElementById('rcl-'+l);
     if(btn)btn.className='gpill'+(l===level?' active':'');
   });
-  // level 1 = phases+gates only (collapse tasks); level 2 = full
+  // level 0 = fully hidden (no phase rows rendered)
+  // level 1 = phases+gates only (collapse tasks)
+  // level 2 = full
   S.road.forEach(r=>{if(r.kind==='phase')r.open=(level>=2);});
+  // Update expand/collapse button labels to show next action
+  const expBtn=document.getElementById('road-expand-btn');
+  const colBtn=document.getElementById('road-collapse-btn');
+  if(expBtn)expBtn.textContent=level===0?'▶ Phases':level===1?'▶ Expand':'▶ Expand';
+  if(colBtn)colBtn.textContent=level===2?'◀ Phases':level===1?'◀ Hide':'◀ Hide';
+  if(expBtn)expBtn.disabled=(level===2);
+  if(colBtn)colBtn.disabled=(level===0);
   renderGantt();
 }
 
