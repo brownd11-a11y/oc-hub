@@ -2577,6 +2577,17 @@ async function loadFromGitHub() {
         if (gi.answer && (!li.answer || gi.answer.length >= li.answer.length)) li.answer = gi.answer;
         const giDlg = gi.dialogue || [], liDlg = li.dialogue || [];
         if (giDlg.length >= liDlg.length) li.dialogue = gi.dialogue;
+        // GitHub wins on title, text, dialogues (new array format) when local is empty
+        if (gi.title && !li.title) li.title = gi.title;
+        if (gi.text && !li.text) li.text = gi.text;
+        if (gi.dialogues && gi.dialogues.length > 0 && (!li.dialogues || li.dialogues.length === 0)) li.dialogues = gi.dialogues;
+        // GitHub always wins on title/text/dialogues for Part2 review items (i_a456p2_)
+        if (li.id && li.id.startsWith('i_a456p2_')) {
+          if (gi.title) li.title = gi.title;
+          if (gi.text) li.text = gi.text;
+          if (gi.tags) li.tags = gi.tags;
+          if (gi.dialogues && gi.dialogues.length > 0) li.dialogues = gi.dialogues;
+        }
       });
       // Add any items in GitHub but not in localStorage
       const localIds = new Set((localData.items || []).map(i => i.id));
