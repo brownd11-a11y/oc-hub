@@ -160,7 +160,7 @@ body::before{display:none}
 .help-content{background:rgba(255,255,255,0.92) !important}
 /* Pass tables — need solid enough for dense text readability */
 .pass-tier{background:rgba(255,255,255,0.95);border-radius:8px;padding:12px 14px;margin-bottom:16px}
-.pass-table tbody tr{background:rgba(255,255,255,0.75)}
+.pass-table tbody tr{background:rgba(255,255,255,0.92)}
 .pass-table tbody tr:hover{background:rgba(255,255,255,0.97) !important}
 /* Roadmap */
 .rm-phase-header{background:rgba(255,255,255,0.92) !important}
@@ -600,7 +600,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .gantt-toolbar-sep{width:1px;height:16px;background:var(--separator);margin:0 2px}
 
 /* ── REFERENCE / STYLE / DIST / PASSES / OUTREACH ── */
-.ref-section{padding:20px 32px}
+.ref-section{padding:20px 32px;background:rgba(255,255,255,0.94)}
 .ref-section h2{font-size:13px;font-weight:600;color:var(--label-primary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);font-family:'Source Code Pro',monospace}
 .isbn-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
 .isbn-table th{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#3C3C43;text-align:left;padding:0 10px 8px 10px;border-bottom:1px solid var(--separator)}
@@ -620,37 +620,37 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#3C3C43}
 .price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
 .price-row.net .val{color:var(--done-fg);font-weight:600}
-.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--page-bg)}
-.style-col{padding:20px 32px}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:rgba(255,255,255,0.94)}
+.style-col{padding:20px 32px;background:rgba(255,255,255,0.94)}
 .style-col+.style-col{border-left:1px solid var(--separator)}
 .s-block{margin-bottom:20px}
 .s-block h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(199,0,37,.2)}
 .s-rule{font-size:12px;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator);line-height:1.5}
 .s-rule span{font-family:'Source Code Pro',monospace;font-size:11px;background:var(--page-bg);padding:1px 5px;color:var(--accent)}
-.s-rule em{font-style:italic;color:var(--label-secondary)}
+.s-rule em{font-style:italic;color:#3C3C43}
 .aiterm{display:inline-block;font-family:'Source Code Pro',monospace;font-size:10px;background:rgba(199,0,37,.08);color:var(--accent);border:1px solid rgba(199,0,37,.2);padding:1px 6px;margin:2px 2px;line-height:1.6}
 .ch-table{width:100%;border-collapse:collapse;font-size:12px}
-.ch-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 8px 6px 8px;border-bottom:1px solid var(--separator)}
+.ch-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#3C3C43;text-align:left;padding:0 8px 6px 8px;border-bottom:1px solid var(--separator)}
 .ch-table td{padding:5px 8px;border-bottom:1px solid var(--separator);vertical-align:top}
-.ch-table tbody tr:hover{background:var(--card-bg)}
-.ch-num{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);font-weight:500}
+.ch-table tbody tr:hover{background:rgba(255,255,255,0.97)}
+.ch-num{font-family:'Source Code Pro',monospace;font-size:11px;color:#3C3C43;font-weight:500}
 .ch-part{font-size:9px;font-family:'Source Code Pro',monospace;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;white-space:nowrap}
 .pt-phenomena{background:#e8f4f8;color:#1a5a6b}
 .pt-secrecy{background:#f5e8f5;color:#5a1a6b}
 .pt-evidence{background:#e8f5e8;color:#1a5a2a}
 .pt-disclosure{background:#f5f0e0;color:#6b5010}
-.dist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 32px}
-.dist-card{background:var(--card-bg);border:1px solid var(--separator);padding:14px}
+.dist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 32px;background:rgba(255,255,255,0.94)}
+.dist-card{background:rgba(255,255,255,0.95);border:1px solid var(--separator);padding:14px}
 .dist-card h3{font-size:13px;font-weight:600;color:var(--label-primary);margin-bottom:4px;font-family:'Libre Baskerville',Georgia,serif}
 .dist-badge{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;margin-bottom:10px;display:inline-block}
 .dist-primary{background:#e0eefd;color:#1a4a7b}
-.dist-secondary{background:#eee;color:var(--label-secondary)}
+.dist-secondary{background:#eee;color:#3C3C43}
 .dist-row{font-size:12px;padding:4px 0;border-bottom:1px solid var(--separator);display:flex;gap:6px}
 .dist-row:last-child{border-bottom:none}
-.dist-lbl{color:var(--label-secondary);flex-shrink:0;min-width:90px}
+.dist-lbl{color:#3C3C43;flex-shrink:0;min-width:90px}
 .dist-val{color:var(--label-primary);font-weight:500}
 .dist-warn{font-size:11px;color:var(--hold-fg);background:var(--hold-bg);border:1px solid rgba(122,90,16,.3);padding:5px 8px;margin-top:8px}
-.dist-note{padding:0 32px 20px;font-size:12px;color:var(--label-secondary);line-height:1.6}
+.dist-note{padding:0 32px 20px;font-size:12px;color:#3C3C43;line-height:1.6}
 .dist-note strong{color:var(--label-primary)}
 /* ── OUTREACH ── */
 .ot-wrap{padding:16px 24px}
@@ -787,25 +787,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-act-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
 .rf-act-btn.danger:hover{border-color:var(--accent);color:var(--accent)}
 .rf-empty,.empty-state{text-align:center;padding:28px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);letter-spacing:.1em}
-.passes-wrap{padding:16px 32px}
+.passes-wrap{padding:16px 32px;background:rgba(255,255,255,0.94)}
 .passes-intro{font-size:13px;color:#3C3C43;margin-bottom:18px;line-height:1.65}
 .pass-tier{margin-bottom:24px}
 .pass-tier-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);flex-wrap:wrap;cursor:pointer;user-select:none}
 .pass-tier-head:hover{opacity:0.85}
-.pass-tier-arrow{font-size:10px;color:var(--label-secondary);margin-left:auto;transition:transform .2s;display:inline-block}
+.pass-tier-arrow{font-size:10px;color:#3C3C43;margin-left:auto;transition:transform .2s;display:inline-block}
 .pass-tier.collapsed .pass-tier-arrow{transform:rotate(-90deg)}
 .pass-tier.collapsed .pass-tier-body{display:none}
-.pass-tier-summary{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);letter-spacing:.04em;margin-left:6px}
+.pass-tier-summary{font-family:'Source Code Pro',monospace;font-size:10px;color:#3C3C43;letter-spacing:.04em;margin-left:6px}
 .pass-tier-head h2{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-primary)}
-.pass-tier-tag{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);border:1px solid var(--separator);padding:1px 5px}
+.pass-tier-tag{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#3C3C43;border:1px solid var(--separator);padding:1px 5px}
 .pass-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
-.pass-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 7px 10px;border-bottom:1px solid var(--separator)}
+.pass-table th{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#3C3C43;text-align:left;padding:0 10px 7px 10px;border-bottom:1px solid var(--separator)}
 .pass-table td{padding:8px 10px;border-bottom:1px solid var(--separator);vertical-align:top;line-height:1.5}
 .pass-table tbody tr:hover{background:var(--card-bg)}
 .pass-cmd{font-family:'Source Code Pro',monospace;font-size:11px;color:var(--accent);background:rgba(199,0,37,.06);border:1px solid rgba(199,0,37,.15);padding:2px 7px;white-space:nowrap;display:inline-block}
 .pass-label{font-weight:600;color:var(--label-primary);font-size:12px;font-family:'Source Code Pro',monospace}
 .pass-desc{color:var(--label-primary);font-size:12px}
-.pass-desc em{color:var(--label-secondary);font-style:italic}
+.pass-desc em{color:#3C3C43;font-style:italic}
 .pass-status{font-family:'Source Code Pro',monospace;font-size:10px;white-space:nowrap}
 .ps-done{color:var(--done-fg);background:var(--done-bg);padding:2px 7px;display:inline-block}
 .ps-next{color:var(--accent);background:rgba(199,0,37,.08);padding:2px 7px;display:inline-block}
