@@ -159,7 +159,7 @@ body::before{display:none}
 .help-device-row{background:rgba(255,255,255,0.85) !important}
 .help-content{background:rgba(255,255,255,0.92) !important}
 /* Pass tables — need solid enough for dense text readability */
-.pass-tier{background:rgba(255,255,255,0.92);border-radius:8px;padding:12px 14px;margin-bottom:16px}
+.pass-tier{background:rgba(255,255,255,0.95);border-radius:8px;padding:12px 14px;margin-bottom:16px}
 .pass-table tbody tr{background:rgba(255,255,255,0.75)}
 .pass-table tbody tr:hover{background:rgba(255,255,255,0.97) !important}
 /* Roadmap */
@@ -182,7 +182,8 @@ body::before{display:none}
 .hd::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,30,80,0.12) 0%,rgba(0,0,0,0.28) 100%);z-index:0}
 .hd::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.15);z-index:2}
 .hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:84px;margin-top:3px;position:relative;z-index:1}
-.hd-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ebe2;white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.hd-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ebe2;white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:1px}
+.hd-subtitle{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,0.55);line-height:1;font-style:normal}}
 .hd-title em{font-style:italic;color:#c8bfa8}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
 .hd-stat{display:flex;align-items:baseline;gap:4px;padding:0 12px;border-right:1px solid rgba(255,255,255,0.18);white-space:nowrap;flex-shrink:0}
@@ -602,21 +603,21 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .ref-section{padding:20px 32px}
 .ref-section h2{font-size:13px;font-weight:600;color:var(--label-primary);letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);font-family:'Source Code Pro',monospace}
 .isbn-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
-.isbn-table th{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);text-align:left;padding:0 10px 8px 10px;border-bottom:1px solid var(--separator)}
+.isbn-table th{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#3C3C43;text-align:left;padding:0 10px 8px 10px;border-bottom:1px solid var(--separator)}
 .isbn-table td{padding:10px;border-bottom:3px solid transparent;vertical-align:top}
-.isbn-table tbody tr{background:rgba(255,255,255,0.80)}
+.isbn-table tbody tr{background:rgba(255,255,255,0.94)}
 .isbn-table tbody tr:hover{background:rgba(255,255,255,0.96)}
 .isbn-code{font-family:'Source Code Pro',monospace;font-size:13px;color:var(--label-primary);white-space:nowrap;font-weight:500}
 .fmt-name{font-weight:600;color:var(--label-primary);font-size:13px}
-.fmt-note{font-size:12px;color:var(--label-secondary);margin-top:2px}
+.fmt-note{font-size:12px;color:#3C3C43;margin-top:2px}
 .badge{display:inline-block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;white-space:nowrap}
 .b-asgn{background:var(--badge-assigned-bg);color:var(--badge-assigned-fg)}
 .b-res{background:var(--badge-reserved-bg);color:var(--badge-reserved-fg)}
 .b-un{background:var(--badge-un-bg);color:var(--badge-un-fg)}
 .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}
-.price-card{background:rgba(255,255,255,0.82);border:1px solid rgba(229,229,234,0.6);padding:14px;border-radius:6px;backdrop-filter:blur(2px)}
+.price-card{background:rgba(255,255,255,0.95);border:1px solid rgba(229,229,234,0.6);padding:14px;border-radius:6px;backdrop-filter:blur(4px)}
 .price-format{font-weight:600;font-size:13px;color:var(--label-primary);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--separator);font-family:'Source Code Pro',monospace;letter-spacing:.05em;text-transform:uppercase}
-.price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--label-secondary)}
+.price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#3C3C43}
 .price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
 .price-row.net .val{color:var(--done-fg);font-weight:600}
 .style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--page-bg)}
@@ -787,7 +788,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-act-btn.danger:hover{border-color:var(--accent);color:var(--accent)}
 .rf-empty,.empty-state{text-align:center;padding:28px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);letter-spacing:.1em}
 .passes-wrap{padding:16px 32px}
-.passes-intro{font-size:13px;color:var(--label-secondary);margin-bottom:18px;line-height:1.65}
+.passes-intro{font-size:13px;color:#3C3C43;margin-bottom:18px;line-height:1.65}
 .pass-tier{margin-bottom:24px}
 .pass-tier-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--label-primary);flex-wrap:wrap;cursor:pointer;user-select:none}
 .pass-tier-head:hover{opacity:0.85}
@@ -1175,7 +1176,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- COMPACT HEADER -->
 <div class="hd">
   <div class="hd-compact">
-    <span class="hd-title"><em>Over&#8209;classified</em> Hub</span>
+    <span class="hd-title"><em>Over&#8209;classified</em> Hub<span class="hd-subtitle" id="hd-subtitle"></span></span>
     <div class="hd-search-wrap">
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
       <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" ontouchend="event.preventDefault();hdSearchClear();" style="display:none">&#215;</button>
@@ -2521,6 +2522,20 @@ function loadFromSeed() {
   S = { items: SEED_ITEMS.map(i => ({...i})), road: ROAD_SEED.map(r => ({...r})) };
 }
 
+/* ── BANNER SUBTITLE: last updated timestamp in local 24h time ── */
+function setHdSubtitle(isoStr) {
+  const el = document.getElementById('hd-subtitle');
+  if (!el || !isoStr) return;
+  try {
+    const d = new Date(isoStr);
+    if (isNaN(d)) return;
+    const time = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false});
+    const date = d.toLocaleDateString([], {month:'short', day:'numeric'});
+    el.textContent = 'Updated ' + date + ' · ' + time;
+  } catch(e) { /* silent */ }
+}
+
+
 async function loadFromGitHub() {
   // Show loading indicator
   const listEl = document.getElementById('list');
@@ -2567,13 +2582,18 @@ async function loadFromGitHub() {
 
     applyData._localDone = localDone;
     applyData(ghIsNewer ? data : localData);
+    // Show last-updated time in banner subtitle (local 24h time)
+    const versionStr = ghIsNewer ? ghVersion : localVersion;
+    setHdSubtitle(versionStr);
     console.log(`Data loaded from ${ghIsNewer ? 'GitHub' : 'localStorage'} (gh:${ghVersion} local:${localVersion})`);
   } catch(e) {
     console.warn('GitHub fetch failed, falling back to localStorage:', e.message);
     try {
       const raw = localStorage.getItem(SK);
       if (raw) {
-        applyData(JSON.parse(raw));
+        const localFallback = JSON.parse(raw);
+        applyData(localFallback);
+        setHdSubtitle(localFallback._version || '');
         console.log('Data loaded from localStorage (fallback)');
       } else {
         loadFromSeed();
