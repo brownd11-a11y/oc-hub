@@ -838,10 +838,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   font-family:'Source Code Pro',monospace;font-size:11px;line-height:1.45;
   padding:6px 10px;border-radius:4px;border:1px solid #4a4030;
   box-shadow:0 3px 10px rgba(0,0,0,.4);
-  max-width:260px;white-space:normal;
+  max-width:300px;white-space:normal;
   opacity:0;transition:opacity .12s;
 }
 #gantt-tooltip.visible{opacity:1}
+.tt-name{font-weight:600;color:#f0e8c8;display:block;margin-bottom:2px}
+.tt-date{color:#a09070;font-size:10px;display:block}
+.tt-range{color:#8a7860;font-size:10px;display:block;margin-top:1px}
 #gantt-tooltip .tt-name{font-weight:600;color:#f0e8c8;display:block;margin-bottom:2px}
 #gantt-tooltip .tt-date{color:#a09070;font-size:10px}
 
@@ -1436,7 +1439,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 
 <!-- GANTT HOVER TOOLTIP -->
-<div id="gantt-tooltip"><span class="tt-name" id="tt-name"></span><span class="tt-date" id="tt-date"></span></div>
+<div id="gantt-tooltip"><span class="tt-name" id="tt-name"></span><span class="tt-date" id="tt-date"></span><span class="tt-range" id="tt-range"></span></div>
 
 <!-- ISBNs -->
 <div class="panel" id="panel-isbns"><div class="ref-section">
@@ -4394,9 +4397,11 @@ function renderGantt(){
     }
 
     // Phase row
+    const phTipDate=isAllDone&&ph.completedDate?'Done: '+fmtDate(ph.completedDate):(range.end?'Target: '+fmtDate(range.end):'');
+    const phTipRange=range.start&&range.end?fmtDate(range.start)+' → '+fmtDate(range.end):'';
     html+=`<div class="gantt-swipe-wrap" data-swipe-id="${ph.id}" data-swipe-kind="phase" oncontextmenu="ganttContextMenu(event,'phase','${ph.id}')">`;html+=`<div class="gantt-swipe-reveal-r">DUPLICATE &rsaquo;</div><div class="gantt-swipe-reveal-l">&lsaquo; DELETE</div>`;html+=`<div class="gantt-swipe-inner"><div class="gantt-phase-row" style="background:${isAllDone?'rgba(45,107,45,.04)':'#fff'};width:100%">`;
     // Label cell
-    html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}">`;
+    html+=`<div class="gantt-phase-label-cell ph-frame" style="--ph-color:${color};background:${hexTint(color,0.06)}" onmouseenter="ttShow(event,'${esc(ph.label)}','${esc(phTipDate)}','${esc(phTipRange)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
     html+=`<span class="gantt-drag-handle" title="Drag to reorder" data-drag-phase="${ph.id}" onmousedown="ganttDragStart(event,'${ph.id}')" ontouchstart="ganttDragTouchStart(event,'${ph.id}')">&#8942;</span>`;
     html+=`<button class="gantt-expand-btn" onclick="toggleGanttPhase('${ph.id}')" style="--ph-color:${color}">${isOpen?'&#8722;':'+'}</button>`;
     html+=`<span class="gantt-phase-name" title="${esc(ph.label)}">${numStr}${esc(ph.label)}</span>`;
@@ -4462,7 +4467,9 @@ function renderGantt(){
         if(isGateTask){
           // gate-task row (diamond only)
           html+=`<div class="gantt-gate-task-row">`;
-          html+=`<div class="gantt-gate-task-label" style="--ph-color:${color}">`;
+          const gTipDate=s.done&&s.completedDate?'Done: '+fmtDate(s.completedDate):(s.targetEnd?'Target: '+fmtDate(s.targetEnd):'');
+          const gTipRange=s.targetStart&&s.targetEnd?fmtDate(s.targetStart)+' → '+fmtDate(s.targetEnd):(s.targetEnd?'→ '+fmtDate(s.targetEnd):'');
+          html+=`<div class="gantt-gate-task-label" style="--ph-color:${color}" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(gTipDate)}','${esc(gTipRange)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
           html+=`<div style="width:10px;height:10px;border:2px solid ${color};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${s._gateId}')"></div>`;
           html+=`<span class="gantt-gate-task-name" title="${esc(s.label)}">${esc(s.label)}</span>`;
           html+=`</div>`;
@@ -4476,8 +4483,10 @@ function renderGantt(){
           // Regular task row
           const doneCls=s.done?' checked':'';
           const nameCls=s.done?' done':'';
+          const sTipDate=s.done&&s.completedDate?'Done: '+fmtDate(s.completedDate):(s.targetEnd?'Target: '+fmtDate(s.targetEnd):'');
+          const sTipRange=s.targetStart&&s.targetEnd?fmtDate(s.targetStart)+' → '+fmtDate(s.targetEnd):(s.targetEnd?'→ '+fmtDate(s.targetEnd):'');
           html+=`<div class="gantt-swipe-wrap" data-swipe-id="${s.id}" data-swipe-kind="step" oncontextmenu="ganttContextMenu(event,'step','${s.id}')">`;html+=`<div class="gantt-swipe-reveal-r">DUPLICATE &rsaquo;</div><div class="gantt-swipe-reveal-l">&lsaquo; DELETE</div>`;html+=`<div class="gantt-swipe-inner"><div class="gantt-task-row" style="width:100%">`;
-          html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}">`;
+          html+=`<div class="gantt-task-label-cell" style="background:${s.done?'var(--done-bg)':'var(--card-bg)'}" onmouseenter="ttShow(event,'${esc(s.label)}','${esc(sTipDate)}','${esc(sTipRange)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
           html+=`<div class="gantt-task-cb${doneCls}" onclick="toggleStep('${s.id}')" title="${s.done?'Mark open':'Mark done'}">${s.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`;
           html+=`<div class="gantt-task-dot" style="background:${color}"></div>`;
           html+=`<span class="gantt-task-name${nameCls}" title="${esc(s.label)}">${esc(s.label)}</span>`;
@@ -4517,7 +4526,8 @@ function renderGantt(){
         const inh=gateInheritDate(g.phase);
         const disp=g.date||inh;
         html+=`<div class="gantt-gate-task-row">`;
-        html+=`<div class="gantt-gate-task-label" style="--ph-color:${color};border-left-color:${color}">`;
+        const phGateTipDate=g.met&&g.metDate?'Met: '+fmtDate(g.metDate):(disp?'Target: '+fmtDate(disp):'');
+        html+=`<div class="gantt-gate-task-label" style="--ph-color:${color};border-left-color:${color}" onmouseenter="ttShow(event,'${esc(g.label)}','${esc(phGateTipDate)}')" onmousemove="ttMove(event)" onmouseleave="ttHide()">`;
         html+=`<div style="width:10px;height:10px;border:2px solid ${color};${g.met?'background:'+color:''};transform:rotate(45deg);flex-shrink:0;cursor:pointer" onclick="toggleGate('${g.id}')"></div>`;
         html+=`<span class="gantt-gate-task-name" title="${esc(g.label)}">${esc(g.label)}</span>`;
         html+=`<button class="gantt-edit-btn" onclick="event.stopPropagation();openGanttEdit('gate','${g.id}')" title="Edit gate"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`;
@@ -5570,16 +5580,18 @@ function ganttDragTouchEnd(e){
 
 /* ── GANTT HOVER TOOLTIPS ── */
 let _ttTimer=null,_ttEl=null;
-function ttShow(e,ttName,dateStr){
+function ttShow(e,ttName,dateStr,rangeStr){
   _ttEl=document.getElementById('gantt-tooltip');
   if(!_ttEl)return;
   clearTimeout(_ttTimer);
   _ttTimer=setTimeout(()=>{
     document.getElementById('tt-name').textContent=ttName;
     document.getElementById('tt-date').textContent=dateStr||'';
+    const rng=document.getElementById('tt-range');
+    if(rng){rng.textContent=rangeStr||'';rng.style.display=rangeStr?'block':'none';}
     _ttEl.classList.add('visible');
     ttPos(e);
-  },500);
+  },300);
 }
 function ttMove(e){
   if(_ttEl&&_ttEl.classList.contains('visible'))ttPos(e);
