@@ -6203,8 +6203,6 @@ function rfHideKwInput(){
   if(btn)btn.style.display='';
 }
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
-let _rfCatChip_unused=false; // retained for data compat
-}
 let _rfCatChip='';
 function rfSetCatChip(val,btn){ _rfCatChip=val; rfRender(); }
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const cat=(document.getElementById('rf-cat-sel')||{}).value||'primary';const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),cat,kw,url,desc,lastChecked:'',lastPost:''});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
