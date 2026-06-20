@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-20T14:50:52.000Z",
+  "_version": "2026-06-20T14:56:30.000Z",
   "_schema": 1,
   "items": [
     {
@@ -15275,7 +15275,7 @@
       "id": "i_b2_a7_wikipedia_primary",
       "type": "fordave",
       "text": "PROPOSED: Replace Wikipedia-only citations in A7 notes 10, 14, 17 with direct sourcing from underlying news outlets (The War Zone, Air Force Times, BBC News).\n\nPASTE TO FIND \u2192 2019\u201320 Colorado Drone Sightings Wikipedia\n\nORIGINAL: A7 notes 10, 14, 17 cite Wikipedia as sole primary source for drone sighting aggregates.",
-      "answer": "",
+      "answer": "DONE v362: All three Wikipedia-only citations replaced with primary sources. Note 10 (Colorado 2019-20): Colorado Dept. of Public Safety press release (Jan. 13, 2020) + War Zone FAA documents article (July 16, 2020). Note 14 (2024 US drone sightings): DHS/FBI/FAA/DoD joint statement (Dec. 17, 2024) + earlier FBI/DHS joint statement (Dec. 13, 2024), both from official .gov URLs. Note 17 (2025 European): Reuters UK bases report (Feb. 2, 2026), BBC Kleine-Brogel report (Nov. 4, 2025), Reuters Denmark Copenhagen Airport closure (Sept. 23, 2025), Arms Control Association survey (Dec. 2025).",
       "done": false,
       "dueDate": "2026-06-21",
       "createdAt": "2026-06-20T14:50:52.000Z",
@@ -15293,6 +15293,11 @@
           "from": "claude",
           "text": "DONE v362: Three A7 notes cite Wikipedia as sole source for drone sighting aggregates (Colorado 2019-20, US 2024, Europe 2025). B2 standard requires primary sources. Each Wikipedia article cites The War Zone, Air Force Times, BBC, etc. \u2014 recommend replacing with those direct citations. Please accept or reply.",
           "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: All three notes replaced. Note 10 \u2192 Colorado CDPS press release + War Zone FAA documents. Note 14 \u2192 DHS/FBI/FAA/DoD joint statement at fbi.gov and faa.gov. Note 17 \u2192 Reuters (UK bases doubled), BBC News (Belgian Kleine-Brogel), Reuters (Copenhagen Airport), Arms Control Association (59 European incidents). Please accept or reply.",
+          "ts": "2026-06-20T14:56:30.000Z"
         }
       ]
     },
