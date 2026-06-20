@@ -787,6 +787,39 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-act-btn:hover{border-color:var(--label-primary);color:var(--label-primary)}
 .rf-act-btn.danger:hover{border-color:var(--accent);color:var(--accent)}
 .rf-empty,.empty-state{text-align:center;padding:28px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);letter-spacing:.1em}
+/* ── RESOURCES SIDEBAR LAYOUT ── */
+.rf-layout{display:flex;height:100%;overflow:hidden}
+.rf-sidebar{width:160px;flex-shrink:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-right:1px solid var(--separator);padding:16px 10px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.rf-sidebar-label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:8px;padding:0 8px}
+.rf-sidebar-sep{height:1px;background:var(--separator);margin:8px 0}
+.rf-nav{background:none;border:none;border-radius:7px;padding:8px 10px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.04em;color:var(--label-primary);cursor:pointer;text-align:left;width:100%;transition:background .15s}
+.rf-nav:hover{background:rgba(0,0,0,0.05)}
+.rf-nav.active{background:var(--accent);color:#fff;font-weight:600}
+.rf-content{flex:1;overflow-y:auto;padding:24px 28px;background:rgba(255,255,255,0.96)}
+.rf-spanel{display:none}
+.rf-spanel.active{display:block}
+/* ── UAP DAILY ── */
+.uap-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--separator)}
+.uap-new-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;transition:background .15s}
+.uap-new-btn:hover{background:#a0001e}
+.uap-count{font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-left:auto}
+.uap-report-card{background:rgba(255,255,255,0.95);border:1px solid var(--separator);border-radius:8px;padding:12px 16px;margin-bottom:10px;cursor:pointer;transition:box-shadow .15s}
+.uap-report-card:hover{box-shadow:0 2px 10px rgba(0,0,0,0.10)}
+.uap-card-header{display:flex;align-items:center;gap:10px}
+.uap-card-date{font-family:'Source Code Pro',monospace;font-size:11px;font-weight:600;color:var(--label-primary)}
+.uap-card-kw{display:flex;gap:5px;flex-wrap:wrap;flex:1}
+.uap-card-pill{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;background:rgba(199,0,37,.08);color:var(--accent);border:1px solid rgba(199,0,37,.2);padding:2px 6px;border-radius:3px}
+.uap-card-del{font-family:'Source Code Pro',monospace;font-size:9px;background:none;border:1px solid var(--separator);color:var(--label-secondary);padding:2px 7px;cursor:pointer;border-radius:3px;flex-shrink:0}
+.uap-card-del:hover{border-color:var(--accent);color:var(--accent)}
+/* UAP Report Modal */
+.uap-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:2000;align-items:center;justify-content:center}
+.uap-modal-overlay.open{display:flex}
+.uap-modal{background:var(--card-bg);border-radius:12px;width:min(820px,92vw);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.25);overflow:hidden}
+.uap-modal-head{padding:18px 22px 14px;border-bottom:1px solid var(--separator);display:flex;align-items:flex-start;gap:12px;flex-shrink:0}
+.uap-modal-title{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--label-primary);flex:1}
+.uap-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--label-secondary);line-height:1;padding:0 4px}
+.uap-modal-body{flex:1;overflow-y:auto;padding:20px 24px;font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.7;color:var(--label-primary);white-space:pre-wrap}
+@media(max-width:600px){.rf-layout{flex-direction:column}.rf-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;padding:8px;gap:4px;border-right:none;border-bottom:1px solid var(--separator)}.rf-sidebar-label,.rf-sidebar-sep{display:none}.rf-nav{padding:5px 10px;font-size:10px;flex-shrink:0}.rf-content{padding:16px}}
 .passes-wrap{padding:16px 32px;background:rgba(255,255,255,0.94)}
 .passes-intro{font-size:13px;color:#3C3C43;margin-bottom:18px;line-height:1.65}
 .pass-tier{margin-bottom:24px}
@@ -1658,79 +1691,123 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 </div></div>
 <!-- REFERENCES -->
-<div class="panel" id="panel-refs"><div class="rf-wrap">
-
-  <!-- COLLAPSIBLE ADD FORM -->
-  <div class="inp-collapse-bar" id="rf-form-bar" onclick="rfToggleForm()" style="margin-bottom:0;border-radius:10px 10px 0 0">
-    <span class="inp-collapse-label">&#43; Add Reference</span>
-    <span class="inp-collapse-chev" id="rf-form-chev">&#9660;</span>
-  </div>
-  <div class="rf-add inp-card" id="rf-form-body" style="display:none;border-top:none;border-radius:0 0 10px 10px;margin-bottom:16px">
-    <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px">
-      <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
-        <label class="settings-lbl">Category</label>
-        <select class="inp-sel" id="rf-cat-sel">
-          <option value="primary">Primary Sources</option>
-          <option value="substack">Substacks</option>
-          <option value="social">Social / News</option>
-          <option value="analysis">Analysis</option>
-          <option value="podcast">Podcast / Video</option>
-          <option value="documentary">Documentaries</option>
-          <option value="book">Book Resources</option>
-        </select>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
-        <label class="settings-lbl">Keyword</label>
-        <div style="display:flex;gap:6px;align-items:center">
-          <select class="inp-sel" id="rf-kw-sel" style="flex:1"></select>
-          <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new tag" id="rf-kw-add-btn">&#xFF0B;</button>
-        </div>
-        <div id="rf-kw-new-row" style="display:none;margin-top:4px">
-          <div style="display:flex;gap:6px">
-            <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New tag&hellip;" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
-            <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()">&#xFF0B;</button>
-            <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">&#10005;</button>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px">
-        <label class="settings-lbl">URL</label>
-        <input type="text" class="inp-sel" id="rf-url" placeholder="https://&hellip;" style="width:100%;box-sizing:border-box" />
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
-        <label class="settings-lbl">Description</label>
-        <input type="text" class="inp-sel" id="rf-desc-in" placeholder="Brief description&hellip;" style="width:100%;box-sizing:border-box" />
-      </div>
-      <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
+<div class="panel" id="panel-refs">
+  <div class="rf-layout">
+    <!-- LEFT SIDEBAR -->
+    <div class="rf-sidebar">
+      <div class="rf-sidebar-label">Resources</div>
+      <button class="rf-nav" onclick="showRfTab('rf-all',this)">&#128196; All</button>
+      <button class="rf-nav" onclick="showRfTab('rf-primary',this)">📄 Primary</button>
+      <button class="rf-nav" onclick="showRfTab('rf-substack',this)">✍️ Substacks</button>
+      <button class="rf-nav" onclick="showRfTab('rf-social',this)">📡 Social/News</button>
+      <button class="rf-nav" onclick="showRfTab('rf-analysis',this)">🔬 Analysis</button>
+      <button class="rf-nav" onclick="showRfTab('rf-podcast',this)">🎙️ Podcast/Video</button>
+      <button class="rf-nav" onclick="showRfTab('rf-documentary',this)">🎬 Documentary</button>
+      <button class="rf-nav" onclick="showRfTab('rf-book',this)">📚 Book</button>
+      <div class="rf-sidebar-sep"></div>
+      <button class="rf-nav" onclick="showRfTab('rf-uap-daily',this)">🛸 UAP Daily</button>
+      <div class="rf-sidebar-sep"></div>
+      <button class="rf-nav" onclick="showRfTab('rf-add-form',this)">＋ Add Reference</button>
     </div>
-  </div>
 
-  <!-- CHIP FILTER BAR -->
-  <div class="filter-row" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0 10px 0;margin-bottom:8px;border-bottom:1px solid var(--separator);background:transparent">
-    <button class="fchip act" id="rf-chip-all" onclick="rfSetCatChip('',this)"><span class="fchip-lbl">All</span></button>
-    <button class="fchip" id="rf-chip-primary" onclick="rfSetCatChip('primary',this)"><span class="fchip-lbl">Primary</span></button>
-    <button class="fchip" id="rf-chip-substack" onclick="rfSetCatChip('substack',this)"><span class="fchip-lbl">Substacks</span></button>
-    <button class="fchip" id="rf-chip-social" onclick="rfSetCatChip('social',this)"><span class="fchip-lbl">Social/News</span></button>
-    <button class="fchip" id="rf-chip-analysis" onclick="rfSetCatChip('analysis',this)"><span class="fchip-lbl">Analysis</span></button>
-    <button class="fchip" id="rf-chip-podcast" onclick="rfSetCatChip('podcast',this)"><span class="fchip-lbl">Podcast/Video</span></button>
-    <button class="fchip" id="rf-chip-book" onclick="rfSetCatChip('book',this)"><span class="fchip-lbl">Book</span></button>
-    <span style="margin-left:auto;display:flex;gap:8px;align-items:center">
-      <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
-      <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
-      <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
-      <button class="iabtn" onclick="rfCollapseAll()">Collapse All</button>
-      <button class="dl-send-btn" id="rf-refresh-btn" onclick="rfRefresh()" style="height:32px;font-size:12px;padding:0 14px" title="Update Last Checked for news/current-events sources">&#8635; Refresh</button>
-    </span>
-  </div>
+    <!-- CONTENT AREA -->
+    <div class="rf-content">
 
-  <div id="rf-refresh-ct" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary);margin-bottom:10px"></div>
-  <div class="inp-collapse-bar" id="rf-master-bar" onclick="rfToggleMaster()" style="margin-bottom:8px;border-radius:8px">
-    <span class="inp-collapse-label" id="rf-master-label">&#128196; Resources</span>
-    <span class="inp-collapse-chev" id="rf-master-chev">&#9660;</span>
+      <!-- EMPTY STATE (default) -->
+      <div class="rf-spanel active" id="rf-home">
+        <div class="rf-empty" style="margin-top:60px">Select a section from the sidebar.</div>
+      </div>
+
+      <!-- ALL RESOURCES -->
+      <div class="rf-spanel" id="rf-all">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
+          <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
+          <span style="margin-left:auto;display:flex;gap:6px">
+            <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
+            <button class="iabtn" onclick="rfCollapseAll()">Collapse All</button>
+          </span>
+        </div>
+        <div id="rf-cat-container"></div>
+        <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
+      </div>
+
+      <!-- CATEGORY PANELS (primary / substack / social / analysis / podcast / documentary / book) -->
+      <div class="rf-spanel" id="rf-primary"><div id="rf-cat-primary-panel"></div></div>
+      <div class="rf-spanel" id="rf-substack"><div id="rf-cat-substack-panel"></div></div>
+      <div class="rf-spanel" id="rf-social"><div id="rf-cat-social-panel"></div></div>
+      <div class="rf-spanel" id="rf-analysis"><div id="rf-cat-analysis-panel"></div></div>
+      <div class="rf-spanel" id="rf-podcast"><div id="rf-cat-podcast-panel"></div></div>
+      <div class="rf-spanel" id="rf-documentary"><div id="rf-cat-documentary-panel"></div></div>
+      <div class="rf-spanel" id="rf-book"><div id="rf-cat-book-panel"></div></div>
+
+      <!-- UAP DAILY -->
+      <div class="rf-spanel" id="rf-uap-daily">
+        <div class="uap-toolbar">
+          <span style="font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">🛸 UAP Daily Reports</span>
+          <button class="uap-new-btn" onclick="uapNewReport()">＋ New Report</button>
+          <span class="uap-count" id="uap-count"></span>
+        </div>
+        <div id="uap-report-list"><div class="rf-empty">No reports yet. Click New Report to generate the first one.</div></div>
+      </div>
+
+      <!-- ADD REFERENCE FORM -->
+      <div class="rf-spanel" id="rf-add-form">
+        <h2 style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:16px">Add Reference</h2>
+        <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px">
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
+            <label class="settings-lbl">Category</label>
+            <select class="inp-sel" id="rf-cat-sel">
+              <option value="primary">Primary Sources</option>
+              <option value="substack">Substacks</option>
+              <option value="social">Social / News</option>
+              <option value="analysis">Analysis</option>
+              <option value="podcast">Podcast / Video</option>
+              <option value="documentary">Documentaries</option>
+              <option value="book">Book Resources</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:130px">
+            <label class="settings-lbl">Keyword</label>
+            <div style="display:flex;gap:6px;align-items:center">
+              <select class="inp-sel" id="rf-kw-sel" style="flex:1"></select>
+              <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfShowKwInput()" title="Add new tag" id="rf-kw-add-btn">&#xFF0B;</button>
+            </div>
+            <div id="rf-kw-new-row" style="display:none;margin-top:4px">
+              <div style="display:flex;gap:6px">
+                <input type="text" class="inp-sel" id="rf-kw-new" placeholder="New tag&hellip;" style="flex:1" onkeydown="if(event.key==='Enter'){rfAddKeyword();event.preventDefault();}" />
+                <button class="inp-add" style="font-size:16px;padding:0 12px;height:34px;line-height:34px" onclick="rfAddKeyword()">&#xFF0B;</button>
+                <button class="iabtn" onclick="rfHideKwInput()" style="height:34px">&#10005;</button>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:160px">
+            <label class="settings-lbl">URL</label>
+            <input type="text" class="inp-sel" id="rf-url" placeholder="https://&hellip;" style="width:100%;box-sizing:border-box" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;flex:2;min-width:200px">
+            <label class="settings-lbl">Description</label>
+            <input type="text" class="inp-sel" id="rf-desc-in" placeholder="Brief description&hellip;" style="width:100%;box-sizing:border-box" />
+          </div>
+          <button class="dl-send-btn" style="height:34px;white-space:nowrap;align-self:flex-end" onclick="rfAdd()">Save</button>
+        </div>
+      </div>
+
+    </div><!-- end rf-content -->
+  </div><!-- end rf-layout -->
+</div>
+
+<!-- UAP REPORT MODAL -->
+<div class="uap-modal-overlay" id="uap-modal-overlay" onclick="if(event.target===this)uapCloseModal()">
+  <div class="uap-modal">
+    <div class="uap-modal-head">
+      <div class="uap-modal-title" id="uap-modal-title"></div>
+      <button class="uap-modal-close" onclick="uapCloseModal()">&#10005;</button>
+    </div>
+    <div class="uap-modal-body" id="uap-modal-body"></div>
   </div>
-  <div id="rf-cat-container" style="display:none"></div>
-  <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
-</div></div>
+</div>
+
 <!-- HELP -->
 <div class="panel" id="panel-help">
   <div class="help-layout">
@@ -2665,7 +2742,7 @@ function showTab(t,btn){
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
-  if(t==='refs'){_rfMasterCollapsed=true;const rc=document.getElementById('rf-cat-container');const rchev=document.getElementById('rf-master-chev');if(rc)rc.style.display='none';if(rchev)rchev.className='inp-collapse-chev';rfBuildKwSelects();rfRender();}
+  if(t==='refs'){rfBuildKwSelects();rfRenderAll();uapRenderList();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
@@ -4123,11 +4200,7 @@ document.addEventListener('keydown',function(e){
   if((e.metaKey||e.ctrlKey)&&e.shiftKey&&e.key==='R'){
     e.preventDefault();
     showTab('refs',document.getElementById('tab-refs'));
-    const body=document.getElementById('rf-form-body');
-    const chev=document.getElementById('rf-form-chev');
-    if(body&&body.style.display==='none'){body.style.display='block';if(chev)chev.className='inp-collapse-chev open';}
-    const urlEl=document.getElementById('rf-url');
-    if(urlEl)urlEl.focus();
+    setTimeout(()=>{showRfTab('rf-add-form',document.querySelector('#panel-refs .rf-nav:last-child'));const urlEl=document.getElementById('rf-url');if(urlEl)urlEl.focus();},50);
   }
 
 /* ── + / = → Expand All  |  - → Collapse All (Notes + Roadmap) ── */
@@ -6113,35 +6186,8 @@ function rfToggleCat(cat){
   if(body){body.style.maxHeight=RF_CAT_COLLAPSED[cat]?'0':body.scrollHeight+500+'px';body.style.opacity=RF_CAT_COLLAPSED[cat]?'0':'1';}
   if(arrow)arrow.style.transform=RF_CAT_COLLAPSED[cat]?'rotate(-90deg)':'rotate(0deg)';
 }
-function rfExpandAll(){
-  _rfMasterCollapsed=false;
-  const container=document.getElementById('rf-cat-container');
-  const chev=document.getElementById('rf-master-chev');
-  if(container)container.style.display='block';
-  if(chev)chev.className='inp-collapse-chev open';
-  Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});
-  rfSaveCollapsed();rfRender();
-}
-function rfCollapseAll(){
-  _rfMasterCollapsed=true;
-  const container=document.getElementById('rf-cat-container');
-  const chev=document.getElementById('rf-master-chev');
-  if(container)container.style.display='none';
-  if(chev)chev.className='inp-collapse-chev';
-  Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});
-  rfSaveCollapsed();rfRender();
-}
-async function rfRefresh(){
-  const btn=document.getElementById('rf-refresh-btn');
-  if(btn){btn.textContent='Checking…';btn.disabled=true;}
-  const now=new Date().toISOString().slice(0,16).replace('T',' ');
-  RF.filter(r=>RF_REFRESH_KW.includes(r.kw)).forEach(r=>{r.lastChecked=now;});
-  rfSave();rfRender();
-  if(btn){btn.textContent='↻ Refresh';btn.disabled=false;}
-  const ct=document.getElementById('rf-refresh-ct');
-  const n=RF.filter(r=>RF_REFRESH_KW.includes(r.kw)).length;
-  if(ct)ct.textContent='Last refreshed: '+now+' — '+n+' sources flagged for check';
-}
+function rfExpandAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});rfSaveCollapsed();rfRender();}
+function rfCollapseAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});rfSaveCollapsed();rfRender();}
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
 function rfShowKwInput(){
@@ -6157,28 +6203,10 @@ function rfHideKwInput(){
   if(btn)btn.style.display='';
 }
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
-let _rfMasterCollapsed = true;
-function rfToggleMaster(){
-  _rfMasterCollapsed = !_rfMasterCollapsed;
-  const container = document.getElementById('rf-cat-container');
-  const chev = document.getElementById('rf-master-chev');
-  if(container) container.style.display = _rfMasterCollapsed ? 'none' : 'block';
-  if(chev) chev.className = 'inp-collapse-chev' + (_rfMasterCollapsed ? '' : ' open');
-}
-function rfToggleForm(){
-  const body=document.getElementById('rf-form-body');
-  const chev=document.getElementById('rf-form-chev');
-  const open=body.style.display!=='none';
-  body.style.display=open?'none':'block';
-  if(chev)chev.className='inp-collapse-chev'+(open?'':' open');
+let _rfCatChip_unused=false; // retained for data compat
 }
 let _rfCatChip='';
-function rfSetCatChip(val,btn){
-  _rfCatChip=val;
-  document.querySelectorAll('#panel-refs .fchip').forEach(b=>b.classList.remove('act'));
-  if(btn)btn.classList.add('act');
-  rfRender();
-}
+function rfSetCatChip(val,btn){ _rfCatChip=val; rfRender(); }
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const cat=(document.getElementById('rf-cat-sel')||{}).value||'primary';const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),cat,kw,url,desc,lastChecked:'',lastPost:''});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
 function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
 function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
@@ -6200,6 +6228,115 @@ function rfEditRow(r,kwS){
     +'<button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button>'
     +'</div></td></tr>';
 }
+/* ── RESOURCES SIDEBAR NAVIGATION ── */
+let _rfActiveTab = '';
+function showRfTab(id, btn) {
+  _rfActiveTab = id;
+  document.querySelectorAll('.rf-spanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#panel-refs .rf-nav').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'rf-all') { rfBuildKwSelects(); rfRender(); }
+  else if (id === 'rf-uap-daily') { uapRenderList(); }
+  else if (id.startsWith('rf-cat-') || ['rf-primary','rf-substack','rf-social','rf-analysis','rf-podcast','rf-documentary','rf-book'].includes(id)) {
+    const catMap = {'rf-primary':'primary','rf-substack':'substack','rf-social':'social','rf-analysis':'analysis','rf-podcast':'podcast','rf-documentary':'documentary','rf-book':'book'};
+    rfRenderCat(catMap[id]);
+  }
+}
+function rfRenderAll() {
+  // Reset to home (no section selected) on tab switch
+  document.querySelectorAll('.rf-spanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#panel-refs .rf-nav').forEach(b => b.classList.remove('active'));
+  const home = document.getElementById('rf-home');
+  if (home) home.classList.add('active');
+  _rfActiveTab = '';
+}
+function rfRenderCat(cat) {
+  const panelId = 'rf-cat-' + cat + '-panel';
+  const container = document.getElementById(panelId);
+  if (!container) return;
+  const info = RF_CATS[cat];
+  const items = rfSorted(RF.filter(r => (r.cat || 'primary') === cat));
+  if (!items.length) { container.innerHTML = '<div class="rf-empty">No entries in this category.</div>'; return; }
+  const kwS = [...RF_KW].sort(naturalSort);
+  let html = '<table class="rf-table"><tbody>';
+  items.forEach(function(r) {
+    var trunc = r.url && r.url.length > 38 ? r.url.substring(0,38) + '…' : r.url || '';
+    var lc = r.lastChecked ? '<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: ' + r.lastChecked + '</span>' : '';
+    var lp = r.lastPost ? '<span style="font-size:10px;color:var(--accent);display:block">Posted: ' + r.lastPost + '</span>' : '';
+    var stamps = (lc || lp) ? '<div style="margin-top:3px">' + lc + lp + '</div>' : '';
+    var editLbl = rfEditId === r.id ? 'Cancel' : 'Edit';
+    html += '<tr>';
+    html += '<td><span class="rf-kw-pill">' + esc(r.kw) + '</span></td>';
+    html += '<td>' + (r.url ? '<a class="rf-url-link" href="' + esc(r.url) + '" target="_blank">' + esc(trunc) + '</a>' : '—') + '</td>';
+    html += '<td class="rf-desc">' + esc(r.desc) + stamps + '</td>';
+    html += '<td style="white-space:nowrap">';
+    html += '<button class="rf-act-btn" onclick="rfToggleEdit(this.dataset.id)" data-id="' + r.id + '">' + editLbl + '</button> ';
+    html += '<button class="rf-act-btn danger" onclick="rfDelete(this.dataset.id)" data-id="' + r.id + '">&#10005;</button>';
+    html += '</td></tr>';
+    html += rfEditRow(r, kwS);
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+/* ── UAP DAILY ── */
+const UAP_SK = 'oc_uap_reports_v1';
+let UAP_REPORTS = [];
+function uapLoad() { try { const d = localStorage.getItem(UAP_SK); if (d) UAP_REPORTS = JSON.parse(d); } catch(e) {} }
+function uapSave() { try { localStorage.setItem(UAP_SK, JSON.stringify(UAP_REPORTS)); } catch(e) {} }
+function uapRenderList() {
+  const el = document.getElementById('uap-report-list');
+  const ct = document.getElementById('uap-count');
+  if (!el) return;
+  if (ct) ct.textContent = UAP_REPORTS.length + ' report' + (UAP_REPORTS.length === 1 ? '' : 's');
+  if (!UAP_REPORTS.length) { el.innerHTML = '<div class="rf-empty">No reports yet. Click New Report to generate the first one.</div>'; return; }
+  const sorted = [...UAP_REPORTS].sort((a,b) => b.created.localeCompare(a.created));
+  let html = '';
+  sorted.forEach(function(r) {
+    const pills = (r.keywords || []).map(k => '<span class="uap-card-pill">' + esc(k) + '</span>').join('');
+    html += '<div class="uap-report-card" onclick="uapOpenModal(\'' + r.id + '\')">';
+    html += '<div class="uap-card-header">';
+    html += '<span class="uap-card-date">' + esc(r.dateLabel || r.created.slice(0,10)) + '</span>';
+    html += '<div class="uap-card-kw">' + pills + '</div>';
+    html += '<button class="uap-card-del" onclick="event.stopPropagation();uapDelete(\'' + r.id + '\')">&#10005;</button>';
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+}
+function uapOpenModal(id) {
+  const r = UAP_REPORTS.find(x => x.id === id);
+  if (!r) return;
+  const ov = document.getElementById('uap-modal-overlay');
+  const title = document.getElementById('uap-modal-title');
+  const body = document.getElementById('uap-modal-body');
+  if (title) title.textContent = '🛸 UAP Daily Report — ' + (r.dateLabel || r.created.slice(0,10));
+  if (body) body.textContent = r.content || '';
+  if (ov) ov.classList.add('open');
+}
+function uapCloseModal() {
+  const ov = document.getElementById('uap-modal-overlay');
+  if (ov) ov.classList.remove('open');
+}
+function uapDelete(id) {
+  if (!confirm('Delete this report?')) return;
+  UAP_REPORTS = UAP_REPORTS.filter(r => r.id !== id);
+  uapSave(); uapRenderList();
+}
+function uapNewReport() {
+  // Adds UAP Daily keyword to universal set, then triggers Claude to run the report
+  if (!KW.includes('UAP Daily')) { KW.push('UAP Daily'); kwSaveStore(); kwRender(); rfBuildKwSelects(); }
+  alert('Paste the UAP Daily Report output into the hub using the "Save Report" button that will appear.\n\nTo generate: ask Claude to run the UAP Daily Report prompt.');
+}
+function uapSaveReport(content, keywords) {
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const report = { id: 'uap_' + Date.now(), created: now.toISOString(), dateLabel, content, keywords: keywords || ['UAP Daily'] };
+  UAP_REPORTS.push(report);
+  uapSave(); uapRenderList();
+}
+
 function rfRender(){
   var container=document.getElementById('rf-cat-container');
   if(!container)return;
@@ -6209,8 +6346,7 @@ function rfRender(){
   var list=rfSorted(RF);if(fk)list=list.filter(function(r){return r.kw===fk;});
   if(_rfCatChip)list=list.filter(function(r){return (r.cat||'primary')===_rfCatChip;});
   if(ct)ct.textContent=list.length+' resource'+(list.length===1?'':'s');
-  const masterLbl=document.getElementById('rf-master-label');
-  if(masterLbl)masterLbl.textContent='\u{1F4C4} Resources — '+list.length+' item'+(list.length===1?'':'s');
+  const masterLbl=null; // element removed in sidebar redesign
   var groups={};Object.keys(RF_CATS).forEach(function(c){groups[c]=[];});
   list.forEach(function(r){var c=r.cat||'primary';if(groups[c])groups[c].push(r);else groups['primary'].push(r);});
   var kwS=[...RF_KW].sort(naturalSort);
@@ -6252,7 +6388,7 @@ function rfRender(){
 
 /* ── INIT ── */
 // Sync load from localStorage for immediate render
-load();otLoad();rfLoad();kwLoad();ctLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
+load();otLoad();rfLoad();uapLoad();kwLoad();ctLoad();render();renderOT();rfBuildKwSelects();setTimeout(()=>rfRender(),50);
 // Check for deferred items that have reached their reminder date
 setTimeout(()=>checkDeferredResurface(), 300);
 // Async GitHub fetch — silently updates if newer data found
