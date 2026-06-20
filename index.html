@@ -270,6 +270,16 @@ body::before{display:none}
 .deck-group:hover .deck-arrow{transform:rotate(180deg)}
 .deck-flyout{position:absolute;top:100%;left:0;background:#ffffff;border:1px solid #C6C6C8;border-top:none;border-radius:0 0 8px 8px;min-width:180px;z-index:200;display:none;flex-direction:column;box-shadow:0 4px 16px rgba(0,0,0,.12)}
 .deck-group:hover .deck-flyout{display:flex}
+/* ── MEGA-MENU TAB GROUPS (click-triggered) ── */
+.mega-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
+.mega-group .tab{border-radius:6px 6px 0 0}
+.mega-flyout{position:absolute;top:100%;left:0;background:rgba(255,255,255,0.98);border:1px solid #C6C6C8;border-top:2px solid #3D5A99;border-radius:0 8px 8px 8px;min-width:200px;z-index:300;display:none;flex-direction:column;box-shadow:0 6px 20px rgba(0,0,0,.14)}
+.mega-group.open .mega-flyout{display:flex}
+.mega-flyout-section{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);padding:8px 14px 4px;border-bottom:1px solid var(--separator)}
+.mega-flyout-item{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;padding:9px 16px;color:#3C3C43;cursor:pointer;border-bottom:1px solid #F2F2F7;white-space:nowrap;transition:background .12s;display:flex;align-items:center;gap:8px}
+.mega-flyout-item:last-child{border-bottom:none;border-radius:0 0 8px 8px}
+.mega-flyout-item:hover{background:#F2F2F7;color:#000}
+.mega-flyout-item .mega-item-icon{font-size:13px;flex-shrink:0;opacity:.7}
 .deck-flyout-item{font-family:'Source Code Pro',monospace;font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:10px 16px;color:#3C3C43;cursor:pointer;border-bottom:1px solid #F2F2F7;white-space:nowrap;transition:all .12s}
 .deck-flyout-item:last-child{border-bottom:none}
 .deck-flyout-item:hover{background:#F2F2F7;color:#000}
@@ -1228,7 +1238,22 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <div class="tabs">
     <button class="tab active" onclick="showTab('roadmap',this)" id="tab-roadmap">Roadmap<span class="tab-nbadge zero" id="tbadge-roadmap"></span></button>
     <button class="tab" onclick="showTab('notes',this)" id="tab-notes">Notes<span class="tab-nbadge zero" id="tbadge-notes"></span></button>
-    <button class="tab" onclick="showTab('refs',this)" id="tab-refs">Resources</button>
+    <div class="mega-group" id="mega-refs">
+      <button class="tab" onclick="megaToggle('mega-refs',event);showTab('refs',this)" id="tab-refs">Resources <span style="font-size:9px;opacity:.6">▾</span></button>
+      <div class="mega-flyout">
+        <div class="mega-flyout-section">Resources</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-all',event)"><span class="mega-item-icon">📄</span>All</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-primary',event)"><span class="mega-item-icon">📄</span>Primary Sources</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-substack',event)"><span class="mega-item-icon">✍️</span>Substacks</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-social',event)"><span class="mega-item-icon">📡</span>Social / News</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-analysis',event)"><span class="mega-item-icon">🔬</span>Analysis</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-podcast',event)"><span class="mega-item-icon">🎙️</span>Podcast / Video</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-documentary',event)"><span class="mega-item-icon">🎬</span>Documentary</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-book',event)"><span class="mega-item-icon">📚</span>Book</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-uap-daily',event)"><span class="mega-item-icon">🛸</span>UAP Daily</div>
+        <div class="mega-flyout-item" onclick="megaJump('refs','rf-add-form',event)"><span class="mega-item-icon">＋</span>Add Reference</div>
+      </div>
+    </div>
     <button class="tab" onclick="showTab('outreach',this)" id="tab-outreach">Outreach<span class="tab-nbadge zero" id="tbadge-outreach"></span></button>
     <div class="deck-group">
       <div class="deck-trigger" id="deck-trigger" onclick="toggleDeck(event)">Reference <span class="deck-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
@@ -1239,8 +1264,28 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <div class="deck-flyout-item" onclick="showDeckTab('dist',this)">Distribution</div>
       </div>
     </div>
-    <button class="tab" onclick="showTab('help',this)" id="tab-help">Help</button>
-    <button class="tab" onclick="showTab('settings',this)" id="tab-settings">⚙ Settings</button>
+    <div class="mega-group" id="mega-help">
+      <button class="tab" onclick="megaToggle('mega-help',event);showTab('help',this)" id="tab-help">Help <span style="font-size:9px;opacity:.6">▾</span></button>
+      <div class="mega-flyout">
+        <div class="mega-flyout-section">Help</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-about',event)"><span class="mega-item-icon">ℹ</span>About</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-roadmap',event)"><span class="mega-item-icon">🗺</span>Roadmap</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-notes',event)"><span class="mega-item-icon">📝</span>Notes</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-resources',event)"><span class="mega-item-icon">📄</span>Resources</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-outreach',event)"><span class="mega-item-icon">📬</span>Outreach</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-reference',event)"><span class="mega-item-icon">📖</span>Reference</div>
+      </div>
+    </div>
+    <div class="mega-group" id="mega-settings">
+      <button class="tab" onclick="megaToggle('mega-settings',event);showTab('settings',this)" id="tab-settings">⚙ Settings <span style="font-size:9px;opacity:.6">▾</span></button>
+      <div class="mega-flyout">
+        <div class="mega-flyout-section">Settings</div>
+        <div class="mega-flyout-item" onclick="megaJump('settings','s-general',event)"><span class="mega-item-icon">⚙</span>General</div>
+        <div class="mega-flyout-item" onclick="megaJump('settings','s-keywords',event)"><span class="mega-item-icon">🏷</span>Keywords</div>
+        <div class="mega-flyout-item" onclick="megaJump('settings','s-types',event)"><span class="mega-item-icon">📋</span>Note Types</div>
+        <div class="mega-flyout-item" onclick="megaJump('settings','s-data',event)"><span class="mega-item-icon">💾</span>Data Management</div>
+      </div>
+    </div>
     <div class="tab-spacer"></div>
     <span class="tab-action-ok" id="copy-tab-ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sent</span>
     <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
@@ -1835,32 +1880,36 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <p class="help-p">This app is designed to make project management an effective tool for working side by side with Claude. It gives you a structured, persistent workspace where notes, roadmap phases, research, outreach contacts, and reference materials all live in one place — synchronized with Claude at the start and end of every session.</p>
         <p class="help-p">It runs entirely in your browser as a single HTML5 file. There is no server, no login, and no subscription. Your data lives in localStorage on your device and in a GitHub repository that Claude reads and writes directly.</p>
 
+        <h3 class="help-h3">Navigation</h3>
+        <p class="help-p">The main tab bar at the top gives you access to all sections. <strong>Resources, Help, and Settings</strong> each have a drop-down mega-menu — click the tab once to open the menu and jump directly to any sub-section. Click the tab again (or select a section) to enter it. Once inside, the left sidebar shows all sub-sections for that tab.</p>
+        <p class="help-p"><strong>Reference</strong> uses the same drop-down pattern (hover-activated) for the four reference panels: Passes, Style &amp; Chapter Map, ISBNs &amp; Pricing, and Distribution.</p>
+
         <h3 class="help-h3">Functions</h3>
-        <p class="help-p" style="margin-bottom:12px">Click a tab above to get more information on how to use each function.</p>
+        <p class="help-p" style="margin-bottom:12px">Click a section in the sidebar to learn more about each function.</p>
         <div class="help-fn-grid">
-          <div class="help-fn-card" onclick="showHelpTab('h-roadmap',document.querySelector('.help-nav:nth-child(3)'))">
+          <div class="help-fn-card" onclick="showHelpTab('h-roadmap',document.querySelector('#panel-help .help-nav:nth-child(3)'))">
             <div class="help-fn-name">Roadmap</div>
             <div class="help-fn-desc">Gantt-style project timeline. Organize work into phases, tasks, and stage gates with target dates. Drag to reorder, click to edit, track completion.</div>
           </div>
-          <div class="help-fn-card" onclick="showHelpTab('h-notes',document.querySelector('.help-nav:nth-child(4)'))">
+          <div class="help-fn-card" onclick="showHelpTab('h-notes',document.querySelector('#panel-help .help-nav:nth-child(4)'))">
             <div class="help-fn-name">Notes</div>
             <div class="help-fn-desc">Project notes, questions, reminders, and dialogue threads. Filter by type, tag, or status. Flow items to Claude as conversation starters.</div>
           </div>
-          <div class="help-fn-card" onclick="showHelpTab('h-resources',document.querySelector('.help-nav:nth-child(5)'))">
+          <div class="help-fn-card" onclick="showHelpTab('h-resources',document.querySelector('#panel-help .help-nav:nth-child(5)'))">
             <div class="help-fn-name">Resources</div>
-            <div class="help-fn-desc">Links, documents, and reference materials organized by tag. Attach URLs, descriptions, and source notes for quick retrieval.</div>
+            <div class="help-fn-desc">Links, documents, and reference materials organized by category. Drop-down menu on the Resources tab gives direct access to any category.</div>
           </div>
-          <div class="help-fn-card" onclick="showHelpTab('h-outreach',document.querySelector('.help-nav:nth-child(6)'))">
+          <div class="help-fn-card" onclick="showHelpTab('h-outreach',document.querySelector('#panel-help .help-nav:nth-child(6)'))">
             <div class="help-fn-name">Outreach</div>
             <div class="help-fn-desc">Contact management for blurb requests, press outreach, agent queries, and publisher submissions. Track status, notes, and follow-up dates.</div>
           </div>
-          <div class="help-fn-card" onclick="showHelpTab('h-reference',document.querySelector('.help-nav:nth-child(7)'))">
+          <div class="help-fn-card" onclick="showHelpTab('h-reference',document.querySelector('#panel-help .help-nav:nth-child(7)'))">
             <div class="help-fn-name">Reference</div>
             <div class="help-fn-desc">Quick-access panels for production passes, style guide, ISBNs, pricing, and distribution details. Read-only reference material.</div>
           </div>
-          <div class="help-fn-card" onclick="showHelpTab('h-settings',document.querySelector('.help-nav:nth-child(9)'))">
+          <div class="help-fn-card" onclick="megaJump('settings','s-general',{stopPropagation:()=>{}})">
             <div class="help-fn-name">Settings</div>
-            <div class="help-fn-desc">Customize project name, tags, note types, and sync preferences. Configure how the hub behaves across devices and sessions.</div>
+            <div class="help-fn-desc">Its own tab on the main bar. Sub-sections: General, Keywords, Note Types, and Data Management (export, import, bulk delete, storage gauge).</div>
           </div>
         </div>
 
@@ -1992,87 +2041,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <p class="help-p">The Reference deck provides quick access to production and style information. Panels include Passes, Style &amp; Chapter Map, ISBNs &amp; Pricing, and Distribution. These are read-only reference materials updated by Claude at session end.</p>
       </div></div>
 
-      <!-- SETTINGS -->
-      <div class="help-spanel" id="h-settings"><div class="ref-section">
-        <h2 class="help-h2">Settings</h2>
-        <p class="help-p">Settings lets you customize how the hub behaves for your project. Changes are saved to localStorage immediately and pushed to GitHub when you sync with Claude.</p>
-
-        <h3 class="help-h3">How sync works</h3>
-        <p class="help-p">The hub now uses a <strong>separate data.json file</strong> on GitHub as the single source of truth. Every time the hub loads on any device, it fetches the latest data.json from GitHub — so iPad, Mac, and any other device are always in sync automatically, with no manual intervention.</p>
-        <p class="help-p">localStorage on your device acts as an instant-load cache. On startup the hub renders from localStorage immediately (no delay), then silently checks GitHub in the background. If GitHub has newer data, the UI updates automatically.</p>
-        <h3 class="help-h3">The Update Claude workflow</h3>
-        <p class="help-p">Press <strong>Update Claude</strong> to copy a JSON snapshot of your current data to the clipboard. Paste it into a Claude session — no additional prompt needed. Claude reads the snapshot, applies your changes, and pushes an updated data.json back to GitHub. The next time you load the hub on any device, it gets the new data automatically.</p>
-        <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 18px;margin:14px 0">
-          <p style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">What Claude pushes</p>
-          <p class="help-p" style="margin:0;font-size:13px">Claude pushes <strong>data.json only</strong> (~20KB) for data changes. The app file (index.html, ~300KB) is only updated when interface changes are made. This keeps pushes fast and separates your data from the app code.</p>
-        </div>
-        <div style="background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;padding:14px 18px;margin:14px 0">
-          <p style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:6px">Collision prevention</p>
-          <p class="help-p" style="margin:0;font-size:13px">Avoid running two Claude sessions that both push to GitHub simultaneously. One session writing at a time is the safe pattern.</p>
-        </div>
-
-        <h3 class="help-h3">Project settings</h3>
-        <div class="settings-card">
-          <span class="settings-card-label">Project Name</span>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input id="setting-project-name" type="text" value="Over-Classified" class="inp-ta" style="flex:1;padding:7px 10px;font-size:14px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)">
-            <button class="iabtn" onclick="saveProjectName()">Save</button>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Hub URL</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The live URL where this hub is served. Used for reference and sharing.</p>
-          <input id="setting-hub-url" type="text" value="https://hub.over-classified.com" class="inp-ta" style="width:100%;padding:7px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);font-family:'Source Code Pro',monospace">
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Tags</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Shared tag list used across Notes, Resources, and Outreach. Add tags by chapter, topic, or workflow area.</p>
-          <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
-          <div style="display:flex;gap:8px">
-            <input id="kw-inp" type="text" placeholder="Add tag…" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')addKw()">
-            <button class="iabtn" onclick="addKw()">+ Add</button>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Note Types</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Built-in types (Project Note, Question, Reminder, For Claude/Dave) cannot be removed. Add custom types to extend the list — they appear in all type selectors and the filter dropdown. Names are lowercase, letters/numbers/hyphens only.</p>
-          <div id="ct-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px"></div>
-          <div style="display:flex;gap:8px">
-            <input id="ct-inp" type="text" placeholder="Add type… e.g. research" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')ctAdd()">
-            <button class="iabtn" onclick="ctAdd()">+ Add</button>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Default note type</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The type pre-selected when you open the add-note form.</p>
-          <select id="setting-default-type" class="inp-sel" style="font-size:13px" onchange="saveDefaultType(this.value)">
-            <option value="note" selected>Project Note</option>
-            <option value="question">Question</option>
-            <option value="reminder">Reminder</option>
-            <option value="fordave">For Claude / Dave</option>
-          </select>
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Open items default filter</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Which status filter is applied when you switch to the Notes tab.</p>
-          <select id="setting-default-filter" class="inp-sel" style="font-size:13px" onchange="saveDefaultFilter(this.value)">
-            <option value="open" selected>Open</option>
-            <option value="">All</option>
-            <option value="priority">Priority</option>
-          </select>
-        </div>
-
-        <div class="settings-card">
-          <span class="settings-card-label">Restore dialog</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Reset all hub data from a JSON backup. Use with caution — this overwrites current localStorage.</p>
-          <button class="iabtn" onclick="showRestore()" style="background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore from JSON</button>
-        </div>
-
       </div></div>
 
     </div><!-- end help-content -->
@@ -2173,6 +2141,31 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <h2 class="help-h2">Data Management</h2>
 
         <div class="settings-card">
+          <span class="settings-card-label">Storage gauge</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:14px">Estimated data.json size vs. the 1MB GitHub upload ceiling. Green = safe · Amber = monitor · Red = trim needed.</p>
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:12px">
+            <svg id="dm-dial" viewBox="0 0 120 70" width="140" height="82" style="flex-shrink:0">
+              <!-- track arc -->
+              <path d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="#E5E5EA" stroke-width="10" stroke-linecap="round"/>
+              <!-- fill arc — animated via JS -->
+              <path id="dm-dial-fill" d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="#34C759" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 173"/>
+              <!-- needle -->
+              <line id="dm-dial-needle" x1="60" y1="65" x2="60" y2="18" stroke="#1C1C1E" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90,60,65)"/>
+              <circle cx="60" cy="65" r="4" fill="#1C1C1E"/>
+              <!-- labels -->
+              <text x="6" y="75" font-family="monospace" font-size="8" fill="#8E8E93">0</text>
+              <text x="98" y="75" font-family="monospace" font-size="8" fill="#8E8E93">1MB</text>
+            </svg>
+            <div>
+              <div id="dm-dial-label" style="font-family:'Source Code Pro',monospace;font-size:22px;font-weight:700;color:var(--label-primary);line-height:1">—</div>
+              <div id="dm-dial-status" style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;color:var(--label-secondary)">—</div>
+              <div id="dm-dial-items" style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:6px">—</div>
+            </div>
+          </div>
+          <button class="iabtn" onclick="dmStorageDial()">↻ Refresh gauge</button>
+        </div>
+
+        <div class="settings-card">
           <span class="settings-card-label">Export data</span>
           <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">Export hub items to a CSV file for backup, analysis, or external editing.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
@@ -2235,10 +2228,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             <div style="display:flex;flex-direction:column;gap:4px">
               <label class="settings-lbl">Older than</label>
               <select id="dm-del-age" class="inp-sel" style="font-size:12px" onchange="dmDeletePreview()">
+                <option value="7">1 week</option>
+                <option value="14">2 weeks</option>
+                <option value="30">1 month</option>
+                <option value="90" selected>3 months</option>
+                <option value="180">6 months</option>
                 <option value="365">1 year</option>
-                <option value="180" selected>6 months</option>
-                <option value="90">3 months</option>
-                <option value="30">30 days</option>
                 <option value="">Any age</option>
               </select>
             </div>
@@ -2939,7 +2934,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRenderAll();uapRenderList();}
-  if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();}
+  if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
@@ -7787,8 +7782,43 @@ function showSettingsTab(id, btn) {
   if (btn) btn.classList.add('active');
   if (id === 's-keywords') kwRender();
   if (id === 's-types') ctRenderAll();
-  if (id === 's-data') { dmHealthCheck(); dmDeletePreview(); }
+  if (id === 's-data') { dmHealthCheck(); dmDeletePreview(); dmStorageDial(); }
 }
+
+/* ── MEGA-MENU ── */
+function megaToggle(groupId, e) {
+  e.stopPropagation();
+  const grp = document.getElementById(groupId);
+  const isOpen = grp && grp.classList.contains('open');
+  // Close all mega groups
+  document.querySelectorAll('.mega-group').forEach(g => g.classList.remove('open'));
+  if (!isOpen && grp) grp.classList.add('open');
+}
+function megaJump(tabId, sectionId, e) {
+  e.stopPropagation();
+  // Close all mega menus
+  document.querySelectorAll('.mega-group').forEach(g => g.classList.remove('open'));
+  // Activate the tab
+  const tabBtn = document.getElementById('tab-' + tabId);
+  showTab(tabId, tabBtn);
+  // Jump to section
+  setTimeout(() => {
+    if (tabId === 'refs') {
+      const navBtn = document.querySelector(`#panel-refs .rf-nav[onclick*="${sectionId}"]`);
+      showRfTab(sectionId, navBtn);
+    } else if (tabId === 'help') {
+      const navBtn = document.querySelector(`#panel-help .help-nav[onclick*="${sectionId}"]`);
+      showHelpTab(sectionId, navBtn);
+    } else if (tabId === 'settings') {
+      const navBtn = document.querySelector(`#panel-settings .help-nav[onclick*="${sectionId}"]`);
+      showSettingsTab(sectionId, navBtn);
+    }
+  }, 30);
+}
+// Close mega menus on outside click
+document.addEventListener('click', () => {
+  document.querySelectorAll('.mega-group').forEach(g => g.classList.remove('open'));
+});
 
 /* addKw — called from Settings > Keywords */
 function addKw() {
@@ -7910,7 +7940,22 @@ function dmDeleteConfirm() {
   const type = document.getElementById('dm-del-type')?.value || '';
   const toDelete = dmGetFilteredItems(status, age || null, type);
   if (!toDelete.length) return;
-  if (!confirm('Delete ' + toDelete.length + ' item' + (toDelete.length===1?'':'s') + '? This cannot be undone after the undo window.')) return;
+  if (!confirm('Delete ' + toDelete.length + ' item' + (toDelete.length===1?'':'s') + '?\n\nA backup CSV will be downloaded automatically before deletion. You will have 10 seconds to undo after.')) return;
+  // Auto-export backup CSV before deleting
+  const headers = ['id','type','text','done','priority','tag','created','dueDate','completedDate'];
+  const rows = toDelete.map(i => headers.map(h => {
+    const v = i[h];
+    if (v === null || v === undefined) return '';
+    const s = String(v).replace(/"/g,'""');
+    return s.includes(',') || s.includes('\n') || s.includes('"') ? '"'+s+'"' : s;
+  }).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'oc-hub-deleted-backup-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+  // Now delete
   const deleteIds = new Set(toDelete.map(i=>i.id));
   _dmDeletedBackup = toDelete;
   S.items = (S.items||[]).filter(i=>!deleteIds.has(i.id));
@@ -7918,7 +7963,7 @@ function dmDeleteConfirm() {
   const undoEl = document.getElementById('dm-del-undo');
   const undoMsg = document.getElementById('dm-del-undo-msg');
   if (undoEl) undoEl.style.display = 'flex';
-  if (undoMsg) undoMsg.textContent = toDelete.length + ' items deleted. 10 seconds to undo.';
+  if (undoMsg) undoMsg.textContent = toDelete.length + ' items deleted — backup CSV downloaded. 10 seconds to undo.';
   if (_dmDeletedTimer) clearTimeout(_dmDeletedTimer);
   _dmDeletedTimer = setTimeout(() => {
     _dmDeletedBackup = null;
@@ -7927,6 +7972,34 @@ function dmDeleteConfirm() {
   }, 10000);
   dmDeletePreview();
   dmHealthCheck();
+  dmStorageDial();
+}
+
+function dmStorageDial() {
+  try {
+    const jsonStr = JSON.stringify({ items: S.items, road: S.road });
+    const bytes = new TextEncoder().encode(jsonStr).length;
+    const kb = Math.round(bytes / 1024);
+    const mb = bytes / (1024 * 1024);
+    const pct = Math.min(mb, 1); // fraction of 1MB ceiling
+    // Arc math: full arc = 173 units (half-circle)
+    const arcLen = 173;
+    const fill = Math.round(pct * arcLen);
+    const color = pct < 0.5 ? '#34C759' : pct < 0.75 ? '#FF9500' : '#FF3B30';
+    const statusText = pct < 0.5 ? 'Safe — no action needed' : pct < 0.75 ? 'Monitor — consider trimming' : 'Action needed — trim now';
+    // Needle: -90deg = 0%, 0deg = 50%, 90deg = 100%
+    const needleDeg = Math.round((pct * 180) - 90);
+    const fill_el = document.getElementById('dm-dial-fill');
+    const needle_el = document.getElementById('dm-dial-needle');
+    const label_el = document.getElementById('dm-dial-label');
+    const status_el = document.getElementById('dm-dial-status');
+    const items_el = document.getElementById('dm-dial-items');
+    if (fill_el) { fill_el.setAttribute('stroke-dasharray', fill + ' ' + (arcLen - fill)); fill_el.setAttribute('stroke', color); }
+    if (needle_el) needle_el.setAttribute('transform', `rotate(${needleDeg},60,65)`);
+    if (label_el) { label_el.textContent = kb + ' KB'; label_el.style.color = color; }
+    if (status_el) { status_el.textContent = statusText; status_el.style.color = color; }
+    if (items_el) items_el.textContent = (S.items||[]).length + ' items · ' + Math.round(pct*100) + '% of 1MB ceiling';
+  } catch(e) { console.error('dmStorageDial:', e); }
 }
 
 function dmUndoDelete() {
