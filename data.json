@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-20T14:08:41.000Z",
+  "_version": "2026-06-20T14:50:52.000Z",
   "_schema": 1,
   "items": [
     {
@@ -15270,6 +15270,181 @@
       "dueDate": "",
       "completedDate": "2026-06-20",
       "itemUrl": null
+    },
+    {
+      "id": "i_b2_a7_wikipedia_primary",
+      "type": "fordave",
+      "text": "PROPOSED: Replace Wikipedia-only citations in A7 notes 10, 14, 17 with direct sourcing from underlying news outlets (The War Zone, Air Force Times, BBC News).\n\nPASTE TO FIND \u2192 2019\u201320 Colorado Drone Sightings Wikipedia\n\nORIGINAL: A7 notes 10, 14, 17 cite Wikipedia as sole primary source for drone sighting aggregates.",
+      "answer": "",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "appendix",
+        "citation"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B2 flag: A7 notes 10, 14, 17 use Wikipedia as primary citation.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: Three A7 notes cite Wikipedia as sole source for drone sighting aggregates (Colorado 2019-20, US 2024, Europe 2025). B2 standard requires primary sources. Each Wikipedia article cites The War Zone, Air Force Times, BBC, etc. \u2014 recommend replacing with those direct citations. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_b2_ch5_note20_empty",
+      "type": "fordave",
+      "text": "PROPOSED: Review and fill (or delete) the empty Chapter 5 end note \u2014 note 20 under 'Chapter 5 notes' has no citation text.\n\nPASTE TO FIND \u2192 Chapter 5 notes heading in End Notes, count to 20th afootnote\n\nORIGINAL: Empty afootnote paragraph with no content.",
+      "answer": "",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "ch5",
+        "citation"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B2 flag: Ch5 note 20 is empty.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: The 20th end note under Chapter 5 notes in End Notes is a blank afootnote paragraph with no citation text. Needs content or deletion before B2 is clean for Ch5. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_b2_ch16_missing_markers",
+      "type": "fordave",
+      "text": "PROPOSED: Verify Ch16 notes 1\u20132 (Madison Federalist No. 51 and Barry letter). These notes lack the \u2191 return-link marker. Check whether navigation is broken or these are display footnotes handled differently.\n\nPASTE TO FIND \u2192 Madison, James. The Federalist No. 51, February 8, 1788\n\nORIGINAL: Ch16 notes 1 and 2 begin with 'Madison, James' without the \u2191 marker used on all other end notes.",
+      "answer": "",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "ch16",
+        "footnote"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B2 flag: Ch16 notes 1-2 missing return markers.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: Ch16 end notes 1 and 2 (Madison Federalist No. 51; Barry letter Aug. 4 1822) lack the \u2191 return-link marker present on all other end notes. If genuine end notes, navigation is broken and B4 will catch this. If display footnotes intentionally formatted differently, no action needed. Please confirm or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_b2_ch9_turner_doc",
+      "type": "fordave",
+      "text": "PROPOSED: Manually verify Turner JIO 1971 classified assessment (National Archives of Australia Record B30030606) against the specific claim it supports in Ch9. Archival record \u2014 cannot be accessed online.\n\nPASTE TO FIND \u2192 Turner, O.H. Classified assessment, Joint Intelligence Organisation, 1971\n\nORIGINAL: Ch9 note 7 cites Turner JIO 1971 assessment. Archival only.",
+      "answer": "",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "ch9",
+        "citation"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B2 flag: Turner JIO document cannot be verified online.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: Ch9 note 7 cites Turner, O.H. JIO 1971 classified assessment (National Archives of Australia Record B30030606). Not available online \u2014 manual verification needed against the specific claim in Ch9. If this is the Turner document from the publisher pitch context, priority verification recommended. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_b2_a10_notes_empty",
+      "type": "fordave",
+      "text": "PROPOSED: Determine whether A10 (U.S. Public Opinion) end notes are missing. The 'A10 notes' heading in End Notes has zero notes beneath it, but the A10 appendix body contains one ref_ bookmark.\n\nPASTE TO FIND \u2192 A10 notes (bheading2 in End Notes)\n\nORIGINAL: 'A10 notes' heading exists in End Notes with no content. A10 appendix has one ref_ marker.",
+      "answer": "",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "appendix",
+        "footnote"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B2 flag: A10 notes heading is empty in End Notes.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: 'A10 notes' bheading2 in End Notes has zero afootnote paragraphs. The A10 appendix body has one ref_ bookmark. Three possibilities: (a) note written into A10 body rather than End Notes, (b) note is missing, (c) A10 intentionally has no end notes and heading is a placeholder. Please confirm intent. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_cheadng3_spacing_fix",
+      "type": "fordave",
+      "text": "DONE: Removed contextualSpacing from cheadng3 style definition. This was suppressing the 12pt space-before in A11 and wherever cheadng3 follows TextOpen paragraphs throughout the book.\n\nAffected: A11 (42), A12 (38), A13 (10), A1, A3, A9, Ch12, Ch13.\n\nPASTE TO FIND \u2192 1944\u20131945 Foo Fighters (first cheadng3 in A11 detail section)",
+      "answer": "DONE v362: contextualSpacing removed from cheadng3 style. Spacing now renders correctly.",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "appendix",
+        "editing"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Fix cheadng3 spacing in A11.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: Root cause \u2014 contextualSpacing in cheadng3 style suppressed space-before when cheadng3 follows TextOpen (before=0). Removed contextualSpacing from styles.xml. Fix covers all 132 cheadng3 headings book-wide. No consecutive cheadng3 pairs exist anywhere, so no unintended spacing added. Sections affected: A11, A12, A13, A1, A3, A9, Ch12, Ch13. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_endnotes_section_break",
+      "type": "fordave",
+      "text": "DONE: Added explicit w:type='nextPage' to the section break paragraph at end of End Notes (empty afootnote immediately before A1 heading).\n\nPASTE TO FIND \u2192 End Notes empty paragraph before A1 Sample Messages and Members of Congress",
+      "answer": "DONE v362: Explicit nextPage type added to End Notes terminal sectPr (paraId 3A7B0001).",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T14:50:52.000Z",
+      "tags": [
+        "appendix",
+        "editing"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "Add section break at end of End Notes.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: The empty afootnote paragraph (paraId 3A7B0001) immediately before A1 already had a sectPr but without an explicit type. Added w:type val='nextPage'. All original page size and margin attributes preserved. Please accept or reply.",
+          "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
     }
   ],
   "road": [
