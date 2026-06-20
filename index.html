@@ -2140,19 +2140,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div class="help-spanel" id="s-data">
         <h2 class="help-h2">Data Management</h2>
 
+        <!-- TILE 1: STORAGE GAUGE -->
         <div class="settings-card">
           <span class="settings-card-label">Storage gauge</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:14px">Estimated data.json size vs. the 1MB GitHub upload ceiling. Green = safe · Amber = monitor · Red = trim needed.</p>
           <div style="display:flex;align-items:center;gap:18px;margin-bottom:12px">
             <svg id="dm-dial" viewBox="0 0 120 70" width="140" height="82" style="flex-shrink:0">
-              <!-- track arc -->
               <path d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="#E5E5EA" stroke-width="10" stroke-linecap="round"/>
-              <!-- fill arc — animated via JS -->
               <path id="dm-dial-fill" d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="#34C759" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 173"/>
-              <!-- needle -->
               <line id="dm-dial-needle" x1="60" y1="65" x2="60" y2="18" stroke="#1C1C1E" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90,60,65)"/>
               <circle cx="60" cy="65" r="4" fill="#1C1C1E"/>
-              <!-- labels -->
               <text x="6" y="75" font-family="monospace" font-size="8" fill="#8E8E93">0</text>
               <text x="98" y="75" font-family="monospace" font-size="8" fill="#8E8E93">1MB</text>
             </svg>
@@ -2162,26 +2158,26 @@ input[type=date].inp-sel{font-size:11px;width:130px}
               <div id="dm-dial-items" style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin-top:6px">—</div>
             </div>
           </div>
-          <button class="iabtn" onclick="dmStorageDial()">↻ Refresh gauge</button>
+          <button class="iabtn" onclick="dmStorageDial()">↻ Refresh</button>
         </div>
 
+        <!-- TILE 2: BACKUP & RESTORE -->
         <div class="settings-card">
-          <span class="settings-card-label">Export data</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">Export hub items to a CSV file for backup, analysis, or external editing.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+          <span class="settings-card-label">Backup &amp; Restore</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end">
             <div style="display:flex;flex-direction:column;gap:4px">
               <label class="settings-lbl">Status</label>
               <select id="dm-exp-status" class="inp-sel" style="font-size:12px">
-                <option value="">All</option>
-                <option value="open" selected>Open only</option>
+                <option value="" selected>All</option>
+                <option value="open">Open only</option>
                 <option value="done">Done only</option>
               </select>
             </div>
             <div style="display:flex;flex-direction:column;gap:4px">
               <label class="settings-lbl">Date range</label>
               <select id="dm-exp-range" class="inp-sel" style="font-size:12px">
-                <option value="">All time</option>
-                <option value="90" selected>Last 90 days</option>
+                <option value="" selected>All time</option>
+                <option value="90">Last 90 days</option>
                 <option value="30">Last 30 days</option>
                 <option value="7">Last 7 days</option>
               </select>
@@ -2189,7 +2185,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             <div style="display:flex;flex-direction:column;gap:4px">
               <label class="settings-lbl">Type</label>
               <select id="dm-exp-type" class="inp-sel" style="font-size:12px">
-                <option value="">All types</option>
+                <option value="" selected>All types</option>
                 <option value="fordave">For Claude/Dave</option>
                 <option value="note">Project Note</option>
                 <option value="reminder">Reminder</option>
@@ -2198,25 +2194,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             </div>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="dl-send-btn" onclick="dmExport()" style="height:34px">&#8659; Export CSV</button>
-            <button class="iabtn" onclick="dmExportAll()" style="height:34px">Export All (JSON)</button>
+            <button class="dl-send-btn" onclick="dmExport()" style="height:34px">&#8659; Backup</button>
+            <button class="iabtn" onclick="dmRestoreClick()" style="height:34px;background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore</button>
           </div>
+          <!-- hidden file input for restore -->
+          <input type="file" id="dm-import-file" accept=".json" style="display:none" onchange="dmImportPreview()">
         </div>
 
-        <div class="settings-card">
-          <span class="settings-card-label">Import data</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Import a JSON backup to restore data. This merges with existing data — items with the same ID are updated, new items are added. No items are deleted on import.</p>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input type="file" id="dm-import-file" accept=".json" style="font-size:12px;font-family:'Source Code Pro',monospace;flex:1" onchange="dmImportPreview()">
-            <button class="dl-send-btn" onclick="dmImportConfirm()" id="dm-import-btn" style="height:34px;display:none">&#8657; Import</button>
-          </div>
-          <div id="dm-import-preview" style="margin-top:10px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary)"></div>
-        </div>
-
+        <!-- TILE 3: BULK DELETE -->
         <div class="settings-card">
           <span class="settings-card-label">Bulk delete</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">Permanently delete items by filter. <strong>This cannot be undone.</strong> A count preview shows before any deletion executes.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end">
             <div style="display:flex;flex-direction:column;gap:4px">
               <label class="settings-lbl">Status</label>
               <select id="dm-del-status" class="inp-sel" style="font-size:12px" onchange="dmDeletePreview()">
@@ -2251,15 +2239,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <div id="dm-del-preview" style="font-family:'Source Code Pro',monospace;font-size:12px;color:var(--label-secondary);margin-bottom:10px">Select filters above to preview affected items.</div>
           <button class="iabtn" onclick="dmDeletePreview()" style="margin-right:8px">Preview</button>
           <button id="dm-del-btn" class="iabtn" onclick="dmDeleteConfirm()" style="display:none;background:#c0392b;color:#fff;border-color:#c0392b">&#10005; Delete items</button>
-          <div id="dm-del-undo" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(199,0,37,.08);border:1px solid rgba(199,0,37,.25);border-radius:6px;font-family:'Source Code Pro',monospace;font-size:11px;display:flex;align-items:center;gap:10px">
+          <div id="dm-del-undo" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(199,0,37,.08);border:1px solid rgba(199,0,37,.25);border-radius:6px;font-family:'Source Code Pro',monospace;font-size:11px;align-items:center;gap:10px">
             <span id="dm-del-undo-msg"></span>
-            <button class="iabtn" onclick="dmUndoDelete()" style="border-color:var(--accent);color:var(--accent)">Undo</button>
+            <button class="iabtn" onclick="dmUndoDelete()" style="border-color:var(--accent);color:var(--accent);margin-left:10px">Undo</button>
           </div>
         </div>
 
+        <!-- TILE 4: ITEM COUNT -->
         <div class="settings-card">
-          <span class="settings-card-label">Data health</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Count of items by status and type.</p>
+          <span class="settings-card-label">Item count</span>
           <div id="dm-health" style="font-family:'Source Code Pro',monospace;font-size:11px;line-height:1.9;color:var(--label-primary)"></div>
           <button class="iabtn" onclick="dmHealthCheck()" style="margin-top:10px">Refresh</button>
         </div>
@@ -7882,11 +7870,15 @@ function dmExportAll() {
   a.click(); URL.revokeObjectURL(url);
 }
 
+/* dmRestoreClick — trigger hidden file input */
+function dmRestoreClick() {
+  const inp = document.getElementById('dm-import-file');
+  if (inp) { inp.value = ''; inp.click(); }
+}
+
 function dmImportPreview() {
   const file = document.getElementById('dm-import-file')?.files?.[0];
-  const preview = document.getElementById('dm-import-preview');
-  const btn = document.getElementById('dm-import-btn');
-  if (!file) { if (preview) preview.textContent = ''; if (btn) btn.style.display = 'none'; return; }
+  if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     try {
@@ -7895,32 +7887,62 @@ function dmImportPreview() {
       const existing = new Set((S.items||[]).map(i=>i.id));
       const newCount = items.filter(i=>!existing.has(i.id)).length;
       const updateCount = items.filter(i=>existing.has(i.id)).length;
-      if (preview) preview.textContent = items.length + ' items found: ' + newCount + ' new, ' + updateCount + ' updates.';
-      if (btn) btn.style.display = '';
-      btn._importData = data;
+      // Show modal with Merge / Replace All options
+      const existing_mod = document.getElementById('dm-restore-modal');
+      if (existing_mod) existing_mod.remove();
+      const modal = document.createElement('div');
+      modal.id = 'dm-restore-modal';
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:3000;display:flex;align-items:center;justify-content:center';
+      modal.innerHTML = `
+        <div style="background:var(--card-bg);border-radius:12px;width:min(480px,90vw);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+          <div style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px">Restore from backup</div>
+          <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.65;color:var(--label-primary);margin:0 0 6px"><strong>${items.length} items</strong> found in file</p>
+          <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin:0 0 20px">${newCount} new · ${updateCount} updates to existing</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+            <div style="padding:12px 14px;border:1px solid var(--separator);border-radius:8px">
+              <div style="font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Merge</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-secondary)">Add new items and update existing ones. Nothing is deleted. Safest option.</div>
+            </div>
+            <div style="padding:12px 14px;border:1px solid rgba(199,0,37,.3);border-radius:8px;background:rgba(199,0,37,.04)">
+              <div style="font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:#c0392b">Replace All</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-secondary)">Wipe all current data and load the backup wholesale. Cannot be undone.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button onclick="document.getElementById('dm-restore-modal').remove()" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);padding:8px 16px;border-radius:6px;cursor:pointer">Cancel</button>
+            <button onclick="dmImportConfirm('merge')" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer">Merge</button>
+            <button onclick="dmImportConfirm('replace')" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:#c0392b;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer">Replace All</button>
+          </div>
+        </div>`;
+      modal.addEventListener('click', ev => { if(ev.target===modal) modal.remove(); });
+      modal._importData = data;
+      document.body.appendChild(modal);
     } catch(err) {
-      if (preview) preview.textContent = 'Invalid JSON: ' + err.message;
-      if (btn) btn.style.display = 'none';
+      alert('Invalid JSON file: ' + err.message);
     }
   };
   reader.readAsText(file);
 }
 
-function dmImportConfirm() {
-  const btn = document.getElementById('dm-import-btn');
-  if (!btn || !btn._importData) return;
-  const data = btn._importData;
-  if (!confirm('Import ' + (data.items||[]).length + ' items? Existing items with matching IDs will be updated.')) return;
+function dmImportConfirm(mode) {
+  const modal = document.getElementById('dm-restore-modal');
+  const data = modal?._importData;
+  if (!data) return;
+  modal.remove();
   const incoming = data.items || [];
-  const existing = S.items || [];
-  const idMap = {};
-  existing.forEach(i => idMap[i.id] = i);
-  incoming.forEach(i => { idMap[i.id] = { ...idMap[i.id], ...i }; });
-  S.items = Object.values(idMap);
+  if (mode === 'replace') {
+    if (!confirm('Replace ALL current data with ' + incoming.length + ' items from backup? This cannot be undone.')) return;
+    S.items = incoming;
+  } else {
+    // Merge
+    const idMap = {};
+    (S.items||[]).forEach(i => idMap[i.id] = i);
+    incoming.forEach(i => { idMap[i.id] = { ...idMap[i.id], ...i }; });
+    S.items = Object.values(idMap);
+  }
   save(); render();
-  const preview = document.getElementById('dm-import-preview');
-  if (preview) preview.textContent = 'Import complete. ' + incoming.length + ' items processed.';
-  btn.style.display = 'none';
+  alert((mode === 'replace' ? 'Replace complete' : 'Merge complete') + '. ' + incoming.length + ' items processed.');
+  dmHealthCheck(); dmStorageDial();
 }
 
 function dmDeletePreview() {
