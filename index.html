@@ -44,7 +44,8 @@ body.tab-roadmap{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg
 body.tab-passes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_passes.jpg')}
 body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_refs.jpg')}
 body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
-body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}/* ── APPLE-STYLE LEGIBILITY ──
+body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
+body.tab-settings{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}/* ── APPLE-STYLE LEGIBILITY ──
    Photo at full strength in header and gaps between cards.
    Cards nearly opaque white — crisp black text always. Photo shows in gaps.
 */
@@ -109,6 +110,7 @@ body.tab-passes{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_
 body.tab-refs{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_refs.jpg')}
 body.tab-outreach{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_outreach.jpg')}
 body.tab-help{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
+body.tab-settings{background-image:url('https://brownd11-a11y.github.io/oc-hub/bg_help.jpg')}
 /* ── GLASS THEME — consistent semi-transparent surfaces throughout ──
    Opacity vocabulary:
    0.96 = near-solid (overlays, panels, dense text areas)
@@ -1238,6 +1240,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       </div>
     </div>
     <button class="tab" onclick="showTab('help',this)" id="tab-help">Help</button>
+    <button class="tab" onclick="showTab('settings',this)" id="tab-settings">⚙ Settings</button>
     <div class="tab-spacer"></div>
     <span class="tab-action-ok" id="copy-tab-ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sent</span>
     <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
@@ -1814,15 +1817,13 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
     <!-- LEFT SIDEBAR NAV -->
     <div class="help-sidebar">
-      <div class="help-sidebar-label">Help &amp; Settings</div>
+      <div class="help-sidebar-label">Help</div>
       <button class="help-nav active" onclick="showHelpTab('h-about',this)">&#9432; About</button>
       <button class="help-nav" onclick="showHelpTab('h-roadmap',this)">Roadmap</button>
       <button class="help-nav" onclick="showHelpTab('h-notes',this)">Notes</button>
       <button class="help-nav" onclick="showHelpTab('h-resources',this)">Resources</button>
       <button class="help-nav" onclick="showHelpTab('h-outreach',this)">Outreach</button>
       <button class="help-nav" onclick="showHelpTab('h-reference',this)">Reference</button>
-      <div class="help-sidebar-sep"></div>
-      <button class="help-nav" onclick="showHelpTab('h-settings',this)">&#9881; Settings</button>
     </div>
 
     <!-- CONTENT AREA -->
@@ -2074,6 +2075,201 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
       </div></div>
 
+    </div><!-- end help-content -->
+  </div><!-- end help-layout -->
+</div>
+
+<!-- SETTINGS -->
+<div class="panel" id="panel-settings">
+  <div class="help-layout">
+    <div class="help-sidebar">
+      <div class="help-sidebar-label">Settings</div>
+      <button class="help-nav active" onclick="showSettingsTab('s-general',this)">&#9881; General</button>
+      <button class="help-nav" onclick="showSettingsTab('s-keywords',this)">&#127991; Keywords</button>
+      <button class="help-nav" onclick="showSettingsTab('s-types',this)">&#128196; Note Types</button>
+      <div class="help-sidebar-sep"></div>
+      <button class="help-nav" onclick="showSettingsTab('s-data',this)">&#128190; Data Management</button>
+    </div>
+    <div class="help-content">
+
+      <!-- GENERAL -->
+      <div class="help-spanel active" id="s-general">
+        <h2 class="help-h2">General</h2>
+        <div class="settings-card">
+          <span class="settings-card-label">Project Name</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="setting-project-name" type="text" value="Over-Classified" class="inp-ta" style="flex:1;padding:7px 10px;font-size:14px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)">
+            <button class="iabtn" onclick="saveProjectName()">Save</button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <span class="settings-card-label">Hub URL</span>
+          <input id="setting-hub-url" type="text" value="https://hub.over-classified.com" class="inp-ta" style="width:100%;padding:7px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);font-family:'Source Code Pro',monospace">
+        </div>
+        <div class="settings-card">
+          <span class="settings-card-label">Default note type</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The type pre-selected when you open the add-note form.</p>
+          <select id="setting-default-type" class="inp-sel" style="font-size:13px" onchange="saveDefaultType(this.value)">
+            <option value="note" selected>Project Note</option>
+            <option value="question">Question</option>
+            <option value="reminder">Reminder</option>
+            <option value="fordave">For Claude / Dave</option>
+          </select>
+        </div>
+        <div class="settings-card">
+          <span class="settings-card-label">Default status filter</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Which status filter is applied when you switch to the Notes tab.</p>
+          <select id="setting-default-filter" class="inp-sel" style="font-size:13px" onchange="saveDefaultFilter(this.value)">
+            <option value="open" selected>Open</option>
+            <option value="">All</option>
+            <option value="priority">Priority</option>
+          </select>
+        </div>
+        <div class="settings-card">
+          <span class="settings-card-label">Sync &amp; restore</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">The hub uses data.json on GitHub as the source of truth. localStorage acts as an instant-load cache — GitHub wins if newer. Use <strong>Update Claude</strong> to sync changes back via Claude.</p>
+          <button class="iabtn" onclick="dmShowRestore()" style="background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore from JSON</button>
+        </div>
+      </div>
+
+      <!-- KEYWORDS -->
+      <div class="help-spanel" id="s-keywords">
+        <h2 class="help-h2">Keywords</h2>
+        <p class="help-p">Keywords are shared across Notes, Resources, and Outreach. Add, rename, or remove tags here. Removing a tag does not delete items that use it — they keep the tag value but it won't appear in filter menus until re-added.</p>
+        <div class="settings-card">
+          <span class="settings-card-label">Current tags</span>
+          <div id="kw-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:24px"></div>
+          <div id="kw-add-row" style="display:flex;gap:8px;margin-bottom:8px">
+            <input id="kw-inp" type="text" placeholder="Add tag… or paste comma-separated list" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')addKw()">
+            <button class="iabtn" onclick="addKw()">+ Add</button>
+            <button class="iabtn" onclick="kwStartEdit()">Edit All</button>
+          </div>
+          <div id="kw-edit-row" style="display:none;gap:8px;margin-bottom:8px">
+            <textarea id="kw-edit-ta" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);min-height:80px;resize:vertical" placeholder="Edit comma-separated list…"></textarea>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <button class="iabtn" onclick="kwSave()">Save</button>
+              <button class="iabtn" onclick="kwCancelEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTE TYPES -->
+      <div class="help-spanel" id="s-types">
+        <h2 class="help-h2">Note Types</h2>
+        <p class="help-p">Built-in types (Project Note, Question, Reminder, For Claude/Dave) cannot be removed. Add custom types to extend the list — they appear in all type selectors and the filter dropdown.</p>
+        <div class="settings-card">
+          <span class="settings-card-label">Types</span>
+          <div id="ct-chips" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:24px"></div>
+          <div style="display:flex;gap:8px">
+            <input id="ct-inp" type="text" placeholder="Add type… e.g. research" class="inp-ta" style="flex:1;padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary)" onkeydown="if(event.key==='Enter')ctAdd()">
+            <button class="iabtn" onclick="ctAdd()">+ Add</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA MANAGEMENT -->
+      <div class="help-spanel" id="s-data">
+        <h2 class="help-h2">Data Management</h2>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Export data</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">Export hub items to a CSV file for backup, analysis, or external editing.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Status</label>
+              <select id="dm-exp-status" class="inp-sel" style="font-size:12px">
+                <option value="">All</option>
+                <option value="open" selected>Open only</option>
+                <option value="done">Done only</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Date range</label>
+              <select id="dm-exp-range" class="inp-sel" style="font-size:12px">
+                <option value="">All time</option>
+                <option value="90" selected>Last 90 days</option>
+                <option value="30">Last 30 days</option>
+                <option value="7">Last 7 days</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Type</label>
+              <select id="dm-exp-type" class="inp-sel" style="font-size:12px">
+                <option value="">All types</option>
+                <option value="fordave">For Claude/Dave</option>
+                <option value="note">Project Note</option>
+                <option value="reminder">Reminder</option>
+                <option value="question">Question</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="dl-send-btn" onclick="dmExport()" style="height:34px">&#8659; Export CSV</button>
+            <button class="iabtn" onclick="dmExportAll()" style="height:34px">Export All (JSON)</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Import data</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Import a JSON backup to restore data. This merges with existing data — items with the same ID are updated, new items are added. No items are deleted on import.</p>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="file" id="dm-import-file" accept=".json" style="font-size:12px;font-family:'Source Code Pro',monospace;flex:1" onchange="dmImportPreview()">
+            <button class="dl-send-btn" onclick="dmImportConfirm()" id="dm-import-btn" style="height:34px;display:none">&#8657; Import</button>
+          </div>
+          <div id="dm-import-preview" style="margin-top:10px;font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary)"></div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Bulk delete</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:12px">Permanently delete items by filter. <strong>This cannot be undone.</strong> A count preview shows before any deletion executes.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Status</label>
+              <select id="dm-del-status" class="inp-sel" style="font-size:12px" onchange="dmDeletePreview()">
+                <option value="done" selected>Done only</option>
+                <option value="open">Open only</option>
+                <option value="">All</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Older than</label>
+              <select id="dm-del-age" class="inp-sel" style="font-size:12px" onchange="dmDeletePreview()">
+                <option value="365">1 year</option>
+                <option value="180" selected>6 months</option>
+                <option value="90">3 months</option>
+                <option value="30">30 days</option>
+                <option value="">Any age</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label class="settings-lbl">Type</label>
+              <select id="dm-del-type" class="inp-sel" style="font-size:12px" onchange="dmDeletePreview()">
+                <option value="">All types</option>
+                <option value="note">Project Note</option>
+                <option value="fordave">For Claude/Dave</option>
+                <option value="reminder">Reminder</option>
+                <option value="question">Question</option>
+              </select>
+            </div>
+          </div>
+          <div id="dm-del-preview" style="font-family:'Source Code Pro',monospace;font-size:12px;color:var(--label-secondary);margin-bottom:10px">Select filters above to preview affected items.</div>
+          <button class="iabtn" onclick="dmDeletePreview()" style="margin-right:8px">Preview</button>
+          <button id="dm-del-btn" class="iabtn" onclick="dmDeleteConfirm()" style="display:none;background:#c0392b;color:#fff;border-color:#c0392b">&#10005; Delete items</button>
+          <div id="dm-del-undo" style="display:none;margin-top:10px;padding:10px 14px;background:rgba(199,0,37,.08);border:1px solid rgba(199,0,37,.25);border-radius:6px;font-family:'Source Code Pro',monospace;font-size:11px;display:flex;align-items:center;gap:10px">
+            <span id="dm-del-undo-msg"></span>
+            <button class="iabtn" onclick="dmUndoDelete()" style="border-color:var(--accent);color:var(--accent)">Undo</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <span class="settings-card-label">Data health</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--label-primary);line-height:1.55;margin-bottom:10px">Count of items by status and type.</p>
+          <div id="dm-health" style="font-family:'Source Code Pro',monospace;font-size:11px;line-height:1.9;color:var(--label-primary)"></div>
+          <button class="iabtn" onclick="dmHealthCheck()" style="margin-top:10px">Refresh</button>
+        </div>
+
+      </div><!-- end s-data -->
     </div><!-- end help-content -->
   </div><!-- end help-layout -->
 </div>
@@ -2743,6 +2939,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();rfRenderAll();uapRenderList();}
+  if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
@@ -6417,7 +6614,7 @@ migrateDialogue();ctLoad();initRoadmap();renderGantt();setTimeout(()=>ganttScrol
 (function(){
   try{
     const saved = localStorage.getItem('oc_active_tab');
-    const valid = ['roadmap','notes','refs','outreach','help'];
+    const valid = ['roadmap','notes','refs','outreach','help','settings'];
     if(saved && valid.includes(saved) && saved !== 'roadmap'){
       const btn = document.querySelector('[onclick*="showTab(\''+saved+'\'"]') || document.getElementById('tab-'+saved);
       showTab(saved, btn);
@@ -7580,6 +7777,185 @@ function ingestLeads(newLeads) {
 }
 
 // leads render handled inside showTab directly
+
+/* ── SETTINGS TAB ── */
+function showSettingsTab(id, btn) {
+  document.querySelectorAll('#panel-settings .help-spanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#panel-settings .help-nav').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 's-keywords') kwRender();
+  if (id === 's-types') ctRenderAll();
+  if (id === 's-data') { dmHealthCheck(); dmDeletePreview(); }
+}
+
+/* addKw — called from Settings > Keywords */
+function addKw() {
+  const inp = document.getElementById('kw-inp');
+  const raw = (inp ? inp.value || '' : '').trim();
+  if (!raw) return;
+  raw.split(',').map(v => v.trim()).filter(Boolean).forEach(v => {
+    if (!KW.includes(v)) KW.push(v);
+  });
+  kwSaveStore(); kwRender();
+  if (inp) inp.value = '';
+}
+
+/* dmShowRestore — restore from JSON */
+function dmShowRestore() { showRestore && showRestore(); }
+
+/* ── DATA MANAGEMENT ── */
+let _dmDeletedBackup = null;
+let _dmDeletedTimer = null;
+
+function dmGetFilteredItems(statusSel, rangeDays, typeSel) {
+  const cutoff = rangeDays ? new Date(Date.now() - rangeDays * 86400000) : null;
+  return (S.items || []).filter(item => {
+    if (statusSel === 'open' && item.done) return false;
+    if (statusSel === 'done' && !item.done) return false;
+    if (typeSel && item.type !== typeSel) return false;
+    if (cutoff) {
+      const d = new Date(item.completedDate || item.created || 0);
+      if (d > cutoff) return false;
+    }
+    return true;
+  });
+}
+
+function dmExport() {
+  const status = document.getElementById('dm-exp-status')?.value || '';
+  const range = parseInt(document.getElementById('dm-exp-range')?.value || '0') || 0;
+  const type = document.getElementById('dm-exp-type')?.value || '';
+  const items = dmGetFilteredItems(status, range || null, type);
+  if (!items.length) { alert('No items match the selected filters.'); return; }
+  const headers = ['id','type','text','done','priority','tag','created','dueDate','completedDate'];
+  const rows = items.map(i => headers.map(h => {
+    const v = i[h];
+    if (v === null || v === undefined) return '';
+    const s = String(v).replace(/"/g, '""');
+    return s.includes(',') || s.includes('\n') || s.includes('"') ? '"' + s + '"' : s;
+  }).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'oc-hub-export-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function dmExportAll() {
+  const blob = new Blob([JSON.stringify({ items: S.items, road: S.road, _version: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = 'oc-hub-full-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function dmImportPreview() {
+  const file = document.getElementById('dm-import-file')?.files?.[0];
+  const preview = document.getElementById('dm-import-preview');
+  const btn = document.getElementById('dm-import-btn');
+  if (!file) { if (preview) preview.textContent = ''; if (btn) btn.style.display = 'none'; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const items = data.items || [];
+      const existing = new Set((S.items||[]).map(i=>i.id));
+      const newCount = items.filter(i=>!existing.has(i.id)).length;
+      const updateCount = items.filter(i=>existing.has(i.id)).length;
+      if (preview) preview.textContent = items.length + ' items found: ' + newCount + ' new, ' + updateCount + ' updates.';
+      if (btn) btn.style.display = '';
+      btn._importData = data;
+    } catch(err) {
+      if (preview) preview.textContent = 'Invalid JSON: ' + err.message;
+      if (btn) btn.style.display = 'none';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function dmImportConfirm() {
+  const btn = document.getElementById('dm-import-btn');
+  if (!btn || !btn._importData) return;
+  const data = btn._importData;
+  if (!confirm('Import ' + (data.items||[]).length + ' items? Existing items with matching IDs will be updated.')) return;
+  const incoming = data.items || [];
+  const existing = S.items || [];
+  const idMap = {};
+  existing.forEach(i => idMap[i.id] = i);
+  incoming.forEach(i => { idMap[i.id] = { ...idMap[i.id], ...i }; });
+  S.items = Object.values(idMap);
+  save(); render();
+  const preview = document.getElementById('dm-import-preview');
+  if (preview) preview.textContent = 'Import complete. ' + incoming.length + ' items processed.';
+  btn.style.display = 'none';
+}
+
+function dmDeletePreview() {
+  const status = document.getElementById('dm-del-status')?.value || '';
+  const age = parseInt(document.getElementById('dm-del-age')?.value || '0') || 0;
+  const type = document.getElementById('dm-del-type')?.value || '';
+  const items = dmGetFilteredItems(status, age || null, type);
+  const preview = document.getElementById('dm-del-preview');
+  const btn = document.getElementById('dm-del-btn');
+  if (preview) preview.textContent = items.length + ' item' + (items.length===1?'':'s') + ' would be deleted.';
+  if (btn) btn.style.display = items.length ? '' : 'none';
+}
+
+function dmDeleteConfirm() {
+  const status = document.getElementById('dm-del-status')?.value || '';
+  const age = parseInt(document.getElementById('dm-del-age')?.value || '0') || 0;
+  const type = document.getElementById('dm-del-type')?.value || '';
+  const toDelete = dmGetFilteredItems(status, age || null, type);
+  if (!toDelete.length) return;
+  if (!confirm('Delete ' + toDelete.length + ' item' + (toDelete.length===1?'':'s') + '? This cannot be undone after the undo window.')) return;
+  const deleteIds = new Set(toDelete.map(i=>i.id));
+  _dmDeletedBackup = toDelete;
+  S.items = (S.items||[]).filter(i=>!deleteIds.has(i.id));
+  save(); render();
+  const undoEl = document.getElementById('dm-del-undo');
+  const undoMsg = document.getElementById('dm-del-undo-msg');
+  if (undoEl) undoEl.style.display = 'flex';
+  if (undoMsg) undoMsg.textContent = toDelete.length + ' items deleted. 10 seconds to undo.';
+  if (_dmDeletedTimer) clearTimeout(_dmDeletedTimer);
+  _dmDeletedTimer = setTimeout(() => {
+    _dmDeletedBackup = null;
+    const el = document.getElementById('dm-del-undo');
+    if (el) el.style.display = 'none';
+  }, 10000);
+  dmDeletePreview();
+  dmHealthCheck();
+}
+
+function dmUndoDelete() {
+  if (!_dmDeletedBackup) return;
+  if (_dmDeletedTimer) clearTimeout(_dmDeletedTimer);
+  _dmDeletedBackup.forEach(item => {
+    if (!(S.items||[]).find(i=>i.id===item.id)) S.items.push(item);
+  });
+  _dmDeletedBackup = null;
+  save(); render();
+  const undoEl = document.getElementById('dm-del-undo');
+  if (undoEl) undoEl.style.display = 'none';
+  dmDeletePreview(); dmHealthCheck();
+}
+
+function dmHealthCheck() {
+  const el = document.getElementById('dm-health');
+  if (!el) return;
+  const items = S.items || [];
+  const total = items.length;
+  const open = items.filter(i=>!i.done).length;
+  const done = items.filter(i=>i.done).length;
+  const priority = items.filter(i=>i.priority&&!i.done).length;
+  const deferred = items.filter(i=>i.deferred&&!i.done).length;
+  const typeCount = {};
+  items.forEach(i=>{ const t=i.type||'note'; typeCount[t]=(typeCount[t]||0)+1; });
+  const typeLines = Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`  ${t}: ${n}`).join('\n');
+  el.textContent = `Total items: ${total}\nOpen: ${open}  ·  Done: ${done}\nPriority (open): ${priority}  ·  Deferred: ${deferred}\n\nBy type:\n${typeLines}`;
+}
 </script>
 
 <!-- MOVE-TO-ROADMAP SLIDE PANEL -->
