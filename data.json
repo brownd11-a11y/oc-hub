@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-20T14:56:30.000Z",
+  "_version": "2026-06-20T15:02:14.000Z",
   "_schema": 1,
   "items": [
     {
@@ -15448,6 +15448,31 @@
           "from": "claude",
           "text": "DONE v362: The empty afootnote paragraph (paraId 3A7B0001) immediately before A1 already had a sectPr but without an explicit type. Added w:type val='nextPage'. All original page size and margin attributes preserved. Please accept or reply.",
           "ts": "2026-06-20T14:50:52.000Z"
+        }
+      ]
+    },
+    {
+      "id": "i_b3_vasco_chapter_ref",
+      "type": "fordave",
+      "text": "FIXED: Ch12 cross-reference error \u2014 'VASCO project discussed in Chapter 10' corrected to 'Chapter 11'.\n\nPASTE TO FIND \u2192 The VASCO project discussed in Chapter 11 found a strong correlation\n\nORIGINAL: The VASCO project discussed in Chapter 10 found a strong correlation between nuclear testing and UAP.\n\nVASCO (Vanishing and Appearing Sources during a Century of Observations) is covered entirely in Ch11 The Physical Record, not Ch10 Sworn. The error is in Ch12 Theories of Intent, paragraph 4F89E5B3.",
+      "answer": "DONE v362: 'Chapter 10' corrected to 'Chapter 11' in Ch12 para 4F89E5B3. Only B3 error found across 212 cross-references.",
+      "done": false,
+      "dueDate": "2026-06-21",
+      "createdAt": "2026-06-20T15:02:14.000Z",
+      "tags": [
+        "ch12",
+        "editorial"
+      ],
+      "dialogue": [
+        {
+          "from": "dave",
+          "text": "B3 flag: Ch12 VASCO cross-reference points to wrong chapter.",
+          "ts": "2026-06-20T15:02:14.000Z"
+        },
+        {
+          "from": "claude",
+          "text": "DONE v362: Ch12 'VASCO project discussed in Chapter 10' corrected to 'Chapter 11'. VASCO project is entirely in Ch11 The Physical Record \u2014 the Bruehl/Villarroel Palomar Observatory study, the nuclear testing correlation, and Fig 11.1. Ch10 is Sworn (whistleblower testimony). Fix is in para 4F89E5B3. Only error found across all 212 cross-references in the book. Please accept or reply.",
+          "ts": "2026-06-20T15:02:14.000Z"
         }
       ]
     }
