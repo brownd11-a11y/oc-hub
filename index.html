@@ -1173,6 +1173,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .help-spanel.active{display:block}
 .help-h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--label-primary);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--separator)}
 .help-h3{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--separator)}
+.help-shortcut-table{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:13px}
+.help-shortcut-table tr{border-bottom:1px solid var(--separator)}
+.help-shortcut-table td{padding:8px 10px;vertical-align:middle;color:var(--label-primary);font-family:'Libre Baskerville',Georgia,serif}
+.help-sc-key{font-family:'Source Code Pro',monospace;font-size:11px;background:var(--page-bg);border:1px solid var(--separator);border-radius:5px;padding:3px 8px;white-space:nowrap;width:230px;color:var(--label-primary)}
 .help-p{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);line-height:1.65;margin-bottom:10px}
 .help-ul{list-style:none;padding:0;margin:0 0 10px}
 .help-ul li{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--label-primary);padding:5px 0 5px 14px;border-bottom:1px solid var(--separator);position:relative;line-height:1.5}
@@ -1274,6 +1278,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <div class="mega-flyout-item" onclick="megaJump('help','h-resources',event)"><span class="mega-item-icon">📄</span>Resources</div>
         <div class="mega-flyout-item" onclick="megaJump('help','h-outreach',event)"><span class="mega-item-icon">📬</span>Outreach</div>
         <div class="mega-flyout-item" onclick="megaJump('help','h-reference',event)"><span class="mega-item-icon">📖</span>Reference</div>
+        <div class="mega-flyout-item" onclick="megaJump('help','h-shortcuts',event)"><span class="mega-item-icon">⌨</span>Shortcuts</div>
       </div>
     </div>
     <div class="mega-group" id="mega-settings">
@@ -1869,6 +1874,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="help-nav" onclick="showHelpTab('h-resources',this)">Resources</button>
       <button class="help-nav" onclick="showHelpTab('h-outreach',this)">Outreach</button>
       <button class="help-nav" onclick="showHelpTab('h-reference',this)">Reference</button>
+      <div class="help-sidebar-sep"></div>
+      <button class="help-nav" onclick="showHelpTab('h-shortcuts',this)">&#9000; Shortcuts</button>
     </div>
 
     <!-- CONTENT AREA -->
@@ -2039,6 +2046,42 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div class="help-spanel" id="h-reference"><div class="ref-section">
         <h2 class="help-h2">Reference</h2>
         <p class="help-p">The Reference deck provides quick access to production and style information. Panels include Passes, Style &amp; Chapter Map, ISBNs &amp; Pricing, and Distribution. These are read-only reference materials updated by Claude at session end.</p>
+      </div></div>
+
+      <!-- SHORTCUTS -->
+      <div class="help-spanel" id="h-shortcuts"><div class="ref-section">
+        <h2 class="help-h2">Keyboard Shortcuts</h2>
+        <p class="help-p" style="margin-bottom:20px">Universal shortcuts work on any tab. Tab-specific shortcuts are listed by section below.</p>
+
+        <h3 class="help-h3">Universal</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + C</td><td>Activate For Claude/Dave type + To Claude mode (2CLAW)</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + F</td><td>Open search</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + R</td><td>Open Resources → Add Reference form</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Z</td><td>Undo last action</td></tr>
+          <tr><td class="help-sc-key">Esc</td><td>Close open overlay · reveal hidden filter row</td></tr>
+        </table>
+
+        <h3 class="help-h3">Notes tab</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">+ or =</td><td>Expand all items</td></tr>
+          <tr><td class="help-sc-key">−</td><td>Collapse all items</td></tr>
+          <tr><td class="help-sc-key">↑ / ↓</td><td>Navigate between items</td></tr>
+          <tr><td class="help-sc-key">Enter</td><td>Open selected item in thread overlay</td></tr>
+          <tr><td class="help-sc-key">D</td><td>Toggle done on selected item</td></tr>
+          <tr><td class="help-sc-key">E</td><td>Open selected item for editing</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Enter</td><td>Save reply in thread overlay</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Delete</td><td>Delete selected item</td></tr>
+        </table>
+
+        <h3 class="help-h3">Roadmap tab</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">+ or =</td><td>Expand all phases</td></tr>
+          <tr><td class="help-sc-key">−</td><td>Collapse all phases</td></tr>
+          <tr><td class="help-sc-key">↑ / ↓</td><td>Scroll Gantt rows</td></tr>
+          <tr><td class="help-sc-key">← / →</td><td>Scroll Gantt timeline</td></tr>
+        </table>
+
       </div></div>
 
       </div></div>
@@ -7495,6 +7538,13 @@ document.addEventListener('keydown', function(e) {
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
     undoToastHide(); return;
   }
+  // Cmd/Ctrl+Shift+F — open search
+  if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'F') {
+    e.preventDefault();
+    const inp = document.getElementById('hd-search-input');
+    if (inp) { inp.focus(); inp.select(); }
+    return;
+  }
   // Cmd/Ctrl+Z — undo last action (works everywhere, even while typing)
   if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
     if (_undoStack.length) { e.preventDefault(); undoPop(); return; }
@@ -8021,6 +8071,20 @@ function dmStorageDial() {
     if (label_el) { label_el.textContent = kb + ' KB'; label_el.style.color = color; }
     if (status_el) { status_el.textContent = statusText; status_el.style.color = color; }
     if (items_el) items_el.textContent = (S.items||[]).length + ' items · ' + Math.round(pct*100) + '% of 1MB ceiling';
+    // Show trim guidance when amber or red
+    let trimLink = document.getElementById('dm-dial-trim');
+    if (!trimLink) {
+      trimLink = document.createElement('div');
+      trimLink.id = 'dm-dial-trim';
+      trimLink.style.cssText = 'margin-top:8px;font-family:\'Source Code Pro\',monospace;font-size:11px';
+      if (items_el && items_el.parentNode) items_el.parentNode.insertBefore(trimLink, items_el.nextSibling);
+    }
+    if (pct >= 0.5) {
+      trimLink.innerHTML = '<a href="#" onclick="megaJump(\'settings\',\'s-data\',{stopPropagation:()=>{}});setTimeout(()=>{const el=document.getElementById(\'dm-del-status\');if(el)el.scrollIntoView({behavior:\'smooth\'})},250);return false;" style="color:'+color+';text-decoration:underline">Trim via Bulk Delete ↓</a>';
+      trimLink.style.display = '';
+    } else {
+      trimLink.style.display = 'none';
+    }
   } catch(e) { console.error('dmStorageDial:', e); }
 }
 
