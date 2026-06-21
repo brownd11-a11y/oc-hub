@@ -8009,8 +8009,20 @@ function dmImportConfirm(mode) {
     S.items = Object.values(idMap);
   }
   save(); render();
-  alert((mode === 'replace' ? 'Replace complete' : 'Merge complete') + '. ' + incoming.length + ' items processed.');
   dmHealthCheck(); dmStorageDial();
+  // Post-sync completion notice
+  const notice = document.createElement('div');
+  notice.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:3100;display:flex;align-items:center;justify-content:center';
+  notice.innerHTML = `
+    <div style="background:var(--card-bg);border-radius:12px;width:min(420px,92vw);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25);text-align:center">
+      <div style="font-size:28px;margin-bottom:12px">&#10003;</div>
+      <div style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px">${mode === 'replace' ? 'Replace' : 'Merge'} complete</div>
+      <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.65;color:var(--label-primary);margin:0 0 8px">${incoming.length} items processed.</p>
+      <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.65;color:var(--label-secondary);margin:0 0 20px">Please <strong>refresh the hub in about 90 seconds</strong> to ensure all data has propagated from GitHub.</p>
+      <button onclick="this.closest('div[style*=fixed]').remove()" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 24px;border-radius:6px;cursor:pointer">Got it</button>
+    </div>`;
+  notice.addEventListener('click', ev => { if(ev.target===notice) notice.remove(); });
+  document.body.appendChild(notice);
 }
 
 /* dmSyncFromGitHub — fetch data.json directly from GitHub and offer Merge / Replace */
