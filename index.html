@@ -2762,7 +2762,11 @@ function applyData(data) {
     }
   }
 
-  // Items: merge stored with seed
+  // If flagged as a wholesale replace, skip seed-merge and use items directly
+  if (data._skipSeedMerge) {
+    S.items = storedItems.map(i => ({...i}));
+    // still need road merge below — fall through after setting items
+  } else {
   const storedById = {};
   storedItems.forEach(i => { storedById[i.id] = i; });
   const mergedItems = SEED_ITEMS.map(si => {
@@ -2785,6 +2789,9 @@ function applyData(data) {
   // Keep user-added items not in seed
   const seedIds = new Set(SEED_ITEMS.map(s => s.id));
   storedItems.forEach(li => { if (!seedIds.has(li.id)) mergedItems.push(li); });
+
+    S.items = mergedItems;
+  } // end seed-merge else
 
   // Road: stored order wins, seed updates labels/colors
   const storedRoadById = {};
@@ -2816,7 +2823,6 @@ function applyData(data) {
     storedRoadById[sr.id] = sr;
   });
 
-  S.items = mergedItems;
   S.road  = mergedRoad;
 
   // Migrations
@@ -8001,6 +8007,16 @@ function dmImportConfirm(mode) {
   if (mode === 'replace') {
     if (!confirm('Replace ALL current data with ' + incoming.length + ' items from backup? This cannot be undone.')) return;
     S.items = incoming;
+    // Save with the source _version so loadFromGitHub treats local as current
+    // and with a flag telling applyData to skip seed-merge
+    try {
+      const payload = Object.assign({}, S, {
+        _seedVersion: SEED_VERSION,
+        _version: data._version || new Date().toISOString(),
+        _skipSeedMerge: true
+      });
+      localStorage.setItem(SK, JSON.stringify(payload));
+    } catch(e) { save(); }
   } else {
     // Merge
     const idMap = {};
