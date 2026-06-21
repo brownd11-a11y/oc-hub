@@ -50,9 +50,9 @@ body.tab-settings{background-image:url('https://brownd11-a11y.github.io/oc-hub/b
    Cards nearly opaque white — crisp black text always. Photo shows in gaps.
 */
 body::before{display:none}
-.hd,.search-bar{z-index:50}.tabs{position:sticky;top:0;z-index:49}.filter-row{position:relative;z-index:1}
+.hd,.search-bar{z-index:50}.tabs{position:sticky;top:0;z-index:49}.filter-row{position:sticky;top:40px;z-index:48;background:rgba(255,255,255,0.97)}
 .tabs{background:rgba(255,255,255,0.94) !important;border-bottom:1px solid rgba(0,0,0,0.08) !important}
-.filter-row{background:rgba(255,255,255,0.92) !important}
+.filter-row{position:sticky;top:40px;z-index:48;background:rgba(255,255,255,0.97) !important}
 .list-bar{background:rgba(255,255,255,0.90) !important}
 .ihead{background:rgba(255,255,255,0.93) !important;box-shadow:0 1px 6px rgba(0,0,0,0.08) !important}
 .icard{background:rgba(255,255,255,0.90) !important}
@@ -122,7 +122,7 @@ body.tab-settings{background-image:url('https://brownd11-a11y.github.io/oc-hub/b
    0.75 = subtle bars (list-bar, footer)
 */
 body::before{display:none}
-.hd,.search-bar{z-index:50}.tabs{position:sticky;top:0;z-index:49}.filter-row{position:relative;z-index:1}
+.hd,.search-bar{z-index:50}.tabs{position:sticky;top:0;z-index:49}.filter-row{position:sticky;top:40px;z-index:48;background:rgba(255,255,255,0.97)}
 /* Chrome */
 .tabs{background:rgba(255,255,255,0.82) !important}
 .search-bar{background:rgba(255,255,255,0.82) !important}
@@ -131,7 +131,7 @@ body::before{display:none}
 .deck-trigger:hover,.deck-group:hover .deck-trigger{background:rgba(255,255,255,0.92) !important}
 .deck-flyout{background:rgba(255,255,255,0.97) !important}
 /* Filter row */
-.filter-row{background:rgba(255,255,255,0.78) !important}
+.filter-row{position:sticky;top:40px;z-index:48;background:rgba(30,30,35,0.97) !important}
 .dash-sel{background:rgba(255,255,255,0.88) !important}
 .fchip{background:rgba(255,255,255,0.88) !important}
 .fchip.act{background:rgba(255,255,255,0.97) !important}
@@ -258,7 +258,7 @@ body::before{display:none}
 .uc-remember{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #3a3630}
 .uc-remember input{accent-color:#c9a050;cursor:pointer}
 .uc-remember label{font-family:'Source Code Pro',monospace;font-size:10px;color:#706858;cursor:pointer;letter-spacing:.04em}
-.uc-toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1a14;border:1px solid #3a3630;border-radius:6px;padding:10px 20px;font-family:'Source Code Pro',monospace;font-size:11px;color:#c9a050;letter-spacing:.06em;z-index:9000;box-shadow:0 4px 20px rgba(0,0,0,0.5);pointer-events:none}
+.uc-toast{display:none;position:fixed;top:100px;left:50%;transform:translateX(-50%);background:#1c1a14;border:1px solid #3a3630;border-radius:6px;padding:10px 20px;font-family:'Source Code Pro',monospace;font-size:11px;color:#c9a050;letter-spacing:.06em;z-index:9000;box-shadow:0 4px 20px rgba(0,0,0,0.5);pointer-events:none}
 .uc-toast.show{display:block}
 
 /* ── DECK TAB GROUP ── */
@@ -2073,7 +2073,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <h3 class="help-h3">Universal</h3>
         <table class="help-shortcut-table">
           <tr><td class="help-sc-key">Cmd/Ctrl + Shift + C</td><td>Activate For Claude/Dave type + To Claude mode (2CLAW)</td></tr>
-          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + F</td><td>Open search</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + F</td><td>Open search (also Cmd+Shift+F)</td></tr>
           <tr><td class="help-sc-key">Cmd/Ctrl + Shift + R</td><td>Open Resources → Add Reference form</td></tr>
           <tr><td class="help-sc-key">Cmd/Ctrl + Z</td><td>Undo last action</td></tr>
           <tr><td class="help-sc-key">Esc</td><td>Close open overlay · reveal hidden filter row</td></tr>
@@ -2977,6 +2977,21 @@ function load(){
   // State overrides (done/dueDate etc) are applied inside applyData via localStorage stateMap
   loadFromSeed();
 }
+function _showSavedConfirm(msg) {
+  // Show a brief save confirmation near the top of the page (near input block)
+  let el = document.getElementById('saved-confirm-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'saved-confirm-toast';
+    el.style.cssText = 'display:none;position:fixed;top:110px;left:50%;transform:translateX(-50%);background:#1c4a1c;border:1px solid #2d7a2d;border-radius:8px;padding:9px 22px;font-family:"Source Code Pro",monospace;font-size:11px;color:#7fd87f;letter-spacing:.06em;z-index:9500;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;white-space:nowrap;transition:opacity .2s';
+    document.body.appendChild(el);
+  }
+  el.textContent = '✓ ' + (msg || 'Saved');
+  el.style.display = 'block';
+  el.style.opacity = '1';
+  clearTimeout(el._tid);
+  el._tid = setTimeout(() => { el.style.opacity = '0'; setTimeout(() => { el.style.display = 'none'; }, 200); }, 1400);
+}
 function save(){
   try {
     // localStorage stores only per-item state that changes locally between Claude pushes.
@@ -3760,12 +3775,28 @@ function rlist(){
             ?(isNeedsResponse?'<span class="flow-badge for-dave"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':isAwaitingClaude?'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>':isLegacyFordave?'<span class="fordave-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> For Dave</span>':'<span class="flow-badge for-claude"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude</span>')
             :(it.type&&it.type!=='note'?`<span class="type-pill">${esc(it.type)}</span>`:'')}
           ${it.tag?`<span class="tag-pill tag-${it.tag}">${esc(it.tag)}</span>`:''}
-          ${isNeedsResponse&&!exp?`<span class="icollapsed-pills">
-            <button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>
-            <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
-            <button class="dl-act-pill pill-else" onclick="event.stopPropagation();setReminder('${it.id}')" title="${it.reminderDate?'Reminder: '+it.reminderDate:'Set a reminder'}">&#128276; ${it.reminderDate?fmtDate(it.reminderDate):'Remind'}</button>
-            <button class="dl-act-pill pill-else" onclick="event.stopPropagation();threadOverlayOpen('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Reply</button>
-          </span>`:''}
+          ${isNeedsResponse&&!exp?(()=>{
+            // Detect A/B/C options in the Claude response
+            const claudeText = (()=>{
+              const dlg2=it.dialogue||[];
+              for(let i=dlg2.length-1;i>=0;i--){if(dlg2[i].from==='claude')return dlg2[i].text||'';}
+              return it.answer||'';
+            })();
+            const hasA = /\bOption A\b|\bA[:\)]/i.test(claudeText);
+            const hasB = /\bOption B\b|\bB[:\)]/i.test(claudeText);
+            const hasC = /\bOption C\b|\bC[:\)]/i.test(claudeText);
+            const abBtns = (hasA&&hasB) ?
+              `<button class="dl-act-pill pill-choice" onclick="event.stopPropagation();dlChoice('${it.id}','A')" style="background:rgba(26,110,158,.13);border-color:#1A6E9E;color:#1A6E9E;font-weight:600">A</button>`
+              + `<button class="dl-act-pill pill-choice" onclick="event.stopPropagation();dlChoice('${it.id}','B')" style="background:rgba(26,110,158,.13);border-color:#1A6E9E;color:#1A6E9E;font-weight:600">B</button>`
+              + (hasC?`<button class="dl-act-pill pill-choice" onclick="event.stopPropagation();dlChoice('${it.id}','C')" style="background:rgba(26,110,158,.13);border-color:#1A6E9E;color:#1A6E9E;font-weight:600">C</button>`:'')
+              : `<button class="dl-act-pill pill-accept" onclick="event.stopPropagation();dlAccept('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Accept</button>`;
+            return `<span class="icollapsed-pills">
+              ${abBtns}
+              <button class="dl-act-pill pill-defer" onclick="event.stopPropagation();dlDefer('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Defer</button>
+              <button class="dl-act-pill pill-else" onclick="event.stopPropagation();setReminder('${it.id}')" title="${it.reminderDate?'Reminder: '+it.reminderDate:'Set a reminder'}">&#128276; ${it.reminderDate?fmtDate(it.reminderDate):'Remind'}</button>
+              <button class="dl-act-pill pill-else" onclick="event.stopPropagation();threadOverlayOpen('${it.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg> Reply</button>
+            </span>`;
+          })():''}
         </div>
       </div>${bodyHtml}</div>`;
   
@@ -3863,7 +3894,7 @@ function undoToastShow(label, duration, showBtn) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'undo-toast';
-    toast.style.cssText = 'display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:none;align-items:center;gap:14px;white-space:nowrap';
+    toast.style.cssText = 'display:none;position:fixed;top:100px;left:50%;transform:translateX(-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:none;align-items:center;gap:14px;white-space:nowrap';
     document.body.appendChild(toast);
   }
   if (_undoToastTimer) { clearTimeout(_undoToastTimer); _undoToastTimer = null; }
@@ -4258,6 +4289,17 @@ function dlReply(id){
   it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
   save();render();
 }
+function dlChoice(id, letter) {
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  // Add Dave's choice as a dialogue reply, then mark done
+  undoPush('Choice '+letter+': '+(it.text||'').slice(0,40));
+  if (!it.dialogue) it.dialogue = [];
+  it.dialogue.push({ from: 'dave', text: letter, ts: new Date().toISOString() });
+  it.done = true;
+  it.completedDate = new Date().toISOString().slice(0, 10);
+  save(); render();
+  undoToastShow('Choice ' + letter + ' recorded — ' + (it.text||'').slice(0,30)+'…', 8000, true);
+}
 function dlAccept(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Accept: '+(it.text||'').slice(0,40));
@@ -4291,6 +4333,7 @@ function dlSend(id){
   const acts=document.getElementById('dlact-'+id);
   if(acts)acts.style.display='';
   save();render();
+  _showSavedConfirm('Reply saved');
 }
 function togglePri(){/* legacy no-op */}
 function toggleMem(){/* legacy no-op */}
@@ -6007,7 +6050,7 @@ function frReveal(){
 }
 // Scroll listener: collapse filter after scrolling 60px down from top
 window.addEventListener('scroll', function(){
-  if(!_frCollapsed && window.scrollY > 60){
+  if(false && !_frCollapsed && window.scrollY > 60){
     const fr = document.getElementById('filter-row');
     if(fr && fr.style.display !== 'none') frCollapse();
   }
@@ -7187,6 +7230,9 @@ function tovSaveEdit() {
   }
   save(); render();
   threadOverlayRenderActions(); // also restores reply form
+  // Show save confirmation near top, then close overlay
+  _showSavedConfirm('Changes saved');
+  setTimeout(() => { threadOverlayClose(); }, 800);
 }
 
 function tovAct(action) {
@@ -7333,6 +7379,7 @@ function threadOverlaySend() {
   if (rtag) rtag.value = '';
   if (rpri) { rpri._priOn=false; rpri.textContent='☆ Priority'; rpri.style.background='var(--card-bg)'; rpri.style.color='var(--label-secondary)'; rpri.style.borderColor='var(--separator)'; }
   // Close overlay first, then save+render — avoids stale overlay state on slow devices
+  _showSavedConfirm('Reply saved');
   threadOverlayClose();
   save();
   render();
@@ -7605,7 +7652,8 @@ document.addEventListener('keydown', function(e) {
     if (ov && ov.style.display === 'flex') { threadOverlayClose(); return; }
     undoToastHide(); return;
   }
-  // Cmd/Ctrl+Shift+F — open search
+  // Cmd/Ctrl+F (or Cmd+Shift+F) — open search
+  if ((e.metaKey || e.ctrlKey) && !e.shiftKey && (e.key === 'f' || e.key === 'F') && !e.target.matches('input,textarea,select')) { e.preventDefault(); openSearch(); return; }
   if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'F') {
     e.preventDefault();
     const inp = document.getElementById('hd-search-input');
@@ -8500,7 +8548,7 @@ function dmHealthCheck() {
     </div>
     <div style="display:flex;gap:10px;align-items:flex-end">
       <textarea id="thread-reply-ta" rows="2" placeholder="Add your reply (Cmd/Ctrl+Enter to save)…" style="flex:1;border:1px solid var(--separator);border-radius:6px;padding:8px 10px;font-family:'Libre Baskerville',Georgia,serif;font-size:14px;background:var(--input-bg);color:var(--label-primary);outline:none;resize:vertical;line-height:1.5" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-      <button onclick="threadOverlaySend()" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;height:38px">Save</button>
+      <button onclick="threadOverlaySend()" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;height:38px" title="Save reply and close (Cmd+Enter)">Save &amp; Close</button>
     </div>
     <div id="tov-rep-config-row" class="rep-config-row" style="display:none">
       <label>Every</label>
