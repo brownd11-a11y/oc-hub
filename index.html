@@ -2767,15 +2767,19 @@ function applyData(data) {
     const storedById = {};
     storedItems.forEach(i => { storedById[i.id] = i; });
     const localDone = applyData._localDone || {};
-    // Start from stored items, applying localDone protection
+    // Start from stored items; if item is a slim stub (_slim:true), prefer GitHub's full version
+    const ghById = {};
+    (applyData._ghItems||[]).forEach(i => { ghById[i.id] = i; });
     const result = storedItems.map(i => {
       const effectiveDone = localDone[i.id] === true ? true : (i.done !== undefined ? i.done : false);
+      // If local has a slim stub and GitHub has the full item, use GitHub's
+      if (i._slim && ghById[i.id]) return {...ghById[i.id], done: effectiveDone};
       return {...i, done: effectiveDone};
     });
-    // Append any seed items not present in stored data at all
-    SEED_ITEMS.forEach(si => {
-      if (!storedById[si.id]) result.push({...si});
-    });
+    // Append any items in GitHub (or seed) not present in stored data at all
+    const storedIds = new Set(storedItems.map(i => i.id));
+    (applyData._ghItems||[]).forEach(gi => { if (!storedIds.has(gi.id)) result.push({...gi}); });
+    SEED_ITEMS.forEach(si => { if (!storedIds.has(si.id) && !ghById[si.id]) result.push({...si}); });
     S.items = result;
   }
 
@@ -2888,6 +2892,7 @@ async function loadFromGitHub() {
     // GitHub is newer — apply it, preserving local done:true marks
     // GitHub is newer — apply directly, preserving local done:true marks
     applyData._localDone = localDone;
+    applyData._ghItems = data.items || [];  // used by applyData to restore slim stubs
     applyData(data);
     setHdSubtitle(ghVersion);
     console.log('Data loaded from GitHub (' + ghVersion + ' beats local ' + localVersion + ')');
@@ -2934,15 +2939,31 @@ function save(){
   try {
     const existing = JSON.parse(localStorage.getItem(SK)||'{}');
     const newV = new Date().toISOString();
-    // Never downgrade _version — protects the +1day version set by Replace
     const keepV = existing._version && existing._version > newV ? existing._version : newV;
+    // Slim done items for storage — strip dialogue/answer from done items to reduce payload size.
+    // Full history lives on GitHub; localStorage is the working set only.
+    const slimItems = (S.items||[]).map(it => {
+      if (!it.done) return it; // open items stored in full
+      // Done items: keep essential fields only, drop dialogue and answer blobs
+      return {
+        id: it.id, type: it.type, text: (it.text||'').slice(0,120),
+        done: true, priority: !!it.priority, memFlag: !!it.memFlag,
+        tag: it.tag||null, deferred: !!it.deferred,
+        completedDate: it.completedDate||'', dueDate: it.dueDate||'',
+        created: it.created||'', itemUrl: it.itemUrl||null,
+        _slim: true  // marker so GitHub merge knows to restore full data
+      };
+    });
     const payload = Object.assign({}, S, {
+      items: slimItems,
       _seedVersion: SEED_VERSION,
-      _version: keepV,
-      _skipSeedMerge: existing._skipSeedMerge || false
+      _version: keepV
     });
     localStorage.setItem(SK, JSON.stringify(payload));
-  } catch(e) {}
+  } catch(e) {
+    // If even the slim payload fails, log visibly
+    console.error('save() failed:', e.message);
+  }
 }
 function migrateDialogue(){
   (S.items||[]).forEach(it=>{
