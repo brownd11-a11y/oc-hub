@@ -7990,11 +7990,21 @@ function dmImportConfirm(mode) {
     try {
       const payload = Object.assign({}, S, {
         _seedVersion: SEED_VERSION,
-        _version: new Date(Date.now() + 86400000).toISOString(), // +1 day so local always beats GitHub version check
+        _version: new Date(Date.now() + 86400000).toISOString(),
         _skipSeedMerge: true
       });
-      localStorage.setItem(SK, JSON.stringify(payload));
-    } catch(e) { save(); }
+      const str = JSON.stringify(payload);
+      localStorage.setItem(SK, str);
+      // Verify it actually wrote correctly
+      const check = localStorage.getItem(SK);
+      const checkData = check ? JSON.parse(check) : null;
+      const checkCount = checkData ? (checkData.items||[]).length : 0;
+      if (checkCount !== incoming.length) {
+        alert('Warning: localStorage only stored ' + checkCount + ' of ' + incoming.length + ' items.\n\nYour browser storage may be full. Try clearing browser data for this site, then sync again.');
+      }
+    } catch(e) {
+      alert('Storage error: ' + e.message + '\n\nYour browser storage may be full. Try clearing browser data for this site (Settings → Safari/Chrome → Clear site data for hub.over-classified.com), then sync again.');
+    }
   } else {
     // Merge
     const idMap = {};
