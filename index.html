@@ -2762,24 +2762,39 @@ function applyData(data) {
     }
   }
 
-  // Items: stored data is authoritative. Seed only fills items genuinely absent from stored data.
+  // Items: GitHub (or seed) provides all content. localStorage provides state overrides only.
   {
-    const storedById = {};
-    storedItems.forEach(i => { storedById[i.id] = i; });
     const localDone = applyData._localDone || {};
-    // Start from stored items; if item is a slim stub (_slim:true), prefer GitHub's full version
-    const ghById = {};
-    (applyData._ghItems||[]).forEach(i => { ghById[i.id] = i; });
+    // Build state override map from localStorage itemState (if present)
+    const stateMap = {};
+    const localRaw = localStorage.getItem(SK);
+    if (localRaw) {
+      try {
+        const localData = JSON.parse(localRaw);
+        if (localData._stateOnly && localData.itemState) {
+          localData.itemState.forEach(s => { stateMap[s.id] = s; });
+        } else if (localData.items) {
+          // Legacy format — extract state from full items
+          localData.items.forEach(i => { stateMap[i.id] = {
+            id: i.id, done: i.done, completedDate: i.completedDate||'',
+            dueDate: i.dueDate||'', deferred: i.deferred, priority: i.priority, memFlag: i.memFlag
+          }; });
+        }
+      } catch(e) {}
+    }
+    // Apply GitHub content with local state overrides
     const result = storedItems.map(i => {
-      const effectiveDone = localDone[i.id] === true ? true : (i.done !== undefined ? i.done : false);
-      // If local has a slim stub and GitHub has the full item, use GitHub's
-      if (i._slim && ghById[i.id]) return {...ghById[i.id], done: effectiveDone};
-      return {...i, done: effectiveDone};
+      const st = stateMap[i.id] || {};
+      const effectiveDone = localDone[i.id] === true ? true : (st.done !== undefined ? st.done : i.done);
+      return {...i,
+        done: effectiveDone,
+        completedDate: st.completedDate || i.completedDate || '',
+        dueDate: st.dueDate || i.dueDate || '',
+        deferred: st.deferred !== undefined ? st.deferred : (i.deferred || false),
+        priority: st.priority !== undefined ? st.priority : (i.priority || false),
+        memFlag: st.memFlag !== undefined ? st.memFlag : (i.memFlag || false)
+      };
     });
-    // Append any items in GitHub (or seed) not present in stored data at all
-    const storedIds = new Set(storedItems.map(i => i.id));
-    (applyData._ghItems||[]).forEach(gi => { if (!storedIds.has(gi.id)) result.push({...gi}); });
-    SEED_ITEMS.forEach(si => { if (!storedIds.has(si.id) && !ghById[si.id]) result.push({...si}); });
     S.items = result;
   }
 
@@ -2870,18 +2885,7 @@ async function loadFromGitHub() {
     const localVersion = localData ? (localData._version || localData._seedVersion || '1970-01-01T00:00:00.000Z') : '1970-01-01T00:00:00.000Z';
     const ghIsNewer   = new Date(ghVersion) >= new Date(localVersion);
 
-    // If local is newer (e.g. after Replace sync set _version to +1 day), use local as-is
-    if (!ghIsNewer && localData) {
-      applyData._localDone = {};
-      if (localData.items) localData.items.forEach(i => { if (i.done === true) applyData._localDone[i.id] = true; });
-      applyData(localData);
-      setHdSubtitle(localVersion);
-      console.log('Local is newer than GitHub — using localStorage as-is (' + localVersion + ')');
-      save(); render();
-      try { if(typeof renderOT==='function') renderOT(); } catch(e){}
-      try { if(typeof renderRF==='function') renderRF(); } catch(e){}
-      return;
-    }
+    // GitHub is always the content source. Local state overrides (done/dueDate etc) are applied inside applyData.
 
     // Build localDone map — Dave's done marks always survive regardless of which data wins
     const localDone = {};
@@ -2928,40 +2932,34 @@ async function loadFromGitHub() {
 }
 
 function load(){
-  // Sync fallback for environments where async isn't triggered yet
-  try{
-    const raw=localStorage.getItem(SK);
-    if(raw){ applyData(JSON.parse(raw)); } else { loadFromSeed(); }
-    save();
-  }catch(e){ loadFromSeed(); }
+  // Sync fallback — load from seed for immediate render; GitHub fetch will update shortly
+  // State overrides (done/dueDate etc) are applied inside applyData via localStorage stateMap
+  loadFromSeed();
 }
 function save(){
   try {
-    const existing = JSON.parse(localStorage.getItem(SK)||'{}');
-    const newV = new Date().toISOString();
-    const keepV = existing._version && existing._version > newV ? existing._version : newV;
-    // Slim done items for storage — strip dialogue/answer from done items to reduce payload size.
-    // Full history lives on GitHub; localStorage is the working set only.
-    const slimItems = (S.items||[]).map(it => {
-      if (!it.done) return it; // open items stored in full
-      // Done items: keep essential fields only, drop dialogue and answer blobs
-      return {
-        id: it.id, type: it.type, text: (it.text||'').slice(0,120),
-        done: true, priority: !!it.priority, memFlag: !!it.memFlag,
-        tag: it.tag||null, deferred: !!it.deferred,
-        completedDate: it.completedDate||'', dueDate: it.dueDate||'',
-        created: it.created||'', itemUrl: it.itemUrl||null,
-        _slim: true  // marker so GitHub merge knows to restore full data
-      };
-    });
-    const payload = Object.assign({}, S, {
-      items: slimItems,
+    // localStorage stores only per-item state that changes locally between Claude pushes.
+    // All content (text, dialogue, answer) lives on GitHub — never written to localStorage.
+    // This keeps the payload under 200KB regardless of hub size, safe for Safari's quota.
+    const stateOnly = (S.items||[]).map(it => ({
+      id: it.id,
+      done: !!it.done,
+      completedDate: it.completedDate||'',
+      dueDate: it.dueDate||'',
+      deferred: !!it.deferred,
+      priority: !!it.priority,
+      memFlag: !!it.memFlag
+    }));
+    const payload = {
       _seedVersion: SEED_VERSION,
-      _version: keepV
-    });
+      _version: new Date().toISOString(),
+      _stateOnly: true,
+      itemState: stateOnly,
+      road: S.road||[],
+      settings: S.settings||{}
+    };
     localStorage.setItem(SK, JSON.stringify(payload));
   } catch(e) {
-    // If even the slim payload fails, log visibly
     console.error('save() failed:', e.message);
   }
 }
@@ -8050,32 +8048,22 @@ function dmImportConfirm(mode) {
   document.body.appendChild(notice);
 }
 
-/* dmReplaceWithGitHub — wipe local and use GitHub data directly, no comparison, no seed-merge */
+/* dmReplaceWithGitHub — wipe local state and reload fresh from GitHub */
 function dmReplaceWithGitHub() {
   const modal = document.getElementById('dm-restore-modal');
   const data = modal?._importData;
   if (!data) return;
-  if (!confirm('Wipe all local data and load ' + (data.items||[]).length + ' items from GitHub? This cannot be undone.')) return;
+  if (!confirm('Wipe local state and load ' + (data.items||[]).length + ' items from GitHub? This cannot be undone.')) return;
   modal.remove();
-  // Set S directly from GitHub data — no seed-merge, no localStorage intermediary
+  // Clear localStorage entirely so next load gets GitHub fresh with no stale state
+  try { localStorage.removeItem(SK); } catch(e) {}
+  // Set S directly from GitHub — GitHub is always the content source
   S.items = (data.items || []).map(i => ({...i}));
   S.road  = (data.road  || []).map(r => ({...r}));
   if (data.outreach) S.outreach = data.outreach;
   if (data.refs)     S.refs     = data.refs;
-  // Save to localStorage with GitHub's own version so next load comparison is correct
-  try {
-    const payload = Object.assign({}, S, {
-      _seedVersion: SEED_VERSION,
-      _version: data._version || new Date().toISOString()
-    });
-    localStorage.setItem(SK, JSON.stringify(payload));
-    const written = JSON.parse(localStorage.getItem(SK)||'{}').items||[];
-    if (written.length !== S.items.length) {
-      alert('Safari stored ' + written.length + ' of ' + S.items.length + ' items — storage may be full.\n\nGo to Settings > Safari > Advanced > Website Data, find hub.over-classified.com, delete it, then try again.');
-    }
-  } catch(e) {
-    alert('Storage write failed: ' + e.message);
-  }
+  // Save just the state-only payload (small, always fits)
+  save();
   render();
   try { if(typeof renderOT==='function') renderOT(); } catch(e){}
   dmHealthCheck(); dmStorageDial();
