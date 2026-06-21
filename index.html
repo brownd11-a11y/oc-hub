@@ -2826,7 +2826,7 @@ function applyData(data) {
     // Apply GitHub content with local state overrides
     const result = storedItems.map(i => {
       const st = stateMap[i.id] || {};
-      const effectiveDone = localDone[i.id] === true ? true : (st.done !== undefined ? st.done : i.done);
+      const effectiveDone = i.done === true ? true : (localDone[i.id] === true ? true : (st.done !== undefined ? st.done : i.done)); // GitHub done:true always wins
       return {...i,
         done: effectiveDone,
         completedDate: st.completedDate || i.completedDate || '',
