@@ -7990,30 +7990,27 @@ function dmImportConfirm(mode) {
     try {
       const payload = Object.assign({}, S, {
         _seedVersion: SEED_VERSION,
-        _version: new Date(Date.now() + 86400000).toISOString(),
+        _version: data._version || new Date().toISOString(),
         _skipSeedMerge: true
       });
-      const str = JSON.stringify(payload);
-      localStorage.setItem(SK, str);
-      // Verify it actually wrote correctly
+      localStorage.setItem(SK, JSON.stringify(payload));
       const check = localStorage.getItem(SK);
-      const checkData = check ? JSON.parse(check) : null;
-      const checkCount = checkData ? (checkData.items||[]).length : 0;
+      const checkCount = check ? (JSON.parse(check).items||[]).length : 0;
       if (checkCount !== incoming.length) {
-        alert('Warning: localStorage only stored ' + checkCount + ' of ' + incoming.length + ' items.\n\nYour browser storage may be full. Try clearing browser data for this site, then sync again.');
+        alert('Warning: localStorage only stored ' + checkCount + ' of ' + incoming.length + ' items.\n\nTry clearing Safari site data for hub.over-classified.com in Settings > Safari > Advanced > Website Data, then sync again.');
       }
     } catch(e) {
-      alert('Storage error: ' + e.message + '\n\nYour browser storage may be full. Try clearing browser data for this site (Settings → Safari/Chrome → Clear site data for hub.over-classified.com), then sync again.');
+      alert('Storage error: ' + e.message + '\n\nTry clearing Safari site data for hub.over-classified.com.');
     }
+    render(); dmHealthCheck(); dmStorageDial();
   } else {
     // Merge
     const idMap = {};
     (S.items||[]).forEach(i => idMap[i.id] = i);
     incoming.forEach(i => { idMap[i.id] = { ...idMap[i.id], ...i }; });
     S.items = Object.values(idMap);
+    save(); render(); dmHealthCheck(); dmStorageDial();
   }
-  save(); render();
-  dmHealthCheck(); dmStorageDial();
   // Post-sync completion notice
   const notice = document.createElement('div');
   notice.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:3100;display:flex;align-items:center;justify-content:center';
