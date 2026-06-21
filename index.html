@@ -2762,36 +2762,22 @@ function applyData(data) {
     }
   }
 
-  // If flagged as a wholesale replace, skip seed-merge and use items directly
-  if (data._skipSeedMerge) {
-    S.items = storedItems.map(i => ({...i}));
-    // still need road merge below — fall through after setting items
-  } else {
-  const storedById = {};
-  storedItems.forEach(i => { storedById[i.id] = i; });
-  const mergedItems = SEED_ITEMS.map(si => {
-    const li = storedById[si.id];
-    if (!li) return {...si};
-    // Stored dialogue always wins over seed — seed is only a fallback for missing items
-    const liDlg = li.dialogue || [], siDlg = si.dialogue || [];
-    const mergedDlg = liDlg.length ? liDlg : siDlg;
-    // done: localStorage done:true always survives; GitHub done:true also sets it; never lose a done
+  // Items: stored data is authoritative. Seed only fills items genuinely absent from stored data.
+  {
+    const storedById = {};
+    storedItems.forEach(i => { storedById[i.id] = i; });
     const localDone = applyData._localDone || {};
-    const effectiveDone = localDone[si.id] === true ? true : (li.done !== undefined ? li.done : si.done);
-    return {...si,
-      done: effectiveDone,
-      completedDate: li.completedDate || si.completedDate || '',
-      answer: li.answer || si.answer || null,
-      dialogue: mergedDlg.length ? mergedDlg : null,
-      dueDate: li.dueDate || si.dueDate || ''
-    };
-  });
-  // Keep user-added items not in seed
-  const seedIds = new Set(SEED_ITEMS.map(s => s.id));
-  storedItems.forEach(li => { if (!seedIds.has(li.id)) mergedItems.push(li); });
-
-    S.items = mergedItems;
-  } // end seed-merge else
+    // Start from stored items, applying localDone protection
+    const result = storedItems.map(i => {
+      const effectiveDone = localDone[i.id] === true ? true : (i.done !== undefined ? i.done : false);
+      return {...i, done: effectiveDone};
+    });
+    // Append any seed items not present in stored data at all
+    SEED_ITEMS.forEach(si => {
+      if (!storedById[si.id]) result.push({...si});
+    });
+    S.items = result;
+  }
 
   // Road: stored order wins, seed updates labels/colors
   const storedRoadById = {};
@@ -8007,12 +7993,10 @@ function dmImportConfirm(mode) {
   if (mode === 'replace') {
     if (!confirm('Replace ALL current data with ' + incoming.length + ' items from backup? This cannot be undone.')) return;
     S.items = incoming;
-    // Save with the source _version so loadFromGitHub treats local as current
-    // and with a flag telling applyData to skip seed-merge
     try {
       const payload = Object.assign({}, S, {
         _seedVersion: SEED_VERSION,
-        _version: data._version || new Date().toISOString(),
+        _version: new Date(Date.now() + 86400000).toISOString(), // +1 day so local always beats GitHub version check
         _skipSeedMerge: true
       });
       localStorage.setItem(SK, JSON.stringify(payload));
