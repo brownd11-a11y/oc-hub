@@ -8052,14 +8052,14 @@ async function dmSyncFromGitHub() {
   const orig = btn ? btn.innerHTML : '';
   if (btn) { btn.innerHTML = '&#8635; Fetching&#8230;'; btn.disabled = true; }
   try {
+    // Use raw download URL — avoids base64 size limits in the Contents API
     const token = (typeof GH_TOKEN !== 'undefined') ? GH_TOKEN : '';
-    const headers = {'Accept':'application/vnd.github.v3+json'};
+    const headers = {};
     if (token) headers['Authorization'] = 'token ' + token;
-    const r = await fetch('https://api.github.com/repos/brownd11-a11y/oc-hub/contents/data.json', {headers});
+    const rawUrl = 'https://raw.githubusercontent.com/brownd11-a11y/oc-hub/main/data.json?nocache=' + Date.now();
+    const r = await fetch(rawUrl, {headers});
     if (!r.ok) throw new Error('GitHub returned ' + r.status);
-    const meta = await r.json();
-    const raw = atob(meta.content.replace(/\n/g,''));
-    const data = JSON.parse(raw);
+    const data = await r.json();
     if (btn) { btn.innerHTML = orig; btn.disabled = false; }
     // Reuse the existing import modal
     const existing_mod = document.getElementById('dm-restore-modal');
