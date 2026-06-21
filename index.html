@@ -2103,6 +2103,26 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
       </div></div>
 
+      <div class="help-spanel" id="s-sync-devices">
+        <h2 class="help-h2">Sync &amp; Devices</h2>
+
+        <h3 class="help-h3">How data is stored</h3>
+        <p class="help-fn-desc">GitHub (<code>data.json</code>) is the authoritative content store. Your browser's localStorage holds a state-only layer — flags only: <strong>done, dueDate, deferred, priority, memFlag</strong>. Content (text, dialogue, answers, tags) always comes from GitHub. On every load the hub compares timestamps and applies localStorage state on top of GitHub content.</p>
+
+        <h3 class="help-h3">Items look blank or missing</h3>
+        <p class="help-fn-desc">Hard-refresh (<strong>Cmd+Shift+R</strong> on Mac, <strong>Ctrl+Shift+R</strong> on PC) forces a GitHub re-fetch and clears the stale cache. This resolves blank cards caused by a localStorage version that is newer than GitHub.</p>
+
+        <h3 class="help-h3">Working between sessions</h3>
+        <p class="help-fn-desc">When you mark items done, defer, or change flags in the hub UI, those changes live only in localStorage on that device until Claude pushes a new <code>data.json</code>. Use <strong>Update Claude</strong> (the export button) to send your session state to Claude at the start of the next session — that is the transfer mechanism for offline decisions.</p>
+
+        <h3 class="help-h3">Multiple devices</h3>
+        <p class="help-fn-desc">A second device will not see your flag changes until Claude pushes a new <code>data.json</code> that incorporates them. If the hub looks stale on a second device, use <strong>Settings → Data → Force GitHub refresh</strong> to wipe localStorage and reload from GitHub.</p>
+
+        <h3 class="help-h3">After a trim operation</h3>
+        <p class="help-fn-desc">If items that were deleted from GitHub reappear on reload, your localStorage still has them. Use <strong>Force GitHub refresh</strong> (Settings → Data) to clear the stale local state.</p>
+
+      </div>
+
     </div><!-- end help-content -->
   </div><!-- end help-layout -->
 </div>
@@ -2117,6 +2137,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="help-nav" onclick="showSettingsTab('s-types',this)">&#128196; Note Types</button>
       <div class="help-sidebar-sep"></div>
       <button class="help-nav" onclick="showSettingsTab('s-data',this)">&#128190; Data Management</button>
+      <div class="help-sidebar-sep"></div>
+      <button class="help-nav" onclick="showSettingsTab('s-sync-devices',this)">&#128257; Sync &amp; Devices</button>
     </div>
     <div class="help-content">
 
@@ -2311,6 +2333,25 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <span class="settings-card-label">Item count</span>
           <div id="dm-health" style="font-family:'Source Code Pro',monospace;font-size:11px;line-height:1.9;color:var(--label-primary)"></div>
           <button class="iabtn" onclick="dmHealthCheck()" style="margin-top:10px">Refresh</button>
+        </div>
+
+        <!-- TILE 5: LOCAL STATE -->
+        <div class="settings-card" id="dm-local-state-card">
+          <span class="settings-card-label">Local state</span>
+          <div style="font-family:'Source Code Pro',monospace;font-size:11px;line-height:1.8;color:var(--label-primary);margin-bottom:12px">
+            <div>localStorage version: <span id="dm-ls-version" style="color:var(--accent)">—</span></div>
+            <div>GitHub version: <span id="dm-gh-version" style="color:var(--accent)">—</span></div>
+            <div id="dm-ls-status" style="margin-top:4px;color:var(--label-secondary)">—</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+            <button class="iabtn" onclick="dmLocalStateRefresh()" style="height:34px">↻ Refresh</button>
+            <button class="iabtn" onclick="dmForceGitHubRefresh()" style="height:34px;background:#1a6e3c;color:#fff;border-color:#1a6e3c">&#8635; Force GitHub refresh</button>
+            <button class="iabtn" onclick="dmClearLocalState()" style="height:34px;background:#c0392b;color:#fff;border-color:#c0392b">&#10005; Clear local state</button>
+          </div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--label-secondary);line-height:1.5">
+            <strong>Force GitHub refresh</strong> — clears localStorage and reloads all data from GitHub. Use when items look blank or stale after a Claude push.<br>
+            <strong>Clear local state</strong> — removes your local flag state (done marks, deferred, priority) without touching GitHub content. Your closures made since Claude's last push will be lost.
+          </div>
         </div>
 
       </div><!-- end s-data -->
@@ -8080,6 +8121,42 @@ function dmReplaceWithGitHub() {
   notice.appendChild(nd);
   notice.addEventListener('click', ev => { if(ev.target===notice) notice.remove(); });
   document.body.appendChild(notice);
+}
+
+/* dmLocalStateRefresh — show localStorage version vs GitHub version */
+function dmLocalStateRefresh() {
+  const lsRaw = localStorage.getItem(SK);
+  let lsVer = '(no localStorage)';
+  if (lsRaw) {
+    try { const lsData = JSON.parse(lsRaw); lsVer = lsData._version || '(no _version)'; } catch(e) { lsVer = '(parse error)'; }
+  }
+  document.getElementById('dm-ls-version').textContent = lsVer;
+  // GitHub version from S._githubVersion (set on load) or from S
+  const ghVer = (typeof S !== 'undefined' && S._githubVersion) ? S._githubVersion : (typeof S !== 'undefined' && S._version ? S._version : '—');
+  document.getElementById('dm-gh-version').textContent = ghVer;
+  const lsDate = lsVer !== '(no localStorage)' && lsVer !== '(no _version)' && lsVer !== '(parse error)' ? new Date(lsVer) : null;
+  const ghDate = ghVer !== '—' ? new Date(ghVer) : null;
+  let status = '—';
+  if (lsDate && ghDate) {
+    if (lsDate > ghDate) status = '⚠ localStorage is newer — GitHub content may be suppressed. Use Force GitHub refresh to resolve.';
+    else if (ghDate > lsDate) status = '✓ GitHub is current.';
+    else status = '✓ Versions match.';
+  }
+  document.getElementById('dm-ls-status').textContent = status;
+}
+
+/* dmForceGitHubRefresh — clear localStorage and reload from GitHub */
+function dmForceGitHubRefresh() {
+  if (!confirm("Clear all local state and reload from GitHub? Any flag changes (done marks, defers) made since Claude's last push will be lost.")) return;
+  localStorage.removeItem(SK);
+  location.reload();
+}
+
+/* dmClearLocalState — remove only the localStorage state layer */
+function dmClearLocalState() {
+  if (!confirm("Remove your local state (done marks, deferred flags, priority) made since Claude's last push? This cannot be undone. GitHub content is not affected.")) return;
+  localStorage.removeItem(SK);
+  location.reload();
 }
 
 /* dmSyncFromGitHub — fetch data.json directly from GitHub and offer Merge / Replace */
