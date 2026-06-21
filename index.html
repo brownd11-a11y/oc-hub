@@ -6464,41 +6464,51 @@ function otEditNoteToggle(cid,nid){
 /* ── REFERENCES ── */
 let RF=[],RF_KW=[],rfEditId=null;
 const RF_SEED=[
-  {id:'rfs_03',cat:'book',kw:'Over-classified',url:'https://over-classified.com',desc:'Official book website — Vigilia Press.',lastChecked:'',lastPost:''},
-  {id:'rfs_04',cat:'book',kw:'Over-classified',url:'https://vigiliapress.com',desc:'Vigilia Press imprint site.',lastChecked:'',lastPost:''},
-  {id:'rfs_05',cat:'book',kw:'Over-classified',url:'https://substack.com/@overclassified',desc:'Over-Classified Substack — Dave\'s author newsletter.',lastChecked:'',lastPost:''},
-  {id:'rfs_fb',cat:'book',kw:'Over-classified',url:'https://www.facebook.com/overclassifiedbook',desc:'Over-Classified on Facebook — author page for book updates and outreach.',lastChecked:'',lastPost:''},
-  {id:'rfs_li',cat:'book',kw:'Over-classified',url:'https://www.linkedin.com/in/davidrbrown',desc:'Dave Brown on LinkedIn — professional profile for publisher and media outreach.',lastChecked:'',lastPost:''},
-  {id:'rfs_x',cat:'book',kw:'Over-classified',url:'https://x.com/overclassified',desc:'Over-Classified on X — author account for UAP disclosure commentary and book promotion.',lastChecked:'',lastPost:''},
-  {id:'rfs_threads',cat:'book',kw:'Over-classified',url:'https://www.threads.net/@overclassified',desc:'Over-Classified on Threads — author account.',lastChecked:'',lastPost:''},
-  {id:'rfs_insta',cat:'book',kw:'Over-classified',url:'https://www.instagram.com/overclassifiedbook',desc:'Over-Classified on Instagram — visual content and book promotion.',lastChecked:'',lastPost:''},
-  {id:'rfs_01',cat:'primary',kw:'news',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',desc:'NewsNation full coverage — June 9 2026 UAP Capitol press conference.',lastChecked:'',lastPost:''},
-  {id:'rfs_02',cat:'primary',kw:'news',url:'https://www.washingtontimes.com/news/2026/jun/9/',desc:'Washington Times June 9 2026 — primary print citation.',lastChecked:'',lastPost:''},
-  {id:'rfs_07',cat:'primary',kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects',desc:'CIA FOIA Reading Room — UAP historical collection. Robertson Panel, Chadwell memos.',lastChecked:'',lastPost:''},
-  {id:'rfs_08',cat:'primary',kw:'research',url:'https://aaro.mil/resources/historical-record-report/',desc:'AARO Historical Record Report Vol. 1 (Feb 2024). Primary government UAP program history.',lastChecked:'',lastPost:''},
-  {id:'rfs_09',cat:'primary',kw:'research',url:'https://archives.gov/research/military/air-force/ufos',desc:'NARA — Project Blue Book. 130,000 pages, 12,618 sightings, 701 unexplained.',lastChecked:'',lastPost:''},
-  {id:'rfs_10',cat:'primary',kw:'research',url:'https://www.documentcloud.org/documents/25986231-twining-memo/',desc:'Twining memorandum Sept 23 1947. "Something real and not visionary."',lastChecked:'',lastPost:''},
-  {id:'rfs_bv',cat:'primary',kw:'research',url:'https://www.theblackvault.com',desc:'The Black Vault — John Greenewald Jr. FOIA document archive.',lastChecked:'',lastPost:''},
-  {id:'rfs_mellon',cat:'substack',kw:'current-events',url:'https://christopherkmellon.substack.com',desc:'Christopher Mellon — Substack. Former Dep. Asst. SecDef for Intelligence. Policy essays, declassification advocacy.',lastChecked:'',lastPost:''},
-  {id:'rfs_dolan',cat:'substack',kw:'research',url:'https://richarddolanmembers.com',desc:'Richard Dolan — UAP historian and author. Analysis, members site.',lastChecked:'',lastPost:''},
-  {id:'rfs_coulthart',cat:'social',kw:'news',url:'https://x.com/rosscoulthart',desc:'Ross Coulthart (@rosscoulthart) — NewsNation investigative journalist. Breaking UAP news, Reality Check podcast.',lastChecked:'',lastPost:''},
-  {id:'rfs_elizondo',cat:'social',kw:'current-events',url:'https://x.com/Luis_Elizondo',desc:'Luis Elizondo (@Luis_Elizondo) — Former AATIP director. Primary figure Ch.9–12. Monitor for public statements.',lastChecked:'',lastPost:''},
-  {id:'rfs_mellon_x',cat:'social',kw:'current-events',url:'https://x.com/ChristopherKMellon',desc:'Christopher Mellon on X — breaking policy updates.',lastChecked:'',lastPost:''},
-  {id:'rfs_grusch_x',cat:'social',kw:'news',url:'https://x.com/DavidGrusch',desc:'David Grusch on X — whistleblower. Primary figure Ch.9. Monitor post-June 9.',lastChecked:'',lastPost:''},
-  {id:'rfs_mvr',cat:'social',kw:'news',url:'https://x.com/MvonRen',desc:'Marik von Rennenkampff (@MvonRen) — analytical UAP journalist. Video and document breakdown.',lastChecked:'',lastPost:''},
-  {id:'rfs_faytuks',cat:'social',kw:'news',url:'https://x.com/FaytuksNetwork',desc:'Faytuks Network — fast-breaking UAP news aggregator. Pentagon releases, congressional activity.',lastChecked:'',lastPost:''},
-  {id:'rfs_oma',cat:'social',kw:'analysis',url:'https://x.com/OMApproach',desc:'Open Minded Approach — methodical video and footage analysis of released UAP media.',lastChecked:'',lastPost:''},
-  {id:'rfs_loeb',cat:'analysis',kw:'research',url:'https://galileoproject.cfa.harvard.edu',desc:'Avi Loeb — Galileo Project at Harvard. Scientific UAP evidence search.',lastChecked:'',lastPost:''},
-  {id:'rfs_loeb_sub',cat:'analysis',kw:'analysis',url:'https://avi-loeb.medium.com',desc:'Avi Loeb on Medium — essays on UAP science and Galileo Project findings.',lastChecked:'',lastPost:''},
-  {id:'rfs_scu',cat:'analysis',kw:'research',url:'https://www.scientificcoalition.org',desc:'Scientific Coalition for UAP Studies (SCU) — peer-reviewed analysis. July 2026 Toronto conference.',lastChecked:'',lastPost:''},
-  {id:'rfs_rc',cat:'podcast',kw:'news',url:'https://podcasts.apple.com/us/podcast/reality-check-with-ross-coulthart/id1709764750',desc:'Reality Check with Ross Coulthart — NewsNation podcast. Breaking UAP reporting.',lastChecked:'',lastPost:''},
-  {id:'rfs_aod',cat:'documentary',kw:'analysis',url:'https://www.amazon.com/Age-Disclosure/dp/B0BLPZQM1V',desc:'The Age of Disclosure (2025) — dir. Dan Farah. 34 current/former govt officials. Prime Video.',lastChecked:'',lastPost:''},
-  {id:'rfs_moc',cat:'documentary',kw:'analysis',url:'https://www.momentofcontactfilm.com',desc:'Moment of Contact (2022) — dir. James Fox. Varginha Brazil 1996 UAP incident.',lastChecked:'',lastPost:''},
-  {id:'rfs_sd',cat:'documentary',kw:'current-events',url:'https://www.amazon.com/dp/B0DX8R9KPK',desc:'Sleeping Dog (2026) — dir. Michael Lazovsky. Jeremy Corbell/George Knapp. Released May 2026.',lastChecked:'',lastPost:''},
-  {id:'rfs_dd',cat:'documentary',kw:'current-events',url:'https://x.com/search?q=DisclosureDay+film',desc:'Disclosure Day (2026 film) — track reviews as disclosure narrative builds.',lastChecked:'',lastPost:''},
-  {id:'rfs_fox_vi',cat:'documentary',kw:'current-events',url:'https://x.com/jamesfoxufo',desc:'James Fox — Virginia incident documentary (in production 2026). Follow @jamesfoxufo for updates.',lastChecked:'',lastPost:''},
-  {id:'rfs_war_ufo',cat:'social',kw:'news',url:'https://www.war.gov/ufo/',desc:'war.gov/ufo — official Pentagon/DoD UAP document release portal. Primary government disclosure source.',lastChecked:'',lastPost:''},
+  // ── BOOK ──────────────────────────────────────────────────
+  {id:'rfs_fb',  cat:'book',label:'Facebook', kw:'Over-classified',url:'https://www.facebook.com/overclassifiedbook',      desc:'Over-Classified on Facebook — author page for book updates and outreach.',lastChecked:'',lastPost:''},
+  {id:'rfs_insta',cat:'book',label:'Instagram',kw:'Over-classified',url:'https://www.instagram.com/overclassifiedbook',     desc:'Over-Classified on Instagram — visual content and book promotion.',lastChecked:'',lastPost:''},
+  {id:'rfs_li',  cat:'book',label:'LinkedIn',  kw:'Over-classified',url:'https://www.linkedin.com/in/davidrbrown',          desc:'Dave Brown on LinkedIn — professional profile for publisher and media outreach.',lastChecked:'',lastPost:''},
+  {id:'rfs_03',  cat:'book',label:'OC Site',   kw:'Over-classified',url:'https://over-classified.com',                      desc:'Official book website — Vigilia Press.',lastChecked:'',lastPost:''},
+  {id:'rfs_05',  cat:'book',label:'OC Sub',    kw:'Over-classified',url:'https://substack.com/@overclassified',             desc:'Over-Classified Substack — Dave\'s author newsletter.',lastChecked:'',lastPost:''},
+  {id:'rfs_threads',cat:'book',label:'Threads',kw:'Over-classified',url:'https://www.threads.net/@overclassified',          desc:'Over-Classified on Threads — author account.',lastChecked:'',lastPost:''},
+  {id:'rfs_04',  cat:'book',label:'Vigilia',   kw:'Over-classified',url:'https://vigiliapress.com',                         desc:'Vigilia Press imprint site.',lastChecked:'',lastPost:''},
+  {id:'rfs_x',   cat:'book',label:'X/OC',      kw:'Over-classified',url:'https://x.com/overclassified',                    desc:'Over-Classified on X — author account for UAP disclosure commentary and book promotion.',lastChecked:'',lastPost:''},
+  // ── PRIMARY ───────────────────────────────────────────────
+  {id:'rfs_08',  cat:'primary',label:'AARO',   kw:'research',url:'https://aaro.mil/resources/historical-record-report/',   desc:'AARO Historical Record Report Vol. 1 (Feb 2024). Primary government UAP program history.',lastChecked:'',lastPost:''},
+  {id:'rfs_bv',  cat:'primary',label:'BlackVault',kw:'research',url:'https://www.theblackvault.com',                       desc:'The Black Vault — John Greenewald Jr. FOIA document archive.',lastChecked:'',lastPost:''},
+  {id:'rfs_07',  cat:'primary',label:'CIA',     kw:'research',url:'https://www.cia.gov/readingroom/collection/ufo-unidentified-flying-objects', desc:'CIA FOIA Reading Room — UAP historical collection. Robertson Panel, Chadwell memos.',lastChecked:'',lastPost:''},
+  {id:'rfs_enigma',cat:'primary',label:'Enigma',kw:'sightings',url:'https://enigmalabs.io',                                desc:'Enigma Labs — largest scored UAP sighting database. 50K+ global reports, interactive map, iOS/Android app. Updated daily.',lastChecked:'',lastPost:''},
+  {id:'rfs_09',  cat:'primary',label:'NARA',    kw:'research',url:'https://archives.gov/research/military/air-force/ufos', desc:'NARA — Project Blue Book. 130,000 pages, 12,618 sightings, 701 unexplained.',lastChecked:'',lastPost:''},
+  {id:'rfs_01',  cat:'primary',label:'NewsNation',kw:'news',url:'https://www.youtube.com/watch?v=u_emZmzkTtM',             desc:'NewsNation full coverage — June 9 2026 UAP Capitol press conference.',lastChecked:'',lastPost:''},
+  {id:'rfs_10',  cat:'primary',label:'Twining', kw:'research',url:'https://www.documentcloud.org/documents/25986231-twining-memo/', desc:'Twining memorandum Sept 23 1947. "Something real and not visionary."',lastChecked:'',lastPost:''},
+  {id:'rfs_02',  cat:'primary',label:'WashTimes',kw:'news',url:'https://www.washingtontimes.com/news/2026/jun/9/',          desc:'Washington Times June 9 2026 — primary print citation.',lastChecked:'',lastPost:''},
+  // ── SUBSTACK ──────────────────────────────────────────────
+  {id:'rfs_dolan', cat:'substack',label:'Dolan', kw:'research',url:'https://richarddolanmembers.com',                      desc:'Richard Dolan — UAP historian and author. Analysis, members site.',lastChecked:'',lastPost:''},
+  {id:'rfs_mellon',cat:'substack',label:'Mellon',kw:'current-events',url:'https://christopherkmellon.substack.com',        desc:'Christopher Mellon — Substack. Former Dep. Asst. SecDef for Intelligence. Policy essays, declassification advocacy.',lastChecked:'',lastPost:''},
+  // ── SOCIAL ────────────────────────────────────────────────
+  {id:'rfs_elizondo',cat:'social',label:'Elizondo',kw:'current-events',url:'https://x.com/Luis_Elizondo',                  desc:'Luis Elizondo (@Luis_Elizondo) — Former AATIP director. Primary figure Ch.9–12. Monitor for public statements.',lastChecked:'',lastPost:''},
+  {id:'rfs_faytuks', cat:'social',label:'Faytuks', kw:'news',url:'https://x.com/FaytuksNetwork',                          desc:'Faytuks Network — fast-breaking UAP news aggregator. Pentagon releases, congressional activity.',lastChecked:'',lastPost:''},
+  {id:'rfs_grusch_x',cat:'social',label:'Grusch',  kw:'news',url:'https://x.com/DavidGrusch',                             desc:'David Grusch on X — whistleblower. Primary figure Ch.9. Monitor post-June 9.',lastChecked:'',lastPost:''},
+  {id:'rfs_laslo',   cat:'social',label:'Laslo',   kw:'news',url:'https://thehill.com/author/matt-laslo/',                 desc:'Matt Laslo — UAP/national security reporter at The Hill. Key congressional coverage.',lastChecked:'',lastPost:''},
+  {id:'rfs_mellon_x',cat:'social',label:'Mellon-X',kw:'current-events',url:'https://x.com/ChristopherKMellon',            desc:'Christopher Mellon on X — breaking policy updates.',lastChecked:'',lastPost:''},
+  {id:'rfs_mvr',     cat:'social',label:'MvonRen', kw:'news',url:'https://x.com/MvonRen',                                 desc:'Marik von Rennenkampff (@MvonRen) — analytical UAP journalist. Video and document breakdown.',lastChecked:'',lastPost:''},
+  {id:'rfs_oma',     cat:'social',label:'OMA',     kw:'analysis',url:'https://x.com/OMApproach',                          desc:'Open Minded Approach — methodical video and footage analysis of released UAP media.',lastChecked:'',lastPost:''},
+  {id:'rfs_coulthart',cat:'social',label:'Rossc',  kw:'news',url:'https://x.com/rosscoulthart',                           desc:'Ross Coulthart (@rosscoulthart) — NewsNation investigative journalist. Breaking UAP news, Reality Check podcast.',lastChecked:'',lastPost:''},
+  {id:'rfs_war_ufo', cat:'social',label:'War.gov', kw:'news',url:'https://www.war.gov/ufo/',                              desc:'war.gov/ufo — official Pentagon/DoD UAP document release portal. Primary government disclosure source.',lastChecked:'',lastPost:''},
+  // ── ANALYSIS ──────────────────────────────────────────────
+  {id:'rfs_loeb',    cat:'analysis',label:'Galileo',kw:'research',url:'https://galileoproject.cfa.harvard.edu',            desc:'Avi Loeb — Galileo Project at Harvard. Scientific UAP evidence search.',lastChecked:'',lastPost:''},
+  {id:'rfs_loeb_sub',cat:'analysis',label:'Loeb',   kw:'analysis',url:'https://avi-loeb.medium.com',                      desc:'Avi Loeb on Medium — essays on UAP science and Galileo Project findings.',lastChecked:'',lastPost:''},
+  {id:'rfs_scu',     cat:'analysis',label:'SCU',    kw:'research',url:'https://www.scientificcoalition.org',              desc:'Scientific Coalition for UAP Studies (SCU) — peer-reviewed analysis. July 2026 Toronto conference.',lastChecked:'',lastPost:''},
+  // ── PODCAST ───────────────────────────────────────────────
+  {id:'rfs_rc',      cat:'podcast',label:'RealChk', kw:'news',url:'https://podcasts.apple.com/us/podcast/reality-check-with-ross-coulthart/id1709764750', desc:'Reality Check with Ross Coulthart — NewsNation podcast. Breaking UAP reporting.',lastChecked:'',lastPost:''},
+  // ── DOCUMENTARY ───────────────────────────────────────────
+  {id:'rfs_aod',     cat:'documentary',label:'AgeDisc', kw:'analysis',url:'https://www.amazon.com/Age-Disclosure/dp/B0BLPZQM1V', desc:'The Age of Disclosure (2025) — dir. Dan Farah. 34 current/former govt officials. Prime Video.',lastChecked:'',lastPost:''},
+  {id:'rfs_dd',      cat:'documentary',label:'DiscDay',  kw:'current-events',url:'https://x.com/search?q=DisclosureDay+film', desc:'Disclosure Day (2026 film) — track reviews as disclosure narrative builds.',lastChecked:'',lastPost:''},
+  {id:'rfs_fox_vi',  cat:'documentary',label:'FoxVI',    kw:'current-events',url:'https://x.com/jamesfoxufo',              desc:'James Fox — Virginia incident documentary (in production 2026). Follow @jamesfoxufo for updates.',lastChecked:'',lastPost:''},
+  {id:'rfs_moc',     cat:'documentary',label:'MomCont',  kw:'analysis',url:'https://www.momentofcontactfilm.com',          desc:'Moment of Contact (2022) — dir. James Fox. Varginha Brazil 1996 UAP incident.',lastChecked:'',lastPost:''},
+  {id:'rfs_sd',      cat:'documentary',label:'SleepDog', kw:'current-events',url:'https://www.amazon.com/dp/B0DX8R9KPK',   desc:'Sleeping Dog (2026) — dir. Michael Lazovsky. Jeremy Corbell/George Knapp. Released May 2026.',lastChecked:'',lastPost:''},
 ];
+
 function rfLoad(){
   try{const r=localStorage.getItem(RF_SK);RF=r?JSON.parse(r):[];}catch(e){RF=[];}
   try{const k=localStorage.getItem(RF_KW_SK);RF_KW=k?JSON.parse(k):[];}catch(e){RF_KW=[];}
@@ -6539,25 +6549,12 @@ function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val
 let _rfCatChip='';
 function rfSetCatChip(val,btn){ _rfCatChip=val; rfRender(); }
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const cat=(document.getElementById('rf-cat-sel')||{}).value||'primary';const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),cat,kw,url,desc,lastChecked:'',lastPost:''});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
-function rfSorted(list){return[...list].sort((a,b)=>{const ka=a.kw.toLowerCase(),kb=b.kw.toLowerCase();const nc=naturalSort(ka,kb);return nc!==0?nc:(a.desc||'').toLowerCase().localeCompare((b.desc||'').toLowerCase());});}
-function rfToggleEdit(id){rfEditId=rfEditId===id?null:id;rfRender();}
-function rfCancelEdit(){rfEditId=null;rfRender();}
-function rfSaveEdit(id){const kw=(document.getElementById('rfe-kw-'+id).value||'').trim();const url=(document.getElementById('rfe-url-'+id).value||'').trim();const desc=(document.getElementById('rfe-desc-'+id).value||'').trim();const item=RF.find(r=>r.id===id);const lp=(document.getElementById('rfe-lp-'+id)||{}).value||'';if(item){item.kw=kw;item.url=url;item.desc=desc;item.lastPost=lp.trim();if(kw&&!RF_KW.includes(kw))RF_KW.push(kw);}rfEditId=null;rfSave();rfBuildKwSelects();rfRender();}
-function rfDelete(id){if(!confirm('Delete?'))return;RF=RF.filter(r=>r.id!==id);rfSave();rfRender();}
-function rfEditRow(r,kwS){
-  if(rfEditId!==r.id)return '';
-  var opts=kwS.map(function(k){return '<option value="'+esc(k)+'"'+(k===r.kw?' selected':'')+'>'+esc(k)+'</option>';}).join('');
-  return '<tr class="rf-edit-row open"><td class="rf-edit-cell" colspan="4">'
-    +'<div class="rf-edit-grid">'
-    +'<select id="rfe-kw-'+r.id+'" style="font-size:12px;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-primary);padding:6px 10px;outline:none">'+opts+'</select>'
-    +'<input type="text" id="rfe-url-'+r.id+'" value="'+esc(r.url||'')+'" placeholder="URL" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
-    +'<input type="text" id="rfe-desc-'+r.id+'" value="'+esc(r.desc||'')+'" placeholder="Description" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
-    +'<input type="text" id="rfe-lp-'+r.id+'" value="'+esc(r.lastPost||'')+'" placeholder="Last post date" style="font-size:12px;border:1px solid var(--separator);padding:6px 10px;outline:none;width:100%" />'
-    +'</div>'
-    +'<div class="rf-edit-acts">'
-    +'<button class="rf-edit-save" onclick="rfSaveEdit(this.dataset.id)" data-id="'+r.id+'">Save</button>'
-    +'<button class="rf-edit-cancel" onclick="rfCancelEdit()">Cancel</button>'
-    +'</div></td></tr>';
+function rfSorted(arr) {
+  return [...arr].sort(function(a,b){
+    var la = (a.label||a.kw||'').toLowerCase();
+    var lb = (b.label||b.kw||'').toLowerCase();
+    return la < lb ? -1 : la > lb ? 1 : 0;
+  });
 }
 /* ── RESOURCES SIDEBAR NAVIGATION ── */
 let _rfActiveTab = '';
@@ -6593,15 +6590,17 @@ function rfRenderCat(cat) {
   const kwS = [...RF_KW].sort(naturalSort);
   let html = '<table class="rf-table"><tbody>';
   items.forEach(function(r) {
-    var trunc = r.url && r.url.length > 38 ? r.url.substring(0,38) + '…' : r.url || '';
+    var trunc = r.url && r.url.length > 44 ? r.url.substring(0,44) + '…' : r.url || '';
     var lc = r.lastChecked ? '<span style="font-size:10px;color:var(--label-secondary);display:block">Checked: ' + r.lastChecked + '</span>' : '';
     var lp = r.lastPost ? '<span style="font-size:10px;color:var(--accent);display:block">Posted: ' + r.lastPost + '</span>' : '';
     var stamps = (lc || lp) ? '<div style="margin-top:3px">' + lc + lp + '</div>' : '';
     var editLbl = rfEditId === r.id ? 'Cancel' : 'Edit';
+    var labelTxt = r.label || r.kw || '';
     html += '<tr>';
-    html += '<td><span class="rf-kw-pill">' + esc(r.kw) + '</span></td>';
+    html += '<td style="white-space:nowrap;font-family:\'Source Code Pro\',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--label-primary);padding-right:8px">' + esc(labelTxt) + '</td>';
     html += '<td>' + (r.url ? '<a class="rf-url-link" href="' + esc(r.url) + '" target="_blank">' + esc(trunc) + '</a>' : '—') + '</td>';
     html += '<td class="rf-desc">' + esc(r.desc) + stamps + '</td>';
+    html += '<td><span class="rf-kw-pill">' + esc(r.kw) + '</span></td>';
     html += '<td style="white-space:nowrap">';
     html += '<button class="rf-act-btn" onclick="rfToggleEdit(this.dataset.id)" data-id="' + r.id + '">' + editLbl + '</button> ';
     html += '<button class="rf-act-btn danger" onclick="rfDelete(this.dataset.id)" data-id="' + r.id + '">&#10005;</button>';
@@ -6615,7 +6614,25 @@ function rfRenderCat(cat) {
 /* ── UAP DAILY ── */
 const UAP_SK = 'oc_uap_reports_v1';
 let UAP_REPORTS = [];
-function uapLoad() { try { const d = localStorage.getItem(UAP_SK); if (d) UAP_REPORTS = JSON.parse(d); } catch(e) {} }
+function uapLoad() {
+  try { const d = localStorage.getItem(UAP_SK); if (d) UAP_REPORTS = JSON.parse(d); } catch(e) {}
+  // Merge uap_daily items from data.json (S.items) that aren't already in UAP_REPORTS
+  try {
+    const ghItems = (S && S.items) ? S.items.filter(i => i.type === 'uap_daily') : [];
+    ghItems.forEach(function(gi) {
+      if (!UAP_REPORTS.find(r => r.id === gi.id)) {
+        UAP_REPORTS.push({
+          id: gi.id,
+          created: gi.created || new Date().toISOString(),
+          dateLabel: gi.dateLabel || (gi.created || '').slice(0,10),
+          content: gi.content || gi.text || '',
+          keywords: gi.keywords || ['UAP Daily']
+        });
+      }
+    });
+    if (ghItems.length) uapSave();
+  } catch(e) {}
+}
 function uapSave() { try { localStorage.setItem(UAP_SK, JSON.stringify(UAP_REPORTS)); } catch(e) {} }
 function uapRenderList() {
   const el = document.getElementById('uap-report-list');
@@ -6719,10 +6736,12 @@ function rfRender(){
       var lp=r.lastPost?'<span style="font-size:10px;color:var(--accent);display:block">Posted: '+r.lastPost+'</span>':'';
       var stamps=(lc||lp)?'<div style="margin-top:3px">'+lc+lp+'</div>':'';
       var editLbl=rfEditId===r.id?'Cancel':'Edit';
+      var labelTxt=r.label||r.kw||'';
       html+='<tr>';
-      html+='<td><span class="rf-kw-pill">'+esc(r.kw)+'</span></td>';
+      html+='<td style="white-space:nowrap;font-family:\'Source Code Pro\',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--label-primary);padding-right:8px">'+esc(labelTxt)+'</td>';
       html+='<td>'+(r.url?'<a class="rf-url-link" href="'+esc(r.url)+'" target="_blank">'+esc(trunc)+'</a>':'—')+'</td>';
       html+='<td class="rf-desc">'+esc(r.desc)+stamps+'</td>';
+      html+='<td><span class="rf-kw-pill">'+esc(r.kw)+'</span></td>';
       html+='<td style="white-space:nowrap">';
       html+='<button class="rf-act-btn" onclick="rfToggleEdit(this.dataset.id)" data-id="'+r.id+'">'+editLbl+'</button> ';
       html+='<button class="rf-act-btn danger" onclick="rfDelete(this.dataset.id)" data-id="'+r.id+'">&#10005;</button>';
