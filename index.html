@@ -2253,9 +2253,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
               </select>
             </div>
           </div>
-          <div style="display:flex;gap:8px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="dl-send-btn" onclick="dmExport()" style="height:34px">&#8659; Backup</button>
-            <button class="iabtn" onclick="dmRestoreClick()" style="height:34px;background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore</button>
+            <button class="iabtn" onclick="dmRestoreClick()" style="height:34px;background:#c0392b;color:#fff;border-color:#c0392b">&#9888; Restore from file</button>
+            <button class="iabtn" onclick="dmSyncFromGitHub()" style="height:34px;background:#1a6e3c;color:#fff;border-color:#1a6e3c">&#8635; Sync from GitHub</button>
           </div>
           <!-- hidden file input for restore -->
           <input type="file" id="dm-import-file" accept=".json" style="display:none" onchange="dmImportPreview()">
@@ -8010,6 +8011,61 @@ function dmImportConfirm(mode) {
   save(); render();
   alert((mode === 'replace' ? 'Replace complete' : 'Merge complete') + '. ' + incoming.length + ' items processed.');
   dmHealthCheck(); dmStorageDial();
+}
+
+/* dmSyncFromGitHub — fetch data.json directly from GitHub and offer Merge / Replace */
+async function dmSyncFromGitHub() {
+  const btn = event && event.target;
+  const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '&#8635; Fetching&#8230;'; btn.disabled = true; }
+  try {
+    const token = (typeof GH_TOKEN !== 'undefined') ? GH_TOKEN : '';
+    const headers = {'Accept':'application/vnd.github.v3+json'};
+    if (token) headers['Authorization'] = 'token ' + token;
+    const r = await fetch('https://api.github.com/repos/brownd11-a11y/oc-hub/contents/data.json', {headers});
+    if (!r.ok) throw new Error('GitHub returned ' + r.status);
+    const meta = await r.json();
+    const raw = atob(meta.content.replace(/\n/g,''));
+    const data = JSON.parse(raw);
+    if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+    // Reuse the existing import modal
+    const existing_mod = document.getElementById('dm-restore-modal');
+    if (existing_mod) existing_mod.remove();
+    const items = data.items || [];
+    const existing = new Set((S.items||[]).map(i=>i.id));
+    const newCount = items.filter(i=>!existing.has(i.id)).length;
+    const updateCount = items.filter(i=>existing.has(i.id)).length;
+    const modal = document.createElement('div');
+    modal.id = 'dm-restore-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:3000;display:flex;align-items:center;justify-content:center';
+    modal.innerHTML = `
+      <div style="background:var(--card-bg);border-radius:12px;width:min(480px,90vw);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+        <div style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:12px">Sync from GitHub</div>
+        <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.65;color:var(--label-primary);margin:0 0 6px"><strong>${items.length} items</strong> on GitHub</p>
+        <p style="font-family:'Source Code Pro',monospace;font-size:11px;color:var(--label-secondary);margin:0 0 20px">${newCount} new · ${updateCount} updates to existing · your local has ${(S.items||[]).length} items</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+          <div style="padding:12px 14px;border:1px solid var(--separator);border-radius:8px">
+            <div style="font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Merge</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-secondary)">Add new items and update existing ones. Nothing deleted. Keeps any local-only items.</div>
+          </div>
+          <div style="padding:12px 14px;border:1px solid rgba(199,0,37,.3);border-radius:8px;background:rgba(199,0,37,.04)">
+            <div style="font-family:'Source Code Pro',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:#c0392b">Replace (wipe local)</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-secondary)">Discard all local data and load GitHub wholesale. Use this to fix version conflicts.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button onclick="document.getElementById('dm-restore-modal').remove()" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);padding:8px 16px;border-radius:6px;cursor:pointer">Cancel</button>
+          <button onclick="dmImportConfirm('merge')" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer">Merge</button>
+          <button onclick="dmImportConfirm('replace')" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:#c0392b;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer">Replace (wipe local)</button>
+        </div>
+      </div>`;
+    modal.addEventListener('click', ev => { if(ev.target===modal) modal.remove(); });
+    modal._importData = data;
+    document.body.appendChild(modal);
+  } catch(err) {
+    if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+    alert('GitHub sync failed: ' + err.message + '\n\nTry the Restore from file button instead — download the export from GitHub and import it.');
+  }
 }
 
 function dmDeletePreview() {
