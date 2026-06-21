@@ -2866,49 +2866,30 @@ async function loadFromGitHub() {
     const localVersion = localData ? (localData._version || localData._seedVersion || '1970-01-01T00:00:00.000Z') : '1970-01-01T00:00:00.000Z';
     const ghIsNewer   = new Date(ghVersion) >= new Date(localVersion);
 
+    // If local is newer (e.g. after Replace sync set _version to +1 day), use local as-is
+    if (!ghIsNewer && localData) {
+      applyData._localDone = {};
+      if (localData.items) localData.items.forEach(i => { if (i.done === true) applyData._localDone[i.id] = true; });
+      applyData(localData);
+      setHdSubtitle(localVersion);
+      console.log('Local is newer than GitHub — using localStorage as-is (' + localVersion + ')');
+      save(); render();
+      try { if(typeof renderOT==='function') renderOT(); } catch(e){}
+      try { if(typeof renderRF==='function') renderRF(); } catch(e){}
+      return;
+    }
+
     // Build localDone map — Dave's done marks always survive regardless of which data wins
     const localDone = {};
     if (localData && localData.items) {
       localData.items.forEach(i => { if (i.done === true) localDone[i.id] = true; });
     }
 
-    // GitHub is authoritative for dialogue/answer; never downgrades local done:true
-    if (!ghIsNewer && localData) {
-      const ghById = {};
-      (data.items || []).forEach(i => { ghById[i.id] = i; });
-      (localData.items || []).forEach(li => {
-        const gi = ghById[li.id];
-        if (!gi) return;
-        // GitHub done:true propagates; never set done:false over local done:true
-        if (gi.done === true) { li.done = true; localDone[li.id] = true; }
-        if (gi.done === true && gi.completedDate) li.completedDate = gi.completedDate;
-        // GitHub always wins on answer and dialogue (Claude's work)
-        if (gi.answer && (!li.answer || gi.answer.length >= li.answer.length)) li.answer = gi.answer;
-        const giDlg = gi.dialogue || [], liDlg = li.dialogue || [];
-        if (giDlg.length >= liDlg.length) li.dialogue = gi.dialogue;
-        // GitHub wins on title, text, dialogues (new array format) when local is empty
-        if (gi.title && !li.title) li.title = gi.title;
-        if (gi.text && !li.text) li.text = gi.text;
-        if (gi.dialogues && gi.dialogues.length > 0 && (!li.dialogues || li.dialogues.length === 0)) li.dialogues = gi.dialogues;
-        // GitHub always wins on title/text/dialogues for Part2 review items (i_a456p2_)
-        if (li.id && li.id.startsWith('i_a456p2_')) {
-          if (gi.title) li.title = gi.title;
-          if (gi.text) li.text = gi.text;
-          if (gi.tags) li.tags = gi.tags;
-          if (gi.dialogues && gi.dialogues.length > 0) li.dialogues = gi.dialogues;
-        }
-      });
-      // Add any items in GitHub but not in localStorage
-      const localIds = new Set((localData.items || []).map(i => i.id));
-      (data.items || []).forEach(gi => { if (!localIds.has(gi.id)) localData.items.push(gi); });
-    }
-
+    // GitHub is newer — apply it, preserving local done:true marks
     applyData._localDone = localDone;
-    applyData(ghIsNewer ? data : localData);
-    // Show last-updated time in banner subtitle (local 24h time)
-    const versionStr = ghIsNewer ? ghVersion : localVersion;
-    setHdSubtitle(versionStr);
-    console.log(`Data loaded from ${ghIsNewer ? 'GitHub' : 'localStorage'} (gh:${ghVersion} local:${localVersion})`);
+    applyData(data);
+    setHdSubtitle(ghVersion);
+    console.log('Data loaded from GitHub (' + ghVersion + ')');
   } catch(e) {
     console.warn('GitHub fetch failed, falling back to localStorage:', e.message);
     try {
@@ -2946,7 +2927,20 @@ function load(){
     save();
   }catch(e){ loadFromSeed(); }
 }
-function save(){try{const payload=Object.assign({},S,{_seedVersion:SEED_VERSION,_version:new Date().toISOString()});localStorage.setItem(SK,JSON.stringify(payload));}catch(e){}}
+function save(){
+  try {
+    const existing = JSON.parse(localStorage.getItem(SK)||'{}');
+    const newV = new Date().toISOString();
+    // Never downgrade _version — protects the +1day version set by Replace
+    const keepV = existing._version && existing._version > newV ? existing._version : newV;
+    const payload = Object.assign({}, S, {
+      _seedVersion: SEED_VERSION,
+      _version: keepV,
+      _skipSeedMerge: existing._skipSeedMerge || false
+    });
+    localStorage.setItem(SK, JSON.stringify(payload));
+  } catch(e) {}
+}
 function migrateDialogue(){
   (S.items||[]).forEach(it=>{
     if(it.type==='fordave'&&it.answer&&!it.dialogue){
