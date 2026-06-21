@@ -8016,6 +8016,27 @@ function dmImportConfirm(mode) {
 /* dmSyncFromGitHub — fetch data.json directly from GitHub and offer Merge / Replace */
 async function dmSyncFromGitHub() {
   const btn = event && event.target;
+  // Pre-flight warning modal
+  const warn = document.createElement('div');
+  warn.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:3100;display:flex;align-items:center;justify-content:center';
+  warn.innerHTML = `
+    <div style="background:var(--card-bg);border-radius:12px;width:min(460px,92vw);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+      <div style="font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c0392b;margin-bottom:12px">&#9888; Before you sync</div>
+      <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:14px;line-height:1.7;color:var(--label-primary);margin:0 0 12px">Syncing from GitHub will compare your local data with the GitHub copy. If you choose <strong>Replace</strong> in the next step, your local data will be wiped and cannot be recovered.</p>
+      <p style="font-family:'Libre Baskerville',Georgia,serif;font-size:13px;line-height:1.65;color:var(--label-secondary);margin:0 0 20px">If you have added notes or made changes in this session that have <strong>not yet been sent to Claude</strong>, click Cancel, use the <em>Update Claude</em> button first, then return here to sync.</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button id="dm-sync-cancel" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--separator);color:var(--label-secondary);padding:8px 18px;border-radius:6px;cursor:pointer">Cancel — update Claude first</button>
+        <button id="dm-sync-proceed" style="font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:#1a6e3c;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer">Continue to sync</button>
+      </div>
+    </div>`;
+  document.body.appendChild(warn);
+  const proceed = await new Promise(resolve => {
+    warn.querySelector('#dm-sync-cancel').onclick = () => { warn.remove(); resolve(false); };
+    warn.querySelector('#dm-sync-proceed').onclick = () => { warn.remove(); resolve(true); };
+    warn.addEventListener('click', ev => { if(ev.target===warn){ warn.remove(); resolve(false); } });
+  });
+  if (!proceed) return;
+
   const orig = btn ? btn.innerHTML : '';
   if (btn) { btn.innerHTML = '&#8635; Fetching&#8230;'; btn.disabled = true; }
   try {
