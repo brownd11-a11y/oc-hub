@@ -1296,22 +1296,21 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none;flex-direction:column;gap:0;padding:0">
-    <!-- Row 1: Select + status chips — full width, even spacing, left-aligned with tab bar -->
-    <div style="display:flex;gap:6px;align-items:center;padding:6px 16px 5px;width:100%;box-sizing:border-box">
-      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:32px;flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
-      <div style="flex:1;display:flex;gap:6px;align-items:center">
-        <div id="fchip-all"      class="fchip act" onclick="tSt(null)"                          style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
-        <div id="fchip-open"     class="fchip"     onclick="tSt('open')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
-        <div id="fchip-deferred" class="fchip"     onclick="tSt('deferred')"                   style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Defer</span><span class="fchip-ct" id="fc-deferred">—</span></div>
-        <div id="fchip-done"     class="fchip"     onclick="tSt('done')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
-        <div id="fchip-priority" class="fchip"     onclick="tSt(fSt==='priority'?null:'priority')" style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
-        <div id="fchip-reminder" class="fchip"     onclick="tReminder()"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128276; Remind</span><span class="fchip-ct" id="fc-reminder">—</span></div>
-        <div id="fchip-forclaude" class="fchip"    onclick="tFlow('forclaude')"                 style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128309; Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
-        <div id="fchip-fordave"   class="fchip"    onclick="tFlow('fordave')"                   style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128992; Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
-      </div>
+    <!-- Row 1: status chips only — 32px margins, even spacing, aligns with New Note bar edges -->
+    <div style="display:flex;gap:6px;align-items:center;padding:6px 32px 5px;width:100%;box-sizing:border-box">
+      <div id="fchip-all"       class="fchip act" onclick="tSt(null)"                              style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
+      <div id="fchip-open"      class="fchip"     onclick="tSt('open')"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
+      <div id="fchip-deferred"  class="fchip"     onclick="tSt('deferred')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Defer</span><span class="fchip-ct" id="fc-deferred">—</span></div>
+      <div id="fchip-done"      class="fchip"     onclick="tSt('done')"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
+      <div id="fchip-priority"  class="fchip"     onclick="tSt(fSt==='priority'?null:'priority')"  style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
+      <div id="fchip-reminder"  class="fchip"     onclick="tReminder()"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128276; Remind</span><span class="fchip-ct" id="fc-reminder">—</span></div>
+      <div id="fchip-forclaude" class="fchip"     onclick="tFlow('forclaude')"                     style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128309; Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
+      <div id="fchip-fordave"   class="fchip"     onclick="tFlow('fordave')"                       style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128992; Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
     </div>
-    <!-- Row 2: date/tag/type filters + Group + Reset — uniform control height -->
-    <div style="display:flex;gap:6px;align-items:center;padding:4px 16px 6px;border-top:1px solid rgba(0,0,0,0.06);width:100%;box-sizing:border-box">
+    <!-- Row 2: Select (left, over list) + filters + Group + Reset — 32px margins -->
+    <div style="display:flex;gap:6px;align-items:center;padding:4px 32px 6px;border-top:1px solid rgba(0,0,0,0.06);width:100%;box-sizing:border-box">
+      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:30px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;padding:0 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+      <span style="width:1px;height:18px;background:var(--separator);flex-shrink:0"></span>
       <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date">
         <option value="">— Due Date —</option>
         <option value="attention">Past due &amp; today</option>
@@ -1353,8 +1352,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:0 10px;display:none">Collapse All</button>
       <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="font-size:11px;padding:0 10px;display:none">Expand All</button>
       <div style="flex:1"></div>
-      <button class="fchip" onclick="showAll()" style="flex:none;padding:0 14px;height:32px;display:flex;align-items:center;gap:0" title="Clear all filters">
-        <span class="fchip-lbl" style="color:#8E8E93">&#10005; Reset</span>
+      <button class="fchip" onclick="showAll()" style="flex:none;height:30px;padding:0 14px;display:flex;align-items:center" title="Clear all filters">
+        <span class="fchip-lbl" style="color:#8E8E93;font-size:11px">&#10005; Reset</span>
       </button>
     </div>
   </div>
@@ -1727,11 +1726,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
   <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier B &mdash; Mechanical Passes</h2><span class="pass-tier-tag">Scope by command &mdash; each logs on completion</span><span class="pass-tier-summary">7 sub-passes · formatting, citations, cross-refs, footnotes, index</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
     <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Run after Tier A is confirmed clean for the same content. Each sub-pass is discrete and writes a timestamped log entry before packing. If content is edited after a log entry, that passage is flagged for re-check at next session open.</p>
     <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:140px">Sub-pass</th><th>What it covers</th></tr></thead><tbody>
-      <tr><td><span class="pass-cmd">"Formatting pass [scope]"</span></td><td><span class="pass-label">B1</span></td><td class="pass-desc">Style ID compliance (BlockText for pull quotes, not aquote), image placement, caption construction, section breaks, pull quote/Attribution pairs, TextOpen after subheadings, chapter structure order, two-space title normalization. Also includes stray paragraph sweep: flags any paragraph whose style is inconsistent with surrounding context — aBOOKtext in TextOpen position, TextOpen mid-flow, empty paragraphs outside title page, Normal-style content in body, consecutive empty paragraphs. Presents list for Dave's decision; removes only those clearly unnecessary.</td></tr>
-      <tr><td><span class="pass-cmd">"Citation pass [scope]"</span></td><td><span class="pass-label">B2</span></td><td class="pass-desc">Four-point check: (1) every significant factual claim has a marker; (2) all citations are primary sources per hierarchy; (3) each citation is fetched and verified to support the specific claim; (4) every citation appears in A15 Bibliography with a complete entry. Logs to <em>Citation_Verification_Log.md</em>.</td></tr>
-      <tr><td><span class="pass-cmd">"Cross-ref pass [scope]"</span></td><td><span class="pass-label">B3</span></td><td class="pass-desc">Every "see Chapter N" and "Appendix AX" reference verified to resolve to real content with matching material. Back matter included unless Dave specifies otherwise. Logs to <em>CrossRef_Verification_Log.md</em>.</td></tr>
-      <tr><td><span class="pass-cmd">"Footnote pass [scope]"</span></td><td><span class="pass-label">B4</span></td><td class="pass-desc">Four-count gate (ref = note bookmarks = forward = return hyperlinks). Adjacent marker audit. Sequence integrity 1→N. afootnote construction check. No orphaned markers.</td></tr>
-      <tr><td><span class="pass-cmd">"Appendix pass"</span></td><td><span class="pass-label">B5</span></td><td class="pass-desc">A2 sightings scan, A12 figures/diagrams, A15 Quotations location codes, A15 Bibliography new entries, Glossary new terms, Index new subjects. Run after B2 is confirmed for relevant chapters.</td></tr>
+      <tr><td><span class="pass-cmd">"Formatting pass [scope]"</span></td><td><span class="pass-label">B1</span></td><td class="pass-desc">Style ID compliance (BlockText for pull quotes, not aquote), image placement, caption construction, section breaks, BlockText/Attribution pairs, TextOpen after subheadings, chapter structure order, two-space title normalization. Stray paragraph sweep: flags aBOOKtext in TextOpen position, TextOpen mid-flow, empty paragraphs outside title page, Normal-style content in body, consecutive empty paragraphs. Presents list for Dave's decision; removes only those clearly unnecessary.</td></tr>
+      <tr><td><span class="pass-cmd">"Cross-ref pass [scope]"</span></td><td><span class="pass-label">B2</span></td><td class="pass-desc">Every "see Chapter N" and "Appendix AX" reference verified to resolve to real content with matching material. Back matter included unless Dave specifies otherwise. Logs to <em>CrossRef_Verification_Log.md</em>.</td></tr>
+      <tr><td><span class="pass-cmd">"Endnote pass [scope]"</span></td><td><span class="pass-label">B3</span></td><td class="pass-desc">Full endnote and citation pass — absorbs former B2 Citation Pass and former B4 Footnote Pass. All notes are plain manual paragraphs styled afootnote in the End Notes section; Vellum handles navigation. Protocol: (1) silent citation check on all body paragraphs — superscript placement, missing citations, plain-text digit leakage; (2) note text strip (leading digits, letters, periods, arrows); (3) primary source hierarchy enforced; (4) every citation verified against source and logged; (5) A15 Bibliography entries confirmed. afootnote numPr must be stripped at style level, all individual paragraph pPr elements, numbering.xml, and style autoRedefine — all four layers.</td></tr>
+      <tr><td><span class="pass-cmd">"Word endnote pass [scope]"</span></td><td><span class="pass-label">B4</span></td><td class="pass-desc">Converts all afootnote plain paragraphs to genuine Word endnotes (w:endnote elements) that Vellum can recognize and auto-link. Run after all prose is locked, before index work (B7). Verify afootnote style has no numPr before conversion.</td></tr>
+      <tr><td><span class="pass-cmd">"Appendix pass"</span></td><td><span class="pass-label">B5</span></td><td class="pass-desc">A2 sightings scan, A12 figures/diagrams, A15 Quotations location codes, A15 Bibliography new entries, Glossary new terms, Index new subjects. Run after B3 confirmed for relevant chapters.</td></tr>
       <tr><td><span class="pass-cmd">"URL pass"</span></td><td><span class="pass-label">B6</span></td><td class="pass-desc">Every hyperlink verified to resolve. Invisible-hyperlink rendering confirmed (color=auto, u=none, no Hyperlink style).</td></tr>
       <tr><td><span class="pass-cmd">"Index pass"</span></td><td><span class="pass-label">B7</span></td><td class="pass-desc">Run last — after all content is locked. Locator codes, bookmark naming, subentry formatting, print vs. Kindle locator styles, exclusion rules (A15, A12). Editing body content after B7 potentially invalidates locators.</td></tr>
     </tbody></table>
@@ -2720,6 +2719,15 @@ let _sessionTagSet=false; // true once user has set a tag this session
 let _sessionFirstSave=false; // true once first item saved this session (triggers persist toast)
 let _notesOpen=false;   // Project Notes section collapsed by default
 let _roadmapOpen=false; // Roadmap section collapsed by default
+// Restore section open state from localStorage (persists across refresh, resets on fresh session)
+(function(){
+  try{
+    const no=localStorage.getItem('oc_notes_open');
+    const ro=localStorage.getItem('oc_roadmap_notes_open');
+    if(no==='1')_notesOpen=true;
+    if(ro==='1')_roadmapOpen=true;
+  }catch(e){}
+})();
 let mtrSourceId=null;   // item being moved to roadmap
 
 /* ── REPEAT SYSTEM ── */
@@ -3663,6 +3671,7 @@ function toggleNotesSection(){
   var chev=document.getElementById('section-notes-chev');
   if(body)body.style.display=_notesOpen?'block':'none';
   if(chev)chev.className='section-bar-chev'+(_notesOpen?' open':'');
+  try{localStorage.setItem('oc_notes_open',_notesOpen?'1':'0');}catch(e){}
 }
 function toggleRoadmapSection(){
   _roadmapOpen=!_roadmapOpen;
@@ -3670,6 +3679,8 @@ function toggleRoadmapSection(){
   var chev=document.getElementById('section-roadmap-chev');
   if(body)body.style.display=_roadmapOpen?'block':'none';
   if(chev)chev.className='section-bar-chev'+(_roadmapOpen?' open':'');
+
+  try{localStorage.setItem('oc_roadmap_notes_open',_roadmapOpen?'1':'0');}catch(e){}
 }
 // ─────────────────────────────────────────────────────────────────────────
 function rlist(){
