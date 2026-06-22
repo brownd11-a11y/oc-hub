@@ -7046,22 +7046,25 @@ function searchBuild(q){
         searchClose();
         showTab('roadmap',document.querySelector('[onclick*=\'roadmap\']'));
         document.body.classList.add('tab-roadmap');
-        // Expand the relevant phase
+        // Expand to full level so phases and steps are visible
+        setRoadLevel(2);
+        // Ensure the specific phase is open (steps visible)
         const phId=r.kind==='phase'?r.id:r.phase;
         if(phId){
           const ph=S.road.find(x=>x.id===phId);
-          if(ph&&!ph.open){ph.open=true;}
+          if(ph)ph.open=true;
         }
         renderGantt();
-        // Scroll gantt to today first then to item
+        // Scroll to the target item
         setTimeout(()=>{
           const outer=document.getElementById('gantt-scroll-outer');
           if(!outer)return;
-          // Find phase row by scanning text content
+          // Find the matching phase/step row by label text
           const rows=outer.querySelectorAll('.gantt-phase-row,.gantt-step-row');
           let target=null;
+          const labelFrag=r.label.substring(0,20).toLowerCase();
           rows.forEach(row=>{
-            if(!target&&(row.textContent||'').includes(r.label.substring(0,20))){target=row;}
+            if(!target&&(row.textContent||'').toLowerCase().includes(labelFrag)){target=row;}
           });
           if(target){
             target.scrollIntoView({behavior:'smooth',block:'center'});
@@ -7069,7 +7072,7 @@ function searchBuild(q){
             target.style.outlineOffset='2px';
             setTimeout(()=>{target.style.outline='';target.style.outlineOffset='';},2200);
           }
-        },220);
+        },250);
       }
     });
   });
@@ -7093,12 +7096,16 @@ function searchBuild(q){
         showTab('notes',document.querySelector('[onclick*=\'notes\']'));
         fSt=null;fTag=null;fType=null;fFlow=null;fReminder=false;
         it._exp=true;
+        // Ensure the relevant notes section is expanded
+        const isRoadmapItem=it.type==='roadmap';
+        if(isRoadmapItem&&!_roadmapOpen){toggleRoadmapSection();}
+        else if(!isRoadmapItem&&!_notesOpen){toggleNotesSection();}
         render();
         setTimeout(()=>{
           const el=document.getElementById('it_'+it.id);
           if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
           threadOverlayOpen(it.id);
-        },180);
+        },200);
       }
     });
   });
