@@ -959,6 +959,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .search-result-item:hover{background:#f7f7fa}
 .search-result-item:last-child{border-bottom:none}
 .sr-source{flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#8e8e93;width:72px;padding-top:2px;line-height:1.4}
+.sr-snippet{font-family:'Libre Baskerville',Georgia,serif;font-size:11px;color:#8e8e93;margin-top:3px;line-height:1.45;font-style:italic}
+.sr-action-label{flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);opacity:0;transition:opacity .15s;padding-top:2px;white-space:nowrap;margin-right:4px}
+.search-result-item:hover .sr-action-label{opacity:1}
+.search-result-item.kbd-hi .sr-action-label{opacity:1}
 .sr-source.src-roadmap{color:#2070C8}
 .sr-source.src-notes{color:#d4a020}
 .sr-source.src-passes{color:#1A9E78}
@@ -6994,7 +6998,8 @@ function searchKeydown(e){
 
 function searchHighlightRow(){
   document.querySelectorAll('.search-result-item').forEach((el,i)=>{
-    el.style.background=i===_searchIdx?'#2a2720':'';
+    el.style.background=i===_searchIdx?'#f0f4ff':'';
+    el.classList.toggle('kbd-hi', i===_searchIdx);
   });
   const el=document.querySelector(`.search-result-item:nth-child(${_searchIdx+1})`);
   if(el)el.scrollIntoView({block:'nearest'});
@@ -7031,12 +7036,32 @@ function searchBuild(q){
       note:r.note||'',
       action:()=>{
         searchClose();
-        showTab('roadmap',document.querySelector('[onclick*=\'roadmap\']'));document.body.classList.add('tab-roadmap');
-        // Expand the phase if it's a step
-        if((r.kind==='step'||r.kind==='gate')&&r.phase){
-          const ph=S.road.find(x=>x.id===r.phase);
-          if(ph&&!ph.open){ph.open=true;renderGantt();}
+        showTab('roadmap',document.querySelector('[onclick*=\'roadmap\']'));
+        document.body.classList.add('tab-roadmap');
+        // Expand the relevant phase
+        const phId=r.kind==='phase'?r.id:r.phase;
+        if(phId){
+          const ph=S.road.find(x=>x.id===phId);
+          if(ph&&!ph.open){ph.open=true;}
         }
+        renderGantt();
+        // Scroll gantt to today first then to item
+        setTimeout(()=>{
+          const outer=document.getElementById('gantt-scroll-outer');
+          if(!outer)return;
+          // Find phase row by scanning text content
+          const rows=outer.querySelectorAll('.gantt-phase-row,.gantt-step-row');
+          let target=null;
+          rows.forEach(row=>{
+            if(!target&&(row.textContent||'').includes(r.label.substring(0,20))){target=row;}
+          });
+          if(target){
+            target.scrollIntoView({behavior:'smooth',block:'center'});
+            target.style.outline='2px solid var(--accent)';
+            target.style.outlineOffset='2px';
+            setTimeout(()=>{target.style.outline='';target.style.outlineOffset='';},2200);
+          }
+        },220);
       }
     });
   });
@@ -7046,23 +7071,26 @@ function searchBuild(q){
     const haystack=((it.text||'')+' '+(it.answer||'')+' '+(it.tag||'')+' '+(it.itemUrl||'')).toLowerCase();
     if(!haystack.includes(lq))return;
     const typeLabel=it.type==='fordave'?'For Dave':it.type||'note';
+    const _noteSnippet=(it.answer||'').substring(0,140)||(it.dialogue&&it.dialogue.length?(it.dialogue[it.dialogue.length-1].text||'').substring(0,140):'');
     results.push({
       source:'notes',
       sourceLabel:'Notes',
       _done:it.done||false,
       _tag:it.tag||'',
       title:it.text,
+      note:_noteSnippet,
       sub:'Notes & Checklist · '+typeLabel+(it.tag?' · '+it.tag:'')+(it.done?' · done':''),
       action:()=>{
         searchClose();
         showTab('notes',document.querySelector('[onclick*=\'notes\']'));
-        // Expand the item
+        fSt=null;fTag=null;fType=null;fFlow=null;fReminder=false;
         it._exp=true;
         render();
         setTimeout(()=>{
           const el=document.getElementById('it_'+it.id);
           if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
-        },150);
+          threadOverlayOpen(it.id);
+        },180);
       }
     });
   });
@@ -7100,6 +7128,26 @@ function searchBuild(q){
       action:()=>{
         searchClose();
         showTab('refs',document.querySelector('[onclick*=\'refs\']'));
+        // Navigate to the specific category
+        const catBtn=document.querySelector('#panel-refs .rf-nav[onclick*="rf-'+((ref.cat||'primary')+'"]'));
+        setTimeout(()=>{
+          showRfTab('rf-'+(ref.cat||'primary'), catBtn||null);
+          // After render, try to highlight the matching row
+          setTimeout(()=>{
+            const rows=document.querySelectorAll('#panel-refs td a, #panel-refs td');
+            rows.forEach(el=>{
+              if((el.textContent||'').includes(ref.kw||'')&&!el._srHl){
+                el._srHl=true;
+                const tr=el.closest('tr');
+                if(tr){
+                  tr.style.background='rgba(61,90,153,0.10)';
+                  tr.scrollIntoView({behavior:'smooth',block:'center'});
+                  setTimeout(()=>{tr.style.background='';tr._srHl&&(tr._srHl=false);},2200);
+                }
+              }
+            });
+          },120);
+        },60);
       }
     });
   });
@@ -7157,16 +7205,20 @@ function searchRender(q){
     return;
   }
   if(title)title.textContent=visible.length+' result'+(visible.length===1?'':'s')+(_srFilter==='open'?' (open)':'')+(_srTagFilter?' ['+_srTagFilter+']':'');
-  scroll.innerHTML=visible.map((r,i)=>`
-    <div class="search-result-item" onclick="searchGo(_srVisible[${i}])">
+  scroll.innerHTML=visible.map((r,i)=>{
+    const actionLabel=r.source==='notes'?'Open thread':r.source==='roadmap'?'Go to phase':r.source==='refs'?'View entry':'Go to tab';
+    const snippet=r.note&&r.note.length>0?`<div class="sr-snippet">${hl(r.note.length>120?r.note.substring(0,120)+'…':r.note,q)}</div>`:'';
+    return `<div class="search-result-item" onclick="searchGo(_srVisible[${i}])" title="${esc(actionLabel)}">
       <span class="sr-source src-${r.source}">${esc(r.sourceLabel)}</span>
       <div class="sr-body">
-        <div class="sr-title">${hl(r.title.length>100?r.title.substring(0,100)+'\u2026':r.title,q)}</div>
-        <div class="sr-sub">${esc(r.sub.length>80?r.sub.substring(0,80)+'\u2026':r.sub)}</div>
+        <div class="sr-title">${hl(r.title.length>100?r.title.substring(0,100)+'…':r.title,q)}</div>
+        <div class="sr-sub">${esc(r.sub.length>80?r.sub.substring(0,80)+'…':r.sub)}</div>
+        ${snippet}
       </div>
+      <span class="sr-action-label">${esc(actionLabel)}</span>
       <span class="sr-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function searchGo(result){
