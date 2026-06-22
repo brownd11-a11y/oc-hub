@@ -4182,6 +4182,7 @@ function togDone(id){
     }
     it.done=true;
     it.completedDate=todayStr();
+    it.dueDate='';
     if(it.linkedRoadId){const ritem=S.road.find(r=>r.id===it.linkedRoadId);if(ritem&&ritem.kind==='step'){ritem.done=true;ritem.completedDate=todayStr();}}
   } else {
     it.done=false;
@@ -4313,7 +4314,9 @@ function checkDeferredResurface() {
   let needsAttention = []; // open/non-deferred items past due or due today
 
   (S.items||[]).forEach(it => {
+    // Skip if done in runtime OR if GitHub baseline confirms done (guards against stale local state)
     if (it.done || it.type === 'roadmap') return;
+    if (_ghBaseline[it.id] && _ghBaseline[it.id].done) return;
 
     // Case 1: deferred item whose dueDate has passed → promote to open
     if (it.deferred && it.dueDate && it.dueDate <= today) {
@@ -4354,7 +4357,8 @@ function checkDeferredResurface() {
     }
 
     // Case 3: open (non-deferred) item with dueDate past or today
-    if (!it.deferred && it.dueDate && it.dueDate <= today) {
+    // Skip if completedDate is set — stale local state may have done:false but item was completed
+    if (!it.deferred && it.dueDate && it.dueDate <= today && !it.completedDate) {
       needsAttention.push(it);
     }
   });
@@ -4547,7 +4551,7 @@ function dlChoice(id, letter) {
 function dlAccept(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Accept: '+(it.text||'').slice(0,40));
-  it.done=true;it.completedDate=new Date().toISOString().slice(0,10);
+  it.done=true;it.completedDate=new Date().toISOString().slice(0,10);it.dueDate='';
   save();render();
   undoToastShow('Accepted: '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
