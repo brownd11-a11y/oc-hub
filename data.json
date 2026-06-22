@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-22T17:20:03.634443+00:00",
+  "_version": "2026-06-22T17:25:23.059457+00:00",
   "_schema": 1,
   "items": [
     {
@@ -13880,6 +13880,38 @@
         }
       ],
       "answer": "DONE v371: All five B3 protocol fixes incorporated into PI v37. Four-layer afootnote strip (style numPr, paragraph numPr, numbering.xml pStyle, autoRedefine) also added to memory and PI. Ch.1–Ch.4 + Intro all passing cleanly with new protocol."
+    },
+    {
+      "id": "rm_r_pursue_update_distribution",
+      "type": "roadmap",
+      "text": "Update PURSUE references — final check before upload for sale [Publishing Distribution setup]",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": null,
+      "deferred": false,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-22T17:21:26.583Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
+    },
+    {
+      "id": "rm_r_pursue_update_writeedit",
+      "type": "roadmap",
+      "text": "Update PURSUE references — file drop counts + media buzz [Write/Edit]",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": null,
+      "deferred": false,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-22T17:21:26.583Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
     }
   ],
   "road": [
