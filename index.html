@@ -2972,6 +2972,8 @@ async function loadFromGitHub() {
   // Reinitialize outreach and refs if present in loaded data
   try { if(typeof renderOT==='function') renderOT(); } catch(e){}
   try { if(typeof renderRF==='function') renderRF(); } catch(e){}
+  // Re-run uapLoad now that S is populated with GitHub data
+  try { uapLoad(); if(document.getElementById('rf-uap-daily')?.classList.contains('active')) uapRenderList(); } catch(e){}
 }
 
 function load(){
@@ -6595,7 +6597,7 @@ function showRfTab(id, btn) {
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
   if (id === 'rf-all') { rfBuildKwSelects(); rfRender(); }
-  else if (id === 'rf-uap-daily') { uapRenderList(); }
+  else if (id === 'rf-uap-daily') { uapLoad(); uapRenderList(); }
   else if (id.startsWith('rf-cat-') || ['rf-primary','rf-substack','rf-social','rf-analysis','rf-podcast','rf-documentary','rf-book'].includes(id)) {
     const catMap = {'rf-primary':'primary','rf-substack':'substack','rf-social':'social','rf-analysis':'analysis','rf-podcast':'podcast','rf-documentary':'documentary','rf-book':'book'};
     rfRenderCat(catMap[id]);
