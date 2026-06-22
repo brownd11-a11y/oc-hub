@@ -1296,19 +1296,22 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none;flex-direction:column;gap:0;padding:0">
-    <!-- Row 1: status chips -->
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 20px 5px">
-      <div id="fchip-all"     class="fchip act" onclick="tSt(null)"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
-      <div id="fchip-open"    class="fchip"     onclick="tSt('open')"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
-      <div id="fchip-deferred" class="fchip"   onclick="tSt('deferred')"><span class="fchip-lbl">Deferred</span><span class="fchip-ct" id="fc-deferred">—</span></div>
-      <div id="fchip-done"    class="fchip"     onclick="tSt('done')"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
-      <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
-      <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
-      <div id="fchip-forclaude" class="fchip" onclick="tFlow('forclaude')"><span class="fchip-lbl">&#128309; For Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
-      <div id="fchip-fordave"   class="fchip" onclick="tFlow('fordave')"><span class="fchip-lbl">&#128992; For Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
+    <!-- Row 1: Select + status chips — full width, even spacing, left-aligned with tab bar -->
+    <div style="display:flex;gap:6px;align-items:center;padding:6px 16px 5px;width:100%;box-sizing:border-box">
+      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:32px;flex-shrink:0;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+      <div style="flex:1;display:flex;gap:6px;align-items:center">
+        <div id="fchip-all"      class="fchip act" onclick="tSt(null)"                          style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
+        <div id="fchip-open"     class="fchip"     onclick="tSt('open')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
+        <div id="fchip-deferred" class="fchip"     onclick="tSt('deferred')"                   style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Defer</span><span class="fchip-ct" id="fc-deferred">—</span></div>
+        <div id="fchip-done"     class="fchip"     onclick="tSt('done')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
+        <div id="fchip-priority" class="fchip"     onclick="tSt(fSt==='priority'?null:'priority')" style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
+        <div id="fchip-reminder" class="fchip"     onclick="tReminder()"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128276; Remind</span><span class="fchip-ct" id="fc-reminder">—</span></div>
+        <div id="fchip-forclaude" class="fchip"    onclick="tFlow('forclaude')"                 style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128309; Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
+        <div id="fchip-fordave"   class="fchip"    onclick="tFlow('fordave')"                   style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128992; Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
+      </div>
     </div>
-    <!-- Row 2: filters + Reset · Select · Group — right-aligned to same edge as Reminders -->
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:4px 20px 6px;border-top:1px solid rgba(0,0,0,0.06)">
+    <!-- Row 2: date/tag/type filters + Group + Reset — uniform control height -->
+    <div style="display:flex;gap:6px;align-items:center;padding:4px 16px 6px;border-top:1px solid rgba(0,0,0,0.06);width:100%;box-sizing:border-box">
       <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date">
         <option value="">— Due Date —</option>
         <option value="attention">Past due &amp; today</option>
@@ -1338,23 +1341,21 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="question">Questions</option>
         <option value="reminder">Reminders</option>
         <option value="note">Project Notes</option>
-        <option value="fordave"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> For Claude / Dave</option>
+        <option value="fordave">&#9654; For Claude / Dave</option>
         <option value="roadmap">&#128506; Roadmap</option>
       </select>
-      <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
-        <button class="dash-showall" onclick="showAll()" style="color:var(--cover-cream);border-color:#333028;font-size:13px;letter-spacing:.04em">&#10005; Reset</button>
-        <span style="width:1px;height:16px;background:var(--separator)"></span>
-        <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:28px">&#9745; Select</button>
-        <span style="width:1px;height:16px;background:var(--separator)"></span>
-        <select class="dash-showall" id="notes-group-sel" onchange="setNotesGroup(this.value)" title="Group notes by field" style="height:30px;padding:0 10px;cursor:pointer;appearance:auto">
-          <option value="">Group</option>
-          <option value="status">By Status</option>
-          <option value="type">By Type</option>
-          <option value="tag">By Tag</option>
-        </select>
-        <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:3px 8px;display:none">Collapse All</button>
-        <button class="iabtn" id="notes-expand-all-btn" onclick="notesExpandAll()" style="font-size:11px;padding:3px 8px;display:none">Expand All</button>
-      </div>
+      <select class="dash-sel" id="notes-group-sel" onchange="setNotesGroup(this.value)" title="Group notes by field">
+        <option value="">Group</option>
+        <option value="status">By Status</option>
+        <option value="type">By Type</option>
+        <option value="tag">By Tag</option>
+      </select>
+      <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:0 10px;display:none">Collapse All</button>
+      <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="font-size:11px;padding:0 10px;display:none">Expand All</button>
+      <div style="flex:1"></div>
+      <button class="fchip" onclick="showAll()" style="flex:none;padding:0 14px;height:32px;display:flex;align-items:center;gap:0" title="Clear all filters">
+        <span class="fchip-lbl" style="color:#8E8E93">&#10005; Reset</span>
+      </button>
     </div>
   </div>
 </div>
