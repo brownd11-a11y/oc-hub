@@ -301,7 +301,7 @@ body::before{display:none}
 .dash-btn.act-red .dash-lbl{color:#C70025}
 .dash-btn.act-gold .dash-lbl{color:#3C3C43}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 20px 8px;background:#F2F2F7;border-bottom:1px solid #E5E5EA}
-.dash-sel{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border:1px solid #C6C6C8;background:#ffffff;color:#000000;padding:0 9px;cursor:pointer;outline:none;height:30px;line-height:30px;vertical-align:middle;border-radius:6px}
+.dash-sel{font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;border:1px solid #C6C6C8;background:#ffffff;color:#3C3C43;padding:0 9px;cursor:pointer;outline:none;height:32px;line-height:32px;vertical-align:middle;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
 .dash-sel:focus{border-color:#C70025}
 .dash-sel option{background:#ffffff;color:#000000}
 .dash-showall{font-family:'Source Code Pro',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#8E8E93;background:none;border:1px solid #C6C6C8;padding:0 12px;cursor:pointer;transition:all .15s;height:30px;line-height:30px;vertical-align:middle;border-radius:6px}
@@ -1308,88 +1308,93 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none;flex-direction:column;gap:0;padding:0">
-    <!-- Row 1: status chips only — 32px margins, even spacing, aligns with New Note bar edges -->
+    <!-- Row 1: status chips — 32px margins, all flex:1 equal width, 32px height -->
     <div style="display:flex;gap:6px;align-items:center;padding:6px 32px 5px;width:100%;box-sizing:border-box">
-      <div id="fchip-all"       class="fchip act" onclick="tSt(null)"                              style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
-      <div id="fchip-open"      class="fchip"     onclick="tSt('open')"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
-      <div id="fchip-deferred"  class="fchip"     onclick="tSt('deferred')"                        style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Defer</span><span class="fchip-ct" id="fc-deferred">—</span></div>
-      <div id="fchip-done"      class="fchip"     onclick="tSt('done')"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
-      <div id="fchip-priority"  class="fchip"     onclick="tSt(fSt==='priority'?null:'priority')"  style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
-      <div id="fchip-reminder"  class="fchip"     onclick="tReminder()"                            style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128276; Remind</span><span class="fchip-ct" id="fc-reminder">—</span></div>
-      <div id="fchip-forclaude" class="fchip"     onclick="tFlow('forclaude')"                     style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128309; Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
-      <div id="fchip-fordave"   class="fchip"     onclick="tFlow('fordave')"                       style="flex:1;min-width:0;justify-content:center"><span class="fchip-lbl">&#128992; Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
+      <div id="fchip-all"       class="fchip act" onclick="tSt(null)"                              style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">All</span><span class="fchip-ct" id="fc-all">—</span></div>
+      <div id="fchip-open"      class="fchip"     onclick="tSt('open')"                            style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">Open</span><span class="fchip-ct" id="fc-open">—</span></div>
+      <div id="fchip-deferred"  class="fchip"     onclick="tSt('deferred')"                        style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">Defer</span><span class="fchip-ct" id="fc-deferred">—</span></div>
+      <div id="fchip-done"      class="fchip"     onclick="tSt('done')"                            style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
+      <div id="fchip-priority"  class="fchip"     onclick="tSt(fSt==='priority'?null:'priority')"  style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">&#9733; Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
+      <div id="fchip-reminder"  class="fchip"     onclick="tReminder()"                            style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">&#128276; Remind</span><span class="fchip-ct" id="fc-reminder">—</span></div>
+      <div id="fchip-forclaude" class="fchip"     onclick="tFlow('forclaude')"                     style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">&#128309; Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
+      <div id="fchip-fordave"   class="fchip"     onclick="tFlow('fordave')"                       style="flex:1;min-width:0;height:32px;justify-content:center"><span class="fchip-lbl">&#128992; Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
     </div>
-    <!-- Row 2: Select (left, over list) + filters + Group + Reset — 32px margins -->
+    <!-- Row 2: Select (fixed left) | 6 even-width controls | Reset (fixed right) — matches Row 1 geometry -->
     <div style="display:flex;gap:6px;align-items:center;padding:4px 32px 6px;border-top:1px solid rgba(0,0,0,0.06);width:100%;box-sizing:border-box">
-      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="height:30px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;padding:0 14px;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
-      <span style="width:1px;height:18px;background:var(--separator);flex-shrink:0"></span>
-      <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date">
-        <option value="">— Due Date —</option>
-        <option value="attention">Past due &amp; today</option>
-        <option value="week">Due this week</option>
-        <option value="month">Due this month</option>
-        <option value="custom">Within N days…</option>
-        <option value="range">Date range…</option>
-      </select>
-      <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px">
-        <input type="number" id="due-custom-days" min="1" max="365" value="7" style="width:52px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="setDueFilter('custom')">
+      <!-- Select: fixed left, same height as chips -->
+      <button class="select-mode-btn" id="batch-mode-btn" onclick="batchToggle()" title="Select items to batch act on" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+      <span style="width:1px;height:20px;background:var(--separator);flex-shrink:0"></span>
+      <!-- 6 filter/sort controls: each flex:1 to match chip column widths -->
+      <div style="flex:1;display:flex;gap:6px;align-items:center;min-width:0">
+        <select class="dash-sel" id="due-filter" onchange="setDueFilter(this.value)" title="Filter by due date" style="flex:1;min-width:0;height:32px">
+          <option value="">— Due —</option>
+          <option value="attention">Past due</option>
+          <option value="week">This week</option>
+          <option value="month">This month</option>
+          <option value="custom">N days…</option>
+          <option value="range">Range…</option>
+        </select>
+        <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by created date" style="flex:1;min-width:0;height:32px">
+          <option value="">— Created —</option>
+          <option value="today">Today</option>
+          <option value="week">This week</option>
+          <option value="month">This month</option>
+          <option value="custom">After…</option>
+          <option value="range">Range…</option>
+        </select>
+        <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)" style="flex:1;min-width:0;height:32px">
+          <option value="">— Tags —</option>
+        </select>
+        <select class="dash-sel" id="type-filter" onchange="setType(this.value)" style="flex:1;min-width:0;height:32px">
+          <option value="">— Types —</option>
+          <option value="question">Questions</option>
+          <option value="reminder">Reminders</option>
+          <option value="note">Notes</option>
+          <option value="fordave">&#9654; For Claude</option>
+          <option value="roadmap">&#128506; Roadmap</option>
+        </select>
+        <select class="dash-sel" id="notes-group-sel" onchange="setNotesGroup(this.value)" title="Group notes by field" style="flex:1;min-width:0;height:32px">
+          <option value="">— Group —</option>
+          <option value="status">Status</option>
+          <option value="type">Type</option>
+          <option value="tag">Tag</option>
+        </select>
+        <select class="dash-sel" id="notes-sort-sel" onchange="setNotesSort(this.value)" title="Sort notes" style="flex:1;min-width:0;height:32px">
+          <option value="">— Sort —</option>
+          <option value="book-asc">Book ↑</option>
+          <option value="book-desc">Book ↓</option>
+          <option value="alpha-asc">A → Z</option>
+          <option value="alpha-desc">Z → A</option>
+          <option value="due-asc">Due ↑</option>
+          <option value="due-desc">Due ↓</option>
+          <option value="created-asc">New ↑</option>
+          <option value="created-desc">New ↓</option>
+        </select>
+        <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Collapse</button>
+        <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Expand</button>
+      </div>
+      <!-- Inline date range wrappers — appear when range is selected, pushed outside the flex:1 block -->
+      <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px;flex-shrink:0">
+        <input type="number" id="due-custom-days" min="1" max="365" value="7" style="width:48px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="setDueFilter('custom')">
         <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">days</span>
       </span>
-      <span id="due-range-wrap" style="display:none;align-items:center;gap:4px">
-        <input type="date" id="due-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Due from">
+      <span id="due-range-wrap" style="display:none;align-items:center;gap:4px;flex-shrink:0">
+        <input type="date" id="due-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="render()" title="Due from">
         <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">–</span>
-        <input type="date" id="due-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Due to">
+        <input type="date" id="due-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="render()" title="Due to">
       </span>
-      <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by created date">
-        <option value="">— Created —</option>
-        <option value="today">Created today</option>
-        <option value="week">Created this week</option>
-        <option value="month">Created this month</option>
-        <option value="custom">Created after…</option>
-        <option value="range">Date range…</option>
-      </select>
-      <span id="created-custom-wrap" style="display:none;align-items:center;gap:4px">
-        <input type="date" id="created-custom-date" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="setCreatedFilter('custom')">
+      <span id="created-custom-wrap" style="display:none;align-items:center;gap:4px;flex-shrink:0">
+        <input type="date" id="created-custom-date" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="setCreatedFilter('custom')">
       </span>
-      <span id="created-range-wrap" style="display:none;align-items:center;gap:4px">
-        <input type="date" id="created-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Created from">
+      <span id="created-range-wrap" style="display:none;align-items:center;gap:4px;flex-shrink:0">
+        <input type="date" id="created-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="render()" title="Created from">
         <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">–</span>
-        <input type="date" id="created-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Created to">
+        <input type="date" id="created-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:#fff;color:#000;outline:none;height:28px" onchange="render()" title="Created to">
       </span>
-      <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
-        <option value="">All Tags</option>
-      </select>
-      <select class="dash-sel" id="type-filter" onchange="setType(this.value)">
-        <option value="">All Types</option>
-        <option value="question">Questions</option>
-        <option value="reminder">Reminders</option>
-        <option value="note">Project Notes</option>
-        <option value="fordave">&#9654; For Claude / Dave</option>
-        <option value="roadmap">&#128506; Roadmap</option>
-      </select>
-      <select class="dash-sel" id="notes-group-sel" onchange="setNotesGroup(this.value)" title="Group notes by field">
-        <option value="">Group</option>
-        <option value="status">By Status</option>
-        <option value="type">By Type</option>
-        <option value="tag">By Tag</option>
-      </select>
-      <select class="dash-sel" id="notes-sort-sel" onchange="setNotesSort(this.value)" title="Sort notes">
-        <option value="">Sort</option>
-        <option value="book-asc">Book Order ↑</option>
-        <option value="book-desc">Book Order ↓</option>
-        <option value="alpha-asc">A → Z</option>
-        <option value="alpha-desc">Z → A</option>
-        <option value="due-asc">Due Date ↑</option>
-        <option value="due-desc">Due Date ↓</option>
-        <option value="created-asc">Created ↑</option>
-        <option value="created-desc">Created ↓</option>
-      </select>
-      <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:0 10px;display:none">Collapse All</button>
-      <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="font-size:11px;padding:0 10px;display:none">Expand All</button>
-      <div style="flex:1"></div>
-      <button class="fchip" onclick="showAll()" style="flex:none;height:30px;padding:0 14px;display:flex;align-items:center" title="Clear all filters">
-        <span class="fchip-lbl" style="color:#8E8E93;font-size:11px">&#10005; Reset</span>
-      </button>
+      <!-- Reset: fixed right, chip height, chip style -->
+      <div class="fchip" onclick="showAll()" style="flex:none;height:32px;padding:0 14px;display:flex;align-items:center;cursor:pointer" title="Clear all filters">
+        <span class="fchip-lbl" style="color:#8E8E93">&#10005; Reset</span>
+      </div>
     </div>
   </div>
 </div>
