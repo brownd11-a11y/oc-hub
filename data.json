@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-22T17:41:13.514979+00:00",
+  "_version": "2026-06-22T17:52:07.395963+00:00",
   "_schema": 1,
   "items": [
     {
@@ -3376,7 +3376,7 @@
       "priority": false,
       "memFlag": false,
       "tag": "research",
-      "deferred": false,
+      "deferred": true,
       "answer": null,
       "dialogue": [
         {
@@ -3386,7 +3386,7 @@
         }
       ],
       "created": "2026-06-12T00:00:00.000Z",
-      "dueDate": "",
+      "dueDate": "2026-06-29",
       "completedDate": "",
       "itemUrl": "https://files.afu.se/Downloads/?dir=Magazines/0%20-%20Articles/United%20States/Life"
     },
