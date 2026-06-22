@@ -3031,7 +3031,7 @@ function _showSavedConfirm(msg) {
   if (!el) {
     el = document.createElement('div');
     el.id = 'saved-confirm-toast';
-    el.style.cssText = 'display:none;position:fixed;top:110px;left:50%;transform:translateX(-50%);background:#1c4a1c;border:1px solid #2d7a2d;border-radius:8px;padding:9px 22px;font-family:"Source Code Pro",monospace;font-size:11px;color:#7fd87f;letter-spacing:.06em;z-index:9500;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;white-space:nowrap;transition:opacity .2s';
+    el.style.cssText = 'display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1c4a1c;border:1px solid #2d7a2d;border-radius:8px;padding:9px 22px;font-family:"Source Code Pro",monospace;font-size:11px;color:#7fd87f;letter-spacing:.06em;z-index:9500;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;white-space:nowrap;transition:opacity .2s';
     document.body.appendChild(el);
   }
   el.textContent = '✓ ' + (msg || 'Saved');
@@ -3972,7 +3972,7 @@ function undoToastShow(label, duration, showBtn) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'undo-toast';
-    toast.style.cssText = 'display:none;position:fixed;top:100px;left:50%;transform:translateX(-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:none;align-items:center;gap:14px;white-space:nowrap';
+    toast.style.cssText = 'display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1c1c1e;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 18px;font-family:\'Source Code Pro\',monospace;font-size:11px;color:#f0f0f0;letter-spacing:.04em;z-index:9100;box-shadow:0 4px 24px rgba(0,0,0,0.45);display:none;align-items:center;gap:14px;white-space:nowrap';
     document.body.appendChild(toast);
   }
   if (_undoToastTimer) { clearTimeout(_undoToastTimer); _undoToastTimer = null; }
@@ -7603,7 +7603,15 @@ function tovEntryEditCancel(idx) {
 }
 function threadOverlaySend() {
   const ta = document.getElementById('thread-reply-ta');
-  const txt = (ta ? ta.value || '' : '').trim(); if (!txt) return;
+  const txt = (ta ? ta.value || '' : '').trim();
+  // If no reply text, just close the overlay — any action (defer, remind etc.) already applied
+  if (!txt) {
+    _showSavedConfirm('Saved');
+    threadOverlayClose();
+    save();
+    render();
+    return;
+  }
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   undoPush('Reply: '+(it.text||'').slice(0,40));
   if (!it.dialogue) it.dialogue = [];
