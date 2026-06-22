@@ -184,9 +184,13 @@ body::before{display:none}
 .hd::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,30,80,0.12) 0%,rgba(0,0,0,0.28) 100%);z-index:0}
 .hd::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.15);z-index:2}
 .hd-compact{display:flex;align-items:center;gap:0;padding:0 20px;height:84px;margin-top:3px;position:relative;z-index:1}
-.hd-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#f0ebe2;white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:1px}
-.hd-subtitle{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,0.55);line-height:1;font-style:normal}}
-.hd-title em{font-style:italic;color:#c8bfa8}
+.hd-title{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:500;color:rgba(255,255,255,0.55);white-space:nowrap;margin-right:20px;flex-shrink:0;letter-spacing:.12em;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:4px}
+.hd-project-pill{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#f0ebe2;letter-spacing:.01em;text-transform:none;border:1.5px solid rgba(255,255,255,0.30);border-radius:5px;padding:2px 9px 3px;background:rgba(255,255,255,0.07);cursor:default;display:inline-block;transition:background .15s,border-color .15s}
+.hd-project-pill:hover{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.52)}
+.hd-project-pill em{font-style:italic;color:#c8bfa8}
+.hd-subtitle{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,0.55);line-height:1;font-style:normal}
+.hd-sync-badge{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#f0a030;line-height:1;display:none;gap:4px;align-items:center}
+.hd-sync-badge.visible{display:flex}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
 .hd-stat{display:flex;align-items:baseline;gap:4px;padding:0 12px;border-right:1px solid rgba(255,255,255,0.18);white-space:nowrap;flex-shrink:0}
 .hd-stat:last-child{border-right:none}
@@ -1240,7 +1244,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- COMPACT HEADER -->
 <div class="hd">
   <div class="hd-compact">
-    <span class="hd-title"><em>Over&#8209;classified</em> Hub<span class="hd-subtitle" id="hd-subtitle"></span></span>
+    <span class="hd-title">
+      PROJECT
+      <span class="hd-project-pill" title="Switch project (coming soon)"><em>Over&#8209;classified</em></span>
+      <span class="hd-subtitle" id="hd-subtitle"></span>
+      <span class="hd-sync-badge" id="hd-sync-badge">&#8593; <span id="hd-sync-count">0</span> to sync</span>
+    </span>
     <div class="hd-search-wrap">
       <input class="hd-search-input" id="hd-search-input" type="text" placeholder="Search notes…" autocomplete="off" oninput="hdSearchUpdate(this.value)" />
       <button class="hd-search-clear" id="hd-search-clear" onclick="hdSearchClear()" ontouchend="event.preventDefault();hdSearchClear();" style="display:none">&#215;</button>
@@ -1334,8 +1343,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <option value="custom">N days…</option>
           <option value="range">Range…</option>
         </select>
-        <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by created date" style="flex:1;min-width:0;height:32px">
-          <option value="">— Created —</option>
+        <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by date last changed locally (completed, deferred, or due date set)" style="flex:1;min-width:0;height:32px">
+          <option value="">— Changed —</option>
+          <option value="session">This session</option>
           <option value="today">Today</option>
           <option value="week">This week</option>
           <option value="month">This month</option>
@@ -2911,6 +2921,7 @@ function applyData(data) {
       };
     });
     S.items = result;
+    captureGhBaseline(result);
   }
 
   // Road: stored order wins, seed updates labels/colors
@@ -3068,6 +3079,60 @@ function _showSavedConfirm(msg) {
   clearTimeout(el._tid);
   el._tid = setTimeout(() => { el.style.opacity = '0'; setTimeout(() => { el.style.display = 'none'; }, 200); }, 1400);
 }
+/* ── GITHUB BASELINE — snapshot of state at last GitHub load, for sync diff ── */
+let _ghBaseline = {}; // id -> {done,completedDate,dueDate,deferred,priority,memFlag}
+let _ghBaselineIds = new Set(); // ids present in GitHub at last load
+
+function captureGhBaseline(items) {
+  _ghBaseline = {};
+  _ghBaselineIds = new Set();
+  (items||[]).forEach(it => {
+    _ghBaselineIds.add(it.id);
+    _ghBaseline[it.id] = {
+      done: !!it.done,
+      completedDate: it.completedDate||'',
+      dueDate: it.dueDate||'',
+      deferred: !!it.deferred,
+      priority: !!it.priority,
+      memFlag: !!it.memFlag
+    };
+  });
+}
+
+function getChangedItems() {
+  // Returns Set of item ids that differ from GitHub baseline
+  const changed = new Set();
+  const currentIds = new Set((S.items||[]).map(i=>i.id));
+  // New items (in current but not in baseline)
+  currentIds.forEach(id => { if (!_ghBaselineIds.has(id)) changed.add(id); });
+  // Deleted items (in baseline but not in current)
+  _ghBaselineIds.forEach(id => { if (!currentIds.has(id)) changed.add(id); });
+  // Changed state flags
+  (S.items||[]).forEach(it => {
+    const b = _ghBaseline[it.id];
+    if (!b) return; // already counted as new above
+    if (!!it.done !== b.done ||
+        (it.completedDate||'') !== b.completedDate ||
+        (it.dueDate||'') !== b.dueDate ||
+        !!it.deferred !== b.deferred ||
+        !!it.priority !== b.priority ||
+        !!it.memFlag !== b.memFlag) {
+      changed.add(it.id);
+    }
+  });
+  return changed;
+}
+
+function updateSyncBadge() {
+  const badge = document.getElementById('hd-sync-badge');
+  const countEl = document.getElementById('hd-sync-count');
+  if (!badge || !countEl) return;
+  const n = getChangedItems().size;
+  countEl.textContent = n;
+  if (n > 0) badge.classList.add('visible');
+  else badge.classList.remove('visible');
+}
+
 function save(){
   try {
     // localStorage stores only per-item state that changes locally between Claude pushes.
@@ -3091,6 +3156,7 @@ function save(){
       settings: S.settings||{}
     };
     localStorage.setItem(SK, JSON.stringify(payload));
+    updateSyncBadge();
   } catch(e) {
     console.error('save() failed:', e.message);
   }
@@ -3375,28 +3441,36 @@ function iVis(it){
   }
   // Created date filter
   if(fCreated){
-    const created=it.created?it.created.slice(0,10):null;
-    const today=todayStr();
-    const now=new Date();
-    if(!created)return false;
-    if(fCreated==='today'){
-      if(created!==today)return false;
-    } else if(fCreated==='week'){
-      const weekAgo=new Date(now);weekAgo.setDate(weekAgo.getDate()-7);
-      const weekAgoStr=weekAgo.toISOString().slice(0,10);
-      if(created<weekAgoStr)return false;
-    } else if(fCreated==='month'){
-      const monthAgo=new Date(now);monthAgo.setMonth(monthAgo.getMonth()-1);
-      const monthAgoStr=monthAgo.toISOString().slice(0,10);
-      if(created<monthAgoStr)return false;
-    } else if(fCreated==='custom'){
-      const cutoffDate=document.getElementById('created-custom-date')?.value;
-      if(cutoffDate&&created<cutoffDate)return false;
-    } else if(fCreated==='range'){
-      const from=document.getElementById('created-range-from')?.value;
-      const to=document.getElementById('created-range-to')?.value;
-      if(from&&created<from)return false;
-      if(to&&created>to)return false;
+    // 'Changed' filter: show items whose state differs from the GitHub baseline at last load
+    // For date-based options, use completedDate or dueDate as the change timestamp proxy
+    const changedSet = getChangedItems();
+    if(fCreated==='session'){if(!changedSet.has(it.id)) return false;} else if(fCreated==='today'||fCreated==='week'||fCreated==='month'||fCreated==='custom'||fCreated==='range'){
+      // Date-scoped: must be in changed set AND have a relevant timestamp in range
+      if(!changedSet.has(it.id)) return false;
+      const ts = it.completedDate||it.dueDate||'';
+      const changed = ts ? ts.slice(0,10) : null;
+      const today = todayStr();
+      const now = new Date();
+      if(!changed) return false;
+      if(fCreated==='today'){
+        if(changed!==today) return false;
+      } else if(fCreated==='week'){
+        const weekAgo=new Date(now);weekAgo.setDate(weekAgo.getDate()-7);
+        const weekAgoStr=weekAgo.toISOString().slice(0,10);
+        if(changed<weekAgoStr) return false;
+      } else if(fCreated==='month'){
+        const monthAgo=new Date(now);monthAgo.setMonth(monthAgo.getMonth()-1);
+        const monthAgoStr=monthAgo.toISOString().slice(0,10);
+        if(changed<monthAgoStr) return false;
+      } else if(fCreated==='custom'){
+        const cutoffDate=document.getElementById('created-custom-date')?.value;
+        if(cutoffDate&&changed<cutoffDate) return false;
+      } else if(fCreated==='range'){
+        const from=document.getElementById('created-range-from')?.value;
+        const to=document.getElementById('created-range-to')?.value;
+        if(from&&changed<from) return false;
+        if(to&&changed>to) return false;
+      }
     }
   }
   return true;
