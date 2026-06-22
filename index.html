@@ -4136,8 +4136,13 @@ function deferPick(days) {
   document.getElementById('defer-overlay').classList.remove('open');
   const it = S.items.find(i => i.id === _deferItemId); if (!it) return;
   if (days > 0) {
-    const d = new Date(); d.setDate(d.getDate() + days);
-    it.dueDate = d.toISOString().slice(0,10);
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    // Use local date to avoid UTC offset shifting the date back
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    it.dueDate = `${yyyy}-${mm}-${dd}`;
   } else {
     it.dueDate = ''; // Never — conscious choice
   }
