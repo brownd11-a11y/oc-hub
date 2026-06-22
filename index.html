@@ -2907,6 +2907,8 @@ function applyData(data) {
         }
       } catch(e) {}
     }
+    // Capture GitHub baseline BEFORE applying local state overrides — this is the true GitHub state
+    captureGhBaseline(storedItems);
     // Apply GitHub content with local state overrides
     const result = storedItems.map(i => {
       const st = stateMap[i.id] || {};
@@ -2921,7 +2923,6 @@ function applyData(data) {
       };
     });
     S.items = result;
-    captureGhBaseline(result);
   }
 
   // Road: stored order wins, seed updates labels/colors
