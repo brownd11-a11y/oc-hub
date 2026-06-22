@@ -2363,7 +2363,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 
 <script>
-const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v1',RF_KW_SK='oc_refs_kw_v1';
+const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v2',RF_KW_SK='oc_refs_kw_v2';
 const RF_CATS={primary:{label:'Primary Sources & Documents',icon:'📄'},substack:{label:'Substacks & Long-Form',icon:'✍️'},social:{label:'News & Social Feeds',icon:'📡'},analysis:{label:'Analysis & Research',icon:'🔬'},podcast:{label:'Podcasts & Video',icon:'🎙️'},documentary:{label:'Documentaries',icon:'🎬'},book:{label:'Over-Classified Resources',icon:'📚'}};
 const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
@@ -6596,10 +6596,11 @@ function showRfTab(id, btn) {
   const panel = document.getElementById(id);
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'rf-all') { rfBuildKwSelects(); rfRender(); }
+  if (id === 'rf-all') { if (!RF.length) rfLoad(); rfBuildKwSelects(); rfRender(); }
   else if (id === 'rf-uap-daily') { uapLoad(); uapRenderList(); }
   else if (id.startsWith('rf-cat-') || ['rf-primary','rf-substack','rf-social','rf-analysis','rf-podcast','rf-documentary','rf-book'].includes(id)) {
     const catMap = {'rf-primary':'primary','rf-substack':'substack','rf-social':'social','rf-analysis':'analysis','rf-podcast':'podcast','rf-documentary':'documentary','rf-book':'book'};
+    if (!RF.length) rfLoad();
     rfRenderCat(catMap[id]);
   }
 }
