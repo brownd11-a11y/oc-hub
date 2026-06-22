@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-22T16:53:23.820053+00:00",
+  "_version": "2026-06-22T17:20:03.634443+00:00",
   "_schema": 1,
   "items": [
     {
@@ -896,7 +896,7 @@
       "answer": null,
       "dialogue": null,
       "created": "2026-06-14T19:50:51.133244+00:00",
-      "dueDate": "2026-06-22",
+      "dueDate": "2026-06-23",
       "completedDate": "",
       "itemUrl": "https://github.com/brownd11-a11y/oc-hub/blob/main/ios_app_options.md"
     },
