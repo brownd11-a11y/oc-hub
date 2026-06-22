@@ -1329,10 +1329,16 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="week">Due this week</option>
         <option value="month">Due this month</option>
         <option value="custom">Within N days…</option>
+        <option value="range">Date range…</option>
       </select>
       <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px">
         <input type="number" id="due-custom-days" min="1" max="365" value="7" style="width:52px;font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="setDueFilter('custom')">
         <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">days</span>
+      </span>
+      <span id="due-range-wrap" style="display:none;align-items:center;gap:4px">
+        <input type="date" id="due-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Due from">
+        <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">–</span>
+        <input type="date" id="due-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Due to">
       </span>
       <select class="dash-sel" id="created-filter" onchange="setCreatedFilter(this.value)" title="Filter by created date">
         <option value="">— Created —</option>
@@ -1340,9 +1346,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="week">Created this week</option>
         <option value="month">Created this month</option>
         <option value="custom">Created after…</option>
+        <option value="range">Date range…</option>
       </select>
       <span id="created-custom-wrap" style="display:none;align-items:center;gap:4px">
         <input type="date" id="created-custom-date" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="setCreatedFilter('custom')">
+      </span>
+      <span id="created-range-wrap" style="display:none;align-items:center;gap:4px">
+        <input type="date" id="created-range-from" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Created from">
+        <span style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)">–</span>
+        <input type="date" id="created-range-to" style="font-family:'Source Code Pro',monospace;font-size:11px;border:1px solid #C6C6C8;border-radius:4px;padding:2px 6px;background:rgba(255,255,255,0.9);color:#000;outline:none" onchange="render()" title="Created to">
       </span>
       <select class="dash-sel" id="tag-filter" onchange="setTag(this.value)">
         <option value="">All Tags</option>
@@ -1360,6 +1372,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="status">By Status</option>
         <option value="type">By Type</option>
         <option value="tag">By Tag</option>
+      </select>
+      <select class="dash-sel" id="notes-sort-sel" onchange="setNotesSort(this.value)" title="Sort notes">
+        <option value="">Sort</option>
+        <option value="book-asc">Book Order ↑</option>
+        <option value="book-desc">Book Order ↓</option>
+        <option value="alpha-asc">A → Z</option>
+        <option value="alpha-desc">Z → A</option>
+        <option value="due-asc">Due Date ↑</option>
+        <option value="due-desc">Due Date ↓</option>
+        <option value="created-asc">Created ↑</option>
+        <option value="created-desc">Created ↓</option>
       </select>
       <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="font-size:11px;padding:0 10px;display:none">Collapse All</button>
       <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="font-size:11px;padding:0 10px;display:none">Expand All</button>
@@ -3262,21 +3285,32 @@ function setType(v){
 function setDueFilter(v){
   fDue = v || null;
   const wrap = document.getElementById('due-custom-wrap');
+  const rangeWrap = document.getElementById('due-range-wrap');
   if (wrap) wrap.style.display = (v === 'custom') ? 'flex' : 'none';
+  if (rangeWrap) rangeWrap.style.display = (v === 'range') ? 'flex' : 'none';
   render();
 }
 let fCreated = null;
 function setCreatedFilter(v){
   fCreated = v || null;
   const wrap = document.getElementById('created-custom-wrap');
+  const rangeWrap = document.getElementById('created-range-wrap');
   if (wrap) wrap.style.display = (v === 'custom') ? 'flex' : 'none';
+  if (rangeWrap) rangeWrap.style.display = (v === 'range') ? 'flex' : 'none';
   render();
 }
-function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;fDue=null;fCreated=null;
+function showAll(){fSt=null;fTag=null;fType=null;fReminder=false;fDue=null;fCreated=null;fFlow=null;_notesSort='';
+  const sortSel=document.getElementById('notes-sort-sel');if(sortSel)sortSel.value='';
   const df=document.getElementById('due-filter');if(df)df.value='';
+  const dueRangeWrap=document.getElementById('due-range-wrap');if(dueRangeWrap)dueRangeWrap.style.display='none';
+  const drFrom=document.getElementById('due-range-from');if(drFrom)drFrom.value='';
+  const drTo=document.getElementById('due-range-to');if(drTo)drTo.value='';
   const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';
   const cf=document.getElementById('created-filter');if(cf)cf.value='';
   const cwrap=document.getElementById('created-custom-wrap');if(cwrap)cwrap.style.display='none';
+  const createdRangeWrap=document.getElementById('created-range-wrap');if(createdRangeWrap)createdRangeWrap.style.display='none';
+  const crFrom=document.getElementById('created-range-from');if(crFrom)crFrom.value='';
+  const crTo=document.getElementById('created-range-to');if(crTo)crTo.value='';
   render();
 }
 function iVis(it){
@@ -3326,6 +3360,12 @@ function iVis(it){
       const cutoff=new Date();cutoff.setDate(cutoff.getDate()+days);
       const cutoffStr=cutoff.toISOString().slice(0,10);
       if(!it.dueDate||it.dueDate>cutoffStr)return false;
+    } else if(fDue==='range'){
+      const from=document.getElementById('due-range-from')?.value;
+      const to=document.getElementById('due-range-to')?.value;
+      if(!it.dueDate)return false;
+      if(from&&it.dueDate<from)return false;
+      if(to&&it.dueDate>to)return false;
     }
   }
   // Created date filter
@@ -3347,6 +3387,11 @@ function iVis(it){
     } else if(fCreated==='custom'){
       const cutoffDate=document.getElementById('created-custom-date')?.value;
       if(cutoffDate&&created<cutoffDate)return false;
+    } else if(fCreated==='range'){
+      const from=document.getElementById('created-range-from')?.value;
+      const to=document.getElementById('created-range-to')?.value;
+      if(from&&created<from)return false;
+      if(to&&created>to)return false;
     }
   }
   return true;
@@ -3381,6 +3426,41 @@ function isOverdue(due){if(!due)return false;return due<=todayStr();} // past du
 /* ── NOTES GROUPING ── */
 let _notesGroup='';
 let _notesGrpCollapsed={};
+let _notesSort='';  // current sort key, e.g. 'alpha-asc', 'due-desc', 'book-asc'
+
+// Book order: chapter tag sequence ch1–ch18, then preface/intro/conclusion/appendix, then other
+const _BOOK_TAG_ORDER=(function(){
+  const o={};
+  ['ch1','ch2','ch3','ch4','ch5','ch6','ch7','ch8','ch9','ch10',
+   'ch11','ch12','ch13','ch14','ch15','ch16','ch17','ch18',
+   'preface','intro','conclusion','appendix',
+   'part1','part2','part3','part4'].forEach((t,i)=>{o[t]=i;});
+  return o;
+})();
+function _bookTagRank(tag){
+  const t=(tag||'').toLowerCase();
+  return t in _BOOK_TAG_ORDER ? _BOOK_TAG_ORDER[t] : 999;
+}
+function setNotesSort(v){_notesSort=v;render();}
+function _sortVisible(arr){
+  if(!_notesSort)return arr;
+  const [key,dir]=_notesSort.split('-');
+  const asc=dir==='asc';
+  return [...arr].sort((a,b)=>{
+    let va,vb;
+    if(key==='alpha'){va=(a.text||'').toLowerCase();vb=(b.text||'').toLowerCase();return asc?va.localeCompare(vb):vb.localeCompare(va);}
+    if(key==='due'){va=a.dueDate||'9999';vb=b.dueDate||'9999';return asc?va.localeCompare(vb):vb.localeCompare(va);}
+    if(key==='created'){va=a.created||'';vb=b.created||'';return asc?va.localeCompare(vb):vb.localeCompare(va);}
+    if(key==='book'){
+      const ra=_bookTagRank(a.tag),rb=_bookTagRank(b.tag);
+      if(ra!==rb)return asc?ra-rb:rb-ra;
+      // Within same tag: sort by creation order
+      va=a.created||'';vb=b.created||'';
+      return asc?va.localeCompare(vb):vb.localeCompare(va);
+    }
+    return 0;
+  });
+}
 function setNotesGroup(v){_notesGroup=v;_notesGrpCollapsed={};['notes-collapse-all-btn','notes-expand-all-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=v?'':'none';});render();}
 function notesToggleGroup(key){
   _notesGrpCollapsed[key]=!_notesGrpCollapsed[key];
@@ -3908,13 +3988,15 @@ function rlist(){
     return html||'<div class="empty-state">No roadmap items match the current filter</div>';
   }
 
+  // Apply sort to visible items
+  var sortedVisible=_sortVisible(visible);
   // Build notes HTML
   var notesHtml;
   if(!_notesGroup){
-    notesHtml=visible.length?visible.map(renderItem).join(''):'<div class="empty-state">No items match the current filter</div>';
+    notesHtml=sortedVisible.length?sortedVisible.map(renderItem).join(''):'<div class="empty-state">No items match the current filter</div>';
   } else {
     var grps={};
-    visible.forEach(function(it){var k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
+    sortedVisible.forEach(function(it){var k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
     notesHtml=Object.keys(grps).sort().map(function(k){
       var col=!!_notesGrpCollapsed[k];
       return '<div class="notes-grp-section">'
