@@ -1304,6 +1304,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div id="fchip-done"    class="fchip"     onclick="tSt('done')"><span class="fchip-lbl">Done</span><span class="fchip-ct" id="fc-done">—</span></div>
       <div id="fchip-priority" class="fchip"   onclick="tSt(fSt==='priority'?null:'priority')"><span class="fchip-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Priority</span><span class="fchip-ct" id="fc-priority">—</span></div>
       <div id="fchip-reminder" class="fchip"   onclick="tReminder()"><span class="fchip-lbl">&#128276; Reminders</span><span class="fchip-ct" id="fc-reminder">—</span></div>
+      <div id="fchip-forclaude" class="fchip" onclick="tFlow('forclaude')"><span class="fchip-lbl">&#128309; For Claude</span><span class="fchip-ct" id="fc-forclaude">—</span></div>
+      <div id="fchip-fordave"   class="fchip" onclick="tFlow('fordave')"><span class="fchip-lbl">&#128992; For Dave</span><span class="fchip-ct" id="fc-fordave">—</span></div>
     </div>
     <!-- Row 2: filters + Reset · Select · Group — right-aligned to same edge as Reminders -->
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:4px 20px 6px;border-top:1px solid rgba(0,0,0,0.06)">
@@ -2681,7 +2683,7 @@ const ROAD_SEED=[
 ];
 
 let S={items:[],road:[]};
-let fSt='open',fTag=null,fType=null,fReminder=false,fDue=null,inputPriFlag=0,inputMemFlag=false,editingId=null;
+let fSt='open',fTag=null,fType=null,fReminder=false,fDue=null,fFlow=null,inputPriFlag=0,inputMemFlag=false,editingId=null;
 // Entry form state
 let inputFlowOn=false;  // Flow toggle (false = local note by default)
 let inputIsReminder=false;
@@ -3044,9 +3046,9 @@ function showTab(t,btn){
   // Swap per-tab background photo
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
-  if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
+  if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;fFlow=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
-  if(t==='refs'){rfBuildKwSelects();rfRenderAll();uapRenderList();}
+  if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
   if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
@@ -3151,12 +3153,18 @@ function rdash(){
   setChip('fchip-done','fc-done',done,fSt==='done');
   setChip('fchip-priority','fc-priority',pri,fSt==='priority');
   setChip('fchip-reminder','fc-reminder',remCt,fReminder);
+  // Flow filter counts
+  const forClaudeCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return(!d.length&&!i.answer)||(lf==='dave');}).length;
+  const forDaveCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return(lf==='claude')||(i.answer&&!d.length);}).length;
+  setChip('fchip-forclaude','fc-forclaude',forClaudeCt,fFlow==='forclaude');
+  setChip('fchip-fordave','fc-fordave',forDaveCt,fFlow==='fordave');
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
   const typ=document.getElementById('type-filter');if(typ&&typ.value!==(fType||''))typ.value=fType||'';
   const df=document.getElementById('due-filter');if(df&&df.value!==(fDue||''))df.value=fDue||'';
   updateTypeCounts();
 }
-function tSt(k){fSt=k;render();}
+function tSt(k){fSt=k;fFlow=null;render();}
+function tFlow(k){fFlow=(fFlow===k?null:k);render();}
 function tReminder(){fReminder=!fReminder;render();}
 function hdSearchUpdate(v){
   v=(v||'').trim();
@@ -3167,6 +3175,10 @@ function hdSearchUpdate(v){
   _searchIdx=-1;
   searchRender(v);
   document.getElementById('search-results-panel').classList.add('open');
+}
+function openSearch(){
+  var inp=document.getElementById('hd-search-input');
+  if(inp){inp.focus();inp.select();}
 }
 function hdSearchClear(){
   var inp=document.getElementById('hd-search-input');if(inp)inp.value='';
@@ -3232,6 +3244,23 @@ function iVis(it){
   if(fReminder&&it.type!=='reminder')return false;
   if(fTag&&it.tag!==fTag)return false;
   if(fType&&it.type!==fType)return false;
+  // Flow filter — For Claude: fordave items where last dialogue is from dave (awaiting Claude)
+  //               For Dave: fordave items where last dialogue is from claude (awaiting Dave)
+  if(fFlow){
+    if(it.type!=='fordave')return false;
+    const dlg=it.dialogue||[];
+    const lastFrom=dlg.length?dlg[dlg.length-1].from:null;
+    const hasAnswer=!!(it.answer);
+    if(fFlow==='forclaude'){
+      // Awaiting Claude: last speaker is dave, or no dialogue and no answer
+      const awaitingClaude=(!dlg.length&&!hasAnswer)||(lastFrom==='dave');
+      if(!awaitingClaude)return false;
+    } else if(fFlow==='fordave'){
+      // Awaiting Dave: last speaker is claude, or has answer but no dave follow-up
+      const awaitingDave=(lastFrom==='claude')||(hasAnswer&&!dlg.length);
+      if(!awaitingDave)return false;
+    }
+  }
   // Due filter — stacks with status filter
   if(fDue){
     const today=todayStr();
@@ -6644,14 +6673,32 @@ function uapRenderList() {
   let html = '';
   sorted.forEach(function(r) {
     const pills = (r.keywords || []).map(k => '<span class="uap-card-pill">' + esc(k) + '</span>').join('');
-    html += '<div class="uap-report-card" onclick="uapOpenModal(\'' + r.id + '\')">';
-    html += '<div class="uap-card-header">';
+    const preview = (r.content || '').replace(/\n/g,' ').substring(0,180) + ((r.content||'').length > 180 ? '\u2026' : '');
+    html += '<div class="uap-report-card" id="uap-card-' + r.id + '">';
+    html += '<div class="uap-card-header" onclick="uapToggleCard(\'' + r.id + '\')" style="cursor:pointer">';
     html += '<span class="uap-card-date">' + esc(r.dateLabel || r.created.slice(0,10)) + '</span>';
     html += '<div class="uap-card-kw">' + pills + '</div>';
-    html += '<button class="uap-card-del" onclick="event.stopPropagation();uapDelete(\'' + r.id + '\')">&#10005;</button>';
-    html += '</div></div>';
+    html += '<span id="uap-chev-' + r.id + '" style="font-size:10px;color:var(--label-secondary);margin-left:4px">\u25be</span>';
+    html += '<button class="uap-card-del" onclick="event.stopPropagation();uapDelete(\'' + r.id + '\')" style="margin-left:8px">&#10005;</button>';
+    html += '</div>';
+    html += '<div id="uap-preview-' + r.id + '" style="font-family:\'Libre Baskerville\',Georgia,serif;font-size:11px;color:var(--label-secondary);padding:4px 0 2px;line-height:1.5">' + esc(preview) + '</div>';
+    html += '<div id="uap-body-' + r.id + '" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--separator)">';
+    html += '<div style="font-family:\'Libre Baskerville\',Georgia,serif;font-size:12px;line-height:1.7;white-space:pre-wrap;color:var(--label-primary)">' + esc(r.content || '') + '</div>';
+    html += '<div style="margin-top:10px"><button onclick="uapOpenModal(\'' + r.id + '\')" style="font-family:\'Source Code Pro\',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:3px 10px;border-radius:4px;cursor:pointer">\u26f6 Full Screen</button></div>';
+    html += '</div>';
+    html += '</div>';
   });
   el.innerHTML = html;
+}
+function uapToggleCard(id) {
+  const body = document.getElementById('uap-body-' + id);
+  const preview = document.getElementById('uap-preview-' + id);
+  const chev = document.getElementById('uap-chev-' + id);
+  if (!body) return;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  if (preview) preview.style.display = open ? 'block' : 'none';
+  if (chev) chev.textContent = open ? '\u25be' : '\u25b4';
 }
 function uapOpenModal(id) {
   const r = UAP_REPORTS.find(x => x.id === id);
@@ -7104,6 +7151,16 @@ function threadOverlayRenderBody() {
   replyEntries.reverse();
   const originalEntry = entryHtml(it.text||'', 'dave', it.created||'', 'tov-original-entry', true, -1);
   body.innerHTML = replyEntries.join('') + originalEntry;
+  // Auto-collapse original entry when Claude has replied — keeps proposed solution visible
+  const hasClaudeReply = dlg.some(d => d.from === 'claude') || it.answer;
+  if (hasClaudeReply) {
+    const origText = document.getElementById('tov-original-entry-text');
+    const origBtn = body.querySelector('[onclick*="tov-original-entry"]');
+    if (origText && !origText.classList.contains('collapsed')) {
+      origText.classList.add('collapsed');
+      if (origBtn) origBtn.textContent = '▼ More';
+    }
+  }
 }
 /* ── PER-ENTRY EXPAND/COLLAPSE IN THREAD ── */
 function tovToggleEntry(id) {
@@ -7149,6 +7206,23 @@ function threadOverlayRenderActions() {
     `<button style="${s}" onclick="tovAct('mtr')">&#8594; Roadmap</button>` +
     `<button style="${s+(it.repeat&&it.repeat.on?';border-color:#1A6E9E;background:rgba(26,110,158,.12);color:#1A6E9E':'')}" onclick="tovToggleRepeat()" id="tov-rep-btn">&#8635; ${it.repeat&&it.repeat.on?'Repeating':'Repeat'}</button>` +
     `<button style="${sd}" onclick="tovAct('del')">Delete</button>`;
+  // A/B/C choice buttons — appear when Claude's last dialogue has Option A/B/C
+  const dlgArr = it.dialogue || [];
+  const lastClaude = [...dlgArr].reverse().find(d => d.from === 'claude');
+  const claudeTxt = lastClaude ? (lastClaude.text || '') : (it.answer || '');
+  if (claudeTxt) {
+    const hasA = /\bOption A\b|\bA[:\)]/i.test(claudeTxt);
+    const hasB = /\bOption B\b|\bB[:\)]/i.test(claudeTxt);
+    const hasC = /\bOption C\b|\bC[:\)]/i.test(claudeTxt);
+    if (hasA && hasB) {
+      const sA = s + ';background:rgba(26,110,158,.13);border-color:#1A6E9E;color:#1A6E9E;font-weight:600';
+      const sB = s + ';background:rgba(40,120,60,.13);border-color:#287840;color:#287840;font-weight:600';
+      const sC = s + ';background:rgba(150,60,150,.13);border-color:#963c96;color:#963c96;font-weight:600';
+      bar.innerHTML += `<button style="${sA}" onclick="event.stopPropagation();dlChoice('${it.id}','A');threadOverlayClose()">A</button>`;
+      bar.innerHTML += `<button style="${sB}" onclick="event.stopPropagation();dlChoice('${it.id}','B');threadOverlayClose()">B</button>`;
+      if (hasC) bar.innerHTML += `<button style="${sC}" onclick="event.stopPropagation();dlChoice('${it.id}','C');threadOverlayClose()">C</button>`;
+    }
+  }
   // Show/hide repeat config row based on item state
   const rcr = document.getElementById('tov-rep-config-row');
   if (rcr) {
