@@ -2070,36 +2070,59 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <!-- SHORTCUTS -->
       <div class="help-spanel" id="h-shortcuts"><div class="ref-section">
         <h2 class="help-h2">Keyboard Shortcuts</h2>
-        <p class="help-p" style="margin-bottom:20px">Universal shortcuts work on any tab. Tab-specific shortcuts are listed by section below.</p>
+        <p class="help-p" style="margin-bottom:20px">Universal shortcuts work on any tab. Shortcuts marked <em>not while typing</em> are disabled when focus is in a text field, input, or select.</p>
 
         <h3 class="help-h3">Universal</h3>
         <table class="help-shortcut-table">
-          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + C</td><td>Activate For Claude/Dave type + To Claude mode (2CLAW)</td></tr>
-          <tr><td class="help-sc-key">Cmd/Ctrl + F</td><td>Open search (also Cmd+Shift+F)</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + C</td><td>Activate For Claude/Dave type + To Claude mode (2CLAW) — works anywhere</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + F</td><td>Focus header search bar — not while typing</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + F</td><td>Focus header search bar — works anywhere</td></tr>
           <tr><td class="help-sc-key">Cmd/Ctrl + Shift + R</td><td>Open Resources → Add Reference form</td></tr>
-          <tr><td class="help-sc-key">Cmd/Ctrl + Z</td><td>Undo last action</td></tr>
-          <tr><td class="help-sc-key">Esc</td><td>Close open overlay · reveal hidden filter row</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Z</td><td>Undo last action — works anywhere, even while typing</td></tr>
+          <tr><td class="help-sc-key">Esc</td><td>Close thread overlay · close search panel · dismiss undo toast · reveal hidden filter bar</td></tr>
         </table>
 
         <h3 class="help-h3">Notes tab</h3>
         <table class="help-shortcut-table">
-          <tr><td class="help-sc-key">+ or =</td><td>Expand all items</td></tr>
-          <tr><td class="help-sc-key">−</td><td>Collapse all items</td></tr>
-          <tr><td class="help-sc-key">↑ / ↓</td><td>Navigate between items</td></tr>
-          <tr><td class="help-sc-key">Enter</td><td>Open selected item in thread overlay</td></tr>
-          <tr><td class="help-sc-key">D</td><td>Toggle done on selected item</td></tr>
-          <tr><td class="help-sc-key">E</td><td>Open selected item for editing</td></tr>
-          <tr><td class="help-sc-key">Cmd/Ctrl + Enter</td><td>Save reply in thread overlay</td></tr>
-          <tr><td class="help-sc-key">Cmd/Ctrl + Delete</td><td>Delete selected item</td></tr>
+          <tr><td class="help-sc-key">↑ / ↓</td><td>Navigate between visible items — not while typing</td></tr>
+          <tr><td class="help-sc-key">Enter</td><td>Open selected item in thread overlay — not while typing</td></tr>
+          <tr><td class="help-sc-key">+ or =</td><td>Expand selected item (or all items if none selected) — not while typing</td></tr>
+          <tr><td class="help-sc-key">−</td><td>Collapse selected item (or all items if none selected) — not while typing</td></tr>
+          <tr><td class="help-sc-key">D</td><td>Toggle done on selected item — not while typing</td></tr>
+          <tr><td class="help-sc-key">E</td><td>Open selected item for editing in thread overlay — not while typing</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Enter</td><td>Save &amp; close reply in thread overlay</td></tr>
+          <tr><td class="help-sc-key">Cmd/Ctrl + Delete</td><td>Delete selected item (confirm dialog) — not while typing</td></tr>
+        </table>
+
+        <h3 class="help-h3">Thread overlay</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">Cmd/Ctrl + Enter</td><td>Save &amp; close reply</td></tr>
+          <tr><td class="help-sc-key">Enter <em>(in tag field)</em></td><td>Commit tag and move focus to reply text area</td></tr>
+          <tr><td class="help-sc-key">Esc</td><td>Close overlay</td></tr>
         </table>
 
         <h3 class="help-h3">Roadmap tab</h3>
         <table class="help-shortcut-table">
-          <tr><td class="help-sc-key">+ or =</td><td>Expand all phases</td></tr>
-          <tr><td class="help-sc-key">−</td><td>Collapse all phases</td></tr>
-          <tr><td class="help-sc-key">↑ / ↓</td><td>Scroll Gantt rows</td></tr>
-          <tr><td class="help-sc-key">← / →</td><td>Scroll Gantt timeline</td></tr>
+          <tr><td class="help-sc-key">↑ / ↓</td><td>Scroll Gantt rows — not while typing</td></tr>
+          <tr><td class="help-sc-key">← / →</td><td>Scroll Gantt timeline — not while typing</td></tr>
+          <tr><td class="help-sc-key">+ or =</td><td>Expand all phases — not while typing</td></tr>
+          <tr><td class="help-sc-key">−</td><td>Collapse all phases — not while typing</td></tr>
         </table>
+
+        <h3 class="help-h3">Search panel</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">↑ / ↓</td><td>Navigate search results</td></tr>
+          <tr><td class="help-sc-key">Enter</td><td>Jump to highlighted result</td></tr>
+          <tr><td class="help-sc-key">Esc</td><td>Close search panel</td></tr>
+        </table>
+
+        <h3 class="help-h3">Resources &amp; Outreach tabs</h3>
+        <table class="help-shortcut-table">
+          <tr><td class="help-sc-key">Cmd/Ctrl + Shift + R</td><td>Jump to Resources → Add Reference form from anywhere</td></tr>
+          <tr><td class="help-sc-key">Esc</td><td>Reveal hidden filter bar (if collapsed)</td></tr>
+        </table>
+
+        <p class="help-p" style="font-size:12px;color:var(--label-secondary);margin-top:16px">All shortcuts are inactive while focus is in an input, textarea, or select — except Cmd+Z, Cmd+Enter, Cmd+Shift+F, and 2CLAW (Cmd+Shift+C), which always work.</p>
 
       </div></div>
 
