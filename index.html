@@ -3446,13 +3446,12 @@ function iVis(it){
     // For date-based options, use completedDate or dueDate as the change timestamp proxy
     const changedSet = getChangedItems();
     if(fCreated==='session'){if(!changedSet.has(it.id)) return false;} else if(fCreated==='today'||fCreated==='week'||fCreated==='month'||fCreated==='custom'||fCreated==='range'){
-      // Date-scoped: must be in changed set AND have a relevant timestamp in range
+      // Date-scoped: must be in changed set. Use completedDate if set; otherwise today (the
+      // change happened this session regardless of what dueDate the defer was set to).
       if(!changedSet.has(it.id)) return false;
-      const ts = it.completedDate||it.dueDate||'';
-      const changed = ts ? ts.slice(0,10) : null;
       const today = todayStr();
+      const changed = it.completedDate ? it.completedDate.slice(0,10) : today;
       const now = new Date();
-      if(!changed) return false;
       if(fCreated==='today'){
         if(changed!==today) return false;
       } else if(fCreated==='week'){
