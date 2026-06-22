@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-22T16:40:57.228871+00:00",
+  "_version": "2026-06-22T16:53:23.820053+00:00",
   "_schema": 1,
   "items": [
     {
@@ -3211,7 +3211,7 @@
       "id": "i_1781354163297",
       "type": "fordave",
       "text": "I am rethinking the functionality of the synching of notes from the RoadMap to this project notes tab.  I believe we should automatically copy any item added in the RoadMap to the Notes Tab.  That would allow a quick check of outstanding items whiteout going to the RoadMap panel.  Then when adding a date completed or clicking the done checkbox in ether tab, it will add the corresponding information in the second place.  Thoughts?  If you agree, please addd each of the Phases.  To group these items together, i.e., we could create a  new Type, &#x201C;Roadmap.&#x201D;  When some one selects Roadmap from the  type filter, all Open Phases and tasks would automatically appear in the same order as shown on the roadmap.  Thoughts?",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "hubui",
@@ -3226,7 +3226,7 @@
       ],
       "created": "2026-06-13T12:36:03.297Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-22",
       "itemUrl": null
     },
     {
@@ -4037,7 +4037,7 @@
       "id": "i_remap_map_note",
       "type": "note",
       "text": "Appendix remap reference: Remap_appendices.docx is saved in the project files. This document contains the full old-to-new mapping table for all 15 appendices. Read it at session start before executing the remap.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "editing",
@@ -4046,7 +4046,7 @@
       "dialogue": [],
       "created": "2026-06-11T01:59:06.000Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-22",
       "itemUrl": null
     },
     {
@@ -4075,7 +4075,7 @@
       "id": "i_hyp_scope_note",
       "type": "note",
       "text": "Hyperlink scope — appendices receiving ebook anchor treatment: A1 (Members of Congress name list — Senate and House UAP Caucus), A3 (Secrecy Framework — ~25 dated statute/EO/program entries; requires structural edit first to promote inline bold entries to heading paragraphs), A13 (On the Record — 40 named profiles), A14 (UAP Threats — 10 named incidents). A2 Sightings already complete. No AppHeadLine on any — anchors only, nothing added to ebook TOC. Optionally add a mini name-index at top of each appendix linking to the anchors.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "editing",
@@ -4084,14 +4084,14 @@
       "dialogue": [],
       "created": "2026-06-11T01:59:06.000Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-22",
       "itemUrl": null
     },
     {
       "id": "i_hyp_style_note",
       "type": "note",
       "text": "Style reference: appendix_hyperlink_mockup.pdf is saved in the project files. This PDF shows the proposed visual treatment for the hyperlinked appendix entries. Do not recreate it.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "editing",
@@ -4100,14 +4100,14 @@
       "dialogue": [],
       "created": "2026-06-11T01:59:06.000Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-22",
       "itemUrl": null
     },
     {
       "id": "i_hyp_header_note",
       "type": "note",
       "text": "Visual treatment for hyperlinked appendices: apply the colored header table style (appendix label + title in accent-color band) at the top of each affected appendix section. Do NOT apply full per-entry table row treatment — it adds no value in print without hyperlinks and Vellum strips table styling in ebook anyway. Header band only.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": false,
       "tag": "editing",
@@ -4116,7 +4116,7 @@
       "dialogue": [],
       "created": "2026-06-11T01:59:06.000Z",
       "dueDate": "2026-06-22",
-      "completedDate": "",
+      "completedDate": "2026-06-22",
       "itemUrl": null
     },
     {
@@ -4441,7 +4441,7 @@
       "id": "i_1780926907920",
       "type": "reminder",
       "text": "Update appendices with long lists (sightings, On the Record) to include hyperlinked names for ebook navigation. Brief description needed for each entry. Sequence with manual editing of applicable material.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "todo",
@@ -4449,13 +4449,13 @@
       "answer": null,
       "created": "2026-06-08T13:55:07.920Z",
       "dueDate": "",
-      "completedDate": ""
+      "completedDate": "2026-06-22"
     },
     {
       "id": "i_1781004087718",
       "type": "reminder",
       "text": "Claude, please look at A2 to see how we created an index offset by the app headline style and recommend other candidates where this same type of index would work well for hyperlinks to the content in the appendices.",
-      "done": false,
+      "done": true,
       "priority": false,
       "memFlag": true,
       "tag": "editing",
@@ -4463,7 +4463,7 @@
       "answer": null,
       "created": "2026-06-09T11:21:27.718Z",
       "dueDate": "",
-      "completedDate": ""
+      "completedDate": "2026-06-22"
     },
     {
       "id": "i_fordave_v279_1",
@@ -13622,7 +13622,7 @@
       "id": "uap_20260621124325",
       "type": "uap_daily",
       "text": "UAP Daily Report — June 21, 2026 (Run 2)",
-      "done": true,
+      "done": false,
       "priority": false,
       "memFlag": false,
       "tag": "UAP Daily",
@@ -13631,7 +13631,7 @@
       "dialogue": null,
       "created": "2026-06-21T12:43:25.730128+00:00",
       "dueDate": "",
-      "completedDate": "2026-06-22",
+      "completedDate": "",
       "itemUrl": null,
       "dateLabel": "June 21, 2026",
       "content": "UAP/UFO Daily Intelligence Report — June 21, 2026 (Run 2 — Enigma Labs)\n\nSKY EVENTS: June solstice today. June Bootid meteor shower active June 20–27 (unpredictable outbursts). SpaceX Vandenberg Falcon 9 June 16 \"sky jellyfish\" twilight event — now resolved/explained. No launches in 24hr window.\n\nSIGHTINGS: No Enigma Labs or MUFON Tier 1 sightings indexed for June 19–21. Enigma database: 50K+ global reports, updated daily — enigmalabs.io/explore for live check. From PURSUE R03 (Jun 12): AARO Kosloski June 5 report — orange mother orb launching red orbs (Oct 2023 law enforcement), 40% unexplained. Fort Carson 2022: five soldiers, potato-shaped object hovering near Cheyenne Mountain. Enigma Collections: six-fireball cluster in spring; metallic orb collection ongoing. Jun 16 Vandenberg launch → sky jellyfish SW US — RESOLVED.\n\nNEWS: UAP Science Advisory Council Q&A published by Loeb June 19 (Medium): council tasked by White House/AARO/ODNI/FBI/IC; all data unclassified; meeting frequency TBD; reports to UAP Governance Board. Disclosure Foundation: Jordan Flowers states China/Russia may have retrieved UAP objects and attempted reverse engineering — \"extreme national security implications.\" UAP Governance Board established mid-June (ODNI/FBI/DoW). Public opinion survey June 2026: bipartisan consensus for transparency; science-led institutions trusted over government.\n\nLEGISLATIVE: PURSUE R03 (Jun 12): 53 docs/10 images/6 videos/3 audio, CIA/FBI/NASA/Pentagon. R04 pending rolling basis. FY2026 NDAA: 3 UAP provisions enacted (NORAD/Northcom intercept briefings, AARO classification guides, data reporting). H.R.1187 in committee. Disclosure Forum at U.S. Capitol June 25 — Loeb presenting, congressional members expected.\n\nBOOKS/PERIODICALS: NSA TOP SECRET UMBRA (May 18, Disclosure Foundation FOIA): 334 pages historical UAP signals intelligence records. Visible entries: disc brighter than sun, 13 MiGs scrambling, objects at 70,000+ ft. Sol Foundation/SCU/JSE not accessible at run time.\n\nEXPLAINED: CIA 1992 internal record (PURSUE R03): U-2/OXCART flights explained 50%+ of late-1950s–60s UFO reports; Blue Book gave false explanations to protect programs. Jun 16 Vandenberg SpaceX Falcon 9 launch → sky jellyfish reports across SW US (Enigma users) — RESOLVED.\n\nSOURCE ACCESS: Enigma Labs ✅ | war.gov/UFO ✅ | Avi Loeb/Medium ✅ | NewsNation ✅ | Wikipedia ✅ | disclosure.org ✅ | Space.com ✅ | MUFON ⚠️ partial | AARO ❌ | Sol Foundation ❌ | SCU ❌ | JSE ❌ | ASA ❌ | NUFORC — removed from source list",
@@ -13880,38 +13880,6 @@
         }
       ],
       "answer": "DONE v371: All five B3 protocol fixes incorporated into PI v37. Four-layer afootnote strip (style numPr, paragraph numPr, numbering.xml pStyle, autoRedefine) also added to memory and PI. Ch.1–Ch.4 + Intro all passing cleanly with new protocol."
-    },
-    {
-      "id": "rm_r_pursue_update_distribution",
-      "type": "roadmap",
-      "text": "Update PURSUE references — final check before upload for sale [Publishing Distribution setup]",
-      "done": false,
-      "priority": false,
-      "memFlag": false,
-      "tag": null,
-      "deferred": false,
-      "answer": null,
-      "dialogue": null,
-      "created": "2026-06-22T16:24:32.020Z",
-      "dueDate": "",
-      "completedDate": "",
-      "itemUrl": null
-    },
-    {
-      "id": "rm_r_pursue_update_writeedit",
-      "type": "roadmap",
-      "text": "Update PURSUE references — file drop counts + media buzz [Write/Edit]",
-      "done": false,
-      "priority": false,
-      "memFlag": false,
-      "tag": null,
-      "deferred": false,
-      "answer": null,
-      "dialogue": null,
-      "created": "2026-06-22T16:24:32.020Z",
-      "dueDate": "",
-      "completedDate": "",
-      "itemUrl": null
     }
   ],
   "road": [
