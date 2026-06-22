@@ -6579,6 +6579,51 @@ function rfHideKwInput(){
 function rfAddKeyword(){const inp=document.getElementById('rf-kw-new');const val=(inp.value||'').trim();if(!val)return;if(!KW.includes(val)){KW.push(val);kwSaveStore();kwRender();rfBuildKwSelects();}if(!RF_KW.includes(val))RF_KW.push(val);rfSave();rfBuildKwSelects();document.getElementById('rf-kw-sel').value=val;rfHideKwInput();}
 let _rfCatChip='';
 function rfSetCatChip(val,btn){ _rfCatChip=val; rfRender(); }
+function rfEditRow(r, kwS) {
+  const sid = 'rfedit-' + r.id;
+  const catOpts = Object.keys(RF_CATS).map(function(c){
+    return '<option value="'+c+'"'+((r.cat||'primary')===c?' selected':'')+'>'+esc(RF_CATS[c].label)+'</option>';
+  }).join('');
+  const kwOpts = (kwS||[]).map(function(k){
+    return '<option value="'+esc(k)+'"'+(r.kw===k?' selected':'')+'>'+esc(k)+'</option>';
+  }).join('');
+  const s = 'font-family:\'Source Code Pro\',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);padding:3px 12px;border-radius:4px;cursor:pointer';
+  return '<tr class="rf-edit-row" id="'+sid+'">'
+    + '<td colspan="5" class="rf-edit-cell">'
+    + '<div class="rf-edit-grid">'
+    + '<input id="'+sid+'-lbl" value="'+esc(r.label||'')+'" placeholder="Label">'
+    + '<input id="'+sid+'-url" value="'+esc(r.url||'')+'" placeholder="URL">'
+    + '<input id="'+sid+'-desc" value="'+esc(r.desc||'')+'" placeholder="Description">'
+    + '</div>'
+    + '<div style="display:flex;gap:8px;align-items:center;margin-top:6px">'
+    + '<select id="'+sid+'-cat">'+catOpts+'</select>'
+    + '<select id="'+sid+'-kw">'+kwOpts+'</select>'
+    + '<button data-rfid="'+r.id+'" onclick="rfSaveEdit(this.dataset.rfid)" style="'+s+';background:var(--card-bg);color:var(--label-primary)">Save</button>'
+    + '<button data-rfid="'+r.id+'" onclick="rfToggleEdit(this.dataset.rfid)" style="'+s+';background:none;color:var(--label-secondary)">Cancel</button>'
+    + '</div></td></tr>';
+}
+function rfToggleEdit(id) {
+  rfEditId = (rfEditId === id) ? null : id;
+  rfRender();
+  if (rfEditId) {
+    setTimeout(function(){var row=document.getElementById('rfedit-'+id);if(row)row.classList.add('open');},10);
+  }
+}
+function rfSaveEdit(id) {
+  var r=RF.find(function(x){return x.id===id;}); if(!r)return;
+  var sid='rfedit-'+id;
+  var lbl=document.getElementById(sid+'-lbl'); if(lbl)r.label=lbl.value.trim();
+  var url=document.getElementById(sid+'-url'); if(url)r.url=url.value.trim();
+  var desc=document.getElementById(sid+'-desc'); if(desc)r.desc=desc.value.trim();
+  var cat=document.getElementById(sid+'-cat'); if(cat)r.cat=cat.value;
+  var kw=document.getElementById(sid+'-kw'); if(kw)r.kw=kw.value;
+  rfEditId=null; rfSave(); rfRender();
+}
+function rfDelete(id) {
+  if(!confirm('Delete this resource?'))return;
+  RF=RF.filter(function(r){return r.id!==id;}); rfSave(); rfRender();
+}
+
 function rfAdd(){const kw=(document.getElementById('rf-kw-sel').value||'').trim();const cat=(document.getElementById('rf-cat-sel')||{}).value||'primary';const url=(document.getElementById('rf-url').value||'').trim();const desc=(document.getElementById('rf-desc-in').value||'').trim();if(!kw){alert('Select or add a tag first.');return;}if(!url&&!desc){alert('URL or description required.');return;}RF.push({id:'rf_'+Date.now(),cat,kw,url,desc,lastChecked:'',lastPost:''});rfSave();document.getElementById('rf-url').value='';document.getElementById('rf-desc-in').value='';rfRender();}
 function rfSorted(arr) {
   return [...arr].sort(function(a,b){
