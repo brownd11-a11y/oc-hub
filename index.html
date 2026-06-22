@@ -6272,7 +6272,7 @@ function buildExportJSON(){
     exported:new Date().toISOString(),
     seedVersion:SEED_VERSION,
     masterVersion:'v279',
-    filters:{status:fSt,tag:fTag,type:fType},
+    filters:{status:null,tag:null,type:null},
     items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null})),
     road:(S.road||[])
   },null,2);
