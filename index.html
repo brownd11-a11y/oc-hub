@@ -3137,11 +3137,27 @@ async function loadFromGitHub() {
   const listEl = document.getElementById('list');
   if (listEl) listEl.innerHTML = '<div style="padding:24px;font-family:var(--font-mono,monospace);font-size:11px;color:var(--label-secondary);text-align:center;letter-spacing:.08em">LOADING DATA…</div>';
 
+  async function fetchDataJson() {
+    // Try raw CDN first (fast, no auth needed for files under ~1MB in most browsers)
+    try {
+      const resp = await fetch(DATA_URL + '?t=' + Date.now(), {cache: 'no-store'});
+      if (resp.ok) return await resp.json();
+    } catch(e) { /* fall through to Contents API */ }
+    // Fallback: GitHub Contents API (handles large files via base64, always reliable)
+    const apiUrl = 'https://api.github.com/repos/brownd11-a11y/oc-hub/contents/data.json';
+    const resp2 = await fetch(apiUrl + '?t=' + Date.now(), {
+      cache: 'no-store',
+      headers: {'Accept': 'application/vnd.github.v3+json'}
+    });
+    if (!resp2.ok) throw new Error('GitHub fetch failed: ' + resp2.status);
+    const meta = await resp2.json();
+    // Decode base64 content
+    const raw = atob(meta.content.replace(/\n/g, ''));
+    return JSON.parse(raw);
+  }
+
   try {
-    // Fetch data.json from GitHub with cache-busting
-    const resp = await fetch(DATA_URL + '?t=' + Date.now(), {cache: 'no-store'});
-    if (!resp.ok) throw new Error('GitHub fetch failed: ' + resp.status);
-    const data = await resp.json();
+    const data = await fetchDataJson();
 
     // Check if GitHub data is newer than localStorage
     const ghVersion   = data._version || '1970-01-01T00:00:00.000Z';
@@ -3169,6 +3185,8 @@ async function loadFromGitHub() {
     try { const r=localStorage.getItem(SK); if(r){const d=JSON.parse(r);delete d._skipSeedMerge;localStorage.setItem(SK,JSON.stringify(d));} } catch(e){}
   } catch(e) {
     console.warn('GitHub fetch failed, falling back to localStorage:', e.message);
+    // Clear force-reload flag regardless
+    try { localStorage.removeItem('oc_force_gh_reload'); } catch(e2) {}
     try {
       const raw = localStorage.getItem(SK);
       if (raw) {
@@ -3179,6 +3197,9 @@ async function loadFromGitHub() {
       } else {
         loadFromSeed();
         console.log('Data loaded from seed (no localStorage, no GitHub)');
+        // Show error so Dave knows GitHub load failed
+        const listEl2 = document.getElementById('list');
+        if (listEl2) listEl2.insertAdjacentHTML('afterbegin', '<div style="padding:10px 24px;font-family:var(--font-mono,monospace);font-size:10px;color:#c0392b;background:rgba(192,57,43,.06);border-bottom:1px solid rgba(192,57,43,.2);letter-spacing:.06em">⚠ GITHUB LOAD FAILED — showing seed data only. Check your connection and use Settings → Data → Force GitHub Refresh to retry.</div>');
       }
     } catch(e2) {
       loadFromSeed();
@@ -8980,6 +9001,7 @@ function dmLocalStateRefresh() {
 function dmForceGitHubRefresh() {
   if (!confirm("Clear all local state and reload from GitHub? Any flag changes (done marks, defers) made since Claude's last push will be lost.")) return;
   localStorage.removeItem(SK);
+  localStorage.setItem('oc_force_gh_reload', '1'); // signal to loadFromGitHub to skip seed fallback
   location.reload();
 }
 
