@@ -1550,23 +1550,30 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <button class="gpill" id="road-collapse-btn" onclick="roadCollapseAll()" title="Collapse all phases">&#9664; Collapse</button>
       <div class="gpill-sep"></div>
       <!-- New item dropdown -->
-      <div class="gantt-add-wrap" id="gantt-add-wrap" style="position:relative">
-        <button class="gpill gantt-add-btn" id="gantt-add-btn" onclick="toggleGanttAddMenu()" style="padding:0 12px 0 10px;gap:5px;display:flex;align-items:center">
-          <span style="font-size:14px;line-height:1;margin-top:-1px">＋</span>
-          <span>Phase &nbsp;·&nbsp; Gate &nbsp;·&nbsp; Task</span>
-          <span style="font-size:9px;margin-left:2px">▾</span>
-        </button>
-        <div class="gantt-add-menu" id="gantt-add-menu" style="display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:200;min-width:130px;overflow:hidden">
-          <button onclick="openGanttPanel('phase');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#128506; Phase</button>
-          <button onclick="openGanttPanel('standalone-gate');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#9671; Gate</button>
-          <button onclick="openGanttPanel('step');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;color:var(--label-primary);cursor:pointer">&#9654; Task</button>
-        </div>
+      <div class="gantt-add-wrap" id="gantt-add-wrap">
+        <button class="gpill gantt-add-btn" id="gantt-add-btn" onclick="toggleGanttAddMenu(event)">＋ New &#9662;</button>
       </div>
+      <!-- Add menu — appended to body to escape overflow clipping -->
       <div class="gpill-sep"></div>
       <button class="gpill active" id="rcl-1" onclick="setRoadLevel(1)">Phases</button>
       <button class="gpill" id="rcl-2" onclick="setRoadLevel(2)">All</button>
       <div class="gpill-sep"></div>
       <button class="gpill active" id="road-open-btn" onclick="toggleRoadOpenFilter()">Open</button>
+      <div class="gpill-sep"></div>
+      <select id="road-phase-filter" onchange="setRoadPhaseFilter(this.value)" title="Filter by phase" style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:none;color:#2A6DBE;padding:2px 6px;border-radius:99px;cursor:pointer;height:24px;max-width:130px">
+        <option value="">— Phase —</option>
+      </select>
+      <select id="road-type-filter" onchange="setRoadTypeFilter(this.value)" title="Filter by type" style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:none;color:#2A6DBE;padding:2px 6px;border-radius:99px;cursor:pointer;height:24px">
+        <option value="">— Type —</option>
+        <option value="phase">Phases</option>
+        <option value="gate">Gates</option>
+        <option value="step">Tasks</option>
+      </select>
+      <select id="road-sort-filter" onchange="setRoadSortFilter(this.value)" title="Sort" style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(42,109,190,.4);background:none;color:#2A6DBE;padding:2px 6px;border-radius:99px;cursor:pointer;height:24px">
+        <option value="">— Sort —</option>
+        <option value="date">By target date</option>
+        <option value="status">By status</option>
+      </select>
       <span class="gantt-toolbar-title" id="gantt-summary-lbl" style="margin-left:auto"></span>
     </div>
     <!-- Row 2: Today + Scale — left-justified over the label column -->
@@ -2276,6 +2283,21 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <h3 class="help-h3">After a trim operation</h3>
         <p class="help-fn-desc">If items that were deleted from GitHub reappear on reload, your localStorage still has them. Use <strong>Force GitHub refresh</strong> (Settings → Data) to clear the stale local state.</p>
 
+        <div class="settings-card" style="margin-top:16px">
+          <span class="settings-card-label">Book Stats</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--label-secondary);line-height:1.5;margin-bottom:12px">Updated by Claude every 5 master versions. Fields left blank will show — in the Style &amp; Chapter Map tile.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Word count</label><input id="bs-set-words" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Paragraphs</label><input id="bs-set-paragraphs" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Endnotes / citations</label><input id="bs-set-citations" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Unique sources</label><input id="bs-set-sources" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Images</label><input id="bs-set-images" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Author drawings</label><input id="bs-set-drawings" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Est. pages (print)</label><input id="bs-set-pages" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Master version</label><input id="bs-set-version" type="text" placeholder="v386" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+          </div>
+          <button class="iabtn" onclick="saveBookStats()" style="margin-top:12px">Save Stats</button>
+        </div>
       </div>
 
     </div><!-- end help-content -->
@@ -3277,7 +3299,7 @@ function showTab(t,btn){
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;fFlow=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
   if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;const _hasOpenState=(S.road||[]).some(r=>r.kind==='phase'&&r.open===true);if(!_hasOpenState)(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
-  if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
+  if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();loadBookStatsInputs();}
   if(t==='outreach'){const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display=_otMasterCollapsed?'none':'block';if(och)och.className='inp-collapse-chev'+(_otMasterCollapsed?'':' open');OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
@@ -5048,6 +5070,7 @@ function xpct(ds){
 }
 
 function renderGantt(){
+  buildRoadPhaseSelect();
   const labelW=ganttGetLabelW(); // live value — respects column resize
   const phases=roadPhases();
   const today=todayStr();
@@ -5448,9 +5471,89 @@ function openGanttPanel(kind,phaseId){
   document.getElementById('gantt-slide-panel').classList.add('open');
 }
 
-function toggleGanttAddMenu(){
+/* ── BOOK STATS ── */
+function saveBookStats(){
+  const fields=['words','paragraphs','citations','sources','images','drawings','pages','version'];
+  if(!S.settings)S.settings={};
+  if(!S.settings.bookStats)S.settings.bookStats={};
+  fields.forEach(f=>{
+    const el=document.getElementById('bs-set-'+f);
+    if(el)S.settings.bookStats[f]=el.value.trim();
+  });
+  save();
+  renderBookStats();
+  _showSavedConfirm('Book stats saved');
+}
+function loadBookStatsInputs(){
+  const bs=(S.settings&&S.settings.bookStats)||{};
+  ['words','paragraphs','citations','sources','images','drawings','pages','version'].forEach(f=>{
+    const el=document.getElementById('bs-set-'+f);
+    if(el)el.value=bs[f]||'';
+  });
+}
+function renderBookStats(){
+  const bs=(S.settings&&S.settings.bookStats)||{};
+  const map={words:'bs-words',paragraphs:'bs-paragraphs',citations:'bs-citations',
+    sources:'bs-sources',images:'bs-images',drawings:'bs-drawings',pages:'bs-pages',version:'bs-version'};
+  Object.entries(map).forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=bs[k]||'—';
+  });
+}
+/* ── ROADMAP FILTERS ── */
+let _roadPhaseFilter='';
+let _roadTypeFilter='';
+let _roadSortFilter='';
+function setRoadPhaseFilter(v){_roadPhaseFilter=v;renderGantt();}
+function setRoadTypeFilter(v){_roadTypeFilter=v;renderGantt();}
+function setRoadSortFilter(v){_roadSortFilter=v;renderGantt();}
+function buildRoadPhaseSelect(){
+  const sel=document.getElementById('road-phase-filter');
+  if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Phase —</option>';
+  (S.road||[]).filter(r=>r.kind==='phase').forEach(ph=>{
+    const o=document.createElement('option');
+    o.value=ph.id;
+    o.textContent=(ph.label||ph.id).substring(0,22);
+    if(ph.id===cur)o.selected=true;
+    sel.appendChild(o);
+  });
+}
+function applyRoadFilters(items){
+  let out=items;
+  if(_roadPhaseFilter){
+    // Include the phase itself + its children
+    out=out.filter(r=>r.id===_roadPhaseFilter||r.phase===_roadPhaseFilter||r.rmPhaseId===_roadPhaseFilter);
+  }
+  if(_roadTypeFilter){
+    out=out.filter(r=>{
+      if(_roadTypeFilter==='phase')return r.kind==='phase';
+      if(_roadTypeFilter==='gate')return r.kind==='gate';
+      if(_roadTypeFilter==='step')return r.kind==='step';
+      return true;
+    });
+  }
+  if(_roadSortFilter==='date'){
+    out=[...out].sort((a,b)=>{
+      const da=a.targetEnd||a.dueDate||'9999';
+      const db=b.targetEnd||b.dueDate||'9999';
+      return da.localeCompare(db);
+    });
+  } else if(_roadSortFilter==='status'){
+    out=[...out].sort((a,b)=>(a.done===b.done)?0:a.done?1:-1);
+  }
+  return out;
+}
+function toggleGanttAddMenu(e){
   const m=document.getElementById('gantt-add-menu');
-  if(m)m.style.display=m.style.display==='none'?'block':'none';
+  if(!m)return;
+  if(m.style.display!=='none'){closeGanttAddMenu();return;}
+  const btn=document.getElementById('gantt-add-btn');
+  const rect=btn?btn.getBoundingClientRect():{bottom:40,left:0};
+  m.style.top=(rect.bottom+4)+'px';
+  m.style.left=rect.left+'px';
+  m.style.display='block';
 }
 function closeGanttAddMenu(){
   const m=document.getElementById('gantt-add-menu');
@@ -8784,6 +8887,7 @@ function dmReplaceWithGitHub() {
   S.items = (data.items || []).map(i => ({...i}));
   S.road  = (data.road  || []).map(r => ({...r}));
   if (data.outreach) S.outreach = data.outreach;
+  setTimeout(renderBookStats, 50);
   if (data.refs)     S.refs     = data.refs;
   // Save just the state-only payload (small, always fits)
   save();
@@ -9210,6 +9314,11 @@ function dmHealthCheck() {
   <button class="ctx-item" onclick="ctxAct('done')" id="ctx-done-btn">Mark done</button>
   <button class="ctx-item" onclick="ctxAct('defer')" id="ctx-defer-btn">Defer</button>
   <button class="ctx-item ctx-danger" onclick="ctxAct('del')">Delete</button>
+</div>
+<div id="gantt-add-menu" style="display:none;position:fixed;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:9000;min-width:120px;overflow:hidden">
+  <button onclick="openGanttPanel('phase');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#128506; Phase</button>
+  <button onclick="openGanttPanel('standalone-gate');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#9671; Gate</button>
+  <button onclick="openGanttPanel('step');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;color:var(--label-primary);cursor:pointer">&#9654; Task</button>
 </div>
 </body>
 </html>
