@@ -322,7 +322,7 @@ body::before{display:none}
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1;padding-bottom:36px}
+.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1;padding-bottom:36px;contain:layout style}
 .panel.active{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0}
 
 /* ── NOTES INPUT (Apple light) ── */
@@ -636,7 +636,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#3C3C43}
 .price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
 .price-row.net .val{color:var(--done-fg);font-weight:600}
-.style-grid{display:grid;grid-template-columns:1fr 280px 340px;gap:0;background:rgba(255,255,255,0.94)}
+.style-grid{display:grid;grid-template-columns:1fr minmax(200px,280px) minmax(260px,340px);gap:0;background:rgba(255,255,255,0.94)}
 .style-col{padding:20px 32px;background:rgba(255,255,255,0.94)}
 .style-col+.style-col{border-left:1px solid var(--separator)}
 .s-block{margin-bottom:20px}
@@ -1542,7 +1542,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 </div>
 <!-- ROADMAP PANEL -->
-<div class="panel active" id="panel-roadmap">
+<div class="panel" id="panel-roadmap">
   <div class="road-tab-wrap">
     <!-- Row 1: primary toolbar — Expand/Collapse · New dropdown · View filters -->
     <div class="gantt-ctrl-bar" id="gantt-ctrl-bar">
@@ -1672,6 +1672,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <tr>
             <td style="color:var(--label-secondary);padding:5px 0;border-bottom:1px solid var(--separator)">Images</td>
             <td style="text-align:right;font-weight:700;color:var(--label-primary);padding:5px 0;border-bottom:1px solid var(--separator)" id="bs-images">—</td>
+          </tr>
+          <tr>
+            <td style="color:var(--label-secondary);padding:5px 0;border-bottom:1px solid var(--separator)">Quotations</td>
+            <td style="text-align:right;font-weight:700;color:var(--label-primary);padding:5px 0;border-bottom:1px solid var(--separator)" id="bs-quotations">—</td>
           </tr>
           <tr>
             <td style="color:var(--label-secondary);padding:5px 0;border-bottom:1px solid var(--separator)">Author drawings</td>
@@ -2292,6 +2296,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Endnotes / citations</label><input id="bs-set-citations" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Unique sources</label><input id="bs-set-sources" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Images</label><input id="bs-set-images" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Quotations</label><input id="bs-set-quotations" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Author drawings</label><input id="bs-set-drawings" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Est. pages (print)</label><input id="bs-set-pages" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Master version</label><input id="bs-set-version" type="text" placeholder="v386" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
@@ -5473,7 +5478,7 @@ function openGanttPanel(kind,phaseId){
 
 /* ── BOOK STATS ── */
 function saveBookStats(){
-  const fields=['words','paragraphs','citations','sources','images','drawings','pages','version'];
+  const fields=['words','paragraphs','citations','sources','images','quotations','drawings','pages','version'];
   if(!S.settings)S.settings={};
   if(!S.settings.bookStats)S.settings.bookStats={};
   fields.forEach(f=>{
@@ -5486,7 +5491,7 @@ function saveBookStats(){
 }
 function loadBookStatsInputs(){
   const bs=(S.settings&&S.settings.bookStats)||{};
-  ['words','paragraphs','citations','sources','images','drawings','pages','version'].forEach(f=>{
+  ['words','paragraphs','citations','sources','images','quotations','drawings','pages','version'].forEach(f=>{
     const el=document.getElementById('bs-set-'+f);
     if(el)el.value=bs[f]||'';
   });
@@ -5494,7 +5499,7 @@ function loadBookStatsInputs(){
 function renderBookStats(){
   const bs=(S.settings&&S.settings.bookStats)||{};
   const map={words:'bs-words',paragraphs:'bs-paragraphs',citations:'bs-citations',
-    sources:'bs-sources',images:'bs-images',drawings:'bs-drawings',pages:'bs-pages',version:'bs-version'};
+    sources:'bs-sources',images:'bs-images',quotations:'bs-quotations',drawings:'bs-drawings',pages:'bs-pages',version:'bs-version'};
   Object.entries(map).forEach(([k,id])=>{
     const el=document.getElementById(id);
     if(el)el.textContent=bs[k]||'—';
