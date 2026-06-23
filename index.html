@@ -3215,7 +3215,10 @@ function captureGhBaseline(items) {
       dueDate: it.dueDate||'',
       deferred: !!it.deferred,
       priority: !!it.priority,
-      memFlag: !!it.memFlag
+      memFlag: !!it.memFlag,
+      text: it.text||'',
+      dialogueLen: (it.dialogue||[]).length,
+      answer: it.answer||''
     };
   });
 }
@@ -3237,7 +3240,10 @@ function getChangedItems() {
         (it.dueDate||'') !== b.dueDate ||
         !!it.deferred !== b.deferred ||
         !!it.priority !== b.priority ||
-        !!it.memFlag !== b.memFlag) {
+        !!it.memFlag !== b.memFlag ||
+        (it.text||'') !== b.text ||
+        (it.dialogue||[]).length !== b.dialogueLen ||
+        (it.answer||'') !== b.answer) {
       changed.add(it.id);
     }
   });
@@ -3572,7 +3578,9 @@ function iVis(it){
       // change happened this session regardless of what dueDate the defer was set to).
       if(!changedSet.has(it.id)) return false;
       const today = todayStr();
-      const changed = it.completedDate ? it.completedDate.slice(0,10) : today;
+      // Always use today as the change date — the change happened this session, so it's always today.
+      // Using completedDate as proxy was wrong: items completed weeks ago but edited today would be excluded.
+      const changed = today;
       const now = new Date();
       if(fCreated==='today'){
         if(changed!==today) return false;
