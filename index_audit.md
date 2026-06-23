@@ -18,10 +18,10 @@
 | Ch. 3 | COMPLETE | 2026-06-23 | 7 |
 | Ch. 4 | COMPLETE | 2026-06-23 | 10 |
 | Ch. 5 | COMPLETE | 2026-06-23 | 8 |
-| Ch. 6 | PENDING | — | — |
-| Ch. 7 | PENDING | — | — |
-| Ch. 8 | PENDING | — | — |
-| Ch. 9 | PENDING | — | — |
+| Ch. 6 | COMPLETE | 2026-06-23 | 12 |
+| Ch. 7 | COMPLETE | 2026-06-23 | 11 |
+| Ch. 8 | COMPLETE | 2026-06-23 | 10 |
+| Ch. 9 | COMPLETE | 2026-06-23 | 13 |
 | Ch. 10 | PENDING | — | — |
 | Ch. 11 | PENDING | — | — |
 | Ch. 12 | PENDING | — | — |
@@ -195,4 +195,95 @@ Swept Introduction and Ch. 1–5 (Part I). Master v391. Verification run against
 | 8 | Dayton Ohio | Location of Wright Field/Wright-Patterson; partial match to "Ohio" entry |
 
 *Note: Robertson Panel, NICAP, NSA, Kenneth Arnold, SHAEF already indexed. Yale University Press is a publisher citation, not an index-worthy subject.*
+
+
+---
+
+### Ch. 6 — Special Access
+
+*Swept: v391 | Date: 2026-06-23 | Candidates: 12*
+
+| # | Term | Notes |
+|---|---|---|
+| 1 | SAP | Special Access Program — abbreviated form; body uses SAP throughout; indexed as "Office of Special Access Programs" but SAP abbreviation itself absent |
+| 2 | Skunk Works | Lockheed Martin advanced development division; cited in black program context |
+| 3 | TREND | Classified SAP program name referenced in body |
+| 4 | GAO | Government Accountability Office; referenced in oversight context |
+| 5 | Anna Paulina Luna | Representative (R-FL); named in UAP transparency investigation |
+| 6 | President Reagan | Referenced re: SAP executive orders |
+| 7 | President Clinton | Referenced re: SAP executive orders |
+| 8 | President Obama | Referenced re: SAP executive orders |
+| 9 | Joint Chiefs of Staff | Referenced in SAP cognizant authority chain |
+| 10 | Senior Executive Service | Referenced in SAP oversight structure |
+| 11 | DoD SAPCO | DoD Special Access Program Central Office; distinct from "Office of Special Access Programs" already indexed |
+| 12 | IC | Intelligence Community — abbreviated form used throughout body |
+
+*Note: Special Access Program matched to existing "Office of Special Access Programs" entry. Five Eyes already indexed. FOIA, AARO already indexed.*
+
+---
+
+### Ch. 7 — What NASA Saw
+
+*Swept: v391 | Date: 2026-06-23 | Candidates: 11*
+
+| # | Term | Notes |
+|---|---|---|
+| 1 | Edgar Mitchell | Apollo 14 astronaut; UFO/consciousness views referenced |
+| 2 | Alan Bean | Apollo 12 astronaut; quoted on UAP skepticism |
+| 3 | Apollo Guidance Computer | Technical reference in Apollo mission context |
+| 4 | Honeysuckle Creek | Australian tracking station; Apollo 11 footage relay |
+| 5 | Strategic Defense Initiative | Reagan-era missile defense program; referenced in NASA/military context |
+| 6 | Lunar Reconnaissance Orbiter | NASA spacecraft; referenced in anomaly photography context |
+| 7 | Brookings Institution | Think tank; 1960 report on implications of extraterrestrial contact cited |
+| 8 | Manned Spacecraft Center | NASA facility (now Johnson Space Center); referenced historically |
+| 9 | MIT | Massachusetts Institute of Technology; referenced in academic context |
+| 10 | Institute of Noetic Sciences | Edgar Mitchell's organization; referenced in body |
+| 11 | President Kennedy | Referenced in NASA/space race context |
+
+*Note: NASA already indexed. Five Eyes already indexed.*
+
+---
+
+### Ch. 8 — Rules for the Unexplained
+
+*Swept: v391 | Date: 2026-06-23 | Candidates: 10*
+
+| # | Term | Notes |
+|---|---|---|
+| 1 | CNES | Centre National d'Études Spatiales (French space agency); UAP investigation body |
+| 2 | CEFAA | Chilean UAP investigation committee |
+| 3 | OVNI | French/Spanish acronym for UFO; used in international UAP body context |
+| 4 | JANAP | Joint Army Navy Air Publication; communications regulations cited |
+| 5 | CIRVIS | Communications Instructions for Reporting Vital Intelligence Sightings |
+| 6 | NORAD | North American Aerospace Defense Command |
+| 7 | Russian Federation | Referenced in UAP international context |
+| 8 | United Nations | Referenced re: Reagan 1987 UN General Assembly speech |
+| 9 | Wall Street Journal | Publication cited in body |
+| 10 | Bill Paynter | Named individual in Ch. 8 (witness or official) |
+
+*Note: Five Eyes already indexed. Ross Coulthart indexed as "Coulthart, Ross." Robertson Panel already indexed.*
+
+---
+
+### Ch. 9 — Manufacturing Doubt
+
+*Swept: v391 | Date: 2026-06-23 | Candidates: 13*
+
+| # | Term | Notes |
+|---|---|---|
+| 1 | Project Blue Book | USAF UFO investigation program 1952–1969; not currently indexed |
+| 2 | Espionage Act | Federal law; cited in context of UAP whistleblower risk |
+| 3 | Walter Bedell Smith | CIA Director; referenced in Robertson Panel/CIA UFO operations |
+| 4 | Arthur Godfrey | TV/radio personality; referenced in CIA media management context |
+| 5 | J. Allen Hynek | Astronomer; Project Blue Book consultant — indexed as "Hynek Classification" only; full name entry absent |
+| 6 | Battelle Memorial Institute | Research institute; Project Blue Book Study 102 — also flagged in Ch. 3 |
+| 7 | OSS | Office of Strategic Services (CIA predecessor); referenced historically |
+| 8 | State Department | Referenced in UAP reporting/policy context |
+| 9 | Inspector General | Intelligence Community Inspector General; referenced in Grusch complaint context |
+| 10 | Johns Hopkins | University; referenced in academic context |
+| 11 | Disney | Walt Disney Company; referenced in CIA psychological operations context |
+| 12 | Jam Handy Company | Industrial film producer; cited in CIA media operations |
+| 13 | NORAD | Appears in Ch. 9 as well as Ch. 8 |
+
+*Note: David Grusch indexed as "Grusch, David." Robertson Panel, NICAP, FBI, CIA, NASA already indexed. Hynek indexed only as classification system — full-name entry is a separate candidate.*
 
