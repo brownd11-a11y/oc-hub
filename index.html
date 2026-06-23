@@ -2927,7 +2927,8 @@ function applyData(data) {
           // Legacy format — extract state from full items
           localData.items.forEach(i => { stateMap[i.id] = {
             id: i.id, done: i.done, completedDate: i.completedDate||'',
-            dueDate: i.dueDate||'', deferred: i.deferred, priority: i.priority, memFlag: i.memFlag
+            dueDate: i.dueDate||'', deferred: i.deferred, priority: i.priority, memFlag: i.memFlag,
+            _exp: i._exp || false
           }; });
         }
       } catch(e) {}
@@ -2944,7 +2945,8 @@ function applyData(data) {
         dueDate: st.dueDate || i.dueDate || '',
         deferred: st.deferred !== undefined ? st.deferred : (i.deferred || false),
         priority: st.priority !== undefined ? st.priority : (i.priority || false),
-        memFlag: st.memFlag !== undefined ? st.memFlag : (i.memFlag || false)
+        memFlag: st.memFlag !== undefined ? st.memFlag : (i.memFlag || false),
+        _exp: st._exp !== undefined ? !!st._exp : false
       };
     });
     S.items = result;
@@ -3171,7 +3173,8 @@ function save(){
       dueDate: it.dueDate||'',
       deferred: !!it.deferred,
       priority: !!it.priority,
-      memFlag: !!it.memFlag
+      memFlag: !!it.memFlag,
+      _exp: !!it._exp
     }));
     const payload = {
       _seedVersion: SEED_VERSION,
@@ -4344,7 +4347,7 @@ function checkDeferredResurface() {
     if (_ghBaseline[it.id] && _ghBaseline[it.id].done) return;
 
     // Case 1: deferred item whose dueDate has passed → promote to open
-    if (it.deferred && it.dueDate && it.dueDate <= today) {
+    if (it.deferred && it.dueDate && it.dueDate < today) {
       it.deferred = false;
       it._resurfaced = true;
       if (!it.dialogue) it.dialogue = [];
