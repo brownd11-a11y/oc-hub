@@ -322,8 +322,8 @@ body::before{display:none}
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;background:rgba(242,242,247,0.50);position:relative;z-index:1;padding-bottom:36px;contain:layout style}
-.panel.active{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0}
+.panel{display:none;visibility:hidden;background:var(--page-bg);position:relative;z-index:1;padding-bottom:36px}
+.panel.active{display:flex;visibility:visible;flex-direction:column;flex:1;overflow:hidden;min-height:0}
 
 /* ── NOTES INPUT (Apple light) ── */
 .inp-wrap{background:var(--page-bg);border-bottom:1px solid var(--separator);padding:14px 32px 16px;flex-shrink:0}
@@ -1271,8 +1271,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- TABS + FILTER -->
 <div class="dark-band">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('roadmap',this)" id="tab-roadmap">Roadmap<span class="tab-nbadge zero" id="tbadge-roadmap"></span></button>
-    <button class="tab" onclick="showTab('notes',this)" id="tab-notes">Notes<span class="tab-nbadge zero" id="tbadge-notes"></span></button>
+    <button class="tab" onclick="showTab('roadmap',this)" id="tab-roadmap">Roadmap<span class="tab-nbadge zero" id="tbadge-roadmap"></span></button>
+    <button class="tab active" onclick="showTab('notes',this)" id="tab-notes">Notes<span class="tab-nbadge zero" id="tbadge-notes"></span></button>
     <div class="mega-group" id="mega-refs">
       <button class="tab" onclick="megaToggle('mega-refs',event);showTab('refs',this)" id="tab-refs">Resources <span style="font-size:9px;opacity:.6">▾</span></button>
       <div class="mega-flyout">
@@ -1438,7 +1438,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- FILTER REVEAL PILL (shown when filter bar is collapsed) -->
 <div id="filter-reveal-pill"><button onclick="frReveal()" title="Show filters (Esc)">&#9660; Filters</button></div>
 <!-- NOTES PANEL -->
-<div class="panel" id="panel-notes">
+<div class="panel active" id="panel-notes">
   <div class="inp-wrap" id="inp-wrap">
   <!-- Collapse bar — always visible -->
   <div class="inp-collapse-bar" id="inp-collapse-bar" onclick="toggleInputForm()" title="Show/hide input form">
