@@ -4125,7 +4125,7 @@ function rlist(){
       const dlg=(it.dialogue||[]);
       const dlgHtml=dlg.length?`<div class="dialogue-thread">${
         [...dlg].reverse().map(d=>`<div class="dl-entry from-${d.from}">
-          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':d.from==='system'?'&#128276; Alert':'Claude'}</span><span class="dl-ts">${fmtDate((d.ts||'').slice(0,10))}</span></div>
+          <div class="dl-meta"><span class="dl-from">${d.from==='dave'?'Dave':d.from==='system'?'&#128276; Alert':'Claude'}</span><span class="dl-ts">${fmtDate(String(d.ts||'').slice(0,10))}</span></div>
           <div class="dl-text">${esc(d.text)}</div>
         </div>`).join('')
       }</div>`:'';
@@ -4495,7 +4495,7 @@ function checkDeferredResurface() {
       it._resurfaced = true;
       if (!it.dialogue) it.dialogue = [];
       const alreadyFlagged = it.dialogue.some(d =>
-        d.from === 'system' && (d.ts||'').slice(0,10) === today && d.text.includes('Deferred reminder')
+        d.from === 'system' && String(d.ts||'').slice(0,10) === today && d.text.includes('Deferred reminder')
       );
       if (!alreadyFlagged) {
         it.dialogue.push({
@@ -4513,7 +4513,7 @@ function checkDeferredResurface() {
       it._resurfaced = true;
       if (!it.dialogue) it.dialogue = [];
       const alreadyFlagged = it.dialogue.some(d =>
-        d.from === 'system' && (d.ts||'').slice(0,10) === today && d.text.includes('Reminder reached')
+        d.from === 'system' && String(d.ts||'').slice(0,10) === today && d.text.includes('Reminder reached')
       );
       if (!alreadyFlagged) {
         it.dialogue.push({
