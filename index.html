@@ -813,7 +813,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-nav.active{background:var(--accent);color:#fff;font-weight:600}
 .rf-content{flex:1;overflow-y:auto;padding:24px 28px;background:rgba(255,255,255,0.96)}
 .rf-spanel{display:none}
-.rf-spanel.active{display:block}
+.rf-spanel.active{display:flex;flex-direction:column;overflow-y:auto;min-height:0}
 /* ── UAP DAILY ── */
 .uap-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--separator)}
 .uap-new-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;transition:background .15s}
@@ -1232,7 +1232,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .lead-to{font-family:'Source Code Pro',monospace;font-size:9px;color:var(--label-secondary);flex-shrink:0}
 /* ── VIEWPORT SCROLL FIX ── */
 /* Non-notes panels: allow their content to scroll within the panel */
-#panel-refs,#panel-outreach,#panel-help,#panel-settings{overflow-y:auto}
+#panel-refs,#panel-outreach,#panel-help,#panel-settings{overflow-y:auto;display:flex;flex-direction:column;min-height:0}
 .rf-section{overflow-y:auto;max-height:none}
 .help-spanel{overflow-y:auto}
 /* Roadmap panel: overflow hidden (gantt manages its own scroll) */
@@ -1677,17 +1677,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- OUTREACH -->
 <div class="panel" id="panel-outreach"><div class="ot-wrap">
-  <!-- OT Select toolbar row — matches Notes Row 2 structure -->
-  <div id="ot-toolbar-row" style="display:flex;gap:6px;align-items:center;padding:4px 0 8px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:10px">
-    <button class="select-mode-btn" id="ot-batch-btn" onclick="otBatchToggle()" title="Select contacts" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
-  </div>
-  <div class="batch-bar" id="ot-batch-bar">
-    <span class="batch-ct" id="ot-batch-ct">0 selected</span>
-    <button class="batch-btn bb-accept" onclick="otBatchConfirm()">&#10003; Confirmed</button>
-    <button class="batch-btn bb-done" onclick="otBatchClose()">&#10003; Closed</button>
-    <button class="batch-btn bb-delete" onclick="otBatchDelete()">&#128465; Delete</button>
-    <button class="batch-btn bb-cancel" onclick="otBatchToggle()">&#10005; Cancel</button>
-  </div>
+
 
   <!-- GMAIL LEADS PANEL -->
   <div class="leads-panel" id="leads-panel">
@@ -1701,8 +1691,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
   </div>
 
-  <!-- FILTER BAR -->
+  <!-- FILTER BAR + SELECT -->
+  <div class="batch-bar" id="ot-batch-bar">
+    <span class="batch-ct" id="ot-batch-ct">0 selected</span>
+    <button class="batch-btn bb-accept" onclick="otBatchConfirm()">&#10003; Confirmed</button>
+    <button class="batch-btn bb-done" onclick="otBatchClose()">&#10003; Closed</button>
+    <button class="batch-btn bb-delete" onclick="otBatchDelete()">&#128465; Delete</button>
+    <button class="batch-btn bb-cancel" onclick="otBatchToggle()">&#10005; Cancel</button>
+  </div>
   <div class="ot-filter-bar">
+    <button class="select-mode-btn" id="ot-batch-btn" onclick="otBatchToggle()" title="Select contacts" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+    <span style="width:1px;height:20px;background:var(--separator);flex-shrink:0;margin:0 2px"></span>
     <button class="fchip act" id="ot-chip-all" onclick="otSetChip('all',this)"><span class="fchip-lbl">All</span></button>
     <button class="fchip" id="ot-chip-new" onclick="otSetChip('new',this)"><span class="fchip-lbl">New</span></button>
     <button class="fchip" id="ot-chip-waiting" onclick="otSetChip('waiting',this)"><span class="fchip-lbl">Waiting</span></button>
@@ -2904,6 +2903,9 @@ function applyData(data) {
   const storedRoad   = data.road    || [];
   const storedOt     = data.outreach|| [];
   const storedRefs   = data.refs    || [];
+  if (typeof data._otMasterCollapsed !== 'undefined') {
+    _otMasterCollapsed = !!data._otMasterCollapsed;
+  }
   if (data.settings) {
     S.settings = data.settings;
     if (data.settings.projectName) {
@@ -3182,7 +3184,8 @@ function save(){
       _stateOnly: true,
       itemState: stateOnly,
       road: S.road||[],
-      settings: S.settings||{}
+      settings: S.settings||{},
+      _otMasterCollapsed: _otMasterCollapsed
     };
     localStorage.setItem(SK, JSON.stringify(payload));
     updateSyncBadge();
@@ -3219,7 +3222,7 @@ function showTab(t,btn){
   if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
   if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
-  if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
+  if(t==='outreach'){const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display=_otMasterCollapsed?'none':'block';if(och)och.className='inp-collapse-chev'+(_otMasterCollapsed?'':' open');OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
   try{localStorage.setItem('oc_active_tab',t);}catch(e){}
 }
