@@ -1233,6 +1233,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 /* ── VIEWPORT SCROLL FIX ── */
 /* Non-notes panels: allow their content to scroll within the panel */
 #panel-refs,#panel-outreach,#panel-help,#panel-settings{overflow-y:auto}
+.rf-section{overflow-y:auto;max-height:none}
+.help-spanel{overflow-y:auto}
 /* Roadmap panel: overflow hidden (gantt manages its own scroll) */
 #panel-roadmap{overflow:hidden}
 /* Section bars in notes panel: flex-shrink:0 */
@@ -1741,9 +1743,15 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <button class="ot-add-btn" onclick="addContact()">Add Contact</button>
   </div>
-  <div class="inp-collapse-bar" id="ot-master-bar" onclick="otToggleMaster()" style="margin-bottom:8px;border-radius:8px">
+  <div class="inp-collapse-bar" id="ot-master-bar" onclick="otToggleMaster()" style="margin-bottom:8px;border-radius:8px;display:flex;align-items:center">
     <span class="inp-collapse-label" id="ot-master-label">&#128101; Contacts</span>
-    <span class="inp-collapse-chev" id="ot-master-chev">&#9660;</span>
+    <span class="inp-collapse-chev" id="ot-master-chev" style="margin-right:auto">&#9660;</span>
+    <button class="select-mode-btn" id="ot-batch-btn" onclick="event.stopPropagation();otBatchToggle()" title="Select contacts to delete" style="flex:none;height:26px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 10px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07);margin-right:4px">&#9745; Select</button>
+  </div>
+  <div class="batch-bar" id="ot-batch-bar" style="display:none;align-items:center;gap:8px;padding:6px 12px;background:#fff8e8;border-bottom:1px solid #e8c84a;font-size:12px;margin-bottom:8px;border-radius:6px">
+    <span id="ot-batch-ct">0 selected</span>
+    <button class="batch-btn bb-delete" onclick="otBatchDelete()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #e05;background:#fff0f3;color:#c00;cursor:pointer">&#128465; Delete</button>
+    <button onclick="otBatchToggle()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #ccc;background:#fff;color:#666;cursor:pointer;margin-left:auto">Cancel</button>
   </div>
   <div id="ot-cards-wrap" style="display:none">
     <div class="ot-cards" id="ot-cards"></div>
@@ -1844,6 +1852,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <div class="rf-spanel" id="rf-all">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
           <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
+          <button class="select-mode-btn" id="rf-batch-btn" onclick="rfBatchToggle()" title="Select resources to delete" style="flex:none;height:28px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 10px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
           <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
           <span style="margin-left:auto;display:flex;gap:6px">
             <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
@@ -1869,6 +1878,12 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <span style="font-family:'Source Code Pro',monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">🛸 UAP Daily Reports</span>
           <button class="uap-new-btn" onclick="uapNewReport()">＋ New Report</button>
           <span class="uap-count" id="uap-count"></span>
+          <button class="select-mode-btn" id="uap-batch-btn" onclick="uapBatchToggle()" title="Select reports to delete" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+        </div>
+        <div class="batch-bar" id="uap-batch-bar" style="display:none;align-items:center;gap:8px;padding:6px 12px;background:#fff8e8;border-bottom:1px solid #e8c84a;font-size:12px;flex-wrap:wrap;margin-bottom:8px;border-radius:6px">
+          <span id="uap-batch-ct">0 selected</span>
+          <button class="batch-btn bb-delete" onclick="uapBatchDelete()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #e05;background:#fff0f3;color:#c00;cursor:pointer">&#128465; Delete</button>
+          <button onclick="uapBatchToggle()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #ccc;background:#fff;color:#666;cursor:pointer;margin-left:auto">Cancel</button>
         </div>
         <div id="uap-report-list"><div class="rf-empty">No reports yet. Click New Report to generate the first one.</div></div>
       </div>
@@ -3188,7 +3203,7 @@ function showTab(t,btn){
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;fFlow=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
-  if(t==='roadmap'){initRoadmap();(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
+  if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
   if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
   if(t==='outreach'){_otMasterCollapsed=true;const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display='none';if(och)och.className='inp-collapse-chev';OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
@@ -4467,6 +4482,7 @@ function roadExpandAll(){
 
 /* ── BATCH SELECT ── */
 let _batchMode=false;
+let _rmTabVisited=false;
 let _batchSel=new Set();
 function batchToggle(){
   _batchMode=!_batchMode;
@@ -4761,6 +4777,8 @@ const addItem=function(){
     _sessionFirstSave=true;
   }
   save();render();
+  // Keep input form open for the rest of this session once used
+  if(!_inpFormOpen){_inpFormOpen=true;const body=document.getElementById('inp-collapse-body');const chev=document.getElementById('inp-collapse-chev');if(body)body.style.display='block';if(chev)chev.className='inp-collapse-chev open';}
 }
 document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&document.activeElement===document.getElementById('input-ta'))addItem();});
 
@@ -6504,6 +6522,24 @@ function addContact(){
 }
 
 let _otMasterCollapsed = true;
+let _otBatchSel=new Set();let _otBatchMode=false;
+function otBatchToggle(){
+  _otBatchMode=!_otBatchMode;_otBatchSel.clear();
+  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
+  if(bar)bar.style.display=_otBatchMode?'flex':'none';
+  if(btn)btn.style.background=_otBatchMode?'rgba(61,90,153,0.12)':'#fff';
+  document.querySelectorAll('.ot-item-cb').forEach(cb=>{cb.style.display=_otBatchMode?'inline-block':'none';cb.checked=false;});
+  otBatchUpdateBar();
+}
+function otBatchToggleItem(id,el){if(_otBatchSel.has(id))_otBatchSel.delete(id);else _otBatchSel.add(id);otBatchUpdateBar();}
+function otBatchUpdateBar(){const ct=document.getElementById('ot-batch-ct');if(ct)ct.textContent=_otBatchSel.size+' selected';}
+function otBatchDelete(){
+  if(!_otBatchSel.size)return;
+  if(!confirm('Delete '+_otBatchSel.size+' contact'+(_otBatchSel.size===1?'':'s')+'?'))return;
+  OT=OT.filter(c=>!_otBatchSel.has(c.id));otSave();_otBatchSel.clear();_otBatchMode=false;
+  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
+  if(bar)bar.style.display='none';if(btn)btn.style.background='#fff';renderOT();
+}
 function otToggleMaster(){
   _otMasterCollapsed = !_otMasterCollapsed;
   const wrap = document.getElementById('ot-cards-wrap');
@@ -6779,6 +6815,24 @@ function rfToggleCat(cat){
 }
 function rfExpandAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=false;});rfSaveCollapsed();rfRender();}
 function rfCollapseAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=true;});rfSaveCollapsed();rfRender();}
+let _rfBatchSel=new Set();let _rfBatchMode=false;
+function rfBatchToggle(){
+  _rfBatchMode=!_rfBatchMode;_rfBatchSel.clear();
+  const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
+  if(bar)bar.style.display=_rfBatchMode?'flex':'none';
+  if(btn)btn.style.background=_rfBatchMode?'rgba(61,90,153,0.12)':'#fff';
+  document.querySelectorAll('.rf-item-cb').forEach(cb=>{cb.style.display=_rfBatchMode?'inline-block':'none';cb.checked=false;});
+  rfBatchUpdateBar();
+}
+function rfBatchToggleItem(id,el){if(_rfBatchSel.has(id))_rfBatchSel.delete(id);else _rfBatchSel.add(id);rfBatchUpdateBar();}
+function rfBatchUpdateBar(){const ct=document.getElementById('rf-batch-ct');if(ct)ct.textContent=_rfBatchSel.size+' selected';}
+function rfBatchDelete(){
+  if(!_rfBatchSel.size)return;
+  if(!confirm('Delete '+_rfBatchSel.size+' resource'+(_rfBatchSel.size===1?'':'s')+'?'))return;
+  RF=RF.filter(r=>!_rfBatchSel.has(r.id));rfSave();_rfBatchSel.clear();_rfBatchMode=false;
+  const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
+  if(bar)bar.style.display='none';if(btn)btn.style.background='#fff';rfRender();
+}
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
 function rfShowKwInput(){
@@ -6940,12 +6994,14 @@ function uapRenderList() {
     const pills = (r.keywords || []).map(k => '<span class="uap-card-pill">' + esc(k) + '</span>').join('');
     const preview = (r.content || '').replace(/\n/g,' ').substring(0,180) + ((r.content||'').length > 180 ? '\u2026' : '');
     html += '<div class="uap-report-card" id="uap-card-' + r.id + '">';
-    html += '<div class="uap-card-header" onclick="uapToggleCard(\'' + r.id + '\')" style="cursor:pointer">';
+    html += '<div class="uap-card-header" style="cursor:pointer;display:flex;align-items:center;gap:6px">';
+    html += '<input type="checkbox" class="uap-item-cb" onclick="event.stopPropagation();uapBatchToggleItem(\'' + r.id + '\',this)" style="display:none;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0" id="uap-cb-' + r.id + '">';
+    html += '<div onclick="uapToggleCard(\'' + r.id + '\')" style="display:flex;align-items:center;gap:6px;flex:1">';
     html += '<span class="uap-card-date">' + esc(r.dateLabel || r.created.slice(0,10)) + '</span>';
     html += '<div class="uap-card-kw">' + pills + '</div>';
     html += '<span id="uap-chev-' + r.id + '" style="font-size:10px;color:var(--label-secondary);margin-left:4px">\u25be</span>';
     html += '<button class="uap-card-del" onclick="event.stopPropagation();uapDelete(\'' + r.id + '\')" style="margin-left:8px">&#10005;</button>';
-    html += '</div>';
+    html += '</div></div>';
     html += '<div id="uap-preview-' + r.id + '" style="font-family:\'Libre Baskerville\',Georgia,serif;font-size:11px;color:var(--label-secondary);padding:4px 0 2px;line-height:1.5">' + esc(preview) + '</div>';
     html += '<div id="uap-body-' + r.id + '" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--separator)">';
     html += '<div style="font-family:\'Libre Baskerville\',Georgia,serif;font-size:12px;line-height:1.7;white-space:pre-wrap;color:var(--label-primary)">' + esc(r.content || '') + '</div>';
@@ -6983,6 +7039,46 @@ function uapDelete(id) {
   if (!confirm('Delete this report?')) return;
   UAP_REPORTS = UAP_REPORTS.filter(r => r.id !== id);
   uapSave(); uapRenderList();
+}
+let _uapBatchSel = new Set();
+let _uapBatchMode = false;
+function uapBatchToggle(){
+  _uapBatchMode = !_uapBatchMode;
+  _uapBatchSel.clear();
+  const bar = document.getElementById('uap-batch-bar');
+  const btn = document.getElementById('uap-batch-btn');
+  if(bar) bar.style.display = _uapBatchMode ? 'flex' : 'none';
+  if(btn) btn.style.background = _uapBatchMode ? 'rgba(61,90,153,0.12)' : '#fff';
+  // Show/hide checkboxes
+  document.querySelectorAll('.uap-item-cb').forEach(cb => {
+    cb.style.display = _uapBatchMode ? 'inline-block' : 'none';
+    cb.checked = false;
+  });
+  uapBatchUpdateBar();
+}
+function uapBatchToggleItem(id, el){
+  if(_uapBatchSel.has(id)){_uapBatchSel.delete(id);}
+  else{_uapBatchSel.add(id);}
+  uapBatchUpdateBar();
+}
+function uapBatchUpdateBar(){
+  const ct = document.getElementById('uap-batch-ct');
+  if(ct) ct.textContent = _uapBatchSel.size + ' selected';
+}
+function uapBatchDelete(){
+  if(!_uapBatchSel.size) return;
+  if(!confirm('Delete ' + _uapBatchSel.size + ' report' + (_uapBatchSel.size===1?'':'s') + '?')) return;
+  UAP_REPORTS = UAP_REPORTS.filter(r => !_uapBatchSel.has(r.id));
+  // Also remove from S.items
+  if(S && S.items) S.items = S.items.filter(i => !_uapBatchSel.has(i.id));
+  uapSave(); save();
+  _uapBatchSel.clear();
+  _uapBatchMode = false;
+  const bar = document.getElementById('uap-batch-bar');
+  const btn = document.getElementById('uap-batch-btn');
+  if(bar) bar.style.display = 'none';
+  if(btn) btn.style.background = '#fff';
+  uapRenderList();
 }
 function uapNewReport() {
   if (!KW.includes('UAP Daily')) { KW.push('UAP Daily'); kwSaveStore(); kwRender(); rfBuildKwSelects(); }
@@ -7038,7 +7134,7 @@ function rfRender(){
     html+='<span class="rf-cat-label">'+info.label+'</span>';
     html+='<span class="rf-cat-count">'+items.length+'</span>';
     var arrowT=col?'rotate(-90deg)':'rotate(0deg)';
-    html+='<span class="rf-cat-arrow" id="rf-arrow-'+cat+'" style="transition:transform 0.25s;transform:'+arrowT+'">&#9662;</span>';
+    html+='<span class="rf-cat-arrow" id="rf-arrow-'+cat+'" style="transition:transform 0.25s;transform:'+arrowT+';font-size:16px;min-width:28px;min-height:28px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer">&#9662;</span>';
     html+='</div>';
     html+='<div class="rf-cat-body" id="rf-cat-'+cat+'" style="overflow:hidden;transition:max-height 0.35s ease,opacity 0.25s ease;max-height:'+(col?'0':'4000px')+';opacity:'+(col?'0':'1')+'">';
     html+='<table class="rf-table" style="margin-bottom:0"><tbody>';
@@ -7072,6 +7168,8 @@ load();otLoad();rfLoad();uapLoad();kwLoad();ctLoad();render();renderOT();rfBuild
 setTimeout(()=>checkDeferredResurface(), 300);
 // Async GitHub fetch — silently updates if newer data found
 loadFromGitHub();
+// Restore active tab from last session
+try{const _at=localStorage.getItem('oc_active_tab');if(_at&&_at!=='notes'){const _tb=document.getElementById('tab-'+_at)||document.querySelector('.tab[onclick*=\''+_at+'\']');showTab(_at,_tb);}else{showTab('notes',document.getElementById('tab-notes'));}}catch(e){showTab('notes',document.getElementById('tab-notes'));}
 // Collapse all roadmap phases on initial load (display default, not persisted)
 (S.road||[]).forEach(r=>{ if(r.kind==='phase') r.open=false; });
 // Roadmap is default tab — init and render immediately
