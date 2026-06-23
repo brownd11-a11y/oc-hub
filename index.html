@@ -1544,25 +1544,35 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <!-- ROADMAP PANEL -->
 <div class="panel active" id="panel-roadmap">
   <div class="road-tab-wrap">
-    <!-- Row 1: navigation + view controls -->
+    <!-- Row 1: primary toolbar — Expand/Collapse · New dropdown · View filters -->
     <div class="gantt-ctrl-bar" id="gantt-ctrl-bar">
-      <button class="gpill active-solid" onclick="ganttScrollToday()">Today</button>
-      <button class="gpill" id="gscale-btn" onclick="cycleGanttScale()">Scale: <span id="gscale-label">Wks</span></button>
+      <button class="gpill" id="road-expand-btn" onclick="roadExpandAll()" title="Expand all phases">&#9654; Expand</button>
+      <button class="gpill" id="road-collapse-btn" onclick="roadCollapseAll()" title="Collapse all phases">&#9664; Collapse</button>
+      <div class="gpill-sep"></div>
+      <!-- New item dropdown -->
+      <div class="gantt-add-wrap" id="gantt-add-wrap" style="position:relative">
+        <button class="gpill gantt-add-btn" id="gantt-add-btn" onclick="toggleGanttAddMenu()" style="padding:0 12px 0 10px;gap:5px;display:flex;align-items:center">
+          <span style="font-size:14px;line-height:1;margin-top:-1px">＋</span>
+          <span>Phase &nbsp;·&nbsp; Gate &nbsp;·&nbsp; Task</span>
+          <span style="font-size:9px;margin-left:2px">▾</span>
+        </button>
+        <div class="gantt-add-menu" id="gantt-add-menu" style="display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--card-bg);border:1px solid var(--separator);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:200;min-width:130px;overflow:hidden">
+          <button onclick="openGanttPanel('phase');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#128506; Phase</button>
+          <button onclick="openGanttPanel('standalone-gate');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;border-bottom:1px solid var(--separator);color:var(--label-primary);cursor:pointer">&#9671; Gate</button>
+          <button onclick="openGanttPanel('step');closeGanttAddMenu()" style="display:block;width:100%;text-align:left;padding:9px 16px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:none;border:none;color:var(--label-primary);cursor:pointer">&#9654; Task</button>
+        </div>
+      </div>
       <div class="gpill-sep"></div>
       <button class="gpill active" id="rcl-1" onclick="setRoadLevel(1)">Phases</button>
       <button class="gpill" id="rcl-2" onclick="setRoadLevel(2)">All</button>
       <div class="gpill-sep"></div>
       <button class="gpill active" id="road-open-btn" onclick="toggleRoadOpenFilter()">Open</button>
-      <div class="gpill-sep"></div>
-      <button class="gpill" id="road-expand-btn" onclick="roadExpandAll()" title="Expand one level">&#9654; Expand</button>
-      <button class="gpill" id="road-collapse-btn" onclick="roadCollapseAll()" title="Collapse one level">&#9664; Collapse</button>
+      <span class="gantt-toolbar-title" id="gantt-summary-lbl" style="margin-left:auto"></span>
     </div>
-    <!-- Row 2: add buttons + summary -->
-    <div class="gantt-toolbar">
-      <button class="gantt-open-panel-btn" onclick="openGanttPanel('phase')">+ Phase</button>
-      <button class="gantt-open-panel-btn" onclick="openGanttPanel('step')">+ Task</button>
-      <button class="gantt-open-panel-btn" onclick="openGanttPanel('standalone-gate')">+ Gate</button>
-      <span class="gantt-toolbar-title" id="gantt-summary-lbl">Gantt</span>
+    <!-- Row 2: Today + Scale — left-justified over the label column -->
+    <div class="gantt-toolbar" id="gantt-scale-bar" style="padding:4px 8px;border-bottom:1px solid var(--separator);background:var(--page-bg)">
+      <button class="gpill active-solid" onclick="ganttScrollToday()">Today</button>
+      <button class="gpill" id="gscale-btn" onclick="cycleGanttScale()">Scale: <span id="gscale-label">Wks</span></button>
     </div>
     <!-- Integrated Gantt -->
     <div class="gantt-scroll-outer" id="gantt-scroll-outer">
@@ -3260,7 +3270,7 @@ function showTab(t,btn){
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;fFlow=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
-  if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
+  if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;const _hasOpenState=(S.road||[]).some(r=>r.kind==='phase'&&r.open===true);if(!_hasOpenState)(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
   if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
   if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();}
   if(t==='outreach'){const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display=_otMasterCollapsed?'none':'block';if(och)och.className='inp-collapse-chev'+(_otMasterCollapsed?'':' open');OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
@@ -5433,6 +5443,18 @@ function openGanttPanel(kind,phaseId){
   document.getElementById('gantt-slide-panel').classList.add('open');
 }
 
+function toggleGanttAddMenu(){
+  const m=document.getElementById('gantt-add-menu');
+  if(m)m.style.display=m.style.display==='none'?'block':'none';
+}
+function closeGanttAddMenu(){
+  const m=document.getElementById('gantt-add-menu');
+  if(m)m.style.display='none';
+}
+document.addEventListener('click',function(e){
+  const wrap=document.getElementById('gantt-add-wrap');
+  if(wrap&&!wrap.contains(e.target))closeGanttAddMenu();
+});
 function closeGanttPanel(){
   document.getElementById('gantt-overlay').classList.remove('open');
   document.getElementById('gantt-slide-panel').classList.remove('open');
