@@ -11,8 +11,6 @@
 <title>Over-classified — Project Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* Safari PWA: hide all panels before JS runs to prevent cached-state bleed */
-.panel:not(.active){display:none!important;visibility:hidden!important;}
 /* ── COVER PALETTE (dashboard only) ── */
 :root{
   --cover-black:#17191E;--cover-red:#C70025;--cover-steel:#6B7078;
@@ -324,7 +322,7 @@ body::before{display:none}
 
 
 /* ── PANELS (Apple light) ── */
-.panel{display:none;visibility:hidden;background:var(--page-bg);position:relative;z-index:1;padding-bottom:36px;contain:layout style}
+.panel{display:none;visibility:hidden;background:var(--page-bg);position:relative;z-index:1;padding-bottom:36px}
 .panel.active{display:flex;visibility:visible;flex-direction:column;flex:1;overflow:hidden;min-height:0}
 
 /* ── NOTES INPUT (Apple light) ── */
@@ -815,7 +813,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .rf-nav.active{background:var(--accent);color:#fff;font-weight:600}
 .rf-content{flex:1;overflow-y:auto;padding:24px 28px;background:rgba(255,255,255,0.96)}
 .rf-spanel{display:none}
-.rf-spanel.active{display:block}
+.rf-spanel.active{display:flex;flex-direction:column;overflow-y:auto;min-height:0}
 /* ── UAP DAILY ── */
 .uap-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--separator)}
 .uap-new-btn{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;transition:background .15s}
@@ -1737,7 +1735,24 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <tr><td class="ch-num" style="color:var(--label-secondary)">A1–A15</td><td style="color:var(--label-secondary)">Appendices</td><td></td></tr>
       </tbody></table>
     </div>
-  </div>
+    <div class="s-block" style="margin-top:18px" id="book-stats-block">
+      <h3>Book stats</h3>
+      <table style="width:100%;border-collapse:collapse;font-family:'Source Code Pro',monospace;font-size:11px">
+        <tbody id="book-stats-tbody">
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Chapters</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bstat-chapters">18</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Parts</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bstat-parts">IV</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Appendices</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bstat-appendices">15</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Word count</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-words">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Citations</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-citations">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Unique sources</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-sources">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Primary sources</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-index">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Images</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-images">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Author drawings</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-drawings">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Quotations</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-quotations">—</td></tr>
+          <tr><td style="padding:3px 0;color:var(--label-secondary)">Master version</td><td style="padding:3px 0;text-align:right;color:var(--label-primary)" id="bs-version">—</td></tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </div>
@@ -3037,7 +3052,8 @@ function applyData(data) {
       return {...i,
         done: effectiveDone,
         completedDate: st.completedDate || i.completedDate || '',
-        dueDate: st.dueDate || i.dueDate || '',
+        // GitHub empty dueDate always wins — it means the date was deliberately cleared
+        dueDate: i.dueDate !== undefined && i.dueDate !== null ? i.dueDate : (st.dueDate || ''),
         deferred: st.deferred !== undefined ? st.deferred : (i.deferred || false),
         priority: st.priority !== undefined ? st.priority : (i.priority || false),
         memFlag: st.memFlag !== undefined ? st.memFlag : (i.memFlag || false),
@@ -3217,7 +3233,10 @@ function captureGhBaseline(items) {
       dueDate: it.dueDate||'',
       deferred: !!it.deferred,
       priority: !!it.priority,
-      memFlag: !!it.memFlag
+      memFlag: !!it.memFlag,
+      text: it.text||'',
+      dialogueLen: (it.dialogue||[]).length,
+      answer: it.answer||''
     };
   });
 }
@@ -3239,7 +3258,10 @@ function getChangedItems() {
         (it.dueDate||'') !== b.dueDate ||
         !!it.deferred !== b.deferred ||
         !!it.priority !== b.priority ||
-        !!it.memFlag !== b.memFlag) {
+        !!it.memFlag !== b.memFlag ||
+        (it.text||'') !== b.text ||
+        (it.dialogue||[]).length !== b.dialogueLen ||
+        (it.answer||'') !== b.answer) {
       changed.add(it.id);
     }
   });
@@ -3312,8 +3334,10 @@ function showTab(t,btn){
   document.body.className=document.body.className.replace(/\btab-\S+/g,'').trim();
   document.body.classList.add('tab-'+t);
   if(t==='notes'){fSt='open';fReminder=false;fDue=null;fCreated=null;fFlow=null;const df=document.getElementById('due-filter');if(df)df.value='';const wrap=document.getElementById('due-custom-wrap');if(wrap)wrap.style.display='none';const cf=document.getElementById('created-filter');if(cf)cf.value='';}
-  if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;const _hasOpenState=(S.road||[]).some(r=>r.kind==='phase'&&r.open===true);if(!_hasOpenState)(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
-  if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();}
+  if(t==='roadmap'){initRoadmap();if(!_rmTabVisited){_rmTabVisited=true;// First visit only: collapse all phases unless data has open:true
+const _hasOpenState=(S.road||[]).some(r=>r.kind==='phase'&&r.open===true);if(!_hasOpenState)(S.road||[]).forEach(r=>{if(r.kind==='phase')r.open=false;});// Restore persisted phase states from localStorage
+try{const saved=localStorage.getItem('oc_road_phase_states');if(saved){const states=JSON.parse(saved);(S.road||[]).forEach(r=>{if(r.kind==='phase'&&states[r.id]!==undefined)r.open=!!states[r.id];});}}catch(e){}}roadLevel=0;renderGantt();setTimeout(()=>ganttScrollToday(),100);}
+  if(t==='refs'){rfBuildKwSelects();showRfTab('rf-all',document.querySelector('#panel-refs .rf-nav[onclick*="rf-all"]'));uapLoad();renderBookStats();}
   if(t==='settings'){kwRender();ctRenderAll();dmHealthCheck();dmStorageDial();loadBookStatsInputs();}
   if(t==='outreach'){const ow=document.getElementById('ot-cards-wrap');const och=document.getElementById('ot-master-chev');if(ow)ow.style.display=_otMasterCollapsed?'none':'block';if(och)och.className='inp-collapse-chev'+(_otMasterCollapsed?'':' open');OT.forEach(c=>c._open=false);renderOT();if(S.leads&&S.leads.length){setTimeout(()=>renderLeads(S.leads),50);}}
   // Persist active tab across reloads
@@ -3338,7 +3362,6 @@ function showDeckTab(t,btn){
   document.getElementById('panel-'+t).classList.add('active');
   const fr=document.getElementById('filter-row');
   if(fr)fr.style.display='none';
-  try{localStorage.setItem('oc_active_tab',t);}catch(e){}
 }
 
 function showHelpTab(t,btn){
@@ -3575,7 +3598,9 @@ function iVis(it){
       // change happened this session regardless of what dueDate the defer was set to).
       if(!changedSet.has(it.id)) return false;
       const today = todayStr();
-      const changed = it.completedDate ? it.completedDate.slice(0,10) : today;
+      // Always use today as the change date — the change happened this session, so it's always today.
+      // Using completedDate as proxy was wrong: items completed weeks ago but edited today would be excluded.
+      const changed = today;
       const now = new Date();
       if(fCreated==='today'){
         if(changed!==today) return false;
@@ -5394,6 +5419,8 @@ function setRoadLevel(level){
   // level 1 = phases+gates only (collapse tasks)
   // level 2 = full
   S.road.forEach(r=>{if(r.kind==='phase')r.open=(level>=2);});
+  // Persist phase states to localStorage
+  try{const states={};(S.road||[]).forEach(r=>{if(r.kind==='phase')states[r.id]=!!r.open;});localStorage.setItem('oc_road_phase_states',JSON.stringify(states));}catch(e){}
   // Update expand/collapse button labels to show next action
   const expBtn=document.getElementById('road-expand-btn');
   const colBtn=document.getElementById('road-collapse-btn');
@@ -5440,6 +5467,8 @@ function toggleRoadOpenFilter(){
 function toggleGanttPhase(pid){
   const ph=S.road.find(r=>r.id===pid);if(!ph)return;
   ph.open=!ph.open;
+  // Persist all phase open states to localStorage
+  try{const states={};(S.road||[]).forEach(r=>{if(r.kind==='phase')states[r.id]=!!r.open;});localStorage.setItem('oc_road_phase_states',JSON.stringify(states));}catch(e){}
   save();renderGantt();
 }
 
@@ -7409,20 +7438,14 @@ try{const _at=localStorage.getItem('oc_active_tab');if(_at&&_at!=='notes'){const
 // Roadmap is default tab — init and render immediately
 roadLevel=1;
 migrateDialogue();ctLoad();initRoadmap();renderGantt();setTimeout(()=>ganttScrollToday(),150);initSettings();kwRender();ctRenderAll();
-// Always establish clean panel state on init (Safari PWA cached-DOM fix)
-showTab('notes', document.getElementById('tab-notes'));
 // Restore last active tab from previous session
 (function(){
   try{
     const saved = localStorage.getItem('oc_active_tab');
-    const valid = ['roadmap','notes','refs','outreach','help','settings','style'];
+    const valid = ['roadmap','notes','refs','outreach','help','settings'];
     if(saved && valid.includes(saved) && saved !== 'roadmap'){
-      if(saved==='style'){
-        showDeckTab('style',null);
-      }else{
-        const btn=document.getElementById('tab-'+saved);
-        showTab(saved,btn);
-      }
+      const btn = document.querySelector('[onclick*="showTab(\''+saved+'\'"]') || document.getElementById('tab-'+saved);
+      showTab(saved, btn);
     }
   }catch(e){}
 })();
