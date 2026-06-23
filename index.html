@@ -188,7 +188,7 @@ body::before{display:none}
 .hd-project-pill{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#f0ebe2;letter-spacing:.01em;text-transform:none;border:1.5px solid rgba(255,255,255,0.30);border-radius:5px;padding:2px 9px 3px;background:rgba(255,255,255,0.07);cursor:default;display:inline-block;transition:background .15s,border-color .15s}
 .hd-project-pill:hover{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.52)}
 .hd-project-pill em{font-style:italic;color:#c8bfa8}
-.hd-subtitle{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,0.55);line-height:1;font-style:normal}
+.hd-subtitle{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#f0a030;line-height:1;font-style:normal}
 .hd-sync-badge{font-family:'Source Code Pro',monospace;font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#f0a030;line-height:1;display:none;gap:4px;align-items:center}
 .hd-sync-badge.visible{display:flex}
 .hd-stats-inline{display:flex;align-items:center;gap:0;flex:1;overflow:hidden}
@@ -1249,7 +1249,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <span class="hd-title">
       PROJECT
       <span class="hd-project-pill" title="Switch project (coming soon)"><em>Over&#8209;classified</em></span>
-      <span class="hd-subtitle" id="hd-subtitle"></span>
+      <span class="hd-subtitle" id="hd-subtitle">&#8212; syncing…</span>
       <span class="hd-sync-badge" id="hd-sync-badge">&#8593; <span id="hd-sync-count">0</span> to sync</span>
     </span>
     <div class="hd-search-wrap">
@@ -1642,28 +1642,27 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <tr style="background:var(--separator)"><td colspan="3" style="padding:3px 8px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Back Matter</td></tr>
         <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Conclusion</td><td></td></tr>
         <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">End Notes</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A1</td><td style="color:var(--label-secondary)">Sample Messages and Members of Congress</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A2</td><td style="color:var(--label-secondary)">Secrecy Framework: Laws, Actions, Operations</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A3</td><td style="color:var(--label-secondary)">Secret Clearance Levels</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A4</td><td style="color:var(--label-secondary)">The 1971 Accidents Measures Agreement</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A5</td><td style="color:var(--label-secondary)">The Condon Report Contradicts Itself</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A6</td><td style="color:var(--label-secondary)">The UAP Observables</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A7</td><td style="color:var(--label-secondary)">Drones Are Not UAP, or Are They?</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A8</td><td style="color:var(--label-secondary)">Theoretical Propulsion Systems</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A9</td><td style="color:var(--label-secondary)">UAP Databases, Trends, and Patterns</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A10</td><td style="color:var(--label-secondary)">U.S. Public Opinion on UAP, 1966–2025</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A11</td><td style="color:var(--label-secondary)">Table of Sightings</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A12</td><td style="color:var(--label-secondary)">On the Record</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A13</td><td style="color:var(--label-secondary)">UAP Threats</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A14</td><td style="color:var(--label-secondary)">Table of Figures</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">A15</td><td style="color:var(--label-secondary)">Quotations</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Further Reading</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Bibliography</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Glossary</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Index</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">Acknowledgements</td><td></td></tr>
-        <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">About the Author</td><td></td></tr>
+        <tr><td class="ch-num" style="color:var(--label-secondary)">A1–A15</td><td style="color:var(--label-secondary)">Appendices</td><td></td></tr>
       </tbody></table>
+    </div>
+    <!-- BOOK STATS PANEL -->
+    <div class="s-block" style="margin-top:12px">
+      <h3>Book stats</h3>
+      <table style="width:100%;border-collapse:collapse;font-family:'Source Code Pro',monospace;font-size:11px">
+        <tbody>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Chapters</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)">18</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Parts</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)">IV</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Appendices</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)">15</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Word count</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-words">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Citations</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-citations">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Unique sources</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-sources">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Primary sources</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-primary">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Images</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-images">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0;border-bottom:1px solid var(--separator)">Author drawings</td><td style="text-align:right;font-weight:700;color:var(--label-primary);padding:4px 0;border-bottom:1px solid var(--separator)" id="stat-drawings">—</td></tr>
+          <tr><td style="color:var(--label-secondary);padding:4px 0">Master version</td><td style="text-align:right;font-weight:700;color:var(--accent);padding:4px 0" id="stat-version">v386</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:9px;color:var(--label-secondary);margin-top:6px;font-family:'Source Code Pro',monospace;letter-spacing:.05em">Update stats via Settings → General when master changes.</div>
     </div>
   </div>
 </div></div>
