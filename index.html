@@ -1682,6 +1682,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             <td style="text-align:right;font-weight:700;color:var(--label-primary);padding:5px 0;border-bottom:1px solid var(--separator)" id="bs-drawings">—</td>
           </tr>
           <tr>
+            <td style="color:var(--label-secondary);padding:5px 0;border-bottom:1px solid var(--separator)">Index entries</td>
+            <td style="text-align:right;font-weight:700;color:var(--label-primary);padding:5px 0;border-bottom:1px solid var(--separator)" id="bs-index">—</td>
+          </tr>
+          <tr>
             <td style="color:var(--label-secondary);padding:5px 0;border-bottom:1px solid var(--separator)">Estimated pages (print)</td>
             <td style="text-align:right;font-weight:700;color:var(--label-primary);padding:5px 0;border-bottom:1px solid var(--separator)" id="bs-pages">—</td>
           </tr>
@@ -2298,6 +2302,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Images</label><input id="bs-set-images" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Quotations</label><input id="bs-set-quotations" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Author drawings</label><input id="bs-set-drawings" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
+            <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Index entries</label><input id="bs-set-index" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Est. pages (print)</label><input id="bs-set-pages" type="text" placeholder="—" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
             <div><label style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--label-secondary)">Master version</label><input id="bs-set-version" type="text" placeholder="v386" class="inp-ta" style="width:100%;padding:5px 8px;font-size:13px;border-radius:6px;border:1px solid var(--separator);background:var(--input-bg);color:var(--label-primary);margin-top:3px"></div>
           </div>
@@ -5478,7 +5483,7 @@ function openGanttPanel(kind,phaseId){
 
 /* ── BOOK STATS ── */
 function saveBookStats(){
-  const fields=['words','paragraphs','citations','sources','images','quotations','drawings','pages','version'];
+  const fields=['words','paragraphs','citations','sources','images','quotations','drawings','index','pages','version'];
   if(!S.settings)S.settings={};
   if(!S.settings.bookStats)S.settings.bookStats={};
   fields.forEach(f=>{
@@ -5491,7 +5496,7 @@ function saveBookStats(){
 }
 function loadBookStatsInputs(){
   const bs=(S.settings&&S.settings.bookStats)||{};
-  ['words','paragraphs','citations','sources','images','quotations','drawings','pages','version'].forEach(f=>{
+  ['words','paragraphs','citations','sources','images','quotations','drawings','index','pages','version'].forEach(f=>{
     const el=document.getElementById('bs-set-'+f);
     if(el)el.value=bs[f]||'';
   });
@@ -5499,7 +5504,7 @@ function loadBookStatsInputs(){
 function renderBookStats(){
   const bs=(S.settings&&S.settings.bookStats)||{};
   const map={words:'bs-words',paragraphs:'bs-paragraphs',citations:'bs-citations',
-    sources:'bs-sources',images:'bs-images',quotations:'bs-quotations',drawings:'bs-drawings',pages:'bs-pages',version:'bs-version'};
+    sources:'bs-sources',images:'bs-images',quotations:'bs-quotations',drawings:'bs-drawings',index:'bs-index',pages:'bs-pages',version:'bs-version'};
   Object.entries(map).forEach(([k,id])=>{
     const el=document.getElementById(id);
     if(el)el.textContent=bs[k]||'—';
