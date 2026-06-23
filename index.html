@@ -636,7 +636,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 .price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#3C3C43}
 .price-row .val{font-family:'Source Code Pro',monospace;color:var(--label-primary);font-weight:500}
 .price-row.net .val{color:var(--done-fg);font-weight:600}
-.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:rgba(255,255,255,0.94)}
+.style-grid{display:grid;grid-template-columns:1fr 280px 340px;gap:0;background:rgba(255,255,255,0.94)}
 .style-col{padding:20px 32px;background:rgba(255,255,255,0.94)}
 .style-col+.style-col{border-left:1px solid var(--separator)}
 .s-block{margin-bottom:20px}
@@ -1625,6 +1625,11 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     <div class="s-block"><h3>AI-speak watch-list</h3><span class="aiterm">institutional</span><span class="aiterm">architecture</span><span class="aiterm">framework</span><span class="aiterm">consistency of</span><span class="aiterm">durable</span><span class="aiterm">the record</span><span class="aiterm">it is worth noting</span><span class="aiterm">underscores</span><span class="aiterm">highlights</span><span class="aiterm">demonstrates</span><span class="aiterm">showcases</span><span class="aiterm">delves</span><span class="aiterm">nuanced</span><span class="aiterm">multifaceted</span><span class="aiterm">robust</span><span class="aiterm">paradigm</span><span class="aiterm">tapestry</span><span class="aiterm">at its core</span><span class="aiterm">in the realm of</span><span class="aiterm">resists [noun]</span><span class="aiterm">lens (metaphor)</span><span class="aiterm">genuinely</span><span class="aiterm">straightforward</span></div>
     <div class="s-block"><h3>Capitalization &amp; grammar</h3><div class="s-rule"><span>U.S. Government</span> &mdash; periods, capital G</div><div class="s-rule">Named institutions singular &mdash; <em>Congress has; AARO is</em></div><div class="s-rule">Pronouns for institutions: <span>it/its</span></div><div class="s-rule"><span>phenomena</span> is plural &middot; <span>data</span> is plural</div><div class="s-rule"><span>materiel</span> = military &middot; <span>material</span> = everything else</div><div class="s-rule"><span>Over-classified</span> hyphenated in all body text</div><div class="s-rule">Chapter references: spell out &ldquo;Chapter&rdquo; never &ldquo;Ch.&rdquo;</div></div>
     <div class="s-block"><h3>Image rules</h3><div class="s-rule">All captions: <span>Fig. N.N</span></div><div class="s-rule">Post-caption paragraph: always <span>TextOpen</span></div><div class="s-rule">Print: 300 DPI min, 1,275px wide min</div><div class="s-rule">Ebook: 1,600px wide @ 80% JPEG quality</div></div>
+    </div>
+  </div>
+  </div>
+  <!-- Book stats tile (col 2) -->
+  <div class="style-col" style="border-left:1px solid var(--separator);padding:20px 24px;align-self:start">
     <div class="s-block">
       <h3>Book stats</h3>
       <table style="width:100%;border-collapse:collapse;font-family:'Source Code Pro',monospace;font-size:11px">
@@ -1676,9 +1681,10 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         </tbody>
       </table>
       <div style="font-size:9px;color:var(--label-secondary);margin-top:8px;font-family:'Source Code Pro',monospace;letter-spacing:.05em;line-height:1.5">Update via Settings → General when master changes.</div>
-    </div></div>
+    </div>
   </div>
-  <div class="style-col">
+  <!-- Chapter map tile (col 3) -->
+  <div class="style-col" style="border-left:1px solid var(--separator);padding:20px 24px;overflow-y:auto;max-height:calc(100vh - 120px)">
     <div class="s-block"><h3>Chapter map</h3>
       <table class="ch-table"><thead><tr><th style="width:28px">Ch</th><th>Title</th><th style="width:160px">Part</th></tr></thead><tbody>
         <tr style="background:var(--separator)"><td colspan="3" style="padding:3px 8px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--label-secondary)">Front Matter</td></tr>
@@ -1713,7 +1719,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <tr><td class="ch-num" style="color:var(--label-secondary)">—</td><td style="color:var(--label-secondary)">End Notes</td><td></td></tr>
         <tr><td class="ch-num" style="color:var(--label-secondary)">A1–A15</td><td style="color:var(--label-secondary)">Appendices</td><td></td></tr>
       </tbody></table>
-    </div>
     </div>
   </div>
 </div></div>
