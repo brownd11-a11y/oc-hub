@@ -1678,6 +1678,17 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 <!-- OUTREACH -->
 <div class="panel" id="panel-outreach"><div class="ot-wrap">
+  <!-- OT Select toolbar row — matches Notes Row 2 structure -->
+  <div id="ot-toolbar-row" style="display:flex;gap:6px;align-items:center;padding:4px 0 8px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:10px">
+    <button class="select-mode-btn" id="ot-batch-btn" onclick="otBatchToggle()" title="Select contacts" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+  </div>
+  <div class="batch-bar" id="ot-batch-bar">
+    <span class="batch-ct" id="ot-batch-ct">0 selected</span>
+    <button class="batch-btn bb-accept" onclick="otBatchConfirm()">&#10003; Confirmed</button>
+    <button class="batch-btn bb-done" onclick="otBatchClose()">&#10003; Closed</button>
+    <button class="batch-btn bb-delete" onclick="otBatchDelete()">&#128465; Delete</button>
+    <button class="batch-btn bb-cancel" onclick="otBatchToggle()">&#10005; Cancel</button>
+  </div>
 
   <!-- GMAIL LEADS PANEL -->
   <div class="leads-panel" id="leads-panel">
@@ -1743,15 +1754,9 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <button class="ot-add-btn" onclick="addContact()">Add Contact</button>
   </div>
-  <div class="inp-collapse-bar" id="ot-master-bar" onclick="otToggleMaster()" style="margin-bottom:8px;border-radius:8px;display:flex;align-items:center">
+  <div class="inp-collapse-bar" id="ot-master-bar" onclick="otToggleMaster()" style="margin-bottom:8px;border-radius:8px">
     <span class="inp-collapse-label" id="ot-master-label">&#128101; Contacts</span>
-    <span class="inp-collapse-chev" id="ot-master-chev" style="margin-right:auto">&#9660;</span>
-    <button class="select-mode-btn" id="ot-batch-btn" onclick="event.stopPropagation();otBatchToggle()" title="Select contacts to delete" style="flex:none;height:26px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 10px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07);margin-right:4px">&#9745; Select</button>
-  </div>
-  <div class="batch-bar" id="ot-batch-bar" style="display:none;align-items:center;gap:8px;padding:6px 12px;background:#fff8e8;border-bottom:1px solid #e8c84a;font-size:12px;margin-bottom:8px;border-radius:6px">
-    <span id="ot-batch-ct">0 selected</span>
-    <button class="batch-btn bb-delete" onclick="otBatchDelete()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #e05;background:#fff0f3;color:#c00;cursor:pointer">&#128465; Delete</button>
-    <button onclick="otBatchToggle()" style="font-family:'Source Code Pro',monospace;font-size:11px;padding:4px 12px;border-radius:5px;border:1px solid #ccc;background:#fff;color:#666;cursor:pointer;margin-left:auto">Cancel</button>
+    <span class="inp-collapse-chev" id="ot-master-chev">&#9660;</span>
   </div>
   <div id="ot-cards-wrap" style="display:none">
     <div class="ot-cards" id="ot-cards"></div>
@@ -1850,14 +1855,20 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
       <!-- ALL RESOURCES -->
       <div class="rf-spanel" id="rf-all">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:10px">
+          <button class="select-mode-btn" id="rf-batch-btn" onclick="rfBatchToggle()" title="Select resources" style="flex:none;height:32px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 14px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
+          <span style="width:1px;height:20px;background:var(--separator);flex-shrink:0"></span>
           <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
-          <button class="select-mode-btn" id="rf-batch-btn" onclick="rfBatchToggle()" title="Select resources to delete" style="flex:none;height:28px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid #C6C6C8;border-radius:6px;background:#fff;color:#3C3C43;padding:0 10px;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.07)">&#9745; Select</button>
           <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
           <span style="margin-left:auto;display:flex;gap:6px">
             <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
             <button class="iabtn" onclick="rfCollapseAll()">Collapse All</button>
           </span>
+        </div>
+        <div class="batch-bar" id="rf-batch-bar">
+          <span class="batch-ct" id="rf-batch-ct">0 selected</span>
+          <button class="batch-btn bb-delete" onclick="rfBatchDelete()">&#128465; Delete</button>
+          <button class="batch-btn bb-cancel" onclick="rfBatchToggle()">&#10005; Cancel</button>
         </div>
         <div id="rf-cat-container"></div>
         <div id="rf-empty" class="rf-empty" style="display:none">No references yet.</div>
@@ -6525,20 +6536,39 @@ let _otMasterCollapsed = true;
 let _otBatchSel=new Set();let _otBatchMode=false;
 function otBatchToggle(){
   _otBatchMode=!_otBatchMode;_otBatchSel.clear();
-  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
-  if(bar)bar.style.display=_otBatchMode?'flex':'none';
-  if(btn)btn.style.background=_otBatchMode?'rgba(61,90,153,0.12)':'#fff';
+  const bar=document.getElementById('ot-batch-bar');
+  const btn=document.getElementById('ot-batch-btn');
+  if(bar)bar.classList.toggle('active',_otBatchMode);
+  if(btn){btn.style.background=_otBatchMode?'rgba(61,90,153,0.12)':'#fff';btn.style.color=_otBatchMode?'#3d5a99':'#3C3C43';}
   document.querySelectorAll('.ot-item-cb').forEach(cb=>{cb.style.display=_otBatchMode?'inline-block':'none';cb.checked=false;});
   otBatchUpdateBar();
 }
-function otBatchToggleItem(id,el){if(_otBatchSel.has(id))_otBatchSel.delete(id);else _otBatchSel.add(id);otBatchUpdateBar();}
-function otBatchUpdateBar(){const ct=document.getElementById('ot-batch-ct');if(ct)ct.textContent=_otBatchSel.size+' selected';}
+function otBatchToggleItem(id,el){
+  if(_otBatchSel.has(id))_otBatchSel.delete(id);else _otBatchSel.add(id);
+  otBatchUpdateBar();
+}
+function otBatchUpdateBar(){
+  const ct=document.getElementById('ot-batch-ct');
+  if(ct)ct.textContent=_otBatchSel.size+' selected';
+}
+function _otBatchSetStatus(status,label){
+  if(!_otBatchSel.size)return;
+  _otBatchSel.forEach(id=>{const c=OT.find(x=>x.id===id);if(c)c.status=status;});
+  otSave();_otBatchSel.clear();_otBatchMode=false;
+  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
+  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
+  renderOT();
+}
+function otBatchConfirm(){_otBatchSetStatus('confirmed','confirmed');}
+function otBatchClose(){_otBatchSetStatus('closed','closed');}
 function otBatchDelete(){
   if(!_otBatchSel.size)return;
   if(!confirm('Delete '+_otBatchSel.size+' contact'+(_otBatchSel.size===1?'':'s')+'?'))return;
-  OT=OT.filter(c=>!_otBatchSel.has(c.id));otSave();_otBatchSel.clear();_otBatchMode=false;
+  OT=OT.filter(c=>!_otBatchSel.has(c.id));otSave();
+  _otBatchSel.clear();_otBatchMode=false;
   const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
-  if(bar)bar.style.display='none';if(btn)btn.style.background='#fff';renderOT();
+  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
+  renderOT();
 }
 function otToggleMaster(){
   _otMasterCollapsed = !_otMasterCollapsed;
@@ -6675,7 +6705,9 @@ function renderOT(){
     const isOD=c.dueDate&&c.status!=='confirmed'&&c.status!=='closed'&&new Date(c.dueDate+'T23:59:59')<new Date();
     // HEAD
     out+=`<div class="ot-card" id="otcard-${c.id}">`;
-    out+=`<div class="ot-card-head" onclick="otToggle('${c.id}')">`;
+    out+=`<div class="ot-card-head" style="display:flex;align-items:center;gap:6px">`;
+    out+=`<input type="checkbox" class="ot-item-cb" id="ot-cb-${c.id}" onclick="event.stopPropagation();otBatchToggleItem('${c.id}',this)" style="display:none;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0">`;
+    out+=`<div onclick="otToggle('${c.id}')" style="display:flex;align-items:center;gap:6px;flex:1;cursor:pointer">`;
     out+=`<span class="ot-card-chevron${c._open?' open':''}">&#9658;</span>`;
     out+=`<span class="ot-card-name">${esc(c.name)}</span>`;
     out+=`<span class="ot-card-role">${esc(c.role)}</span>`;
@@ -6684,7 +6716,7 @@ function renderOT(){
     out+=`<span class="ot-status-badge ${otStatusClass(c.status)}">${otStatusLabel(c.status)}</span>`;
     if(c.dueDate)out+=`<span style="font-family:'Source Code Pro',monospace;font-size:9px;color:${isOD?'var(--accent)':'var(--label-secondary)'};white-space:nowrap">${isOD?'OVERDUE ':''}${fmtDate(c.dueDate)}</span>`;
     if(noteCount)out+=`<span class="ot-note-ct">${noteCount} note${noteCount>1?'s':''}</span>`;
-    out+=`</div></div>`;
+    out+=`</div></div></div>`;
     // BODY
     out+=`<div class="ot-card-body${c._open?' open':''}" id="otbody-${c.id}">`;
     // Editable fields grid
@@ -6818,20 +6850,29 @@ function rfCollapseAll(){Object.keys(RF_CATS).forEach(c=>{RF_CAT_COLLAPSED[c]=tr
 let _rfBatchSel=new Set();let _rfBatchMode=false;
 function rfBatchToggle(){
   _rfBatchMode=!_rfBatchMode;_rfBatchSel.clear();
-  const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
-  if(bar)bar.style.display=_rfBatchMode?'flex':'none';
-  if(btn)btn.style.background=_rfBatchMode?'rgba(61,90,153,0.12)':'#fff';
+  const bar=document.getElementById('rf-batch-bar');
+  const btn=document.getElementById('rf-batch-btn');
+  if(bar)bar.classList.toggle('active',_rfBatchMode);
+  if(btn){btn.style.background=_rfBatchMode?'rgba(61,90,153,0.12)':'#fff';btn.style.color=_rfBatchMode?'#3d5a99':'#3C3C43';}
   document.querySelectorAll('.rf-item-cb').forEach(cb=>{cb.style.display=_rfBatchMode?'inline-block':'none';cb.checked=false;});
   rfBatchUpdateBar();
 }
-function rfBatchToggleItem(id,el){if(_rfBatchSel.has(id))_rfBatchSel.delete(id);else _rfBatchSel.add(id);rfBatchUpdateBar();}
-function rfBatchUpdateBar(){const ct=document.getElementById('rf-batch-ct');if(ct)ct.textContent=_rfBatchSel.size+' selected';}
+function rfBatchToggleItem(id,el){
+  if(_rfBatchSel.has(id))_rfBatchSel.delete(id);else _rfBatchSel.add(id);
+  rfBatchUpdateBar();
+}
+function rfBatchUpdateBar(){
+  const ct=document.getElementById('rf-batch-ct');
+  if(ct)ct.textContent=_rfBatchSel.size+' selected';
+}
 function rfBatchDelete(){
   if(!_rfBatchSel.size)return;
   if(!confirm('Delete '+_rfBatchSel.size+' resource'+(_rfBatchSel.size===1?'':'s')+'?'))return;
-  RF=RF.filter(r=>!_rfBatchSel.has(r.id));rfSave();_rfBatchSel.clear();_rfBatchMode=false;
+  RF=RF.filter(r=>!_rfBatchSel.has(r.id));rfSave();
+  _rfBatchSel.clear();_rfBatchMode=false;
   const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
-  if(bar)bar.style.display='none';if(btn)btn.style.background='#fff';rfRender();
+  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
+  rfRender();
 }
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
@@ -7146,6 +7187,7 @@ function rfRender(){
       var editLbl=rfEditId===r.id?'Cancel':'Edit';
       var labelTxt=r.label||r.kw||'';
       html+='<tr>';
+      html+='<td style="width:28px;padding-right:4px"><input type="checkbox" class="rf-item-cb" id="rf-cb-'+r.id+'" onclick="rfBatchToggleItem(\''+r.id+'\',this)" style="display:none;accent-color:var(--accent);width:15px;height:15px;vertical-align:middle"></td>';
       html+='<td style="white-space:nowrap;font-family:\'Source Code Pro\',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--label-primary);padding-right:8px">'+esc(labelTxt)+'</td>';
       html+='<td>'+(r.url?'<a class="rf-url-link" href="'+esc(r.url)+'" target="_blank">'+esc(trunc)+'</a>':'—')+'</td>';
       html+='<td class="rf-desc">'+esc(r.desc)+stamps+'</td>';
