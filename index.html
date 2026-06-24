@@ -1412,8 +1412,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <option value="changed-desc">Changed ↓</option>
           <option value="changed-asc">Changed ↑</option>
         </select>
-        <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Collapse</button>
-        <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Expand</button>
+        <button class="gpill" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="display:none">&#9654; Expand</button>
+        <button class="gpill" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="display:none">&#9664; Collapse</button>
       </div>
       <!-- Inline date range wrappers — appear when range is selected, pushed outside the flex:1 block -->
       <span id="due-custom-wrap" style="display:none;align-items:center;gap:4px;flex-shrink:0">
@@ -1831,8 +1831,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
         <option value="Author">Author</option>
         <option value="Agent">Agent</option>
       </select>
-      <button class="iabtn" onclick="otExpandAll()">Expand All</button>
-      <button class="iabtn" onclick="otCollapseAll()">Collapse All</button>
+      <button class="gpill" onclick="otExpandAll()">&#9654; Expand</button>
+      <button class="gpill" onclick="otCollapseAll()">&#9664; Collapse</button>
       <button class="road-open-filter-btn active" id="ot-open-btn" onclick="toggleOTFilter()">Open Only</button>
     </span>
   </div>
@@ -1980,8 +1980,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <select class="rf-filter-sel" id="rf-filter-kw" onchange="rfRender()" style="font-size:11px"><option value="">All Tags</option></select>
           <span id="rf-count" style="font-family:'Source Code Pro',monospace;font-size:10px;color:var(--label-secondary)"></span>
           <span style="margin-left:auto;display:flex;gap:6px">
-            <button class="iabtn" onclick="rfExpandAll()">Expand All</button>
-            <button class="iabtn" onclick="rfCollapseAll()">Collapse All</button>
+            <button class="gpill" onclick="rfExpandAll()">&#9654; Expand</button>
+            <button class="gpill" onclick="rfCollapseAll()">&#9664; Collapse</button>
           </span>
         </div>
         <div class="batch-bar" id="rf-batch-bar">
@@ -3794,23 +3794,24 @@ function _notesGroupKey(it){
     const d=(it.completedDate||it.dueDate||it.created||'').slice(0,10);
     if(!d)return 'no-date';
     const today=todayStr();
-    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
-    const yStr=yesterday.toISOString().slice(0,10);
     if(d===today)return 'today';
-    if(d===yStr)return 'yesterday';
-    if(d>=today.slice(0,7))return 'this-month';
-    return d.slice(0,7); // YYYY-MM
+    const now=new Date();
+    const weekAgo=new Date(now);weekAgo.setDate(now.getDate()-7);
+    const weekAgoStr=weekAgo.toISOString().slice(0,10);
+    const monthAgo=new Date(now);monthAgo.setDate(now.getDate()-30);
+    const monthAgoStr=monthAgo.toISOString().slice(0,10);
+    if(d>=weekAgoStr)return 'last-week';
+    if(d>=monthAgoStr)return 'last-month';
+    return d.slice(0,7); // YYYY-MM desc
   }
   return '';
 }
 function _notesGroupLabel(key){
   const today=todayStr();
-  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
-  const yStr=yesterday.toISOString().slice(0,10);
   const monthLabel=k=>{if(!k||k.length!==7)return k;const [y,m]=k.split('-');const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1];return mn+' '+y;};
   if(key==='today')return 'Today — '+today;
-  if(key==='yesterday')return 'Yesterday — '+yStr;
-  if(key==='this-month')return 'This month';
+  if(key==='last-week')return 'Last 7 days';
+  if(key==='last-month')return 'Last 30 days';
   if(key==='no-date')return 'No date';
   if(/^\d{4}-\d{2}$/.test(key))return monthLabel(key);
   const m={open:'Open',done:'Done',deferred:'Deferred',flow:'For Claude → Dave',reminder:'Reminders',note:'Project Notes',question:'Questions',fordave:'For Dave',untagged:'Untagged'};
@@ -4332,7 +4333,19 @@ function rlist(){
   } else {
     var grps={};
     sortedVisible.forEach(function(it){var k=_notesGroupKey(it);if(!grps[k])grps[k]=[];grps[k].push(it);});
-    notesHtml=Object.keys(grps).sort().map(function(k){
+    var grpOrder=Object.keys(grps).sort(function(a,b){
+      var rank=function(k){
+        if(k==='today')return 0;
+        if(k==='last-week')return 1;
+        if(k==='last-month')return 2;
+        if(k==='yesterday')return 1; // yesterday falls in last-week
+        if(k==='this-month')return 2;
+        if(k==='no-date')return 9999;
+        return 1000-parseInt((k||'0000').replace('-',''));// YYYY-MM desc: newer = lower rank
+      };
+      return rank(a)-rank(b);
+    });
+    notesHtml=grpOrder.map(function(k){
       var col=!!_notesGrpCollapsed[k];
       return '<div class="notes-grp-section">'
         +'<div class="notes-grp-header" onclick="notesToggleGroup(\''+k+'\')">'
