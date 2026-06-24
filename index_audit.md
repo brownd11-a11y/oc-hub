@@ -685,3 +685,13 @@ No missing-term candidates identified. Appendix is poll/survey data. Substantive
 
 *Note: Project Blue Book, CIA, NASA, J. Allen Hynek (as "Hynek Classification"), House Oversight Committee already captured or indexed. A15 is a quotation catalog — most proper names are speakers already indexed or citation sources.*
 
+
+---
+
+## A13 Subheading Changes — Preface + Introduction (June 24, 2026)
+
+| Item | Ch./Section | Old heading | New heading | Status |
+|---|---|---|---|---|
+| S-01 | Preface | Sources and back matter | A note on sources | Pending Dave approval; contingent on E-04 placement decision |
+| E-09 | Introduction | Why this book | The architecture of concealment | Pending Dave approval |
+
