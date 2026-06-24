@@ -273,7 +273,7 @@ body::before{display:none}
 .deck-arrow{font-size:9px;opacity:.7;transition:transform .2s}
 .deck-group:hover .deck-arrow{transform:rotate(180deg)}
 .deck-flyout{position:absolute;top:100%;left:0;background:#ffffff;border:1px solid #C6C6C8;border-top:none;border-radius:0 0 8px 8px;min-width:180px;z-index:200;display:none;flex-direction:column;box-shadow:0 4px 16px rgba(0,0,0,.12)}
-.deck-group:hover .deck-flyout{display:flex}
+.deck-group:hover .deck-flyout,.deck-group.open .deck-flyout{display:flex}
 /* ── MEGA-MENU TAB GROUPS (click-triggered) ── */
 .mega-group{position:relative;display:flex;align-items:flex-end;flex-shrink:0}
 .mega-group .tab{border-radius:6px 6px 0 0}
@@ -1758,14 +1758,14 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 </div>
 
 <!-- DISTRIBUTION -->
-<div class="panel" id="panel-dist">
+<div class="panel" id="panel-dist"><div style="flex:1;overflow-y:auto;padding:0;background:rgba(255,255,255,0.94)">
   <div class="dist-grid">
     <div class="dist-card"><h3>KDP (Amazon)</h3><span class="dist-badge dist-primary">Kindle + POD</span><div class="dist-row"><span class="dist-lbl">Handles</span><span class="dist-val">Kindle ebook + print on demand</span></div><div class="dist-row"><span class="dist-lbl">Exclusivity</span><span class="dist-val">None (KDP Select NOT enrolled)</span></div><div class="dist-row"><span class="dist-lbl">Ebook royalty</span><span class="dist-val">70% at $2.99–$9.99; 35% outside</span></div><div class="dist-row"><span class="dist-lbl">Print royalty</span><span class="dist-val">60% of list minus print cost</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Setup pending</span></div></div>
     <div class="dist-card"><h3>Draft2Digital</h3><span class="dist-badge dist-primary">Primary ebook wide</span><div class="dist-row"><span class="dist-lbl">Reaches</span><span class="dist-val">Apple Books &middot; Kobo &middot; B&amp;N &middot; OverDrive/Libby</span></div><div class="dist-row"><span class="dist-lbl">Royalty</span><span class="dist-val">~60% of list to author</span></div><div class="dist-row"><span class="dist-lbl">Timeline</span><span class="dist-val">3–5 days to all retailers</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Account active &mdash; setup pending</span></div></div>
     <div class="dist-card"><h3>IngramSpark</h3><span class="dist-badge dist-secondary">Print to bookstores/libraries</span><div class="dist-row"><span class="dist-lbl">Trade discount</span><span class="dist-val">Set 55% for return eligibility</span></div><div class="dist-row"><span class="dist-lbl">Setup fee</span><span class="dist-val">$49 title setup (print)</span></div><div class="dist-row"><span class="dist-lbl">Timeline</span><span class="dist-val">5–10 days to catalog</span></div><div class="dist-row"><span class="dist-lbl">Status</span><span class="dist-val">Setup pending</span></div><div class="dist-warn">&#9888; Use a different ISBN than KDP for same print format if distributing both.</div></div>
   </div>
   <div class="dist-note"><strong>Strategy:</strong> KDP handles Amazon Kindle + POD. D2D handles all other ebook retail + libraries. IngramSpark handles bookstore/library print. Do not enroll KDP Select.</div>
-</div>
+</div></div>
 <!-- OUTREACH -->
 <div class="panel" id="panel-outreach"><div class="ot-wrap">
 
@@ -3075,12 +3075,15 @@ function applyData(data) {
     const result = storedItems.map(i => {
       const st = stateMap[i.id] || {};
       const effectiveDone = i.done === true ? true : (localDone[i.id] === true ? true : (st.done !== undefined ? st.done : i.done)); // GitHub done:true always wins
+      // If item was deferred this session, preserve the in-memory dueDate/deferred — GitHub data is stale
+      const sessionDeferred = _sessionDeferredIds.has(i.id);
+      const currentIt = sessionDeferred ? (S.items||[]).find(x=>x.id===i.id) : null;
       return {...i,
         done: effectiveDone,
         completedDate: st.completedDate || i.completedDate || '',
-        // GitHub empty dueDate always wins — it means the date was deliberately cleared
-        dueDate: i.dueDate !== undefined && i.dueDate !== null ? i.dueDate : (st.dueDate || ''),
-        deferred: st.deferred !== undefined ? st.deferred : (i.deferred || false),
+        // Session-deferred items: use in-memory value. Otherwise GitHub empty dueDate wins (deliberate clear).
+        dueDate: sessionDeferred && currentIt ? (currentIt.dueDate||'') : (i.dueDate !== undefined && i.dueDate !== null ? i.dueDate : (st.dueDate || '')),
+        deferred: sessionDeferred && currentIt ? currentIt.deferred : (st.deferred !== undefined ? st.deferred : (i.deferred || false)),
         priority: st.priority !== undefined ? st.priority : (i.priority || false),
         memFlag: st.memFlag !== undefined ? st.memFlag : (i.memFlag || false),
         _exp: st._exp !== undefined ? !!st._exp : false
@@ -3268,6 +3271,7 @@ function _showSavedConfirm(msg) {
 /* ── GITHUB BASELINE — snapshot of state at last GitHub load, for sync diff ── */
 let _ghBaseline = {}; // id -> {done,completedDate,dueDate,deferred,priority,memFlag}
 let _ghBaselineIds = new Set(); // ids present in GitHub at last load
+let _sessionDeferredIds = new Set(); // IDs deferred this session — applyData must not clobber their dueDate/deferred
 
 function captureGhBaseline(items) {
   _ghBaseline = {};
@@ -4491,7 +4495,11 @@ function togDefer(id){
   }
   deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
-    it.deferred=true;it._resurfaced=false;save();render();
+    it.deferred=true;it._resurfaced=false;
+    // Guard against GitHub fetch clobbering the new dueDate this session
+    _sessionDeferredIds.add(it.id);
+    if (_ghBaseline[it.id]) { _ghBaseline[it.id].dueDate = it.dueDate||''; _ghBaseline[it.id].deferred = true; }
+    save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
 }
@@ -4499,7 +4507,11 @@ function dlDefer(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
-    it.deferred=true;it._resurfaced=false;save();render();
+    it.deferred=true;it._resurfaced=false;
+    // Guard against GitHub fetch clobbering the new dueDate this session
+    _sessionDeferredIds.add(it.id);
+    if (_ghBaseline[it.id]) { _ghBaseline[it.id].dueDate = it.dueDate||''; _ghBaseline[it.id].deferred = true; }
+    save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
 }
@@ -4518,6 +4530,7 @@ function checkDeferredResurface() {
     // Case 1: deferred item whose dueDate has passed → promote to open
     if (it.deferred && it.dueDate && it.dueDate < today) {
       it.deferred = false;
+      it.dueDate = ''; // Clear stale past date — prevents GitHub merge from re-surfacing next session
       it._resurfaced = true;
       if (!it.dialogue) it.dialogue = [];
       const alreadyFlagged = it.dialogue.some(d =>
