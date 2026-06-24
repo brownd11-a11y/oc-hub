@@ -2228,8 +2228,34 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
       <!-- REFERENCE -->
       <div class="help-spanel" id="h-reference"><div class="ref-section">
-        <h2 class="help-h2">Reference</h2>
-        <p class="help-p">The Reference deck provides quick access to production and style information. Panels include Passes, Style &amp; Chapter Map, ISBNs &amp; Pricing, and Distribution. These are read-only reference materials updated by Claude at session end.</p>
+        <h2 class="help-h2">Reference Panels</h2>
+        <p class="help-p">The Reference deck lives on the top tab bar. Click <strong>Reference ▾</strong> to open the dropdown and jump directly to any panel. Four panels are available:</p>
+
+        <table class="help-shortcut-table" style="margin-bottom:18px">
+          <tr>
+            <td class="help-sc-key">Passes</td>
+            <td>All Tier A, B, and C pass commands with trigger phrases and scope notes. <button class="iabtn" onclick="showDeckTab('passes',null);showTab=undefined;document.querySelector('[onclick*=\'passes\']')?.classList.add('active')" style="margin-left:8px;padding:3px 10px;font-size:11px" onclick="showDeckTab('passes',document.querySelector('[onclick*=\'passes\']'))">Open Passes →</button></td>
+          </tr>
+          <tr>
+            <td class="help-sc-key">Style &amp; Chapter Map</td>
+            <td>Style rules (prohibited patterns, AI-speak, capitalization, images), live book stats, and the chapter/appendix map. Updated by Claude every 5 master versions.</td>
+          </tr>
+          <tr>
+            <td class="help-sc-key">ISBNs &amp; Pricing</td>
+            <td>All three ISBNs, LCCN, retail pricing, and royalty estimates across KDP, IngramSpark, and Draft2Digital.</td>
+          </tr>
+          <tr>
+            <td class="help-sc-key">Distribution</td>
+            <td>Platform setup status, submission checklists, and distribution notes for each channel.</td>
+          </tr>
+        </table>
+
+        <h3 class="help-h3">Pass Tiers</h3>
+        <p class="help-p"><strong>Tier A — Prose Passes</strong> (A1–A12): Run before any Tier B work. Trigger: <code style="background:rgba(0,0,0,0.07);padding:1px 5px;border-radius:3px">"Prose pass [scope]"</code> or any individual sub-pass command.</p>
+        <p class="help-p"><strong>Tier B — Mechanical Passes</strong> (B1–B7): After Tier A confirmed clean. Each sub-pass is discrete. B3 Endnote Pass is the most complex — see PI for full protocol.</p>
+        <p class="help-p"><strong>Tier C — Production Passes</strong> (C0–C2): After all Tier A and B complete. C0 final darlings review; C1 ebook production; C2 print production.</p>
+
+        <p class="help-p" style="margin-top:12px"><button class="iabtn" onclick="showDeckTab('passes',null)" style="padding:5px 16px">&#9654; Open Passes Panel</button></p>
       </div></div>
 
       <!-- SHORTCUTS -->
