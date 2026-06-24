@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-24T14:30:00Z",
+  "_version": "2026-06-24T15:30:00Z",
   "_schema": 1,
   "items": [
     {
@@ -14825,7 +14825,7 @@
       "id": "i_a13_preface_e01",
       "type": "fordave",
       "tag": "preface",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14837,13 +14837,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Add 'The pattern was too consistent to be coincidence.' between the brushed-aside sentence and 'I came to believe the difficulty was intentional.' See A13_Preface_Intro_Review.md for full ORIGINAL/PROPOSED table."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_preface_e02",
       "type": "fordave",
       "tag": "preface",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14855,13 +14856,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: 'Then the story broke into the open. The New York Times reported in December 2017 on a classified Pentagon program\u2026' See review doc for full table."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_preface_e03",
       "type": "fordave",
       "tag": "preface",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14873,13 +14875,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Move paragraph to position after 'So I kept quiet and shifted from reader to researcher.' Drop final two sentences ('What remained was findable\u2026' and 'This book is the result of\u2026'). See review doc."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_preface_e04",
       "type": "fordave",
       "tag": "preface",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "high",
@@ -14891,13 +14894,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Update 'chapter notes' to 'endnotes' regardless of placement. For placement: recommend moving to end of Introduction (after closing rhetorical questions) where it serves as reader orientation before Part I begins. Dave's call on location."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_preface_s01",
       "type": "fordave",
       "tag": "preface",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14909,13 +14913,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: 'A note on sources'. Contingent on E-04 placement decision. Logged to index_audit.md."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_intro_e05",
       "type": "fordave",
       "tag": "intro",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "high",
@@ -14927,13 +14932,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Delete section entirely. Remove 'December 16, 2017' subheading. Preserved text candidate for Ch.1 or wherever NYT moment is developed in the body. See review doc for full preserved text."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_intro_e06",
       "type": "fordave",
       "tag": "intro",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "high",
@@ -14945,13 +14951,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Cut paragraphs. Retain Hillenkoetter epigraph, opening phenomenon paragraph, and revised thesis (per E-07). All cut text preserved in A13_Preface_Intro_Review.md under E-06 for reuse."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_intro_e07",
       "type": "fordave",
       "tag": "intro",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "high",
@@ -14963,13 +14970,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Single paragraph \u2014 'This book's argument is narrower than the phenomenon itself: whatever these craft are, the Government decided that the public had no right to know about them, and built an architecture to enforce that decision. The architecture had two pillars\u2026' See review doc for full proposed text."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_intro_e09",
       "type": "fordave",
       "tag": "intro",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14981,13 +14989,14 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: 'The architecture of concealment'. Logged to index_audit.md per A13 protocol."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     },
     {
       "id": "i_a13_intro_e10",
       "type": "fordave",
       "tag": "intro",
-      "done": false,
+      "done": true,
       "deferred": false,
       "memFlag": false,
       "priority": "normal",
@@ -14999,7 +15008,8 @@
           "ts": "2026-06-24T14:30:00Z",
           "text": "PROPOSED: Open with 'That architecture is now under pressure.' Integrate Trump order sentence into UAPDA paragraph. See review doc for full proposed text."
         }
-      ]
+      ],
+      "completedDate": "2026-06-24"
     }
   ],
   "road": [
