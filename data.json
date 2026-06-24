@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-24T15:30:00Z",
+  "_version": "2026-06-24T15:45:00Z",
   "_schema": 1,
   "items": [
     {
@@ -15010,6 +15010,294 @@
         }
       ],
       "completedDate": "2026-06-24"
+    },
+    {
+      "id": "i_a13_ch1_e01",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-01 \u2014 VOICE / EM-DASH [A13 Ch.1] / Double em-dash in TextOpen ('when a subject becomes sufficiently embarrassing'). Replace with commas. / PASTE TO FIND \u2192 'When a subject becomes sufficiently embarrassing' / ORIGINAL: When a subject becomes sufficiently embarrassing \u2014 particularly when it touches national security \u2014 minimization becomes a substitute for understanding.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: When a subject becomes sufficiently embarrassing, particularly when it touches national security, minimization becomes a substitute for understanding."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e02",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-02 \u2014 VOICE / CLARITY [A13 Ch.1] / 'The performance described: acceleration, maneuverability, no propulsion signature, fits nothing in any known inventory.' \u2014 colon construction awkward; singular 'fits' with plural subject. / PASTE TO FIND \u2192 'The performance described: acceleration, maneuverability' / ORIGINAL: The performance described: acceleration, maneuverability, no propulsion signature, fits nothing in any known inventory.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: What they describe \u2014 instantaneous acceleration, precision maneuverability, no propulsion signature \u2014 appears in no known inventory. (Em-dash is structural here; no others within three pages.)"
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e03",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "high",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-03 \u2014 FLOW / TYSON PARAGRAPH [A13 Ch.1] / Tyson quotation invoked as authority for a position he does not hold (he is a UAP skeptic). Quote also contains only contraction in the opening ('he's'). Move to conclusion is a non-sequitur. Delete paragraph in full. / PASTE TO FIND \u2192 'Neil deGrasse Tyson has said it plainly' / ORIGINAL: Neil deGrasse Tyson has said it plainly: when evidence points somewhere strange, the right response is rigorous investigation, not retreat. 'The universe,' he's noted, 'is under no obligation to make sense to us.' Officials treated these cases as issues to contain rather than phenomena to understand.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Delete Tyson paragraph entirely. Replace with: Officials treated these cases as issues to contain rather than phenomena to understand. That choice requires explanation. The chapters that follow are one attempt to provide it."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e04",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-04 \u2014 VOICE / EM-DASH [A13 Ch.1] / Washington Flap close: em-dash parenthetical in 'believed \u2014 and stated, on record \u2014 was not a matter of interpretation.' Replace with commas. / PASTE TO FIND \u2192 'controllers, pilots, and radar specialists in the room actually believed' / ORIGINAL: ...controllers, pilots, and radar specialists in the room actually believed \u2014 and stated, on record \u2014 was not a matter of interpretation.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: ...controllers, pilots, and radar specialists in the room actually believed, and stated on the record, was not a matter of interpretation."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e05",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-05 \u2014 FLOW / DOUBLE BEAT [A13 Ch.1] / Washington Flap has two consecutive closing beats making the same point. 'The Air Force watched multiple incursions...The public got a weather report. The file stayed open.' duplicates the stronger close just above it. Cut the second beat. / PASTE TO FIND \u2192 'The Air Force watched multiple incursions over the most protected airspace' / ORIGINAL: The Air Force watched multiple incursions over the most protected airspace in America, and offered an answer it knew was incomplete. The public got a weather report. The file stayed open.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Delete paragraph entirely. Section already closes on 'the operating standard in its earliest form' \u2014 that landing is stronger. The double beat dilutes both."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e06",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-06 \u2014 PARAGRAPH LOGIC / SPLIT [A13 Ch.1] / Green Fireballs: escalation context and Los Alamos conference in same paragraph. Split to give the scientific meeting its own paragraph. Also: 'the country's most formidable authority on nuclear weapons physics' \u2192 'the country's most formidable nuclear weapons physicist' (remove nominalization). / PASTE TO FIND \u2192 'Project Twinkle outlasted Grudge by two years' / ORIGINAL: Project Twinkle outlasted Grudge by two years, but the outcome was the same. The 17th District's commander wrote to Washington in May 1950...",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Break after 'the outcome was the same.' New paragraph opens with the 17th District escalation. Also: 'the country's most formidable authority on nuclear weapons physics' \u2192 'the country's most formidable nuclear weapons physicist'. See review doc for full table."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e07",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-07 \u2014 SENTENCE / NEGATIVE CONSTRUCTION [A13 Ch.1] / DuBose close: 'There was nothing left to lose and no obvious reason to invent it.' Negative construction; affirmative standard applies. / PASTE TO FIND \u2192 'He was in his eighties. There was nothing left to lose' / ORIGINAL: He was in his eighties. There was nothing left to lose and no obvious reason to invent it.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: He was in his eighties, with no motive to invent it and no career left to protect."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e08",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-08 \u2014 FLOW / WESTALL CLOSE [A13 Ch.1] / Westall section ends weakly with passive voice and hedged language. Tighten to land the section. / PASTE TO FIND \u2192 'The anomaly was witnessed. As with the U.S. cases' / ORIGINAL: The anomaly was witnessed. As with the U.S. cases, the witnesses were managed with implausible, mundane, explanations. The file was closed while lacking the inquiry it merits.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Something landed in that field. Two hundred witnesses said so. The Australian government closed the file anyway and has not reopened it in sixty years."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e09",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-09 \u2014 STRUCTURE / SENTENCE PLACEMENT [A13 Ch.1] / Rendlesham: 'The MoD has acknowledged withholding at least eighteen classified files related to the incident' appears in the final paragraph (VA settlement focus) but belongs in the earlier UK MoD response paragraph. Flag for relocation during output \u2014 not a rewrite. / PASTE TO FIND \u2192 'Burroughs's full medical records remain classified. The MoD has acknowledged' / ORIGINAL: Burroughs's full medical records remain classified. The MoD has acknowledged withholding at least eighteen classified files related to the incident.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "STRUCTURAL FLAG: Move 'The MoD has acknowledged withholding at least eighteen classified files related to the incident' to the paragraph immediately following 'The UK MoD eventually labeled the incident of no defence significance.' Attach it there as a second sentence. Dave to confirm before Claude applies."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e10",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-10 \u2014 VOICE / NEGATIVE CONSTRUCTION [A13 Ch.1] / Zimbabwe/Ariel: 'No government moved to investigate, explain, or manage the narrative.' Negative opener. Restructure closing paragraph. / PASTE TO FIND \u2192 'No government moved to investigate, explain, or manage the narrative' / ORIGINAL: No government moved to investigate, explain, or manage the narrative. For an event witnessed by more than sixty children and independently assessed by a journalist, a researcher, and a Harvard psychiatrist, the official silence was complete. The children were left with what they saw, and the adults who believed them were left with the stigma of saying so publicly.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: For an event witnessed by sixty-two children and independently assessed by a journalist, a researcher, and a Harvard psychiatrist, official silence was the only response. Every government with jurisdiction over the case declined to investigate. The children were left with what they saw. The adults who believed them were left with the stigma of saying so."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e11",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-11 \u2014 SENTENCE MECHANICS [A13 Ch.1] / DuBose affidavit: 'signed a sworn affidavit on September 16, 2001. In it he stated that...' \u2014 awkward split. Fold into single sentence. / PASTE TO FIND \u2192 'signed a sworn affidavit on September 16, 2001. In it he stated' / ORIGINAL: Brigadier General Thomas DuBose, Ramey's Chief of Staff at Fort Worth and the senior officer present in the room when the substituted balloon material was photographed, signed a sworn affidavit on September 16, 2001. In it he stated that he and Ramey had been instructed to give the public the weather balloon explanation as a cover story, classified, in his words, 'more than Top Secret. It's beyond that.'",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Brigadier General Thomas DuBose, Ramey's Chief of Staff and the senior officer present when the substituted balloon material was photographed, signed a sworn affidavit on September 16, 2001, stating that he and Ramey had been instructed to give the public the weather balloon explanation as a cover story \u2014 classified, in his words, 'more than Top Secret. It's beyond that.' (Em-dash retained: short functional parenthetical, single use in the paragraph.)"
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch1_e12",
+      "type": "fordave",
+      "tag": "ch1",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-12 \u2014 SENTENCE / NEGATIVE CONSTRUCTION [A13 Ch.1] / Foo Fighters: 'Postwar access to German and Japanese records confirmed no nation held technology matching what was reported.' Negative construction. / PASTE TO FIND \u2192 'Postwar access to German and Japanese records confirmed no nation held' / ORIGINAL: Postwar access to German and Japanese records confirmed no nation held technology matching what was reported.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: Postwar access to German and Japanese records confirmed that neither side possessed technology matching what was reported."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch2_e13",
+      "type": "fordave",
+      "tag": "ch2",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-13 \u2014 CHAPTER CLOSE / ANNOUNCES CH.3 [A13 Ch.2] / 'The next chapter turns to why that record is still incomplete after more than eighty years of observations.' announces Ch.3 rather than landing Ch.2. / PASTE TO FIND \u2192 'The next chapter turns to why that record is still incomplete' / ORIGINAL: They are part of a record the official system has produced, validated, and declined to fully explain. The next chapter turns to why that record is still incomplete after more than eighty years of observations.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: They are part of a record the official system has produced, validated, and declined to fully explain. That is the precise shape of the problem."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch2_e14",
+      "type": "fordave",
+      "tag": "ch2",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-14 \u2014 FLOW / 'Convenient confusion' [A13 Ch.2] / 'a pattern the following chapters document in detail' is a forward announce rather than a landing. / PASTE TO FIND \u2192 'is a pattern the following chapters document in detail' / ORIGINAL: That gap, official reassurance on one side, an absence of credible explanation on the other, is a pattern the following chapters document in detail.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: That gap, official reassurance on one side, an absence of credible explanation on the other, is a pattern. The chapters that follow show how it was built."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch2_e16",
+      "type": "fordave",
+      "tag": "ch2",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "E-16 \u2014 SENTENCE / USS NIMITZ EM-DASH [A13 Ch.2] / 'the man who would become the first CIA director...\u2014 Roscoe Hillenkoetter \u2014' em-dash parenthetical around name. Also 'carries its own irony' slightly precious. / PASTE TO FIND \u2192 'The carrier's name carries its own irony' / ORIGINAL: The carrier's name carries its own irony: the man who would become the first CIA director and publicly accuse the Air Force of silencing personnel on this subject \u2014 Roscoe Hillenkoetter \u2014 served as Admiral Nimitz's Pacific intelligence chief during World War II.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: The carrier's name is not incidental: Roscoe Hillenkoetter, the first CIA director, who would later publicly accuse the Air Force of silencing personnel on this subject, served as Admiral Nimitz's Pacific intelligence chief during World War II."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch2_s01",
+      "type": "fordave",
+      "tag": "ch2",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T15:45:00Z",
+      "text": "S-01 \u2014 SUBHEADING [A13 Ch.2] / 'Convenient confusion' is casual relative to other section headings; does not name the section's actual argument (drone category as institutional buffer). / PASTE TO FIND \u2192 'Convenient confusion' [bheading2] / ORIGINAL: Convenient confusion",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T15:45:00Z",
+          "text": "PROPOSED: 'The drone default'. Names the actual institutional move the section documents. Logged to index_audit.md per A13 protocol."
+        }
+      ]
     }
   ],
   "road": [
