@@ -695,3 +695,5 @@ No missing-term candidates identified. Appendix is poll/survey data. Substantive
 | S-01 | Preface | Sources and back matter | A note on sources | Pending Dave approval; contingent on E-04 placement decision |
 | E-09 | Introduction | Why this book | The architecture of concealment | Pending Dave approval |
 
+
+| S-01 | Ch.2 | Convenient confusion | The drone default | Pending Dave approval |
