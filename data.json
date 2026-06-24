@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-24T12:34:16Z",
+  "_version": "2026-06-24T12:57:10Z",
   "_schema": 1,
   "items": [
     {
@@ -14798,6 +14798,28 @@
       "dueDate": "",
       "completedDate": "",
       "itemUrl": null
+    },
+    {
+      "id": "i_1782305831693",
+      "type": "fordave",
+      "text": "Content_Changes_Log.md retroactive sweep — build complete back matter change record from all prior sessions.\n\nPROPOSED: Claude reads all session note-type hub items chronologically, extracts every new citation, endnote obligation, glossary term, subheading rename, and index candidate introduced since v229, and builds the full Content_Changes_Log.md entries by chapter. This is the prerequisite for B8.\n\nORIGINAL: Content_Changes_Log.md currently has only the Ch.12 entry from June 24, 2026. All prior A12, A13, VP1, VP2, A10, A9 pass additions are unlogged. B8 cannot run cleanly until this sweep is complete.",
+      "done": false,
+      "priority": true,
+      "memFlag": true,
+      "tag": "editorial",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "claude",
+          "text": "Content_Changes_Log.md created June 24 2026 with Ch.12 entry only. All prior session work (A12 grounding pass Ch.1–Ch.18, VP1/VP2, A10 wit pass, A13 Ch.12) is unlogged. Retroactive sweep required before B8 can run. Recommend scheduling as a dedicated half-session task before B8 is triggered.",
+          "ts": "2026-06-24T12:57:10Z"
+        }
+      ],
+      "created": "2026-06-24T12:57:10Z",
+      "dueDate": "",
+      "completedDate": "",
+      "itemUrl": null
     }
   ],
   "road": [
@@ -16247,6 +16269,34 @@
       "completedDate": "",
       "done": false,
       "isGate": true
+    },
+    {
+      "id": "r_b8_retroactive_sweep",
+      "kind": "step",
+      "phase": "rph_tierB",
+      "label": "Content_Changes_Log retroactive sweep (prerequisite for B8)",
+      "note": "Read all prior session notes, extract all new citations/endnotes/glossary/index additions since v229, build complete log entries by chapter. One-time task — half session. Required before B8 can run.",
+      "cmd": null,
+      "targetStart": "",
+      "targetEnd": "2026-07-09",
+      "completedDate": "",
+      "done": false,
+      "isGate": false,
+      "metDate": ""
+    },
+    {
+      "id": "r_b8_back_matter",
+      "kind": "step",
+      "phase": "rph_tierC",
+      "label": "B8 — Back Matter Changes Pass",
+      "note": "Consolidation pass — applies all entries in Content_Changes_Log.md: endnote markers, bibliography entries, glossary updates, index candidates, cross-reference verification. Requires: (1) retroactive sweep complete; (2) all prose locked; (3) Dave explicit go. Run after C0 Final Darlings, before C1 ebook export.",
+      "cmd": "\"Back matter changes pass\"",
+      "targetStart": "",
+      "targetEnd": "2026-07-10",
+      "completedDate": "",
+      "done": false,
+      "isGate": false,
+      "metDate": ""
     }
   ],
   "outreach": [
