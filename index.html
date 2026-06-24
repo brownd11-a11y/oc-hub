@@ -1397,6 +1397,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <option value="status">Status</option>
           <option value="type">Type</option>
           <option value="tag">Tag</option>
+          <option value="changed">Changed date</option>
         </select>
         <select class="dash-sel" id="notes-sort-sel" onchange="setNotesSort(this.value)" title="Sort notes" style="flex:1;min-width:0;height:32px">
           <option value="">— Sort —</option>
@@ -1408,6 +1409,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
           <option value="due-desc">Due ↓</option>
           <option value="created-asc">New ↑</option>
           <option value="created-desc">New ↓</option>
+          <option value="changed-desc">Changed ↓</option>
+          <option value="changed-asc">Changed ↑</option>
         </select>
         <button class="iabtn" id="notes-collapse-all-btn" onclick="notesCollapseAll()" style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Collapse</button>
         <button class="iabtn" id="notes-expand-all-btn"   onclick="notesExpandAll()"   style="flex:1;min-width:0;height:32px;font-size:11px;padding:0;display:none">Expand</button>
@@ -3757,6 +3760,11 @@ function _sortVisible(arr){
     if(key==='alpha'){va=(a.text||'').toLowerCase();vb=(b.text||'').toLowerCase();return asc?va.localeCompare(vb):vb.localeCompare(va);}
     if(key==='due'){va=a.dueDate||'9999';vb=b.dueDate||'9999';return asc?va.localeCompare(vb):vb.localeCompare(va);}
     if(key==='created'){va=a.created||'';vb=b.created||'';return asc?va.localeCompare(vb):vb.localeCompare(va);}
+    if(key==='changed'){
+      // "last meaningful date": completedDate > dueDate > created; most-recent first for desc
+      const chDate=it=>(it.completedDate||it.dueDate||it.created||'').slice(0,10);
+      va=chDate(a);vb=chDate(b);return asc?va.localeCompare(vb):vb.localeCompare(va);
+    }
     if(key==='book'){
       const ra=_bookTagRank(a.tag),rb=_bookTagRank(b.tag);
       if(ra!==rb)return asc?ra-rb:rb-ra;
@@ -3781,9 +3789,29 @@ function _notesGroupKey(it){
   if(_notesGroup==='status')return it.status||'open';
   if(_notesGroup==='type'){if(it.dialogue&&it.dialogue.length)return 'flow';if(it.reminder)return 'reminder';return it.type||'note';}
   if(_notesGroup==='tag')return it.tag||'untagged';
+  if(_notesGroup==='changed'){
+    const d=(it.completedDate||it.dueDate||it.created||'').slice(0,10);
+    if(!d)return 'no-date';
+    const today=todayStr();
+    const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+    const yStr=yesterday.toISOString().slice(0,10);
+    if(d===today)return 'today';
+    if(d===yStr)return 'yesterday';
+    if(d>=today.slice(0,7))return 'this-month';
+    return d.slice(0,7); // YYYY-MM
+  }
   return '';
 }
 function _notesGroupLabel(key){
+  const today=todayStr();
+  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+  const yStr=yesterday.toISOString().slice(0,10);
+  const monthLabel=k=>{if(!k||k.length!==7)return k;const [y,m]=k.split('-');const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m)-1];return mn+' '+y;};
+  if(key==='today')return 'Today — '+today;
+  if(key==='yesterday')return 'Yesterday — '+yStr;
+  if(key==='this-month')return 'This month';
+  if(key==='no-date')return 'No date';
+  if(/^\d{4}-\d{2}$/.test(key))return monthLabel(key);
   const m={open:'Open',done:'Done',deferred:'Deferred',flow:'For Claude → Dave',reminder:'Reminders',note:'Project Notes',question:'Questions',fordave:'For Dave',untagged:'Untagged'};
   return m[key]||key;
 }
