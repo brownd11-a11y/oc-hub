@@ -1,5 +1,5 @@
 {
-  "_version": "2026-06-24T15:45:00Z",
+  "_version": "2026-06-24T16:15:00Z",
   "_schema": 1,
   "items": [
     {
@@ -15296,6 +15296,258 @@
           "from": "claude",
           "ts": "2026-06-24T15:45:00Z",
           "text": "PROPOSED: 'The drone default'. Names the actual institutional move the section documents. Logged to index_audit.md per A13 protocol."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e01",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-01 \u2014 CHAPTER CLOSE / ANNOUNCES CH.4 [A13 Ch.3] / Final sentence 'The next chapter examines what that program produced...' announces Ch.4. Delete; the three sentences before it are the landing. / PASTE TO FIND \u2192 'The next chapter examines what that program produced' / ORIGINAL: Recovering it required starting over. The next chapter examines what that program produced: the first serious analytical tool for identifying a genuinely anomalous sighting.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Delete final sentence. Ch.3 closes on 'Recovering it required starting over.' \u2014 clean and earned."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e02",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-02 \u2014 PARAGRAPH LOGIC / AARO PARA ORDER [A13 Ch.3] / Structural flag: the defunding bill paragraph sits between two paragraphs making the same credibility argument (access claim + Mellon critique). Reorder: access claim \u2192 Mellon critique \u2192 defund bill. Dave to confirm before applying. / PASTE TO FIND \u2192 'This lack of access has heightened congressional concern' / ORIGINAL: [Para order: access claim / defund bill / Mellon critique]",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Reorder to: access claim / Mellon critique / defund bill. Keeps both credibility arguments together, then lands on the defund bill as the consequence. Dave confirm before Claude applies."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e03",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-03 \u2014 VOICE / AARO DEFUND PARA [A13 Ch.3] / 'Accordingly' is bureaucratic; 'a bill has been submitted' is passive. Tighten. / PASTE TO FIND \u2192 'This lack of access has heightened congressional concern of AARO's inability' / ORIGINAL: This lack of access has heightened congressional concern of AARO's inability to fulfill its mission. Accordingly, a bill has been submitted that would defund AARO entirely.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: The access gap has raised serious questions about whether AARO can fulfill its statutory mission. At least one bill in Congress would eliminate the office entirely."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e04",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-04 \u2014 SENTENCE MECHANICS / MISSING PERIOD [A13 Ch.3] / 'The records that survived rarely captured enough of it to permit attribution of the cause' \u2014 missing terminal period. Confirm in master XML (may be extraction artifact). / PASTE TO FIND \u2192 'rarely captured enough of it to permit attribution of the cause' / ORIGINAL: The records that survived rarely captured enough of it to permit attribution of the cause [no period]",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Add period after 'cause'. Verify in master XML before applying \u2014 may be extraction artifact from superscript run."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e05",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-05 \u2014 FLOW / BLUE BOOK CLOSE [A13 Ch.3] / 'The closure of Blue Book ended the counting; but the phenomenon continued.' \u2014 semicolon-but construction breaks rhythm before a landing that wants to punch. / PASTE TO FIND \u2192 'The closure of Blue Book ended the counting; but the phenomenon continued.' / ORIGINAL: The questions of scale, frequency, geographic concentration, and pattern change over time were never consistently asked. The closure of Blue Book ended the counting; but the phenomenon continued.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: The questions of scale, frequency, geographic concentration, and pattern change over time were never consistently asked. Blue Book closed. The counting stopped. The phenomenon continued."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_e06",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-06 \u2014 VOICE / STIGMA CLOSE [A13 Ch.3] / The sentence before 'Forms are easier to build than cultures' is long and weakens the setup. Trim so the punchline arrives cleaner. / PASTE TO FIND \u2192 'A formal reporting mechanism, he observed, had not materially changed reporting behavior' / ORIGINAL: Graves estimated that only about five percent of pilot encounters get formally reported. A formal reporting mechanism, he observed, had not materially changed reporting behavior among active-duty pilots. Forms are easier to build than cultures.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Graves estimated only about five percent of encounters get formally reported. The new form had not materially changed that. Forms are easier to build than cultures."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch3_s01",
+      "type": "fordave",
+      "tag": "ch3",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "S-01 \u2014 SUBHEADING [A13 Ch.3] / 'No system, nor record' \u2014 'nor' as conjunction requires preceding 'neither'; grammatically non-standard as a standalone title. Fix to parallel construction. / PASTE TO FIND \u2192 'No system, nor record' [bheading2] / ORIGINAL: No system, nor record",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: 'No system, no record' \u2014 clean, parallel, grammatically sound, same meaning."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e07",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-07 \u2014 VOICE / AI-SPEAK 'significant' [A13 Ch.4] / 'The Government has known something significant about this for most of that period.' 'Significant' is watch-list; also undersells \u2014 the point is the knowledge was concealed, not merely important. / PASTE TO FIND \u2192 'The Government has known something significant about this' / ORIGINAL: The Government has known something significant about this for most of that period. The American public has not been told.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: The Government has known far more than it has said, for most of that period. The American public has not been told."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e08",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-08 \u2014 PARAGRAPH LOGIC / GRUSCH DUPLICATE [A13 Ch.4] / Grusch's NRO role and 'credible and urgent' IG finding are established in Para 1 then repeated in the opening of Para 2. Trim Para 2 opening. / PASTE TO FIND \u2192 'In July 2023, David Grusch, who had served as the National Reconnaissance Office's representative' / ORIGINAL: In July 2023, David Grusch, who had served as the National Reconnaissance Office's representative to the UAP Task Force and whose Inspector General complaint had been found 'credible and urgent'\u2014testified under oath...",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Open Para 2 with 'In July 2023, Grusch testified under oath before the House Oversight Committee that the U.S. Government had recovered non-human craft and biological material and that those programs had been deliberately concealed from Congress.' Remove the repeated NRO role and IG characterization \u2014 already in Para 1."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e09",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-09 \u2014 STRUCTURE / SOL FOUNDATION SECTION [A13 Ch.4] / 'Scientists enter the field' section is long; SOL Foundation paragraph reads as a catalog entry rather than building the section's argument. THREE OPTIONS \u2014 see review doc. Dave to select before Claude applies. / PASTE TO FIND \u2192 'The SOL Foundation occupies a different lane again.' / ORIGINAL: [SOL Foundation paragraph \u2014 full text in review doc]",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "THREE OPTIONS: A) Trim SOL para to 2 sentences. B) Move section close line to after Galileo Project paragraph, let SCU/SOL be supporting detail. C) Keep as-is by design. Dave to choose."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e10",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-10 \u2014 SENTENCE / EM-DASH (Loeb SAC) [A13 Ch.4] / Em-dash parenthetical in Loeb Science Advisory Council sentence; long parenthetical breaks rhythm. Restructure. / PASTE TO FIND \u2192 'In June 2026, Loeb was tasked by the White House, AARO, ODNI, and the FBI' / ORIGINAL: In June 2026, Loeb was tasked by the White House, AARO, ODNI, and the FBI to assemble and lead a formal UAP Science Advisory Council to the federal government \u2014 the first time a scientist of his standing had been formally chartered to advise the full range of U.S. intelligence and national security agencies on the question.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: In June 2026, the White House, AARO, ODNI, and the FBI formally chartered Loeb to lead a UAP Science Advisory Council to the federal government, the first time a scientist of his standing had been asked to advise the full range of U.S. intelligence and national security agencies on this question."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e11",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-11 \u2014 SENTENCE / ACTIVE VOICE (Area 51) [A13 Ch.4] / 'which the CIA actively encouraged' modifies 'reports' but reads as modifying 'platforms.' Restructure for clarity. / PASTE TO FIND \u2192 'genuine UFO reports, which the CIA actively encouraged, preferring public confusion' / ORIGINAL: Area 51 and Tonopah were used exactly for this purpose: developing and testing platforms so unusual that early sightings near the Nevada test ranges generated genuine UFO reports, which the CIA actively encouraged, preferring public confusion to disclosure of actual capability.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Area 51 and Tonopah were used exactly for this purpose: testing platforms so unusual that early sightings near the Nevada test ranges generated genuine UFO reports. The CIA actively encouraged the confusion. Public misidentification was preferable to disclosing actual capability."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_e12",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "E-12 \u2014 FLOW / ALL-DOMAIN SECTION CLOSE [A13 Ch.4] / Sentence before 'The framework exists. The plumbing does not.' is long and contains 'coalesces,' which is unusual here. Trim setup so the close lands cleaner. / PASTE TO FIND \u2192 'the United States is missing another opportunity to advance public understanding of the phenomenon' / ORIGINAL: Until the data sharing problem is resolved, and until one true domain automatically collects, coalesces, and analyzes UAP data for human review, the United States is missing another opportunity to advance public understanding of the phenomenon. The framework exists. The plumbing does not.",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: Until the data-sharing problem is resolved, the United States continues to miss the signal it has the sensors to collect. The framework exists. The plumbing does not."
+        }
+      ]
+    },
+    {
+      "id": "i_a13_ch4_s02",
+      "type": "fordave",
+      "tag": "ch4",
+      "done": false,
+      "deferred": false,
+      "memFlag": false,
+      "priority": "normal",
+      "created": "2026-06-24T16:15:00Z",
+      "text": "S-02 \u2014 SUBHEADING [A13 Ch.4] / 'Scientists enter the field' is the plainest subheading in either chapter and doesn't name the section's argument. / PASTE TO FIND \u2192 'Scientists enter the field' [bheading2] / ORIGINAL: Scientists enter the field",
+      "dialogue": [
+        {
+          "from": "claude",
+          "ts": "2026-06-24T16:15:00Z",
+          "text": "PROPOSED: 'Science fills the gap' \u2014 names the section's actual argument (independent science doing what government programs refused to)."
         }
       ]
     }
