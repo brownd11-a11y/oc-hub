@@ -697,3 +697,5 @@ No missing-term candidates identified. Appendix is poll/survey data. Substantive
 
 
 | S-01 | Ch.2 | Convenient confusion | The drone default | Pending Dave approval |
+| S-01 | Ch.3 | No system, nor record | No system, no record | Pending Dave approval |
+| S-02 | Ch.4 | Scientists enter the field | Science fills the gap | Pending Dave approval |
