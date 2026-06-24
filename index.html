@@ -1856,8 +1856,8 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 <div class="panel" id="panel-passes"><div class="passes-wrap">
   <p class="passes-intro">Trigger passes by typing the command phrase to Claude with the master uploaded. Scope is set by the command — Claude will report what is already logged clean versus open, and propose a reasonable chunk if the volume is large. Logs are written before every pack.</p>
 
-  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier A &mdash; Prose Passes</h2><span class="pass-tier-tag">Scope by command</span><span class="pass-tier-summary">13 sub-passes · voice, logic, rhythm, wit, grounding, editorial</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
-    <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Triggered by prompt scope, not document structure. Run before any Tier B work on the same content. All thirteen sub-passes run together unless you call one individually.</p>
+  <div class="pass-tier collapsed"><div class="pass-tier-head" onclick="this.parentElement.classList.toggle('collapsed')"><h2>Tier A &mdash; Prose Passes</h2><span class="pass-tier-tag">Scope by command</span><span class="pass-tier-summary">12 sub-passes · voice, logic, rhythm, wit, grounding</span><span class="pass-tier-arrow">▼</span></div><div class="pass-tier-body">
+    <p class="passes-intro" style="margin-top:0;margin-bottom:10px">Triggered by prompt scope, not document structure. Run before any Tier B work on the same content. All eleven sub-passes run together unless you call one individually.</p>
     <table class="pass-table"><thead><tr><th style="width:220px">Command</th><th style="width:140px">Sub-pass</th><th>What it covers</th></tr></thead><tbody>
       <tr><td><span class="pass-cmd">"Prose pass [scope]"</span></td><td><span class="pass-label">Full Tier A</span></td><td class="pass-desc">All eleven sub-passes on the stated scope (e.g. Ch 5, Chs 1–4, book-wide).</td></tr>
       <tr><td><span class="pass-cmd">"Word-by-word [scope]"</span></td><td><span class="pass-label">A1</span></td><td class="pass-desc">Duplicate words, comma splices, doubled punctuation, missing words.</td></tr>
@@ -1872,7 +1872,6 @@ input[type=date].inp-sel{font-size:11px;width:130px}
       <tr><td><span class="pass-cmd">"Wit pass [scope]"</span></td><td><span class="pass-label">A10</span></td><td class="pass-desc">Finds moments for dry observation, irony, or wry wit — after dense exposition, structural absurdity, long evidence chains, or where a flat sentence can be sharpened. Each location gets three options (driest to most pointed). Same delivery format as A9. Ceiling: no trivializing serious claims; dry observation only, not sarcasm.</td></tr>
       <tr><td><span class="pass-cmd">"Appendix tone pass"</span></td><td><span class="pass-label">A11</span></td><td class="pass-desc">Audits all appendices for register compliance. Explanatory appendices carry the full body voice standard. Catalog/reference appendices (lists, bibliography, glossary, index, templates) use a professional reference register — precise, no editorial color. Each appendix classified before auditing. Same delivery format as A9.</td></tr>
       <tr><td><span class="pass-cmd">"Grounding pass [scope]"</span></td><td><span class="pass-label">A12</span></td><td class="pass-desc">Scans for moments where the reader lacks enough context to feel the weight of what is happening — not to follow the argument, but to receive it at full force. Trigger conditions: (1) person introduced consequentially without the one or two facts that make their involvement matter; (2) institutional moment where the reader hasn't been given enough context for a departure to register as a departure; (3) historical event cited as evidence whose significance is asserted rather than grounded; (4) scale or stakes unmarked — classification level, budget figure, procedural step, or access restriction cited without context for what it enables or prevents. Each proposed addition must earn its place: does this make the reader more capable of receiving the next paragraph at full force? Additions are minimal — typically one to three sentences. A longer addition flags a structural issue for fordave. Runs after A9 and A10 are confirmed clean. Delivers review document plus one hub item per proposal. Label sequence: G-01, G-02, etc.</td></tr>
-      <tr><td><span class="pass-cmd">"Editorial pass [scope]"</span></td><td><span class="pass-label">A13</span></td><td class="pass-desc">Unified seven-level editorial read — runs in a single pass per chapter or named section. Replaces running A4–A9 individually when a full sweep is needed. Does not retire A4–A9.<br><strong>Step 0:</strong> Chapter architecture read — governing argument, opening/conclusion alignment, internal order. Report before any proposals.<br><strong>Step 0b:</strong> Subheading audit — flags headings that label topics rather than signal the chapter's argument; proposes renames or additions (S-01, S-02…); logs all changes to index_audit.md for B7c review. No index edits during A13.<br><strong>Level 1</strong> Structure · <strong>2</strong> Paragraph logic · <strong>3</strong> Transitions &amp; flow · <strong>4</strong> Clarity &amp; completeness · <strong>5</strong> Voice + AI-speak (incl. "a lot of") + affirmative construction + em-dash · <strong>6</strong> Sentence mechanics: duplicates, double spaces, stray numerals, superscript placement.<br><strong>Level 7 — Sterling:</strong> Commercial read — hook strength, general reader engagement, the "pass it on" test.<br>3 or fewer proposals → inline in chat. 4 or more → hub items + review document in A9 format. Label sequence: E-01, E-02… (resets per chapter). Sterling proposals: E-series with STERLING tag.</td></tr>
     </tbody></table>
   </div></div>
 
@@ -4499,7 +4498,7 @@ function togDefer(id){
     it.deferred=true;it._resurfaced=false;
     // Guard against GitHub fetch clobbering the new dueDate this session
     _sessionDeferredIds.add(it.id);
-    if (_ghBaseline[it.id]) { _ghBaseline[it.id].dueDate = it.dueDate||''; _ghBaseline[it.id].deferred = true; }
+    // Do NOT patch _ghBaseline — keeping baseline stale ensures Changed filter correctly detects this deferral
     save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
@@ -4511,7 +4510,7 @@ function dlDefer(id){
     it.deferred=true;it._resurfaced=false;
     // Guard against GitHub fetch clobbering the new dueDate this session
     _sessionDeferredIds.add(it.id);
-    if (_ghBaseline[it.id]) { _ghBaseline[it.id].dueDate = it.dueDate||''; _ghBaseline[it.id].deferred = true; }
+    // Do NOT patch _ghBaseline — keeping baseline stale ensures Changed filter correctly detects this deferral
     save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
