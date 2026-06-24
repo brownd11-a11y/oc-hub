@@ -3724,7 +3724,7 @@ function naturalSort(a,b){
   return 0;
 }
 
-function fmtDate(s){if(!s)return'\u2014';const d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
+function fmtDate(s){if(!s)return'\u2014';const ds=String(s).slice(0,10);const d=new Date(ds+'T12:00:00');if(isNaN(d.getTime()))return'\u2014';return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});}
 function todayStr(){return new Date().toISOString().split('T')[0];}
 function isOverdue(due){if(!due)return false;return due<=todayStr();} // past due OR due today — both need attention
 
