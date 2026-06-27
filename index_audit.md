@@ -699,3 +699,12 @@ No missing-term candidates identified. Appendix is poll/survey data. Substantive
 | S-01 | Ch.2 | Convenient confusion | The drone default | Pending Dave approval |
 | S-01 | Ch.3 | No system, nor record | No system, no record | Pending Dave approval |
 | S-02 | Ch.4 | Scientists enter the field | Science fills the gap | Pending Dave approval |
+
+---
+
+## A13 Subheading Changes — Ch.15–18 (v430, June 27, 2026)
+
+A13 subheading change — pending B7c review | Ch. 15 | Old heading: The way forward | New heading: The window
+A13 subheading change — pending B7c review | Ch. 16 | Old heading: The mandate | New heading: The constitutional mandate
+A13 subheading change — pending B7c review | Ch. 16 | Old heading: A system under strain | New heading: The closed loop
+A13 subheading change — pending B7c review | Ch. 18 | Old heading: What we now know | New heading: What has been released, and what hasn't
