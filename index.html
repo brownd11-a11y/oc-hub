@@ -4759,6 +4759,20 @@ function batchToggle(){
   batchUpdateBar();
   rlist();
 }
+function batchExit(){
+  // Force batch mode off after any completed action — Select must be clicked again to reactivate
+  if(!_batchMode)return;
+  _batchMode=false;
+  _batchSel.clear();
+  const btn=document.getElementById('batch-mode-btn');
+  const bar=document.getElementById('batch-bar');
+  const list=document.getElementById('list');
+  if(btn)btn.classList.remove('active');
+  if(bar)bar.classList.remove('active');
+  if(list)list.classList.remove('batch-mode');
+  batchUpdateBar();
+  rlist();
+}
 function batchToggleItem(id,el){
   if(_batchSel.has(id)){_batchSel.delete(id);el&&el.closest('.item')&&el.closest('.item').classList.remove('batch-sel');}
   else{_batchSel.add(id);el&&el.closest('.item')&&el.closest('.item').classList.add('batch-sel');}
@@ -4773,31 +4787,31 @@ function batchAccept(){
   undoPush('Batch accept ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
   _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;}});
-  save();_batchSel.clear();batchUpdateBar();render();
+  save();batchExit();render();
 }
 function batchDone(){
   if(!_batchSel.size)return;
   undoPush('Batch done ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
   _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;}});
-  save();_batchSel.clear();batchUpdateBar();render();
+  save();batchExit();render();
 }
 function batchDefer(){
   if(!_batchSel.size)return;
   // Defer all selected to +1 day; for richer UX open modal on first item
   const ids=[..._batchSel];
   const first=S.items.find(i=>i.id===ids[0]);
-  if(ids.length===1&&first){dlDefer(ids[0]);return;}
+  if(ids.length===1&&first){batchExit();dlDefer(ids[0]);return;}
   undoPush('Batch defer ('+ids.length+')');
   const due=new Date(Date.now()+86400000).toISOString().slice(0,10);
   ids.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.deferred=true;it.dueDate=due;}});
-  save();_batchSel.clear();batchUpdateBar();render();
+  save();batchExit();render();
 }
 function batchReply(){
   if(!_batchSel.size)return;
   // Open thread overlay on first selected item
   const id=[..._batchSel][0];
-  batchToggle();
+  batchExit();
   setTimeout(()=>threadOverlayOpen(id),80);
 }
 function batchDelete(){
@@ -4805,7 +4819,7 @@ function batchDelete(){
   if(!confirm('Delete '+_batchSel.size+' item'+((_batchSel.size===1)?'':'s')+'?'))return;
   undoPush('Batch delete ('+_batchSel.size+')');
   S.items=S.items.filter(it=>!_batchSel.has(it.id));
-  save();_batchSel.clear();batchUpdateBar();render();
+  save();batchExit();render();
 }
 function dlReply(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
@@ -6892,6 +6906,16 @@ function otBatchToggle(){
   document.querySelectorAll('.ot-item-cb').forEach(cb=>{cb.style.display=_otBatchMode?'inline-block':'none';cb.checked=false;});
   otBatchUpdateBar();
 }
+function otBatchExit(){
+  // Force batch mode off after any completed action
+  if(!_otBatchMode)return;
+  _otBatchMode=false;_otBatchSel.clear();
+  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
+  if(bar)bar.classList.remove('active');
+  if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
+  document.querySelectorAll('.ot-item-cb').forEach(cb=>{cb.style.display='none';cb.checked=false;});
+  otBatchUpdateBar();
+}
 function otBatchToggleItem(id,el){
   if(_otBatchSel.has(id))_otBatchSel.delete(id);else _otBatchSel.add(id);
   otBatchUpdateBar();
@@ -6903,21 +6927,14 @@ function otBatchUpdateBar(){
 function _otBatchSetStatus(status,label){
   if(!_otBatchSel.size)return;
   _otBatchSel.forEach(id=>{const c=OT.find(x=>x.id===id);if(c)c.status=status;});
-  otSave();_otBatchSel.clear();_otBatchMode=false;
-  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
-  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
-  renderOT();
+  otSave();otBatchExit();renderOT();
 }
 function otBatchConfirm(){_otBatchSetStatus('confirmed','confirmed');}
 function otBatchClose(){_otBatchSetStatus('closed','closed');}
 function otBatchDelete(){
   if(!_otBatchSel.size)return;
   if(!confirm('Delete '+_otBatchSel.size+' contact'+(_otBatchSel.size===1?'':'s')+'?'))return;
-  OT=OT.filter(c=>!_otBatchSel.has(c.id));otSave();
-  _otBatchSel.clear();_otBatchMode=false;
-  const bar=document.getElementById('ot-batch-bar');const btn=document.getElementById('ot-batch-btn');
-  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
-  renderOT();
+  OT=OT.filter(c=>!_otBatchSel.has(c.id));otSave();otBatchExit();renderOT();
 }
 function otToggleMaster(){
   _otMasterCollapsed = !_otMasterCollapsed;
@@ -7206,6 +7223,16 @@ function rfBatchToggle(){
   document.querySelectorAll('.rf-item-cb').forEach(cb=>{cb.style.display=_rfBatchMode?'inline-block':'none';cb.checked=false;});
   rfBatchUpdateBar();
 }
+function rfBatchExit(){
+  // Force batch mode off after any completed action
+  if(!_rfBatchMode)return;
+  _rfBatchMode=false;_rfBatchSel.clear();
+  const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
+  if(bar)bar.classList.remove('active');
+  if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
+  document.querySelectorAll('.rf-item-cb').forEach(cb=>{cb.style.display='none';cb.checked=false;});
+  rfBatchUpdateBar();
+}
 function rfBatchToggleItem(id,el){
   if(_rfBatchSel.has(id))_rfBatchSel.delete(id);else _rfBatchSel.add(id);
   rfBatchUpdateBar();
@@ -7217,11 +7244,7 @@ function rfBatchUpdateBar(){
 function rfBatchDelete(){
   if(!_rfBatchSel.size)return;
   if(!confirm('Delete '+_rfBatchSel.size+' resource'+(_rfBatchSel.size===1?'':'s')+'?'))return;
-  RF=RF.filter(r=>!_rfBatchSel.has(r.id));rfSave();
-  _rfBatchSel.clear();_rfBatchMode=false;
-  const bar=document.getElementById('rf-batch-bar');const btn=document.getElementById('rf-batch-btn');
-  if(bar)bar.classList.remove('active');if(btn){btn.style.background='#fff';btn.style.color='#3C3C43';}
-  rfRender();
+  RF=RF.filter(r=>!_rfBatchSel.has(r.id));rfSave();rfBatchExit();rfRender();
 }
 function rfSave(){try{localStorage.setItem(RF_SK,JSON.stringify(RF));localStorage.setItem(RF_KW_SK,JSON.stringify(RF_KW));}catch(e){}}
 function rfBuildKwSelects(){const sorted=[...KW].sort(naturalSort);['rf-kw-sel','rf-filter-kw'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const prev=el.value,isF=id==='rf-filter-kw';el.innerHTML=(isF?'<option value="">All Tags</option>':'<option value="">— Tag —</option>')+sorted.map(k=>`<option value="${esc(k)}"${k===prev?' selected':''}>${esc(k)}</option>`).join('');});}
@@ -7446,6 +7469,17 @@ function uapBatchToggle(){
   });
   uapBatchUpdateBar();
 }
+function uapBatchExit(){
+  // Force batch mode off after any completed action
+  if(!_uapBatchMode)return;
+  _uapBatchMode = false;_uapBatchSel.clear();
+  const bar = document.getElementById('uap-batch-bar');
+  const btn = document.getElementById('uap-batch-btn');
+  if(bar) bar.style.display = 'none';
+  if(btn) btn.style.background = '#fff';
+  document.querySelectorAll('.uap-item-cb').forEach(cb => {cb.style.display='none';cb.checked=false;});
+  uapBatchUpdateBar();
+}
 function uapBatchToggleItem(id, el){
   if(_uapBatchSel.has(id)){_uapBatchSel.delete(id);}
   else{_uapBatchSel.add(id);}
@@ -7462,12 +7496,7 @@ function uapBatchDelete(){
   // Also remove from S.items
   if(S && S.items) S.items = S.items.filter(i => !_uapBatchSel.has(i.id));
   uapSave(); save();
-  _uapBatchSel.clear();
-  _uapBatchMode = false;
-  const bar = document.getElementById('uap-batch-bar');
-  const btn = document.getElementById('uap-batch-btn');
-  if(bar) bar.style.display = 'none';
-  if(btn) btn.style.background = '#fff';
+  uapBatchExit();
   uapRenderList();
 }
 function uapNewReport() {
