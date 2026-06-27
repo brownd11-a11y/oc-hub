@@ -3229,8 +3229,14 @@ async function loadFromGitHub() {
 
     // Build localDone map — Dave's done marks always survive regardless of which data wins
     const localDone = {};
-    if (localData && localData.items) {
-      localData.items.forEach(i => { if (i.done === true) localDone[i.id] = true; });
+    if (localData) {
+      if (localData._stateOnly && localData.itemState) {
+        // Current format: state-only payload with itemState array
+        localData.itemState.forEach(s => { if (s.done === true) localDone[s.id] = true; });
+      } else if (localData.items) {
+        // Legacy format: full items array
+        localData.items.forEach(i => { if (i.done === true) localDone[i.id] = true; });
+      }
     }
 
     // GitHub is newer — apply it, preserving local done:true marks
