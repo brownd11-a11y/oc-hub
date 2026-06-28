@@ -2628,25 +2628,136 @@ const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v2',RF_KW_SK='oc_refs
 // Closed-item registry — stored under its own key so it survives force-refresh and removeItem(SK).
 // Format: { [id]: { completedDate: 'YYYY-MM-DD' } }
 // Rule: local done:true marks persist here until GitHub data.json itself reports done:true for that item.
-const CLOSED_REG_SK='oc_hub_closed_v1';
-function closedRegLoad(){try{return JSON.parse(localStorage.getItem(CLOSED_REG_SK)||'{}');}catch(e){return {};}}
-function closedRegSave(reg){try{localStorage.setItem(CLOSED_REG_SK,JSON.stringify(reg));}catch(e){}}
-function closedRegAdd(id,completedDate){const r=closedRegLoad();r[id]={completedDate:completedDate||todayStr()};closedRegSave(r);}
-function closedRegRemove(id){const r=closedRegLoad();delete r[id];closedRegSave(r);}
-function closedRegApply(items,ghItems){
-  // Apply registry overrides to an items array. Prune entries where GitHub now agrees (done:true).
-  const reg=closedRegLoad();
-  if(!Object.keys(reg).length)return;
-  let pruned=false;
-  const ghDone=new Set((ghItems||[]).filter(i=>i.done).map(i=>i.id));
-  items.forEach(it=>{
-    if(reg[it.id]){
-      if(ghDone.has(it.id)){delete reg[it.id];pruned=true;} // GitHub now agrees — prune
-      else{it.done=true;it.completedDate=it.completedDate||reg[it.id].completedDate||todayStr();}
-    }
-  });
-  if(pruned)closedRegSave(reg);
+// ── UNIFIED DIRTY REGISTRY ─────────────────────────────────────────────────
+// Key: oc_hub_dirty_v1 — never touched by removeItem(SK), force-refresh, or clear-local-state.
+// Stores every field Dave has authored/changed locally until GitHub confirms the change.
+// Format per item entry:
+//   fields: { done, completedDate, deferred, dueDate, reminderDate, priority, memFlag,
+//             text, type, tag, answer, itemUrl, daveDialogue:[{from,text,ts},...] }
+//   Only fields actually changed are stored.
+// New items: { isNew:true, item:{full object} }
+// Pruning: field removed when GitHub value matches local value; entry removed when all fields pruned.
+const DIRTY_SK='oc_hub_dirty_v1';
+function dirtyLoad(){try{return JSON.parse(localStorage.getItem(DIRTY_SK)||'{}');}catch(e){return {};}}
+function dirtySave(reg){try{localStorage.setItem(DIRTY_SK,JSON.stringify(reg));}catch(e){}}
+
+function dirtySet(id,fields){
+  // Merge fields into dirty registry entry for id
+  const reg=dirtyLoad();
+  if(!reg[id])reg[id]={fields:{}};
+  if(reg[id].isNew){}  // new items: keep full item, don't merge scalars separately
+  else Object.assign(reg[id].fields,fields);
+  dirtySave(reg);
 }
+function dirtySetDialogue(id,entry){
+  // Append a dave dialogue entry to the dirty registry
+  const reg=dirtyLoad();
+  if(!reg[id])reg[id]={fields:{}};
+  if(!reg[id].fields.daveDialogue)reg[id].fields.daveDialogue=[];
+  // Dedupe by ts
+  if(!reg[id].fields.daveDialogue.find(e=>e.ts===entry.ts)){
+    reg[id].fields.daveDialogue.push(entry);
+  }
+  dirtySave(reg);
+}
+function dirtySetNew(item){
+  // Register a brand-new item (not yet in GitHub)
+  const reg=dirtyLoad();
+  reg[item.id]={isNew:true,item:{...item}};
+  dirtySave(reg);
+}
+function dirtyClearField(id,field){
+  // Remove a single field from the dirty entry (used when reverting)
+  const reg=dirtyLoad();
+  if(!reg[id])return;
+  if(reg[id].fields)delete reg[id].fields[field];
+  if(!reg[id].isNew&&(!reg[id].fields||!Object.keys(reg[id].fields).length))delete reg[id];
+  dirtySave(reg);
+}
+function dirtyRemove(id){
+  const reg=dirtyLoad();
+  delete reg[id];
+  dirtySave(reg);
+}
+
+function dirtyApply(items,ghItems){
+  // Apply dirty registry to S.items after GitHub data loads.
+  // For each dirty entry: re-assert local values that GitHub hasn't yet confirmed.
+  // Prune entries/fields where GitHub now matches local.
+  const reg=dirtyLoad();
+  if(!Object.keys(reg).length)return;
+  let changed=false;
+  const ghById={};
+  (ghItems||[]).forEach(i=>{ghById[i.id]=i;});
+
+  Object.keys(reg).forEach(id=>{
+    const entry=reg[id];
+
+    // ── New item: inject if GitHub doesn't have it yet; prune if GitHub does ──
+    if(entry.isNew){
+      if(ghById[id]){
+        // GitHub has it now — pruned (synced through Claude)
+        delete reg[id];changed=true;
+      } else {
+        // Still not on GitHub — inject into S.items if not already there
+        if(!items.find(i=>i.id===id))items.unshift({...entry.item});
+      }
+      return;
+    }
+
+    // ── Existing item: apply dirty fields, prune matched ones ──
+    const it=items.find(i=>i.id===id);
+    const gh=ghById[id];
+    if(!entry.fields)return;
+    const f=entry.fields;
+
+    // Scalar state fields
+    ['done','completedDate','deferred','dueDate','reminderDate','priority','memFlag','text','type','tag','answer','itemUrl'].forEach(field=>{
+      if(!(field in f))return;
+      const ghVal=gh?gh[field]:undefined;
+      const localVal=f[field];
+      // Prune if GitHub now matches
+      const ghMatch=ghVal===localVal||(ghVal===undefined&&(localVal===false||localVal===null||localVal===''));
+      if(ghMatch){delete f[field];changed=true;}
+      else if(it){
+        // Re-assert local value
+        it[field]=localVal;
+      }
+    });
+
+    // Dave dialogue entries: merge local entries GitHub doesn't have yet
+    if(f.daveDialogue&&f.daveDialogue.length){
+      const ghDialogue=(gh&&gh.dialogue)||[];
+      const ghTs=new Set(ghDialogue.map(e=>e.ts));
+      // Filter out entries GitHub now has
+      const stillPending=f.daveDialogue.filter(e=>!ghTs.has(e.ts));
+      if(!stillPending.length){
+        delete f.daveDialogue;changed=true;
+      } else {
+        f.daveDialogue=stillPending;
+        if(it){
+          // Merge: GitHub dialogue + pending local entries, sorted by ts, deduped
+          const merged=[...(it.dialogue||[])];
+          stillPending.forEach(e=>{
+            if(!merged.find(m=>m.ts===e.ts))merged.push(e);
+          });
+          merged.sort((a,b)=>a.ts<b.ts?-1:a.ts>b.ts?1:0);
+          it.dialogue=merged;
+        }
+      }
+    }
+
+    // Prune entry if all fields cleared
+    if(!Object.keys(f).length){delete reg[id];changed=true;}
+  });
+
+  if(changed)dirtySave(reg);
+}
+
+// Legacy shims — called by existing code; routed to dirty registry
+function closedRegAdd(id,completedDate){dirtySet(id,{done:true,completedDate:completedDate||todayStr()});}
+function closedRegRemove(id){dirtyClearField(id,'done');dirtyClearField(id,'completedDate');}
+function closedRegApply(items,ghItems){dirtyApply(items,ghItems);}
 const RF_CATS={primary:{label:'Primary Sources & Documents',icon:'📄'},substack:{label:'Substacks & Long-Form',icon:'✍️'},social:{label:'News & Social Feeds',icon:'📡'},analysis:{label:'Analysis & Research',icon:'🔬'},podcast:{label:'Podcasts & Video',icon:'🎙️'},documentary:{label:'Documentaries',icon:'🎬'},book:{label:'Over-Classified Resources',icon:'📚'}};
 const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
@@ -3142,8 +3253,8 @@ function applyData(data) {
       };
     });
     S.items = result;
-    // Apply closed-item registry as final override — survives force-refresh because it's a separate key.
-    // Prune entries where GitHub itself now reports done:true (sync complete).
+    // Apply unified dirty registry as final override — survives force-refresh (separate key oc_hub_dirty_v1).
+    // Re-asserts all Dave-authored local changes; prunes entries GitHub has already confirmed.
     closedRegApply(S.items, storedItems);
   }
 
@@ -4552,22 +4663,18 @@ function setReminder(id) {
   const it = S.items.find(i => i.id === id); if (!it) return;
   _reminderMode = true;
   deferModalOpen(it, ()=>{
-    // deferPick already wrote to it.dueDate — move that to reminderDate and restore
     const chosenDate = it.dueDate;
-    // Restore dueDate if it was overwritten (we'll save the original)
     it.reminderDate = chosenDate;
     it.dueDate = it._savedDueDate !== undefined ? it._savedDueDate : it.dueDate;
     delete it._savedDueDate;
     _reminderMode = false;
     undoPush('Set reminder: '+(it.text||'').slice(0,40));
+    dirtySet(id,{reminderDate:it.reminderDate});
     save(); render();
     undoToastShow('Reminder set'+(it.reminderDate?' for '+it.reminderDate:'')+': '+(it.text||'').slice(0,30)+'…', 8000, true);
-    // Re-render overlay actions if overlay is open
     if (threadOverlayItemId === id) threadOverlayRenderActions();
   });
-  // Save original dueDate so we can restore it
   it._savedDueDate = it.dueDate;
-  // Override modal title
   setTimeout(()=>{
     const title = document.querySelector('.defer-modal-title');
     if (title) title.textContent = '🔔 Set reminder — when to be notified?';
@@ -4578,6 +4685,7 @@ function clearReminder(id) {
   undoPush('Clear reminder: '+(it.text||'').slice(0,40));
   it.reminderDate = '';
   it._resurfaced = false;
+  dirtyClearField(id,'reminderDate');
   save(); render();
   undoToastShow('Reminder cleared: '+(it.text||'').slice(0,35)+'…', 8000, true);
   if (threadOverlayItemId === id) threadOverlayRenderActions();
@@ -4588,8 +4696,8 @@ function togDefer(id){
   if(it.deferred){
     undoPush('Undefer: '+(it.text||'').slice(0,40));
     it.deferred=false;
-    // Clear resurface flag if present
     it._resurfaced=false;
+    dirtyClearField(id,'deferred');
     save();render();
     undoToastShow('Undeferred: '+(it.text||'').slice(0,35)+'…',8000,true);
     return;
@@ -4597,9 +4705,8 @@ function togDefer(id){
   deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
     it.deferred=true;it._resurfaced=false;
-    // Guard against GitHub fetch clobbering the new dueDate this session
+    dirtySet(id,{deferred:true,dueDate:it.dueDate||''});
     _sessionDeferredIds.add(it.id);
-    // Do NOT patch _ghBaseline — keeping baseline stale ensures Changed filter correctly detects this deferral
     save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
@@ -4609,9 +4716,8 @@ function dlDefer(id){
   deferModalOpen(it, ()=>{
     undoPush('Defer: '+(it.text||'').slice(0,40));
     it.deferred=true;it._resurfaced=false;
-    // Guard against GitHub fetch clobbering the new dueDate this session
+    dirtySet(id,{deferred:true,dueDate:it.dueDate||''});
     _sessionDeferredIds.add(it.id);
-    // Do NOT patch _ghBaseline — keeping baseline stale ensures Changed filter correctly detects this deferral
     save();render();
     undoToastShow('Deferred'+(it.dueDate?' until '+it.dueDate:' (no date)')+': '+(it.text||'').slice(0,30)+'…',8000,true);
   });
@@ -4711,8 +4817,8 @@ function rsfDismiss() {
   document.getElementById('rsf-overlay').classList.remove('open');
   showTab('notes', document.getElementById('tab-notes'));
 }
-function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;save();render();}
-function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;save();render();}
+function togPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.priority=!it.priority;dirtySet(id,{priority:it.priority});save();render();}
+function togMem2(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.memFlag=!it.memFlag;dirtySet(id,{memFlag:it.memFlag});save();render();}
 function delItem(id){if(!confirm('Delete?'))return;const it=S.items.find(i=>i.id===id);undoPush('Delete: '+(it?it.text||'':'').slice(0,40));S.items=S.items.filter(i=>i.id!==id);save();render();undoToastShow('Deleted: '+(it?(it.text||'').slice(0,35)+'…':'item'), 8000, true);}
 function startEdit(id){editingId=id;rlist();}
 function cancelEdit(){editingId=null;rlist();}
@@ -4720,16 +4826,16 @@ function togEditPri(id){const it=S.items.find(i=>i.id===id);if(!it)return;it.pri
 function saveEdit(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Edit: '+(it.text||'').slice(0,40));
+  const dirtyFields={};
   ['etx_','ety_','etg_','edu_','erd_','ean_','eurl_'].forEach(p=>{const el=document.getElementById(p+id);if(!el)return;
-    if(p==='etx_')it.text=el.value.trim();
-    else if(p==='ety_')it.type=el.value;
-    else if(p==='etg_'){it.tag=el.value.trim()||null;kwHandleInput(it.tag);}
-    else if(p==='edu_')it.dueDate=el.value||'';
-    else if(p==='erd_')it.reminderDate=el.value||'';
-    else if(p==='ean_')it.answer=el.value.trim()||null;
-    else if(p==='eurl_')it.itemUrl=el.value.trim()||null;
+    if(p==='etx_'){it.text=el.value.trim();dirtyFields.text=it.text;}
+    else if(p==='ety_'){it.type=el.value;dirtyFields.type=it.type;}
+    else if(p==='etg_'){it.tag=el.value.trim()||null;kwHandleInput(it.tag);dirtyFields.tag=it.tag;}
+    else if(p==='edu_'){it.dueDate=el.value||'';dirtyFields.dueDate=it.dueDate;}
+    else if(p==='erd_'){it.reminderDate=el.value||'';dirtyFields.reminderDate=it.reminderDate;}
+    else if(p==='ean_'){it.answer=el.value.trim()||null;dirtyFields.answer=it.answer;}
+    else if(p==='eurl_'){it.itemUrl=el.value.trim()||null;dirtyFields.itemUrl=it.itemUrl;}
   });
-  // Save repeat from inline edit form
   const erepOn=document.getElementById('erep-on-'+id);
   if(erepOn){
     if(erepOn.checked){
@@ -4739,6 +4845,7 @@ function saveEdit(id){
       it.repeat={on:true,freq,customDays:cd,endDate:end};
     } else { if(it.repeat)it.repeat.on=false; }
   }
+  if(Object.keys(dirtyFields).length)dirtySet(id,dirtyFields);
   editingId=null;save();render();
 }
 function collapseAll(){(S.items||[]).forEach(it=>it._exp=false);rlist();}
@@ -4860,14 +4967,18 @@ function dlReply(id){
   const txt=(ta?ta.value||'':'').trim();if(!txt)return;
   undoPush('Reply: '+(it.text||'').slice(0,40));
   if(!it.dialogue)it.dialogue=[];
-  it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
+  const entry={from:'dave',text:txt,ts:new Date().toISOString()};
+  it.dialogue.push(entry);
+  dirtySetDialogue(id,entry);
   save();render();
 }
 function dlChoice(id, letter) {
   const it = S.items.find(i => i.id === id); if (!it) return;
   undoPush('Choice '+letter+': '+(it.text||'').slice(0,40));
   if (!it.dialogue) it.dialogue = [];
-  it.dialogue.push({ from: 'dave', text: letter, ts: new Date().toISOString() });
+  const entry={ from: 'dave', text: letter, ts: new Date().toISOString() };
+  it.dialogue.push(entry);
+  dirtySetDialogue(id,entry);
   it.done = true;
   it.completedDate = new Date().toISOString().slice(0, 10);
   closedRegAdd(it.id, it.completedDate);
@@ -4900,9 +5011,10 @@ function dlSend(id){
   const txt=(ta?ta.value||'':'').trim();if(!txt)return;
   undoPush('Reply: '+(it.text||'').slice(0,40));
   if(!it.dialogue)it.dialogue=[];
-  it.dialogue.push({from:'dave',text:txt,ts:new Date().toISOString()});
+  const entry={from:'dave',text:txt,ts:new Date().toISOString()};
+  it.dialogue.push(entry);
+  dirtySetDialogue(id,entry);
   if(ta)ta.value='';
-  // Close compose area
   const comp=document.getElementById('dlcomp-'+id);
   if(comp)comp.classList.remove('open');
   const acts=document.getElementById('dlact-'+id);
@@ -5088,6 +5200,9 @@ const addItem=function(){
     _sessionFirstSave=true;
   }
   save();render();
+  // Register new item in dirty registry so it survives force-refresh until Claude pushes it
+  const newIt=S.items[0];
+  if(newIt&&newIt.id)dirtySetNew(newIt);
   // Keep input form open for the rest of this session once used
   if(!_inpFormOpen){_inpFormOpen=true;const body=document.getElementById('inp-collapse-body');const chev=document.getElementById('inp-collapse-chev');if(body)body.style.display='block';if(chev)chev.className='inp-collapse-chev open';}
 }
@@ -8191,16 +8306,16 @@ function tovTogglePri() {
 function tovSaveEdit() {
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   undoPush('Edit: '+(it.text||'').slice(0,40));
+  const dirtyFields={};
   const titleTa = document.getElementById('tov-title-ta');
-  if (titleTa) { const t = (titleTa.value || '').trim(); if (t) it.text = t; }
-  const ety = document.getElementById('tov-ety'); if (ety) it.type = ety.value;
-  const etg = document.getElementById('tov-etg'); if (etg) { it.tag = etg.value.trim() || null; kwHandleInput(it.tag); }
-  const edu = document.getElementById('tov-edu'); if (edu) it.dueDate = edu.value || '';
-  const erd = document.getElementById('tov-erd'); if (erd) it.reminderDate = erd.value || '';
-  const ecd = document.getElementById('tov-ecd'); if (ecd) it.completedDate = ecd.value || '';
-  const eurl = document.getElementById('tov-eurl'); if (eurl) it.itemUrl = eurl.value.trim() || null;
-  const ean = document.getElementById('tov-ean'); if (ean) it.answer = ean.value.trim() || null;
-  // Save repeat settings from config row
+  if (titleTa) { const t = (titleTa.value || '').trim(); if (t){it.text = t;dirtyFields.text=t;} }
+  const ety = document.getElementById('tov-ety'); if (ety){it.type = ety.value;dirtyFields.type=it.type;}
+  const etg = document.getElementById('tov-etg'); if (etg){it.tag = etg.value.trim() || null; kwHandleInput(it.tag);dirtyFields.tag=it.tag;}
+  const edu = document.getElementById('tov-edu'); if (edu){it.dueDate = edu.value || '';dirtyFields.dueDate=it.dueDate;}
+  const erd = document.getElementById('tov-erd'); if (erd){it.reminderDate = erd.value || '';dirtyFields.reminderDate=it.reminderDate;}
+  const ecd = document.getElementById('tov-ecd'); if (ecd){it.completedDate = ecd.value || '';dirtyFields.completedDate=it.completedDate;}
+  const eurl = document.getElementById('tov-eurl'); if (eurl){it.itemUrl = eurl.value.trim() || null;dirtyFields.itemUrl=it.itemUrl;}
+  const ean = document.getElementById('tov-ean'); if (ean){it.answer = ean.value.trim() || null;dirtyFields.answer=it.answer;}
   const repFreq = document.getElementById('tov-rep-freq');
   const repEnd = document.getElementById('tov-rep-end');
   const repCd = document.getElementById('tov-rep-custom-days');
@@ -8209,9 +8324,9 @@ function tovSaveEdit() {
     const freq = repFreq.value;
     it.repeat = { on: true, freq, customDays: parseInt(repCd?.value||14), endDate: repEnd?.value||'' };
   }
+  if(Object.keys(dirtyFields).length)dirtySet(threadOverlayItemId,dirtyFields);
   save(); render();
-  threadOverlayRenderActions(); // also restores reply form
-  // Show save confirmation near top, then close overlay
+  threadOverlayRenderActions();
   _showSavedConfirm('Changes saved');
   setTimeout(() => { threadOverlayClose(); }, 800);
 }
@@ -8355,7 +8470,9 @@ function threadOverlaySend() {
   undoPush('Reply: '+(it.text||'').slice(0,40));
   if (!it.dialogue) it.dialogue = [];
   const from = threadOverlayMode === 'note' ? 'note' : 'dave';
-  it.dialogue.push({ from, text: txt, ts: new Date().toISOString() });
+  const entry={ from, text: txt, ts: new Date().toISOString() };
+  it.dialogue.push(entry);
+  if(from==='dave')dirtySetDialogue(it.id,entry);
   // Apply type/tag/priority from reply controls if set
   const rtype = document.getElementById('tov-reply-type');
   const rtag = document.getElementById('tov-reply-tag');
@@ -9201,7 +9318,7 @@ function dmLocalStateRefresh() {
 /* dmForceGitHubRefresh — clear localStorage and reload from GitHub */
 function dmForceGitHubRefresh() {
   if (!confirm("Reload all content from GitHub? Items you've marked closed locally will be preserved. Other flag changes (defers, priority) made since Claude's last push will be lost.")) return;
-  localStorage.removeItem(SK); // wipe state cache — but NOT CLOSED_REG_SK, which persists closures
+  localStorage.removeItem(SK); // wipe state cache — but NOT DIRTY_SK, which persists all local changes
   localStorage.setItem('oc_force_gh_reload', '1');
   location.reload();
 }
@@ -9209,7 +9326,7 @@ function dmForceGitHubRefresh() {
 /* dmClearLocalState — remove only the localStorage state layer */
 function dmClearLocalState() {
   if (!confirm("Remove local flag state (deferred, priority) made since Claude's last push? Locally closed items are preserved. This cannot be undone.")) return;
-  localStorage.removeItem(SK); // does NOT touch CLOSED_REG_SK
+  localStorage.removeItem(SK); // does NOT touch DIRTY_SK
   location.reload();
 }
 
