@@ -1342,7 +1342,7 @@ input[type=date].inp-sel{font-size:11px;width:130px}
     </div>
     <div class="tab-spacer"></div>
     <span class="tab-action-ok" id="copy-tab-ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sent</span>
-    <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude</button>
+    <button class="tab-action-prime" id="copy-tab-btn" onclick="copyToClaude()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;position:relative;top:-1px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Update Claude<span id="export-size-badge" style="font-size:9px;font-weight:400;letter-spacing:.04em;opacity:.65;margin-left:2px"></span></button>
   </div>
   <div class="filter-row" id="filter-row" style="display:none;flex-direction:column;gap:0;padding:0">
     <!-- Row 1: status chips — 32px margins, all flex:1 equal width, 32px height -->
@@ -3848,7 +3848,7 @@ function _notesGroupLabel(key){
   const m={open:'Open',done:'Done',deferred:'Deferred',flow:'For Claude → Dave',reminder:'Reminders',note:'Project Notes',question:'Questions',fordave:'For Dave',untagged:'Untagged'};
   return m[key]||key;
 }
-function render(){rdash();rlist();}
+function render(){rdash();rlist();const b=document.getElementById('export-size-badge');if(b)try{b.textContent='· '+buildExportSize();}catch(e){}}
 
 
 /* ── ITEM LINK RENDERER ── */
@@ -6776,15 +6776,31 @@ function initRoadmap(){
 
 /* ── EXPORT ── */
 function buildExportJSON(){
+  // Exclude done items — they live permanently on GitHub; Claude fetches data.json directly.
+  // Exclude i_hubui_changelog — changelog record only, not actionable, and grows every session.
+  // This keeps the export to open/actionable items only (~10x smaller than full export).
+  const EXCLUDE_IDS=new Set(['i_hubui_changelog']);
+  const exportItems=(S.items||[])
+    .filter(it=>!it.done && !EXCLUDE_IDS.has(it.id))
+    .map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null}));
   return JSON.stringify({
     version:5,
     exported:new Date().toISOString(),
     seedVersion:SEED_VERSION,
     masterVersion:'v279',
+    _exportNote:'done items excluded — Claude fetches data.json directly from GitHub',
     filters:{status:null,tag:null,type:null},
-    items:(S.items||[]).map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null})),
+    items:exportItems,
     road:(S.road||[])
   },null,2);
+}
+function buildExportSize(){
+  // Returns a short string like "47 items · ~18K" for display on the Update Claude button tooltip
+  const EXCLUDE_IDS=new Set(['i_hubui_changelog']);
+  const ct=(S.items||[]).filter(it=>!it.done&&!EXCLUDE_IDS.has(it.id)).length;
+  const bytes=buildExportJSON().length;
+  const kb=Math.round(bytes/1024);
+  return ct+' items · ~'+kb+'K';
 }
 const UC_PREF_SK='oc_uc_skip_modal';
 /* ── DATA.JSON PAYLOAD — what Claude pushes to GitHub ── */
