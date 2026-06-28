@@ -1,7 +1,45 @@
 {
-  "_version": "2026-06-28T18:11:45.927446+00:00",
+  "_version": "2026-06-28T18:24:12.169086+00:00",
   "_schema": 1,
   "items": [
+    {
+      "id": "i_pursue_check",
+      "type": "fordave",
+      "text": "PURSUE check — update manuscript references. Run: verify war.gov/ufo for new releases; refresh file drop counts, agency count, and media buzz in manuscript body. After completing, update dueDate forward 14 days and push to GitHub.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "research",
+      "deferred": false,
+      "answer": null,
+      "dialogue": [
+        {
+          "from": "claude",
+          "text": "Repeating PURSUE check — manual cycle until hub repeat mechanism is fixed (see i_repeat_fix). Last PURSUE status: 3 releases, 304 files, 5 agencies (DoD, FBI, CIA, NASA, State). Next release expected late June/early July. When you mark this done after a check, Claude will update dueDate +14 days and push directly to GitHub.",
+          "ts": "2026-06-28T18:24:12.169086+00:00"
+        }
+      ],
+      "created": "2026-06-28T18:24:12.169086+00:00",
+      "dueDate": "2026-07-12",
+      "completedDate": "",
+      "itemUrl": "https://war.gov/ufo"
+    },
+    {
+      "id": "i_repeat_fix",
+      "type": "note",
+      "text": "HUB DEV — Fix repeat mechanism: wire repeat reset into dirty registry and pendingClosures export so repeat resets survive to GitHub without requiring an in-session push. Currently resets live only in browser and are lost on new session. Prerequisite: prose locked and book in late-stage passes. See session 2026-06-28 for full diagnosis.",
+      "done": false,
+      "priority": false,
+      "memFlag": false,
+      "tag": "hubui",
+      "deferred": true,
+      "answer": null,
+      "dialogue": null,
+      "created": "2026-06-28T18:24:12.169086+00:00",
+      "dueDate": "2026-07-28",
+      "completedDate": "",
+      "itemUrl": null
+    },
     {
       "id": "i_1751068800001",
       "type": "fordave",
