@@ -2625,6 +2625,28 @@ input[type=date].inp-sel{font-size:11px;width:130px}
 
 <script>
 const SK='oc_hub_v6',OT_SK='oc_outreach_v1',RF_SK='oc_refs_v2',RF_KW_SK='oc_refs_kw_v2';
+// Closed-item registry — stored under its own key so it survives force-refresh and removeItem(SK).
+// Format: { [id]: { completedDate: 'YYYY-MM-DD' } }
+// Rule: local done:true marks persist here until GitHub data.json itself reports done:true for that item.
+const CLOSED_REG_SK='oc_hub_closed_v1';
+function closedRegLoad(){try{return JSON.parse(localStorage.getItem(CLOSED_REG_SK)||'{}');}catch(e){return {};}}
+function closedRegSave(reg){try{localStorage.setItem(CLOSED_REG_SK,JSON.stringify(reg));}catch(e){}}
+function closedRegAdd(id,completedDate){const r=closedRegLoad();r[id]={completedDate:completedDate||todayStr()};closedRegSave(r);}
+function closedRegRemove(id){const r=closedRegLoad();delete r[id];closedRegSave(r);}
+function closedRegApply(items,ghItems){
+  // Apply registry overrides to an items array. Prune entries where GitHub now agrees (done:true).
+  const reg=closedRegLoad();
+  if(!Object.keys(reg).length)return;
+  let pruned=false;
+  const ghDone=new Set((ghItems||[]).filter(i=>i.done).map(i=>i.id));
+  items.forEach(it=>{
+    if(reg[it.id]){
+      if(ghDone.has(it.id)){delete reg[it.id];pruned=true;} // GitHub now agrees — prune
+      else{it.done=true;it.completedDate=it.completedDate||reg[it.id].completedDate||todayStr();}
+    }
+  });
+  if(pruned)closedRegSave(reg);
+}
 const RF_CATS={primary:{label:'Primary Sources & Documents',icon:'📄'},substack:{label:'Substacks & Long-Form',icon:'✍️'},social:{label:'News & Social Feeds',icon:'📡'},analysis:{label:'Analysis & Research',icon:'🔬'},podcast:{label:'Podcasts & Video',icon:'🎙️'},documentary:{label:'Documentaries',icon:'🎬'},book:{label:'Over-Classified Resources',icon:'📚'}};
 const RF_REFRESH_KW_SK='oc_refs_refresh_kw_v1';
 const RF_COLLAPSED_SK='oc_refs_collapsed_v1';
@@ -3120,6 +3142,9 @@ function applyData(data) {
       };
     });
     S.items = result;
+    // Apply closed-item registry as final override — survives force-refresh because it's a separate key.
+    // Prune entries where GitHub itself now reports done:true (sync complete).
+    closedRegApply(S.items, storedItems);
   }
 
   // Road: stored order wins, seed updates labels/colors
@@ -4458,10 +4483,12 @@ function togDone(id){
     it.done=true;
     it.completedDate=todayStr();
     it.dueDate='';
+    closedRegAdd(it.id,it.completedDate); // persist closure across force-refresh
     if(it.linkedRoadId){const ritem=S.road.find(r=>r.id===it.linkedRoadId);if(ritem&&ritem.kind==='step'){ritem.done=true;ritem.completedDate=todayStr();}}
   } else {
     it.done=false;
     it.completedDate='';
+    closedRegRemove(it.id); // reopened — no longer needs local protection
   }
   save();render();
   undoToastShow((it.done?'Marked done':'Marked open')+': '+(it.text||'').slice(0,35)+'…', 8000, true);
@@ -4792,14 +4819,14 @@ function batchAccept(){
   if(!_batchSel.size)return;
   undoPush('Batch accept ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
-  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;}});
+  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;closedRegAdd(id,today);}});
   save();batchExit();render();
 }
 function batchDone(){
   if(!_batchSel.size)return;
   undoPush('Batch done ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
-  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;}});
+  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;closedRegAdd(id,today);}});
   save();batchExit();render();
 }
 function batchDefer(){
@@ -4838,12 +4865,12 @@ function dlReply(id){
 }
 function dlChoice(id, letter) {
   const it = S.items.find(i => i.id === id); if (!it) return;
-  // Add Dave's choice as a dialogue reply, then mark done
   undoPush('Choice '+letter+': '+(it.text||'').slice(0,40));
   if (!it.dialogue) it.dialogue = [];
   it.dialogue.push({ from: 'dave', text: letter, ts: new Date().toISOString() });
   it.done = true;
   it.completedDate = new Date().toISOString().slice(0, 10);
+  closedRegAdd(it.id, it.completedDate);
   save(); render();
   undoToastShow('Choice ' + letter + ' recorded — ' + (it.text||'').slice(0,30)+'…', 8000, true);
 }
@@ -4851,6 +4878,7 @@ function dlAccept(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Accept: '+(it.text||'').slice(0,40));
   it.done=true;it.completedDate=new Date().toISOString().slice(0,10);it.dueDate='';
+  closedRegAdd(it.id,it.completedDate);
   save();render();
   undoToastShow('Accepted: '+(it.text||'').slice(0,35)+'…', 8000, true);
 }
@@ -8191,6 +8219,7 @@ function tovAct(action) {
       } else {
         it.done = true;
         if (!it.completedDate) it.completedDate = new Date().toISOString().slice(0,10);
+        closedRegAdd(it.id, it.completedDate);
         save(); render(); threadOverlayClose();
         undoToastShow('Marked done: '+(it.text||'').slice(0,35)+'…', 8000, true);
       }
@@ -9155,16 +9184,16 @@ function dmLocalStateRefresh() {
 
 /* dmForceGitHubRefresh — clear localStorage and reload from GitHub */
 function dmForceGitHubRefresh() {
-  if (!confirm("Clear all local state and reload from GitHub? Any flag changes (done marks, defers) made since Claude's last push will be lost.")) return;
-  localStorage.removeItem(SK);
-  localStorage.setItem('oc_force_gh_reload', '1'); // signal to loadFromGitHub to skip seed fallback
+  if (!confirm("Reload all content from GitHub? Items you've marked closed locally will be preserved. Other flag changes (defers, priority) made since Claude's last push will be lost.")) return;
+  localStorage.removeItem(SK); // wipe state cache — but NOT CLOSED_REG_SK, which persists closures
+  localStorage.setItem('oc_force_gh_reload', '1');
   location.reload();
 }
 
 /* dmClearLocalState — remove only the localStorage state layer */
 function dmClearLocalState() {
-  if (!confirm("Remove your local state (done marks, deferred flags, priority) made since Claude's last push? This cannot be undone. GitHub content is not affected.")) return;
-  localStorage.removeItem(SK);
+  if (!confirm("Remove local flag state (deferred, priority) made since Claude's last push? Locally closed items are preserved. This cannot be undone.")) return;
+  localStorage.removeItem(SK); // does NOT touch CLOSED_REG_SK
   location.reload();
 }
 
