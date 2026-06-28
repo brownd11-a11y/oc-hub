@@ -8,6 +8,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 
 ## Ch.12 — Theories of Intent — v410 — 2026-06-24
 
+[B8 RESOLVED — v451 — 2026-06-28]
+
 ### New endnote markers needed
 - **Stargate paragraph** (psionics/consciousness section): needs superscripts + notes for:
   - Utts, Jessica — statistical review 1995
@@ -145,6 +147,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 
 ## Ch.5 — How Secrets Are Made — A13 + B3 — v426/v437 — 2026-06-27
 
+[B8 RESOLVED — v451 — 2026-06-28]
+
 **Master version at pass:** v426 (A13), v437 (B3)
 
 ### B3 new endnotes added (v437)
@@ -218,6 +222,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 
 ## Ch.9 — Manufacturing Doubt — A13 + B3 — v426/v438 — 2026-06-27/28
 
+[B8 RESOLVED — v451 — 2026-06-28]
+
 **Master version at pass:** v426 (A13), v438 (B3)
 
 ### A13 prose changes
@@ -251,6 +257,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ---
 
 ## Ch.10 — Sworn — A13 + B3 — v426/v438 — 2026-06-27/28
+
+[B8 RESOLVED — v451 — 2026-06-28]
 
 **Master version at pass:** v426 (A13), v438 (B3)
 
@@ -314,6 +322,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 
 ## Ch.14 — Science Rushes In — A13 — v426 — 2026-06-28
 
+[B8 RESOLVED — v451 — 2026-06-28]
+
 ### A13 prose changes
 - Fischer afootnote body paragraph deleted
 - TextOpen replaced: "After 2017, independent scientists moved quickly…"
@@ -331,6 +341,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ---
 
 ## Ch.15 — Controlled Disclosure or Ontological Shock? — A13 + insertions — v431/v446 — 2026-06-27/28
+
+[B8 RESOLVED — v451 — 2026-06-28]
 
 **Master versions:** v431 (A13 changes), v446 (uNHIdden insertion)
 
@@ -370,6 +382,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ---
 
 ## Ch.16 — Congressional Lockout — A13 + insertion — v431/v445_b — 2026-06-27/28
+
+[B8 RESOLVED — v451 — 2026-06-28]
 
 **Master versions:** v431 (A13), v445_b (UAPDA insertion)
 
@@ -416,6 +430,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ---
 
 ## Ch.18 — The Public Decides — A13 + insertions — v431/v445_b/v446 — multiple dates
+
+[B8 RESOLVED — v451 — 2026-06-28]
 
 **Master versions:** v431 (A13), v445_b (Deloitte + UAPDA profiles), v446 (Schumer profile update)
 
@@ -484,6 +500,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 
 ## B3 Pass — Ch.11 through Conclusion — v438 — 2026-06-28
 
+[B8 RESOLVED — v451 — 2026-06-28]
+
 ### New body refs added across chapters
 - Thirteen new body refs added for previously uncited factual claims (Ch.11–Conclusion)
 - Luna March 31, 2026 letter to Hegseth requesting 46 UAP videos: new endnote created
@@ -501,6 +519,8 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ---
 
 ## B7a Index Gap Audit — v448 — 2026-06-28
+
+[B8 RESOLVED — v451 — 2026-06-28]
 
 **Source:** B7a Step 4b missing terms sweep. These terms appear in manuscript body but have no IndexEnt entry. All are B8 obligations — add IndexEnt paragraphs in alphabetical order within the Index section.
 
@@ -535,3 +555,41 @@ Per Index Entry Formatting Standards (PI v60): Persons: Last, First. No titles. 
 - Confirm with Dave whether Lüttmann, Kosider, and F'inn warrant index entries or are footnote-only.
 - uNHIdden acronym treatment: foundation name is the acronym form; confirm acronym-first treatment.
 - All locators above are chapter-level (Ch. N format). If subhead locators are needed, derive from B7a bookmark map.
+
+---
+
+## B8 — Back Matter Changes Pass — v451 — 2026-06-28
+
+**Pass status: COMPLETE**
+
+### Bibliography entries added (v451)
+- Davis, Eric W. Briefing to UAP Disclosure Fund congressional staff. Washington, DC, May 2025. [alphabetical: D section]
+- Hyman, Ray. "Evaluation of Program on Anomalous Mental Phenomena." *Journal of Scientific Exploration* 10, no. 1 (1996): 31–58. [H section]
+- Utts, Jessica. "Replication and Meta-Analysis in Parapsychology." *Statistical Science* 10, no. 3 (1995): 363–378. [U section]
+- Williamson, Jack. *Dragon's Island*. New York: Simon & Schuster, 1951. [W section]
+
+### Index entries added (v451)
+- Durant Report  Ch. 9
+- Hillenkoetter, Roscoe  Ch. 3
+- Meiers  Ch. 1
+- Schlueter, Doris  Ch. 1
+
+### Verified already present — no action needed
+- **Glossary:** Psionics, Project Stargate, uNHIdden, Ontological shock, Geoffrey Rose population strategy, Craft-down event, GPMESII/ASCOPE, Polycrisis — all confirmed present ✓
+- **Index:** Abbas, Martin; Chilbolton formation; Deloitte Switzerland; Disclosure Forum 2026; Dozier, James; F'inn; Hyman, Ray; McMoneagle, Joe; Priestland, John; uNHIdden; Utts, Jessica — all confirmed present ✓
+- **Index cross-refs:** uNHIdden ↔ Priestland ↔ Abbas triangle; McMoneagle/Dozier → Project Stargate — all confirmed present ✓
+- **Ch.12 endnote markers:** All Stargate/psionics/crop formation endnote refs (EN363–EN377) already in place from prior B3 pass ✓
+
+### B8 RESOLVED chapters
+- ## Ch.12 — Theories of Intent — v410 — 2026-06-24
+- ## Ch.5 — How Secrets Are Made — A13 + B3 — v426/v437 — 2026-06-27
+- ## Ch.9 — Manufacturing Doubt — A13 + B3 — v426/v438 — 2026-06-27/28
+- ## Ch.10 — Sworn — A13 + B3 — v426/v438 — 2026-06-27/28
+- ## Ch.14 — Science Rushes In — A13 — v426 — 2026-06-28
+- ## Ch.15 — Controlled Disclosure or Ontological Shock?
+- ## Ch.16 — Congressional Lockout
+- ## Ch.18 — The Public Decides
+- ## B3 Pass — Ch.11 through Conclusion — v438 — 2026-06-28
+- ## B7a Index Gap Audit — v448 — 2026-06-28
+
+---
