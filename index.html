@@ -3666,8 +3666,8 @@ function rdash(){
   setChip('fchip-priority','fc-priority',pri,fSt==='priority');
   setChip('fchip-reminder','fc-reminder',remCt,fReminder);
   // Flow filter counts
-  const forClaudeCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return(!d.length&&!i.answer)||(lf==='dave');}).length;
-  const forDaveCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return(lf==='claude')||(i.answer&&!d.length);}).length;
+  const forClaudeCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return lf==='dave';}).length;
+  const forDaveCt=(S.items||[]).filter(i=>i.type==='fordave'&&!i.done&&!i.deferred).filter(i=>{const d=i.dialogue||[];const lf=d.length?d[d.length-1].from:null;return(lf==='claude')||(!d.length&&!i.answer)||(i.answer&&!d.length);}).length;
   setChip('fchip-forclaude','fc-forclaude',forClaudeCt,fFlow==='forclaude');
   setChip('fchip-fordave','fc-fordave',forDaveCt,fFlow==='fordave');
   const ts=document.getElementById('tag-filter');if(ts&&ts.value!==(fTag||''))ts.value=fTag||'';
@@ -3775,12 +3775,12 @@ function iVis(it){
     const lastFrom=dlg.length?dlg[dlg.length-1].from:null;
     const hasAnswer=!!(it.answer);
     if(fFlow==='forclaude'){
-      // Awaiting Claude: last speaker is dave, or no dialogue and no answer
-      const awaitingClaude=(!dlg.length&&!hasAnswer)||(lastFrom==='dave');
+      // Awaiting Claude: Dave has replied — last speaker is dave
+      const awaitingClaude=(lastFrom==='dave');
       if(!awaitingClaude)return false;
     } else if(fFlow==='fordave'){
-      // Awaiting Dave: last speaker is claude, or has answer but no dave follow-up
-      const awaitingDave=(lastFrom==='claude')||(hasAnswer&&!dlg.length);
+      // Awaiting Dave: Claude created item (no activity), Claude answered, or last speaker is claude
+      const awaitingDave=(lastFrom==='claude')||(!dlg.length&&!hasAnswer)||(hasAnswer&&!dlg.length);
       if(!awaitingDave)return false;
     }
   }
