@@ -8200,7 +8200,10 @@ function threadOverlayRenderActions() {
   _tovTitleExpanded = true;
   const s = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap';
   const sd = s + ';border-color:#c00;color:#c00';
+  const sAccept = s + ';border-color:var(--done-fg);color:var(--done-fg);background:var(--done-bg);font-weight:600';
+  const showAccept = !it.done && it.type === 'fordave';
   bar.innerHTML =
+    (showAccept ? `<button style="${sAccept}" onclick="dlAccept('${it.id}');threadOverlayClose()">&#10003; Accept</button>` : '') +
     `<button style="${s}" onclick="tovAct('done')">` + (it.done ? 'Mark open' : 'Mark done') + `</button>` +
     `<button style="${s}" onclick="tovAct('defer')">` + (it.deferred ? 'Undefer' : 'Defer') + `</button>` +
     `<button style="${s+(it.reminderDate?';border-color:#C77800;color:#C77800':'')} " onclick="tovAct('remind')" title="${it.reminderDate?'Reminder: '+it.reminderDate+' — click to change':'Set an independent reminder date'}">🔔 ${it.reminderDate?fmtDate(it.reminderDate):'Remind me'}</button>` +
