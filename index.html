@@ -9060,10 +9060,24 @@ function dmImportConfirm(mode) {
     }
     render(); dmHealthCheck(); dmStorageDial();
   } else {
-    // Merge
+    // Merge — GitHub wins for content (text, dialogue, answer, tag, type);
+    // local state wins for flags (done, completedDate, dueDate, deferred, priority, memFlag).
+    // This prevents a GitHub push with done:false from re-opening items Dave closed locally.
     const idMap = {};
     (S.items||[]).forEach(i => idMap[i.id] = i);
-    incoming.forEach(i => { idMap[i.id] = { ...idMap[i.id], ...i }; });
+    incoming.forEach(i => {
+      const local = idMap[i.id];
+      idMap[i.id] = { ...local, ...i,
+        // Local done:true always survives a merge; GitHub done:true also survives.
+        done: (local && local.done) ? true : !!i.done,
+        completedDate: (local && local.completedDate) ? local.completedDate : (i.completedDate||''),
+        // Local deferred/dueDate preserved if set this session; otherwise GitHub wins.
+        deferred: local && local.deferred !== undefined ? !!local.deferred : !!(i.deferred||false),
+        dueDate: (local && local.dueDate) ? local.dueDate : (i.dueDate||''),
+        priority: local ? !!local.priority : !!(i.priority||false),
+        memFlag: local ? !!local.memFlag : !!(i.memFlag||false)
+      };
+    });
     S.items = Object.values(idMap);
     save(); render(); dmHealthCheck(); dmStorageDial();
   }
