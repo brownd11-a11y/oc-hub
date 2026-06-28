@@ -8206,19 +8206,15 @@ function tovToggleEntry(id) {
 }
 
 let _tovTitleExpanded = false;
-function tovToggleTitleExpand() {
-  _tovTitleExpanded = !_tovTitleExpanded;
-  const title = document.getElementById('thread-overlay-title');
-  const btn = document.getElementById('tov-title-more');
-  if (title) title.style.maxHeight = _tovTitleExpanded ? 'none' : '80px';
-  if (btn) btn.textContent = _tovTitleExpanded ? '▲ Less' : '▼ More';
-}
+function tovToggleTitleExpand() { /* no-op: title now scrolls within capped flex header */ }
 
 let _tovEditing = false;
 
 function threadOverlayRenderActions() {
   _tovEditing = false;
   const rf = document.getElementById('tov-reply-form'); if (rf) rf.style.display = '';
+  // Restore header height cap when returning from edit mode
+  const _hdr2 = document.querySelector('#thread-overlay > div:first-child'); if (_hdr2) _hdr2.style.maxHeight = '42vh';
   const bar = document.getElementById('tov-actions'); if (!bar) return;
   const titleDiv = document.getElementById('thread-overlay-title');
   const titleTa = document.getElementById('tov-title-ta');
@@ -8276,6 +8272,8 @@ function threadOverlayEnterEdit() {
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   _tovEditing = true;
   const rf = document.getElementById('tov-reply-form'); if (rf) rf.style.display = 'none';
+  // Expand header in edit mode so all fields fit
+  const _ehdr = document.querySelector('#thread-overlay > div:first-child'); if (_ehdr) _ehdr.style.maxHeight = 'none';
   const moreBtn = document.getElementById('tov-title-more'); if (moreBtn) moreBtn.style.display = 'none';
   // Replace title div with an editable textarea
   const titleDiv = document.getElementById('thread-overlay-title');
@@ -8407,10 +8405,8 @@ function threadOverlayOpen(itemId) {
   const moreBtn = document.getElementById('tov-title-more');
   const ta = document.getElementById('thread-reply-ta');
   title.textContent = (it.text || '');
-  title.style.maxHeight = '80px';
-  // Show More button only for long text
-  const isLong = (it.text || '').length > 180 || (it.text || '').split('\n').length > 3;
-  if (moreBtn) { moreBtn.style.display = isLong ? 'block' : 'none'; moreBtn.textContent = '▼ More'; }
+  // Title scrolls within flex-capped header
+  if (moreBtn) moreBtn.style.display = 'none';
   if (ta) { ta.value = ''; ta.style.height = 'auto'; }
   // Reset reply controls
   const replyTag = document.getElementById('tov-reply-tag'); if (replyTag) replyTag.value = '';
@@ -9674,16 +9670,14 @@ function dmHealthCheck() {
 <!-- FULL-SCREEN THREAD OVERLAY -->
 <div id="thread-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:var(--page-bg);flex-direction:column">
   <!-- Top bar: item title + close + actions -->
-  <div style="border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 10px;gap:14px">
-      <div style="flex:1;min-width:0">
-        <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px">Item</div>
-        <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:40vh;overflow-y:auto"></div>
-        <button id="tov-title-more" onclick="tovToggleTitleExpand()" style="display:none"></button>
-      </div>
-      <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
+  <div style="border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0;max-height:42vh;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 6px;gap:14px;flex-shrink:0">
+      <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary)">Item</div>
+      <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0">&#215; Close</button>
     </div>
-    <div id="tov-actions" style="display:flex;gap:6px;align-items:flex-start;padding:0 18px 12px;flex-wrap:wrap"></div>
+    <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow-y:auto;padding:0 18px 8px;flex:1;min-height:0"></div>
+    <button id="tov-title-more" onclick="tovToggleTitleExpand()" style="display:none"></button>
+    <div id="tov-actions" style="display:flex;gap:6px;align-items:flex-start;padding:0 18px 12px;flex-wrap:wrap;flex-shrink:0;border-top:1px solid var(--separator);padding-top:8px;margin-top:4px"></div>
   </div>
   <!-- Reply / note form — hidden during edit mode -->
   <div id="tov-reply-form" style="padding:12px 18px 14px;border-bottom:1px solid var(--separator);background:var(--card-bg);flex-shrink:0">
