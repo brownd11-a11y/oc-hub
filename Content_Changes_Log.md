@@ -498,3 +498,40 @@ Tracks new citations, endnote markers, bibliography entries, glossary updates, a
 ### Index candidates (B7c)
 - Luna, Anna Paulina — new event (March 2026 letter); verify Ch.16 or body locator
 - Puthoff, Harold — Kennedy Caucus Room remarks now properly sourced
+---
+
+## B7a Index Gap Audit — v448 — 2026-06-28
+
+**Source:** B7a Step 4b missing terms sweep. These terms appear in manuscript body but have no IndexEnt entry. All are B8 obligations — add IndexEnt paragraphs in alphabetical order within the Index section.
+
+### Index entries to add (B8)
+
+Per Index Entry Formatting Standards (PI v60): Persons: Last, First. No titles. Acronyms: widely known = acronym-first; obscure = spelled-out-first.
+
+| Headword | Locator(s) | Priority | Notes |
+|---|---|---|---|
+| Abbas, Martin | Ch. 15 | High | Co-founder uNHIdden; add cross-ref from uNHIdden |
+| Chilbolton formation | Ch. 12, A11 | Medium | 2001 crop formation adjacent to radio telescope; verify A11 locator |
+| Deloitte Switzerland | Ch. 18 | Low | Organization; "Is Foresight of Black Swans Really Impossible?" |
+| Disclosure Forum 2026 | Ch. 16, Ch. 18 | Medium | June 26, 2026 event; Kennedy Caucus Room |
+| Dozier, James | Ch. 12 | Medium | Brigadier General; Stargate/McMoneagle Dozier rescue |
+| F'inn | Ch. 9 | Low | Survey firm; Disclosure Foundation poll June 2026 — may be footnote only |
+| Hyman, Ray | Ch. 12 | Medium | Skeptic; 1995 CIA review of Stargate |
+| Kosider, Fabian | Ch. 18 | Low | Co-author Deloitte paper — footnote-level; confirm with Dave whether to index |
+| Lüttmann, Philipp | Ch. 18 | Low | Co-author Deloitte paper — footnote-level; confirm with Dave whether to index |
+| McMoneagle, Joe | Ch. 12 | Medium | Remote viewer; Dozier rescue; Project Stargate |
+| Priestland, John | Ch. 15 | High | Co-founder uNHIdden; "Preparing for Disclosure" paper |
+| uNHIdden | Ch. 15 | High | UK/US foundation; co-founders Priestland and Abbas; acronym-first (widely known in UAP context) — confirm with Dave |
+| Utts, Jessica | Ch. 12 | Medium | UC Davis statistician; validated Stargate results 1995 |
+
+### Cross-references to add
+- `uNHIdden. See also Priestland, John; Abbas, Martin`
+- `Abbas, Martin. See also uNHIdden`
+- `Priestland, John. See also uNHIdden`
+- `McMoneagle, Joe. See also Project Stargate`
+- `Dozier, James. See also Project Stargate; McMoneagle, Joe`
+
+### Notes
+- Confirm with Dave whether Lüttmann, Kosider, and F'inn warrant index entries or are footnote-only.
+- uNHIdden acronym treatment: foundation name is the acronym form; confirm acronym-first treatment.
+- All locators above are chapter-level (Ch. N format). If subhead locators are needed, derive from B7a bookmark map.
