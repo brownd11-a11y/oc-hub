@@ -4988,6 +4988,10 @@ function dlChoice(id, letter) {
 function dlAccept(id){
   const it=S.items.find(i=>i.id===id);if(!it)return;
   undoPush('Accept: '+(it.text||'').slice(0,40));
+  if(!it.dialogue)it.dialogue=[];
+  const entry={from:'dave',text:'[Accepted]',ts:new Date().toISOString()};
+  it.dialogue.push(entry);
+  dirtySetDialogue(id,entry);
   it.done=true;it.completedDate=new Date().toISOString().slice(0,10);it.dueDate='';
   closedRegAdd(it.id,it.completedDate);
   save();render();
@@ -6895,17 +6899,44 @@ function buildExportJSON(){
   // Exclude i_hubui_changelog — changelog record only, not actionable, and grows every session.
   // This keeps the export to open/actionable items only (~10x smaller than full export).
   const EXCLUDE_IDS=new Set(['i_hubui_changelog']);
+  const dirtyReg=dirtyLoad();
+
   const exportItems=(S.items||[])
     .filter(it=>!it.done && !EXCLUDE_IDS.has(it.id))
-    .map(it=>({id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null}));
+    .map(it=>{
+      const dirtyEntry=dirtyReg[it.id];
+      const pendingDialogue=(dirtyEntry&&dirtyEntry.fields&&dirtyEntry.fields.daveDialogue)
+        ? dirtyEntry.fields.daveDialogue : [];
+      const out={id:it.id,type:it.type,text:it.text,done:it.done,priority:it.priority,memFlag:it.memFlag,tag:it.tag,deferred:it.deferred||false,answer:it.answer||null,dialogue:it.dialogue||null,created:it.created,dueDate:it.dueDate||'',completedDate:it.completedDate||'',itemUrl:it.itemUrl||null};
+      if(pendingDialogue.length)out._pendingDialogue=pendingDialogue;
+      return out;
+    });
+
+  const pendingClosures=Object.keys(dirtyReg)
+    .filter(id=>{
+      const e=dirtyReg[id];
+      return e&&e.fields&&e.fields.done===true&&!EXCLUDE_IDS.has(id);
+    })
+    .map(id=>{
+      const it=(S.items||[]).find(i=>i.id===id)||{};
+      const f=dirtyReg[id].fields;
+      return {id,done:true,completedDate:f.completedDate||it.completedDate||'',text:(it.text||'').slice(0,80)};
+    });
+
   return JSON.stringify({
     version:5,
     exported:new Date().toISOString(),
     seedVersion:SEED_VERSION,
-    masterVersion:'v279',
-    _exportNote:'done items excluded — Claude fetches data.json directly from GitHub',
+    masterVersion:(typeof MASTER_VERSION!=='undefined'?MASTER_VERSION:''),
+    _protocol:{
+      step0_pendingClosures:'Items in pendingClosures[] were accepted/closed locally but are excluded from items[] by the done filter. At Step 0 of merge, mark each done:true with its completedDate in data.json before any other merge logic.',
+      step0_pendingDialogue:'Items with _pendingDialogue[] contain Dave-authored dialogue entries not yet confirmed on GitHub. These are the new entries to process — the full dialogue[] array also contains older GitHub entries; use _pendingDialogue to identify what is new.',
+      doneExclusion:'done:true items are absent from items[] — they already exist on GitHub. Fetch data.json directly for the complete record.',
+      mergeInstruction:'Process pendingClosures first, then items[], applying _pendingDialogue entries. Fetch live data.json SHA before any push.'
+    },
     filters:{status:null,tag:null,type:null},
     items:exportItems,
+    pendingClosures:pendingClosures,
     road:(S.road||[])
   },null,2);
 }
