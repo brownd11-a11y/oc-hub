@@ -8193,12 +8193,11 @@ function threadOverlayRenderActions() {
   const titleTa = document.getElementById('tov-title-ta');
   const it = S.items.find(i => i.id === threadOverlayItemId); if (!it) return;
   // Restore title display
-  if (titleDiv) { titleDiv.style.display = ''; titleDiv.textContent = (it.text || ''); titleDiv.style.maxHeight = '80px'; }
+  if (titleDiv) { titleDiv.style.display = ''; titleDiv.textContent = (it.text || ''); titleDiv.style.maxHeight = ''; }
   if (titleTa) titleTa.style.display = 'none';
   const moreBtn = document.getElementById('tov-title-more');
-  const isLong = (it.text || '').length > 180 || (it.text || '').split('\n').length > 3;
-  if (moreBtn) { moreBtn.style.display = isLong ? 'block' : 'none'; moreBtn.textContent = '▼ More'; }
-  _tovTitleExpanded = false;
+  if (moreBtn) moreBtn.style.display = 'none';
+  _tovTitleExpanded = true;
   const s = 'font-family:\'Source Code Pro\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--separator);background:var(--card-bg);color:var(--label-secondary);padding:4px 12px;border-radius:4px;cursor:pointer;white-space:nowrap';
   const sd = s + ';border-color:#c00;color:#c00';
   bar.innerHTML =
@@ -9645,8 +9644,8 @@ function dmHealthCheck() {
     <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 10px;gap:14px">
       <div style="flex:1;min-width:0">
         <div style="font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--label-secondary);margin-bottom:4px">Item</div>
-        <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:80px;overflow:hidden;transition:max-height .2s ease"></div>
-        <button id="tov-title-more" onclick="tovToggleTitleExpand()" style="display:none;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:none;border:none;cursor:pointer;padding:2px 0;margin-top:2px">▼ More</button>
+        <div id="thread-overlay-title" style="font-family:'Libre Baskerville',Georgia,serif;font-size:15px;color:var(--label-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:40vh;overflow-y:auto"></div>
+        <button id="tov-title-more" onclick="tovToggleTitleExpand()" style="display:none"></button>
       </div>
       <button onclick="threadOverlayClose()" style="background:none;border:1px solid var(--separator);border-radius:6px;padding:6px 14px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--label-secondary);flex-shrink:0;margin-top:2px">&#215; Close</button>
     </div>
