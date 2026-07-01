@@ -195,3 +195,37 @@ Book-wide two-pass resequence completed (offset 20,000,000). All four checks pas
 - Carey, Thomas J., and Donald R. Schmitt. "Brazel Reconsidered." NICAP, 1999. http://www.nicap.org/rosbraz.htm — **ADD**
 - Randle, Kevin D., and Donald R. Schmitt. UFO Crash at Roswell. New York: Avon Books, 1991 — **VERIFY** (may already be in bibliography under Randle)
 - Maccabee, Bruce. "The New Mexico Green Fireball Mystery." In Jerome Clark, ed., The UFO Encyclopedia. 2nd ed. Detroit: Omnigraphics, 1998 — **ADD** (secondary source cited in note 31/Twinkle)
+
+---
+
+## Session append: 2026-07-01 — v463 → v464 (A13 pass, Foo Fighters through green fireballs)
+
+### A13 pass scope
+Full seven-level editorial pass on Ch.1 from chapter cold open (para 122) through green fireballs close (para 177). 13 proposals generated; E-04 sent to Dave as fordave; all others auto-executed or approved by Dave.
+
+### Changes applied
+
+**Auto-executed (no editorial judgment required):**
+- E-01: Para 134 — em-dash removed; closing sentence "and then they disappeared" replaced with "The findings were never recovered."
+- E-02: Para 133 — em-dash removed; "a new German weapon — printed in the New York Times" split into two sentences.
+- E-03: Para 138 — Arnold run-on sentence broken: "weaving side to side...and producing blindingly bright mirror-like flashes as they turned" → two sentences.
+- E-06: Para 145 — trailing space stripped after "back to the base."
+- E-08: Para 159 — missing period added after "Project Mogul" before "As with the first explanation."
+- E-09: Para 162 — closing quotation mark on Exon quote confirmed present.
+- E-11: Para 169 — "At the conference," added to open LaPaz meteor checklist paragraph.
+
+**Dave-approved editorial proposals:**
+- E-07: Para 146 — "Brazel told his son he was bitter" → "His son later recalled him bitter" (parallel opener fix).
+- E-10: Para 164 — Roswell section close rewritten: "If the hundreds of first-hand witnesses are correct, the U.S. Government has been willing to lie to the people it serves. That is the Roswell story. The debris is almost beside the point."
+- E-12: Para 177 — "'Life''s own" → "the magazine's own" (typography fix).
+
+**Dave variation (E-04), approved as Option A:**
+- Para 140 — Arnold credibility close: "That public dismissal without inquiry became a pattern repeated across every decade that followed." → "Swift, official, and unsupported by any investigation: the response to Arnold set the pattern."
+
+### Sterling protected sentences (confirmed this pass)
+- "The objects did not stop appearing. The policy of not looking simply became easier to maintain." (para 135) — PROTECTED
+- "He could not close it." (para 166, LaPaz) — PROTECTED
+- "Then turned the page." (para 177, Life close) — PROTECTED
+- "Swift, official, and unsupported by any investigation: the response to Arnold set the pattern." (para 140) — PROTECTED (new this pass)
+
+### No new endnotes or bibliography items introduced in this pass.
