@@ -19396,6 +19396,25 @@
         }
       ],
       "completedDate": "2026-06-28"
+    },
+    {
+      "id": "fordave_rule2_sectpr_endnotepr",
+      "type": "fordave",
+      "category": "endnote",
+      "priority": "medium",
+      "title": "Rule 2 violation: 38 inline sectPr blocks contain endnotePr",
+      "description": "Pre-existing book-wide condition found during v457→v458 Introduction rewrite session. 38 of 39 inline sectPr elements (section break paragraphs embedded in w:pPr throughout the manuscript) contain a w:endnotePr child, which violates Endnote XML Rule 2. The endnotePr belongs only in the final body-level sectPr and in settings.xml, not in inline section breaks. This was not introduced during this session. In Word it causes no visible error currently, but could cause endnote numbering scope confusion during Vellum import or final C1/C2 layout. Recommended fix: strip w:endnotePr from all 38 inline sectPr blocks in a dedicated mechanical pass before Vellum export. Low risk, fully automatable with Python.",
+      "proposedAction": "Add a discrete pre-Vellum mechanical pass: scan all inline sectPr elements (w:pPr containing w:sectPr), strip any w:endnotePr child found, verify the final body-level sectPr and settings.xml still contain correct endnotePr configuration, repack and validate. Log as complete in Content_Changes_Log.",
+      "done": false,
+      "createdDate": "2026-07-01",
+      "sourceVersion": "v458",
+      "dialogue": [
+        {
+          "role": "claude",
+          "date": "2026-07-01",
+          "text": "Surfaced during Phase 5 verification of the Introduction rewrite pass. 38 inline sectPr blocks contain endnotePr in violation of Rule 2. Pre-existing condition, not introduced in this session. Flagged per PI protocol — did not fix silently as it is book-wide scope requiring Dave direction."
+        }
+      ]
     }
   ],
   "road": [
