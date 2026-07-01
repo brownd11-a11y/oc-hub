@@ -4592,7 +4592,7 @@ function togDone(id){
       return;
     }
     it.done=true;
-    it.completedDate=todayStr();
+    if(!it.completedDate)it.completedDate=todayStr();
     it.dueDate='';
     closedRegAdd(it.id,it.completedDate); // persist closure across force-refresh
     if(it.linkedRoadId){const ritem=S.road.find(r=>r.id===it.linkedRoadId);if(ritem&&ritem.kind==='step'){ritem.done=true;ritem.completedDate=todayStr();}}
@@ -4926,14 +4926,14 @@ function batchAccept(){
   if(!_batchSel.size)return;
   undoPush('Batch accept ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
-  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;closedRegAdd(id,today);}});
+  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;if(!it.completedDate)it.completedDate=today;closedRegAdd(id,it.completedDate);}});
   save();batchExit();render();
 }
 function batchDone(){
   if(!_batchSel.size)return;
   undoPush('Batch done ('+_batchSel.size+')');
   const today=new Date().toISOString().slice(0,10);
-  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;it.completedDate=today;closedRegAdd(id,today);}});
+  _batchSel.forEach(id=>{const it=S.items.find(i=>i.id===id);if(it){it.done=true;if(!it.completedDate)it.completedDate=today;closedRegAdd(id,it.completedDate);}});
   save();batchExit();render();
 }
 function batchDefer(){
@@ -4980,7 +4980,7 @@ function dlChoice(id, letter) {
   it.dialogue.push(entry);
   dirtySetDialogue(id,entry);
   it.done = true;
-  it.completedDate = new Date().toISOString().slice(0, 10);
+  if (!it.completedDate) it.completedDate = new Date().toISOString().slice(0, 10);
   closedRegAdd(it.id, it.completedDate);
   save(); render();
   undoToastShow('Choice ' + letter + ' recorded — ' + (it.text||'').slice(0,30)+'…', 8000, true);
@@ -4992,7 +4992,7 @@ function dlAccept(id){
   const entry={from:'dave',text:'[Accepted]',ts:new Date().toISOString()};
   it.dialogue.push(entry);
   dirtySetDialogue(id,entry);
-  it.done=true;it.completedDate=new Date().toISOString().slice(0,10);it.dueDate='';
+  it.done=true;if(!it.completedDate)it.completedDate=new Date().toISOString().slice(0,10);it.dueDate='';
   closedRegAdd(it.id,it.completedDate);
   save();render();
   undoToastShow('Accepted: '+(it.text||'').slice(0,35)+'…', 8000, true);
@@ -8976,12 +8976,12 @@ function rmToggleDone(itemId, rmId) {
   const it = (S.items || []).find(i => i.id === itemId);
   if (it) {
     it.done = !it.done;
-    it.completedDate = it.done ? new Date().toISOString().slice(0,10) : '';
+    if (it.done) { if (!it.completedDate) it.completedDate = new Date().toISOString().slice(0,10); } else { it.completedDate = ''; }
   }
   const roadItem = (S.road || []).find(r => r.id === rmId);
   if (roadItem) {
     roadItem.done = it ? it.done : !roadItem.done;
-    roadItem.completedDate = roadItem.done ? new Date().toISOString().slice(0,10) : '';
+    if (roadItem.done) { if (!roadItem.completedDate) roadItem.completedDate = new Date().toISOString().slice(0,10); } else { roadItem.completedDate = ''; }
   }
   save();
   const list = document.getElementById('list');
