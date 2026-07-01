@@ -155,3 +155,43 @@ Per PI v60 rule: endnote resequence must run immediately upon any addition.
 ---
 
 *Log created: 2026-07-01. Next append: following session with prose changes.*
+
+---
+
+## Session append: 2026-07-01 — v462 → v463 (Sterling fixes + citations)
+
+### Word repair diff findings
+Word's repair of v461 → v462 revealed the root cause of the open error:
+- Our new paragraphs in v461 used `ET.SubElement` which does NOT inherit the `w14` namespace declaration from parent. Word's XML parser requires `w14:paraId` on every `<w:p>` and the `w14` namespace must be declared on the root element or the paragraph itself.
+- Word's repair: accepted all new paragraph *content* but stripped `w14:paraId` from 5 paragraphs and renumbered all endnotes sequentially (our temp IDs 635/636 became 24/28).
+- Fix going forward: always use lxml (not ET) for XML writes. lxml inherits namespace declarations from root. ET rewrites namespace prefixes and drops inherited declarations.
+
+### Sterling fixes applied (v463)
+- Para 143: "described told" typo fixed → cut false start, open with "He could not cut..."
+- Para 147: topic sentence tightened → "The debris Marcel and his team collected was not what the public record later described."
+- Para 148: "And that announcement was short-lived." cut → section ends on "This is the first and only time the U.S. military announced it had recovered a craft."
+
+### Missing paraId/rsidR attrs fixed
+5 paragraphs in v462 still lacked `w14:paraId`/`w:rsidR` — all fixed in v463 using lxml.
+
+### Citations added (v463)
+
+**Roswell:**
+- Note 13 (new content, renumbered): Carey/Schmitt NICAP "Brazel Reconsidered" + Roswell Daily Record July 9 + Randle/Schmitt UFO Crash at Roswell. Placed on paras 142, 143, 144, 146.
+- Note 14 (new content, renumbered): Marcel Jr. 1991 sworn affidavit + Brazel Jr. foil description. Placed on para 147.
+- Notes 13-25 renumbered per resequence (prior note 13 = Roswell Daily Record headline → now note 15).
+
+**Green fireballs:**
+- Note 29 (new): LaPaz Dec 12 sighting + classified letter to USAF + "could not be classified as normal meteorite fall." Placed on para 171.
+- Note 31 (new): LaPaz disagreement with Twinkle conclusion + AF narrative management + Twinkle closure. Placed on paras 175, 176.
+
+### Full endnote resequence
+Book-wide two-pass resequence completed (offset 20,000,000). All four checks pass:
+- 636 unique body refs, sequential 1..636
+- 636 note definitions, sequential 1..636
+- Counts match, no orphan definitions
+
+### Bibliography additions required (additions this session)
+- Carey, Thomas J., and Donald R. Schmitt. "Brazel Reconsidered." NICAP, 1999. http://www.nicap.org/rosbraz.htm — **ADD**
+- Randle, Kevin D., and Donald R. Schmitt. UFO Crash at Roswell. New York: Avon Books, 1991 — **VERIFY** (may already be in bibliography under Randle)
+- Maccabee, Bruce. "The New Mexico Green Fireball Mystery." In Jerome Clark, ed., The UFO Encyclopedia. 2nd ed. Detroit: Omnigraphics, 1998 — **ADD** (secondary source cited in note 31/Twinkle)
