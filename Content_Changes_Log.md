@@ -280,3 +280,65 @@ Full book-wide two-pass resequence complete. 638 notes, sequential 1–638, all 
 - Lisil (Ariel School witness, last name withheld)
 - Encounters (Netflix docuseries)
 - Halt, Charles (if not already indexed under Rendlesham)
+---
+
+## Session append: 2026-07-02 — v469/471 → v473 (A14 color pass Ch.11–Conclusion; Conclusion restructure; mechanical)
+
+### Master version progression
+- v469: uploaded as read-only context for A14 pass
+- v471: new master uploaded mid-session
+- v472: Conclusion restructure applied
+- v473: Endnote empty-paragraph sweep (17 trailing empty w:p removed)
+
+---
+
+### CONCLUSION — Conclusion
+
+#### Prose changes applied (v472)
+Full Conclusion restructure per Dave's six-point editorial frame. No new citations or endnotes introduced — all prose draws on material already cited in Ch.5, Ch.6, Ch.9, Ch.15, Ch.16, Ch.17, Ch.18.
+
+**Paragraphs replaced/deleted:**
+- Original ¶3 (abstract over-classification framing) → replaced with Point 1: specific 80-year secrecy history paragraph
+- Grusch scene paragraph tightened (no new citations)
+- "Controlled disclosure will arrive..." paragraph deleted (absorbed into new Point 3)
+- "The fix belongs to those people. To you." sentence deleted
+
+**New paragraphs added (no new endnotes — material drawn from existing cited content):**
+- Point 2: Toll on whistleblowers and America (draws on Ch.18 documented record)
+- Point 3: Pressure cooker / catastrophic disclosure risk (draws on Ch.15 Brookings/uNHIdden material, already cited)
+- Point 4: Neither branch alone (draws on Ch.16/Ch.17 material, already cited)
+- Point 5 expansion: What dismantling requires (draws on Ch.16/Ch.17 material, already cited)
+
+**Word-level changes:**
+- "controlled airspace and in our oceans" → "skies and in our seas"
+- "public posture of managed ignorance" → "posture of managed ignorance"
+- "honest accounting" → "full accounting"
+- "Knowledge of that kind does not belong to any government or military. It belongs to all of humanity." → "The existence of another species is not a national security secret. It is a fact about the universe."
+- Luna paragraph: final sentence ("What they say will determine...") deleted
+- "At the same event" → "At the June 9 press conference" (Kean paragraph)
+
+**Endnote references: all five preserved (EN512–516). No new endnotes. No resequence needed.**
+
+### New bibliography entries required
+- None this session. All Conclusion prose draws on sources already cited and bibliographied.
+
+### Glossary updates
+- None this session.
+
+### Subheading renames (affects index locators — B7c)
+- Ch.6: "What the programs may have cost" → "The price of secrecy" (applied in prior session, confirmed present in v473 at para 492)
+
+### Index candidates
+- None from Conclusion restructure (no new proper nouns introduced).
+
+### Endnote mechanical fixes (v473)
+- 17 endnote elements had spurious trailing empty w:p paragraphs. Removed: EN 14, 15, 16, 35, 42, 55, 62, 63, 64, 236, 237, 287, 505, 597, 600, 610, 640. No content affected.
+- Font audit: clean — no explicit Times New Roman or sz≠22 specs in any endnote rPr. All runs inherit from EndnoteText style correctly.
+
+### Notes
+- B8 prerequisites status as of v473:
+  - Content_Changes_Log retroactive sweep: IN PROGRESS (hub item i_1782305831693 open) — covers Ch.1 through this session. Chapters Ch.2–Ch.18 and Conclusion color pass sessions still require retroactive sweep entries before B8 can run.
+  - B3 confirmed complete: Ch.6–9 ✓ (v438, v430), Ch.7 ✓, Ch.8 ✓, Ch.9 ✓, Ch.10–18 endnote audit ✓ (v430). Ch.1–5 B3 status: partially complete (Ch.1 major work done this cycle; Ch.2–5 pending formal B3 confirmation).
+  - B6 (URL pass): NOT YET RUN
+  - B7a (Index ebook pass): NOT YET RUN
+  - B8: GATED — awaiting Dave's explicit go + all prerequisites above
