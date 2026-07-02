@@ -229,3 +229,54 @@ Full seven-level editorial pass on Ch.1 from chapter cold open (para 122) throug
 - "Swift, official, and unsupported by any investigation: the response to Arnold set the pattern." (para 140) — PROTECTED (new this pass)
 
 ### No new endnotes or bibliography items introduced in this pass.
+
+---
+
+## Session append: 2026-07-01 — v464 → v465 (Color additions, rest of Ch.1)
+
+### Lisil quote verification
+Quote "opens up wars again" confirmed from Netflix Encounters S1E2 "Believers" via VICE/Motherboard article (Aug 9, 2024). Likely Shona translation artifact (kurwa = fight/struggle intensely). Quoted verbatim in book; endnote 638 includes translation note. Em-dashes in Lisil paragraph replaced with commas per VP2.
+
+### Pre-existing em-dash flagged (not our addition)
+Para 223 (Barwood): "witnesses herself — police officers" contains pre-existing em-dash. Flagged for B1 formatting pass; not touched this session.
+
+### Changes applied (v465)
+
+**Capitol Flap:**
+- Para 179: sentence added after Barnes quote — objects had already moved over White House and Capitol before Barnes called Andrews.
+- Para 185: three sentences added after Samford temperature-inversion explanation — Cedar Rapids Gazette "SAUCERS SWARM OVER CAPITAL" front page; "The people who were in the room that night never believed a word of it."
+
+**Westall:**
+- Para 196: Tania Vassie quote prepended to section opening — "I just shrieked, 'There's a flying saucer.' And that's when the commotion started." Sourced to ABC Australian Story, 60th anniversary broadcast, April 2026.
+
+**Rendlesham:**
+- New para 203 inserted: Halt went out to disprove; took micro-cassette recorder; did not come back with a debunking.
+- Para 204: Halt tape quote inserted — "It looks like an eye winking at you." VP2-compliant (no em-dashes; colon construction used).
+
+**Ariel School:**
+- Para 212: redundant sentence "The consistency and emotional state of the children's accounts had shaken him" cut.
+- Para 213: Lisil quote added — "I remember seeing big black eyes... we were harming the planet" + "opens up wars again" with Shona translation note in endnote.
+
+**Bridge paragraph:**
+- New para inserted before chapter close — names Barwood, Burroughs, Westall children, Leach; "Every one of them paid something for saying so."
+
+**Mechanical:**
+- Chapter close double period fixed ("evidence..→evidence.").
+
+### New endnotes
+- Note 637 (renumbered after resequence): Westall/Vassie — ABC Australian Story 2026; Dandenong Journal April 21, 1966.
+- Note 638 (renumbered after resequence): Lisil/Encounters — Netflix/VICE Studios S1E2; VICE Motherboard Aug 9, 2024; Shona translation note.
+
+### Endnote resequence
+Full book-wide two-pass resequence complete. 638 notes, sequential 1–638, all four checks pass.
+
+### Bibliography additions required (this session)
+- **ADD:** Encounters. Season 1, Episode 2, "Believers." Directed by Yon Motskin. Netflix / VICE Studios, September 27, 2023. (Lisil witness testimony.)
+- **ADD:** "The Westall UFO Mystery." Australian Story. ABC Television, April 2026. (Vassie quote.)
+- **VERIFY:** Dandenong Journal, April 21, 1966 — check if already in bibliography under Westall sources.
+
+### Index candidates (new proper nouns this session)
+- Vassie, Tania (Westall witness)
+- Lisil (Ariel School witness, last name withheld)
+- Encounters (Netflix docuseries)
+- Halt, Charles (if not already indexed under Rendlesham)
